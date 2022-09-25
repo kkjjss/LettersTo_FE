@@ -16,3 +16,11 @@
 - Xcode: 14.0(14A309)
 - cocoapods: 1.11.3
 - ReactNative: 0.70
+
+## Installation
+
+```
+  $ npm install
+  $ cd ios
+  $ pod install
+```
