@@ -6,5 +6,8 @@ export type StackParamsList = {
   Home: undefined;
 
   // 인증 관련 스택
-  Auth: undefined;
+  Auth: {
+    setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+    a: string | undefined;
+  };
 };

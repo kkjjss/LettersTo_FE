@@ -20,7 +20,7 @@ export function Splash({navigation}: Props) {
       AsyncStorage.getItem('user_id').then(value =>
         navigation.replace(value === null ? 'Auth' : 'Home'),
       );
-    }, 3000);
+    }, 1000);
   }, []);
 
   return (

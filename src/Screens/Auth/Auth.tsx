@@ -1,18 +1,56 @@
 import * as React from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, Button, Dimensions, StyleSheet} from 'react-native';
 import type {StackParamsList} from '../../types/types';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type Props = NativeStackScreenProps<StackParamsList, 'Auth'>;
+
+const windowWidth = Dimensions.get('window').width;
 
 export function Auth({navigation}: Props) {
   return (
     <View style={style.container}>
-      <Text>Auth</Text>
+      <View style={style.titleWrapper}>
+        <Text style={style.titleText}>
+          로그인 및 회원가입 1초 만에 시작하기
+        </Text>
+      </View>
+      <View style={style.buttonWrapper}>
+        <View style={style.loginButton}>
+          <Button title="카카오로 시작하기" />
+        </View>
+        <View style={style.loginButton}>
+          <Button title="네이버로 시작하기" />
+        </View>
+        <View style={style.loginButton}>
+          <Button
+            title="Google로 시작하기"
+            onPress={() => {
+              AsyncStorage.setItem('user_id', 'aa').then(() => {
+                navigation.replace('Splash');
+              });
+            }}
+          />
+        </View>
+      </View>
+      <View style={style.bottomWrapper}>
+        <Text>회원가입 시 개인정보처리방침을 읽었으며</Text>
+        <Text>이용약관에 동의하신 것으로 간주합니다</Text>
+      </View>
     </View>
   );
 }
 
 const style = StyleSheet.create({
-  container: {flex: 1, alignItems: 'center', justifyContent: 'center'},
+  container: {flex: 1},
+  titleWrapper: {flex: 3, justifyContent: 'center', alignItems: 'center'},
+  titleText: {},
+  buttonWrapper: {
+    flex: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loginButton: {margin: 5, width: windowWidth * 0.8},
+  bottomWrapper: {flex: 1, alignItems: 'center'},
 });
