@@ -1,14 +1,14 @@
 import * as React from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {View, Text, Button, StyleSheet} from 'react-native';
-import type {MainStackParamList} from '../../types';
+import {View, Text, StyleSheet} from 'react-native';
+import type {StackParamsList} from '../../types/types';
 
-type Props = NativeStackScreenProps<MainStackParamList, 'HomeScreen'>;
+type Props = NativeStackScreenProps<StackParamsList, 'Auth'>;
 
-export function HomeScreen({navigation}: Props) {
+export function Auth({navigation}: Props) {
   return (
     <View style={style.container}>
-      <Text>Home Screen</Text>
+      <Text>Auth</Text>
     </View>
   );
 }

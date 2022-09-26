@@ -1,17 +1,13 @@
 // Import React and Component
 import React, {useState, useEffect} from 'react';
-import {ActivityIndicator, View, StyleSheet, Image, Text} from 'react-native';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+import {ActivityIndicator, View, StyleSheet} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../types';
+import {StackParamsList} from '../types/types';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'SplashScreen'>;
+type Props = NativeStackScreenProps<StackParamsList, 'Splash'>;
 
-const SplashScreen = ({navigation}: Props) => {
+export function Splash({navigation}: Props) {
   //State for ActivityIndicator animation
   const [animating, setAnimating] = useState(true);
 
@@ -22,14 +18,13 @@ const SplashScreen = ({navigation}: Props) => {
       //If not then send for Authentication
       //else send to Home Screen
       AsyncStorage.getItem('user_id').then(value =>
-        navigation.replace(value === null ? 'AuthStack' : 'MainStack'),
+        navigation.replace(value === null ? 'Auth' : 'Home'),
       );
     }, 3000);
   }, []);
 
   return (
     <View style={styles.container}>
-      <Text>aasdfasdfasdfasdfasdfasdfasd</Text>
       <ActivityIndicator
         animating={animating}
         color="#6990F7"
@@ -38,9 +33,7 @@ const SplashScreen = ({navigation}: Props) => {
       />
     </View>
   );
-};
-
-export default SplashScreen;
+}
 
 const styles = StyleSheet.create({
   container: {
