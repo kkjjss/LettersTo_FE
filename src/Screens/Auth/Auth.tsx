@@ -3,12 +3,21 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {View, Text, Button, Dimensions, StyleSheet} from 'react-native';
 import type {StackParamsList} from '../../types/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import useStore from '../../Store/store';
 
 type Props = NativeStackScreenProps<StackParamsList, 'Auth'>;
 
 const windowWidth = Dimensions.get('window').width;
 
-export function Auth({navigation}: Props) {
+export function Auth({}: Props) {
+  const {setIsLoggedIn} = useStore();
+
+  async function logIn() {
+    await AsyncStorage.setItem('user_id', 'aa').then(() => {
+      setIsLoggedIn(true);
+    });
+  }
+
   return (
     <View style={style.container}>
       <View style={style.titleWrapper}>
@@ -18,20 +27,13 @@ export function Auth({navigation}: Props) {
       </View>
       <View style={style.buttonWrapper}>
         <View style={style.loginButton}>
-          <Button title="카카오로 시작하기" />
+          <Button title="카카오로 시작하기" disabled />
         </View>
         <View style={style.loginButton}>
-          <Button title="네이버로 시작하기" />
+          <Button title="네이버로 시작하기" disabled />
         </View>
         <View style={style.loginButton}>
-          <Button
-            title="Google로 시작하기"
-            onPress={() => {
-              AsyncStorage.setItem('user_id', 'aa').then(() => {
-                navigation.replace('Splash');
-              });
-            }}
-          />
+          <Button title="Google로 시작하기" onPress={logIn} />
         </View>
       </View>
       <View style={style.bottomWrapper}>
