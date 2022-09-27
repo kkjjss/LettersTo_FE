@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import StackNavigator from './src/Navigator';
+import StackNavigator from './src/Navigator/Navigator';
 
 export default function App() {
   return (

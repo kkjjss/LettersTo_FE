@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react';
 import {ActivityIndicator, View, StyleSheet} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {StackParamsList} from '../types/types';
+import {StackParamsList} from '../types';
 import useStore from '../Store/store';
 
 type Props = NativeStackScreenProps<StackParamsList, 'Splash'>;
