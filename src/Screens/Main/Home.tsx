@@ -16,13 +16,13 @@ export function Home({}: Props) {
   }
 
   return (
-    <View style={style.container}>
+    <View style={styles.container}>
       <Text>Home Screen</Text>
       <Button title="로그아웃" onPress={logout} />
     </View>
   );
 }
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {flex: 1, alignItems: 'center', justifyContent: 'center'},
 });

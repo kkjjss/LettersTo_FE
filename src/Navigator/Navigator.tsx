@@ -11,6 +11,7 @@ import {Home} from '../Screens/Main/Home';
 
 // 인증 관련 스크린
 import {Auth} from '../Screens/Auth/Auth';
+import {NicknameForm} from '../Screens/UserInfoForm/NicknameForm';
 
 const Stack = createNativeStackNavigator<StackParamsList>();
 
@@ -28,6 +29,11 @@ export default function StackNavigator() {
       ) : (
         <Stack.Group>
           <Stack.Screen name="Auth" component={Auth} />
+          <Stack.Screen
+            name="NicknameForm"
+            component={NicknameForm}
+            options={{headerShown: false}}
+          />
         </Stack.Group>
       )}
     </Stack.Navigator>
