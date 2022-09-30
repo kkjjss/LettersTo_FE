@@ -11,15 +11,12 @@ import {
   StatusBar,
   Animated,
 } from 'react-native';
+import {SCREEN_HEIGHT} from '../../constants';
 import type {StackParamsList} from '../../types';
-
-const {height, width} = Dimensions.get('window');
-
-const SCREEN_HEIGHT = height - (StatusBar.currentHeight || 0);
 
 type Props = NativeStackScreenProps<StackParamsList, 'NicknameForm'>;
 
-export function NicknameForm({}: Props) {
+export function NicknameForm({navigation}: Props) {
   const [nickname, setNickname] = useState('');
   const [isDuplicate, setIsDuplicate] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
@@ -103,7 +100,7 @@ export function NicknameForm({}: Props) {
           disabled={!(nickname && !isDuplicate && isChecked)}
           onPress={() => {
             if (nickname && !isDuplicate) {
-              console.log('navigation.navigate(성향)');
+              navigation.navigate('InterestsForm');
             }
           }}
         />
@@ -115,8 +112,9 @@ export function NicknameForm({}: Props) {
 const styles = StyleSheet.create({
   container: {height: SCREEN_HEIGHT, paddingLeft: 30, paddingRight: 30},
   titleWrap: {
-    height: 180,
-    justifyContent: 'center',
+    height: 100,
+    marginBottom: 80,
+    justifyContent: 'flex-end',
   },
   titleText: {fontSize: 25},
   nicknameWrapper: {
@@ -141,6 +139,7 @@ const styles = StyleSheet.create({
     height: 30,
     justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: 100,
   },
   buttonWrap: {
     flex: 2,

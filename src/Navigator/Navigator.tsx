@@ -12,6 +12,7 @@ import {Home} from '../Screens/Main/Home';
 // 인증 관련 스크린
 import {Auth} from '../Screens/Auth/Auth';
 import {NicknameForm} from '../Screens/UserInfoForm/NicknameForm';
+import {InterestsForm} from '../Screens/UserInfoForm/InterestsForm';
 
 const Stack = createNativeStackNavigator<StackParamsList>();
 
@@ -27,13 +28,10 @@ export default function StackNavigator() {
           <Stack.Screen name="Home" component={Home} />
         </Stack.Group>
       ) : (
-        <Stack.Group>
+        <Stack.Group screenOptions={{headerShown: false}}>
           <Stack.Screen name="Auth" component={Auth} />
-          <Stack.Screen
-            name="NicknameForm"
-            component={NicknameForm}
-            options={{headerShown: false}}
-          />
+          <Stack.Screen name="NicknameForm" component={NicknameForm} />
+          <Stack.Screen name="InterestsForm" component={InterestsForm} />
         </Stack.Group>
       )}
     </Stack.Navigator>
