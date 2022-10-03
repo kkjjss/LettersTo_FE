@@ -13,6 +13,7 @@ import {Home} from '../Screens/Main/Home';
 import {Auth} from '../Screens/Auth/Auth';
 import {NicknameForm} from '../Screens/UserInfoForm/NicknameForm';
 import {InterestsForm} from '../Screens/UserInfoForm/InterestsForm';
+import {PersonalityForm} from '../Screens/UserInfoForm/PersonalityForm';
 
 const Stack = createNativeStackNavigator<StackParamsList>();
 
@@ -32,6 +33,7 @@ export default function StackNavigator() {
           <Stack.Screen name="Auth" component={Auth} />
           <Stack.Screen name="NicknameForm" component={NicknameForm} />
           <Stack.Screen name="InterestsForm" component={InterestsForm} />
+          <Stack.Screen name="PersonalityForm" component={PersonalityForm} />
         </Stack.Group>
       )}
     </Stack.Navigator>

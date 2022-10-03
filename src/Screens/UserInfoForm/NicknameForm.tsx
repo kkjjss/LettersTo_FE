@@ -1,14 +1,12 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   View,
   Text,
   Button,
-  Dimensions,
   StyleSheet,
   TextInput,
   ScrollView,
-  StatusBar,
   Animated,
 } from 'react-native';
 import {SCREEN_HEIGHT} from '../../constants';
@@ -19,7 +17,7 @@ type Props = NativeStackScreenProps<StackParamsList, 'NicknameForm'>;
 export function NicknameForm({navigation}: Props) {
   const [nickname, setNickname] = useState('');
   const [isDuplicate, setIsDuplicate] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
+  const [activateNext, setActivateNext] = useState(false);
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -52,14 +50,14 @@ export function NicknameForm({navigation}: Props) {
       } else {
         setIsDuplicate(true);
       }
-      setIsChecked(true);
+      setActivateNext(true);
       alert.start();
     }
   };
 
   const changeNickname = (v: string) => {
     setNickname(v);
-    setIsChecked(false);
+    setActivateNext(false);
   };
 
   return (
@@ -97,7 +95,7 @@ export function NicknameForm({navigation}: Props) {
       <View style={{marginBottom: 30, marginTop: 10}}>
         <Button
           title="다음"
-          disabled={!(nickname && !isDuplicate && isChecked)}
+          disabled={!(nickname && !isDuplicate && activateNext)}
           onPress={() => {
             if (nickname && !isDuplicate) {
               navigation.navigate('InterestsForm');

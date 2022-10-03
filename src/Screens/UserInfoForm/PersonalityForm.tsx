@@ -10,42 +10,46 @@ import {
 } from 'react-native';
 import type {StackParamsList} from '../../types';
 
-type Props = NativeStackScreenProps<StackParamsList, 'InterestsForm'>;
+type Props = NativeStackScreenProps<StackParamsList, 'PersonalityForm'>;
 
-const INTERESTS_LIST = [
-  '운동',
-  '음악',
-  '여행',
-  '사진',
-  '맛집',
-  '게임',
-  '영화',
-  '만화',
-  '일상',
-  '독서',
-  '연애',
-  '스포츠',
-  '연예인',
-  '자기개발',
-  '인관관계',
+const PERSONALITY_LIST = [
+  '열정적인',
+  '신중한',
+  '솔직한',
+  '대담한',
+  '결단력있는',
+  '도전적인',
+  '치밀한',
+  '다정한',
+  '사교적인',
+  '조심성있는',
+  '독창정인',
+  '겸손한',
+  '세심한',
+  '참을성있는',
+  '수줍어하는',
+  '조급한',
+  '내성적인',
+  '외향적인',
 ];
 
-type InterestsType = {
+type PersonalityType = {
   [index: string]: {selected: boolean};
 };
 
-let initialInterests: InterestsType = {};
+let initialPersonality: PersonalityType = {};
 
-INTERESTS_LIST.map(interest => {
-  initialInterests = {
-    ...initialInterests,
-    [interest]: {selected: false},
+PERSONALITY_LIST.map(personality => {
+  initialPersonality = {
+    ...initialPersonality,
+    [personality]: {selected: false},
   };
 });
 
-export function InterestsForm({navigation}: Props) {
+export function PersonalityForm({navigation}: Props) {
   const [counter, setCounter] = useState(0);
-  const [interests, setInterests] = useState<InterestsType>(initialInterests);
+  const [personalities, setPersonalities] =
+    useState<PersonalityType>(initialPersonality);
   const [alertText, setAlertText] = useState<string>('');
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -62,20 +66,20 @@ export function InterestsForm({navigation}: Props) {
     }),
   ]);
 
-  const selectInterest = (interest: string) => {
+  const selectPersonality = (personality: string) => {
     alert.reset();
-    if (counter < 7 && interests[interest].selected === false) {
-      setInterests({
-        ...interests,
-        [interest]: {selected: true},
+    if (counter < 9 && personalities[personality].selected === false) {
+      setPersonalities({
+        ...personalities,
+        [personality]: {selected: true},
       });
-    } else if (interests[interest].selected === true) {
-      setInterests({
-        ...interests,
-        [interest]: {selected: false},
+    } else if (personalities[personality].selected === true) {
+      setPersonalities({
+        ...personalities,
+        [personality]: {selected: false},
       });
     } else {
-      setAlertText('관심사는 최대 7개까지 가능합니다.');
+      setAlertText('성향은 최대 9개까지 가능합니다.');
       alert.start();
     }
   };
@@ -83,51 +87,51 @@ export function InterestsForm({navigation}: Props) {
   const onPressNext = () => {
     if (counter === 0) {
       alert.reset();
-      setAlertText('관심사를 선택해 주세요.');
+      setAlertText('성향을 선택해 주세요.');
       alert.start();
     } else {
-      navigation.navigate('PersonalityForm');
+      console.log('next');
     }
   };
 
   useEffect(() => {
     let count = 0;
-    for (let i in INTERESTS_LIST) {
-      if (interests[INTERESTS_LIST[i]].selected) {
+    for (let i in PERSONALITY_LIST) {
+      if (personalities[PERSONALITY_LIST[i]].selected) {
         count++;
       }
     }
     setCounter(count);
-  }, [interests]);
+  }, [personalities]);
 
   return (
     <View style={styles.container}>
       <View style={styles.titleBox}>
         <View style={styles.titleWrap}>
           <Text style={styles.titleText}>
-            나의 <Text style={styles.bold}>관심사</Text>를{'\n'}
+            나의 <Text style={styles.bold}>성향</Text>을{'\n'}
             모두 선택해 주세요
           </Text>
         </View>
         <View style={styles.counterWrap}>
-          <Text style={styles.counter}>{counter}/7</Text>
+          <Text style={styles.counter}>{counter}/9</Text>
         </View>
       </View>
-      <View style={styles.interestList}>
-        {INTERESTS_LIST.map(interest => {
+      <View style={styles.personalityList}>
+        {PERSONALITY_LIST.map(personality => {
           return (
             <TouchableHighlight
-              key={interest}
+              key={personality}
               style={styles.underlayer}
               activeOpacity={0.8}
-              onPress={() => selectInterest(interest)}>
+              onPress={() => selectPersonality(personality)}>
               <View
                 style={
-                  interests[interest].selected
-                    ? styles.selectedInterest
-                    : styles.interest
+                  personalities[personality].selected
+                    ? styles.selectedPersonality
+                    : styles.personality
                 }>
-                <Text style={styles.bold}>{interest}</Text>
+                <Text style={styles.bold}>{personality}</Text>
               </View>
             </TouchableHighlight>
           );
@@ -157,7 +161,7 @@ const styles = StyleSheet.create({
   titleText: {fontSize: 25},
   counterWrap: {justifyContent: 'flex-end'},
   counter: {fontSize: 20},
-  interestList: {
+  personalityList: {
     flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -168,7 +172,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 10,
   },
-  interest: {
+  personality: {
     height: 35,
     backgroundColor: 'white',
     borderColor: '#dddddd',
@@ -177,7 +181,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  selectedInterest: {
+  selectedPersonality: {
     height: 35,
     backgroundColor: '#dddddd',
     borderColor: '#dddddd',
