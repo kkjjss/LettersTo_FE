@@ -7,6 +7,7 @@ import {
   Dimensions,
   StyleSheet,
   TouchableWithoutFeedback,
+  SafeAreaView,
 } from 'react-native';
 import type {StackParamsList} from '../../types';
 import {LinearGradient} from 'expo-linear-gradient';
@@ -58,53 +59,60 @@ export function Auth({navigation}: Props) {
     <LinearGradient
       colors={['#ffccee', 'white', 'white', 'white', '#ffffcc']}
       style={styles.container}>
-      <View style={styles.titleWrapper}>
-        <Text style={styles.titleText}>
-          로그인 및 회원가입 1초 만에 시작하기
-        </Text>
-      </View>
-      <View style={styles.buttonWrapper}>
-        <TouchableWithoutFeedback>
-          <View style={[styles.loginButton, {backgroundColor: '#F9E54C'}]}>
-            <Text style={[styles.loginText]}>카카오로 시작하기</Text>
-          </View>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback>
-          <View style={[styles.loginButton, {backgroundColor: '#03C75A'}]}>
-            <Text style={[styles.loginText]}>네이버로 시작하기</Text>
-          </View>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback
-          onPress={() => signInWithSocialService('google')}>
-          <View
-            style={[
-              styles.loginButton,
-              // eslint-disable-next-line react-native/no-inline-styles
-              {
-                backgroundColor: '#ffffff',
-                borderWidth: 1,
-                borderColor: '#0000cc',
-              },
-            ]}>
-            <Text style={[styles.loginText]}>이메일로 시작하기</Text>
-          </View>
-        </TouchableWithoutFeedback>
-      </View>
-      <View style={styles.bottomWrapper}>
-        <Text style={styles.bottomText}>
-          회원가입 시 개인정보처리방침을 읽었으며
-        </Text>
-        <Text style={styles.bottomText}>
-          이용약관에 동의하신 것으로 간주합니다
-        </Text>
-      </View>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.titleWrapper}>
+          <Text style={styles.titleText}>
+            로그인 및 회원가입 1초 만에 시작하기
+          </Text>
+        </View>
+        <View style={styles.buttonWrapper}>
+          <TouchableWithoutFeedback>
+            <View style={[styles.loginButton, {backgroundColor: '#F9E54C'}]}>
+              <Text style={[styles.loginText]}>카카오로 시작하기</Text>
+            </View>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback>
+            <View style={[styles.loginButton, {backgroundColor: '#03C75A'}]}>
+              <Text style={[styles.loginText]}>네이버로 시작하기</Text>
+            </View>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback
+            onPress={() => signInWithSocialService('google')}>
+            <View
+              style={[
+                styles.loginButton,
+                // eslint-disable-next-line react-native/no-inline-styles
+                {
+                  backgroundColor: '#ffffff',
+                  borderWidth: 1,
+                  borderColor: '#0000cc',
+                },
+              ]}>
+              <Text style={[styles.loginText]}>이메일로 시작하기</Text>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+        <View style={styles.bottomWrapper}>
+          <Text style={styles.bottomText}>
+            회원가입 시 개인정보처리방침을 읽었으며
+          </Text>
+          <Text style={styles.bottomText}>
+            이용약관에 동의하신 것으로 간주합니다
+          </Text>
+        </View>
+      </SafeAreaView>
     </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   container: {flex: 1},
-  titleWrapper: {flex: 5, justifyContent: 'center', alignItems: 'center'},
+  titleWrapper: {
+    flex: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'red',
+  },
   titleText: {fontFamily: 'Galmuri11'},
   buttonWrapper: {
     flex: 3,
@@ -122,6 +130,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Galmuri11',
     fontSize: 15,
   },
-  bottomWrapper: {flex: 1, alignItems: 'center'},
+  bottomWrapper: {flex: 1, alignItems: 'center', justifyContent: 'center'},
   bottomText: {fontFamily: 'Galmuri11', fontSize: 12, color: '#0000cc'},
 });
