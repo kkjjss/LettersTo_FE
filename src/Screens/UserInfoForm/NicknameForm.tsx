@@ -8,8 +8,11 @@ import {
   TextInput,
   ScrollView,
   Animated,
+  SafeAreaView,
 } from 'react-native';
 import {SCREEN_HEIGHT} from '../../constants';
+import {LinearGradient} from 'expo-linear-gradient';
+import {Header} from '../../Components/Header';
 import type {StackParamsList} from '../../types';
 
 type Props = NativeStackScreenProps<StackParamsList, 'NicknameForm'>;
@@ -61,73 +64,71 @@ export function NicknameForm({navigation}: Props) {
   };
 
   return (
-    <View style={styles.container}>
-      <ScrollView>
-        <View style={styles.titleWrap}>
-          <Text style={styles.titleText}>
-            나의 <Text style={styles.bold}>닉네임</Text>을 입력해주세요
-          </Text>
-        </View>
-        <View style={styles.nicknameWrapper}>
-          <View style={styles.nicknameForm}>
-            <TextInput
-              style={styles.nicknameInput}
-              value={nickname}
-              onChangeText={changeNickname}
-            />
-            <View style={styles.checkButton}>
-              <Button
-                title="중복확인"
-                disabled={!nickname}
-                onPress={checkNicknameForDuplicates}
+    <LinearGradient
+      colors={['#ffccee', 'white', 'white', 'white', '#ffffcc']}
+      style={styles.container}>
+      <SafeAreaView style={styles.container}>
+        <ScrollView>
+          <Header navigation={navigation} title={''} />
+          <View style={styles.titleWrap}>
+            <Text style={styles.titleText}>별명을</Text>
+            <Text style={styles.titleText}>입력해주세요</Text>
+          </View>
+          <View style={styles.nicknameWrapper}>
+            <View style={styles.nicknameForm}>
+              <TextInput
+                style={styles.nicknameInput}
+                value={nickname}
+                onChangeText={changeNickname}
               />
             </View>
           </View>
+        </ScrollView>
+        <Animated.View style={[styles.alert, {opacity: fadeAnim}]}>
+          {!isDuplicate ? (
+            <Text>닉네임 사용이 가능해요.</Text>
+          ) : (
+            <Text>이미 사용중인 닉네임이에요.</Text>
+          )}
+        </Animated.View>
+        <View style={{marginBottom: 30, marginTop: 10}}>
+          <Button
+            title="다음"
+            disabled={!(nickname && !isDuplicate && activateNext)}
+            onPress={() => {
+              if (nickname && !isDuplicate) {
+                navigation.navigate('InterestsForm');
+              }
+            }}
+          />
         </View>
-      </ScrollView>
-      <Animated.View style={[styles.alert, {opacity: fadeAnim}]}>
-        {!isDuplicate ? (
-          <Text>닉네임 사용이 가능해요.</Text>
-        ) : (
-          <Text>이미 사용중인 닉네임이에요.</Text>
-        )}
-      </Animated.View>
-      <View style={{marginBottom: 30, marginTop: 10}}>
-        <Button
-          title="다음"
-          disabled={!(nickname && !isDuplicate && activateNext)}
-          onPress={() => {
-            if (nickname && !isDuplicate) {
-              navigation.navigate('InterestsForm');
-            }
-          }}
-        />
-      </View>
-    </View>
+      </SafeAreaView>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {height: SCREEN_HEIGHT, paddingLeft: 30, paddingRight: 30},
+  container: {height: SCREEN_HEIGHT},
   titleWrap: {
     height: 100,
-    marginBottom: 80,
+    marginBottom: 30,
+    marginHorizontal: 24,
     justifyContent: 'flex-end',
   },
-  titleText: {fontSize: 25},
+  titleText: {fontSize: 18, fontFamily: 'Galmuri11', color: '#0000cc'},
   nicknameWrapper: {
     height: 200,
+    marginHorizontal: 24,
   },
-  nicknameForm: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
+  nicknameForm: {},
   nicknameInput: {
+    padding: 17,
+    height: 54,
     borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 3,
-    flex: 5,
-    marginRight: 10,
+    borderColor: '#0000cc',
+    borderRadius: 10,
+    fontFamily: 'Galmuri11',
+    color: '#0000cc',
   },
   checkButton: {
     justifyContent: 'center',

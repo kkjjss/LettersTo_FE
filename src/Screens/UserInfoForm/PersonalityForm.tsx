@@ -51,6 +51,7 @@ export function PersonalityForm({navigation}: Props) {
   const [personalities, setPersonalities] =
     useState<PersonalityType>(initialPersonality);
   const [alertText, setAlertText] = useState<string>('');
+  const [activateNext, setActivateNext] = useState(false);
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -102,6 +103,11 @@ export function PersonalityForm({navigation}: Props) {
       }
     }
     setCounter(count);
+    if (count > 0 && count <= 9) {
+      setActivateNext(true);
+    } else {
+      setActivateNext(false);
+    }
   }, [personalities]);
 
   return (
@@ -141,8 +147,26 @@ export function PersonalityForm({navigation}: Props) {
         <Text>{alertText}</Text>
       </Animated.View>
       <View style={{marginBottom: 30, marginTop: 10}}>
-        <Button title="다음" onPress={onPressNext} />
+        <Button disabled={!activateNext} title="다음" onPress={onPressNext} />
       </View>
+      <TouchableHighlight
+        style={{
+          marginBottom: 30,
+          marginTop: 10,
+          backgroundColor: 'gray',
+          height: 30,
+        }}
+        onPress={onPressNext}>
+        <View
+          style={{
+            height: 30,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'gray',
+          }}>
+          <Text style={{fontSize: 16}}>다음</Text>
+        </View>
+      </TouchableHighlight>
     </View>
   );
 }

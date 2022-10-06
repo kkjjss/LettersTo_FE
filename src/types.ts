@@ -12,4 +12,5 @@ export type StackParamsList = {
   NicknameForm: undefined;
   InterestsForm: undefined;
   PersonalityForm: undefined;
+  LocationForm: undefined;
 };
