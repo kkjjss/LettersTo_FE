@@ -5,11 +5,7 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import type {StackParamsList} from '../types';
 
 type Props = {
-  navigation: NativeStackNavigationProp<
-    StackParamsList,
-    'NicknameForm' | 'InterestsForm',
-    undefined
-  >;
+  navigation: NativeStackNavigationProp<StackParamsList, keyof StackParamsList>;
   title: string;
 };
 
@@ -25,17 +21,21 @@ export function Header({navigation, title}: Props) {
         justifyContent: 'center',
       }}>
       <TouchableWithoutFeedback onPress={() => goback()}>
-        <Text
+        <View
           style={{
             position: 'absolute',
             top: 12,
             left: 10,
-            fontFamily: 'Galmuri11',
-            fontSize: 35,
             width: 40,
           }}>
-          {' < '}
-        </Text>
+          <Text
+            style={{
+              fontFamily: 'Galmuri11',
+              fontSize: 35,
+            }}>
+            {' < '}
+          </Text>
+        </View>
       </TouchableWithoutFeedback>
       <Text>{title}</Text>
     </View>
