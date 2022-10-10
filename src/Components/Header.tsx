@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Text, TouchableWithoutFeedback, View} from 'react-native';
+import {StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
 
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import type {StackParamsList} from '../types';
@@ -15,29 +15,30 @@ export function Header({navigation, title}: Props) {
   }
 
   return (
-    <View
-      style={{
-        height: 52,
-        justifyContent: 'center',
-      }}>
+    <View style={styles.headerWrap}>
       <TouchableWithoutFeedback onPress={() => goback()}>
-        <View
-          style={{
-            position: 'absolute',
-            top: 12,
-            left: 10,
-            width: 40,
-          }}>
-          <Text
-            style={{
-              fontFamily: 'Galmuri11',
-              fontSize: 35,
-            }}>
-            {' < '}
-          </Text>
+        <View style={styles.backButton}>
+          <Text style={styles.backButtonText}>{' < '}</Text>
         </View>
       </TouchableWithoutFeedback>
       <Text>{title}</Text>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  headerWrap: {
+    height: 52,
+    justifyContent: 'center',
+  },
+  backButton: {
+    position: 'absolute',
+    top: 12,
+    left: 10,
+    width: 40,
+  },
+  backButtonText: {
+    fontFamily: 'Galmuri11',
+    fontSize: 35,
+  },
+});
