@@ -3,7 +3,11 @@ import {Dimensions, StatusBar} from 'react-native';
 export const SCREEN_HEIGHT =
   Dimensions.get('window').height - (StatusBar.currentHeight || 0);
 
-export const CITY_LIST = {
+type cityListType = {
+  [index: string]: string[];
+};
+
+export const CITY_LIST: cityListType = {
   서울특별시: [
     '종로구',
     '중구',
@@ -75,7 +79,7 @@ export const CITY_LIST = {
   광주광역시: ['동구', '서구', '남구', '북구', '광산구'],
   대전광역시: ['동구', '중구', '서구', '유성구', '대덕구'],
   울산광역시: ['중구', '남구', '동구', '북구', '울주군'],
-  세종특별자치시: [''],
+  세종특별자치시: ['-'],
   경기도: [
     '수원시',
     '성남시',
@@ -252,3 +256,42 @@ export const CITY_LIST = {
   ],
   제주특별자치도: ['제주시', '서귀포시', '북제주군', '남제주군'],
 };
+
+export const INTERESTS_LIST = [
+  '운동',
+  '음악',
+  '여행',
+  '사진',
+  '맛집',
+  '게임',
+  '영화',
+  '만화',
+  '일상',
+  '독서',
+  '연애',
+  '스포츠',
+  '연예인',
+  '자기개발',
+  '인관관계',
+];
+
+export const PERSONALITY_LIST = [
+  '열정적인',
+  '신중한',
+  '솔직한',
+  '대담한',
+  '결단력있는',
+  '도전적인',
+  '치밀한',
+  '다정한',
+  '사교적인',
+  '조심성있는',
+  '독창정인',
+  '겸손한',
+  '세심한',
+  '참을성있는',
+  '수줍어하는',
+  '조급한',
+  '내성적인',
+  '외향적인',
+];

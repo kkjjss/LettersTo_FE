@@ -3,7 +3,6 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   View,
   Text,
-  Button,
   StyleSheet,
   Animated,
   TouchableHighlight,
@@ -14,26 +13,9 @@ import {LinearGradient} from 'expo-linear-gradient';
 import {Header} from '../../Components/Header';
 import {SCREEN_HEIGHT} from '../../constants';
 import {NextButton} from '../../Components/NextButton';
+import {INTERESTS_LIST} from '../../constants';
 
 type Props = NativeStackScreenProps<StackParamsList, 'InterestsForm'>;
-
-const INTERESTS_LIST = [
-  '운동',
-  '음악',
-  '여행',
-  '사진',
-  '맛집',
-  '게임',
-  '영화',
-  '만화',
-  '일상',
-  '독서',
-  '연애',
-  '스포츠',
-  '연예인',
-  '자기개발',
-  '인관관계',
-];
 
 type InterestsType = {
   [index: string]: {selected: boolean};
@@ -63,7 +45,7 @@ export function InterestsForm({navigation}: Props) {
     }),
     Animated.timing(fadeAnim, {
       toValue: 0,
-      delay: 1000,
+      delay: 2000,
       useNativeDriver: true,
     }),
   ]);

@@ -107,7 +107,6 @@ const styles = StyleSheet.create({
     flex: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'red',
   },
   titleText: {fontFamily: 'Galmuri11'},
   buttonWrap: {

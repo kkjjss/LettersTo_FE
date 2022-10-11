@@ -14,6 +14,7 @@ import {Auth} from '../Screens/Auth/Auth';
 import {NicknameForm} from '../Screens/SignUp/NicknameForm';
 import {InterestsForm} from '../Screens/SignUp/InterestsForm';
 import {PersonalityForm} from '../Screens/SignUp/PersonalityForm';
+import {LocationForm} from '../Screens/SignUp/LocationForm';
 
 const Stack = createNativeStackNavigator<StackParamsList>();
 
@@ -34,6 +35,7 @@ export default function StackNavigator() {
           <Stack.Screen name="NicknameForm" component={NicknameForm} />
           <Stack.Screen name="InterestsForm" component={InterestsForm} />
           <Stack.Screen name="PersonalityForm" component={PersonalityForm} />
+          <Stack.Screen name="LocationForm" component={LocationForm} />
         </Stack.Group>
       )}
     </Stack.Navigator>
