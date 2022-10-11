@@ -18,23 +18,33 @@ export function Header({navigation, title}: Props) {
     <View style={styles.headerWrap}>
       <TouchableWithoutFeedback onPress={() => goback()}>
         <View style={styles.backButton}>
-          <Text style={styles.backButtonText}>{' < '}</Text>
+          <Text
+            style={[
+              styles.backButtonText,
+              title === 'MY' ? {color: 'white'} : {color: '#0000cc'},
+            ]}>
+            {' < '}
+          </Text>
         </View>
       </TouchableWithoutFeedback>
-      <Text>{title}</Text>
+      <View style={{justifyContent: 'center'}}>
+        <Text style={{color: '#ffffff', fontFamily: 'Galmuri11', fontSize: 15}}>
+          {title}
+        </Text>
+      </View>
+      <View style={{width: 40}} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   headerWrap: {
-    height: 52,
-    justifyContent: 'center',
+    height: 60,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   backButton: {
-    position: 'absolute',
-    top: 12,
-    left: 10,
+    marginLeft: 10,
     width: 40,
   },
   backButtonText: {

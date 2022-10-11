@@ -15,6 +15,7 @@ import {NicknameForm} from '../Screens/SignUp/NicknameForm';
 import {InterestsForm} from '../Screens/SignUp/InterestsForm';
 import {PersonalityForm} from '../Screens/SignUp/PersonalityForm';
 import {LocationForm} from '../Screens/SignUp/LocationForm';
+import {MyPage} from '../Screens/MyPage/MyPage';
 
 const Stack = createNativeStackNavigator<StackParamsList>();
 
@@ -26,8 +27,11 @@ export default function StackNavigator() {
       {isLoading ? (
         <Stack.Screen name="Splash" component={Splash} />
       ) : isLoggedIn ? (
-        <Stack.Group>
+        <Stack.Group screenOptions={{headerShown: false}}>
           <Stack.Screen name="Home" component={Home} />
+
+          {/* 회원정보 수정 */}
+          <Stack.Screen name="MyPage" component={MyPage} />
         </Stack.Group>
       ) : (
         <Stack.Group screenOptions={{headerShown: false}}>
