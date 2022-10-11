@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">LettersTo</string>
+    <string name="kakao_app_key">6d103f05f54b404a5f9e96eb2550ef77</string>
 </resources>
