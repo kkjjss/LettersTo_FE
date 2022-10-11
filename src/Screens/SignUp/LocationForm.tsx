@@ -78,14 +78,8 @@ export function LocationForm({navigation}: Props) {
               autoScroll={true}
               placeholder="시 · 도 선택"
               zIndex={2}
-              style={{
-                borderRadius: 10,
-                borderColor: '#0000cc',
-              }}
-              textStyle={{
-                fontFamily: 'Galmuri11',
-                color: '#0000cc',
-              }}
+              style={styles.picker}
+              textStyle={styles.pickerText}
             />
           </View>
           <View>
@@ -99,14 +93,8 @@ export function LocationForm({navigation}: Props) {
               autoScroll={true}
               placeholder="군 · 구 선택"
               zIndex={1}
-              style={{
-                borderRadius: 10,
-                borderColor: '#0000cc',
-              }}
-              textStyle={{
-                fontFamily: 'Galmuri11',
-                color: '#0000cc',
-              }}
+              style={styles.picker}
+              textStyle={styles.pickerText}
             />
           </View>
         </View>
@@ -137,4 +125,12 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   countyBox: {},
+  picker: {
+    borderRadius: 10,
+    borderColor: '#0000cc',
+  },
+  pickerText: {
+    fontFamily: 'Galmuri11',
+    color: '#0000cc',
+  },
 });
