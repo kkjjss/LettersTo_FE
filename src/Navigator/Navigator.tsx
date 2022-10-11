@@ -11,9 +11,9 @@ import {Home} from '../Screens/Main/Home';
 
 // 인증 관련 스크린
 import {Auth} from '../Screens/Auth/Auth';
-import {NicknameForm} from '../Screens/UserInfoForm/NicknameForm';
-import {InterestsForm} from '../Screens/UserInfoForm/InterestsForm';
-import {PersonalityForm} from '../Screens/UserInfoForm/PersonalityForm';
+import {NicknameForm} from '../Screens/SignUp/NicknameForm';
+import {InterestsForm} from '../Screens/SignUp/InterestsForm';
+import {PersonalityForm} from '../Screens/SignUp/PersonalityForm';
 
 const Stack = createNativeStackNavigator<StackParamsList>();
 
