@@ -1,7 +1,27 @@
 PODS:
+  - Alamofire (5.6.2)
   - boost (1.76.0)
   - CocoaAsyncSocket (7.6.5)
   - DoubleConversion (1.1.6)
+  - EXApplication (4.2.2):
+    - ExpoModulesCore
+  - EXConstants (13.2.4):
+    - ExpoModulesCore
+  - EXErrorRecovery (3.2.0):
+    - ExpoModulesCore
+  - EXFileSystem (14.1.0):
+    - ExpoModulesCore
+  - EXFont (10.2.1):
+    - ExpoModulesCore
+  - Expo (46.0.15):
+    - ExpoModulesCore
+  - ExpoKeepAwake (10.2.0):
+    - ExpoModulesCore
+  - ExpoLinearGradient (11.4.0):
+    - ExpoModulesCore
+  - ExpoModulesCore (0.11.7):
+    - React-Core
+    - ReactCommon/turbomodule/core
   - FBLazyVector (0.70.1)
   - FBReactNativeSpec (0.70.1):
     - RCT-Folly (= 2021.07.22.00)
@@ -74,6 +94,22 @@ PODS:
   - fmt (6.2.1)
   - glog (0.3.5)
   - hermes-engine (0.70.1)
+  - kakao-login (5.2.3):
+    - KakaoSDKAuth (= 2.11.1)
+    - KakaoSDKCommon (= 2.11.1)
+    - KakaoSDKUser (= 2.11.1)
+    - React
+  - KakaoSDKAuth (2.11.1):
+    - KakaoSDKCommon (= 2.11.1)
+  - KakaoSDKCommon (2.11.1):
+    - KakaoSDKCommon/Common (= 2.11.1)
+    - KakaoSDKCommon/Network (= 2.11.1)
+  - KakaoSDKCommon/Common (2.11.1)
+  - KakaoSDKCommon/Network (2.11.1):
+    - Alamofire (~> 5.1)
+    - KakaoSDKCommon/Common (= 2.11.1)
+  - KakaoSDKUser (2.11.1):
+    - KakaoSDKAuth (= 2.11.1)
   - libevent (2.1.12)
   - OpenSSL-Universal (1.1.1100)
   - RCT-Folly (2021.07.22.00):
@@ -387,6 +423,15 @@ PODS:
 DEPENDENCIES:
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
+  - EXApplication (from `../node_modules/expo-application/ios`)
+  - EXConstants (from `../node_modules/expo-constants/ios`)
+  - EXErrorRecovery (from `../node_modules/expo-error-recovery/ios`)
+  - EXFileSystem (from `../node_modules/expo-file-system/ios`)
+  - EXFont (from `../node_modules/expo-font/ios`)
+  - Expo (from `../node_modules/expo`)
+  - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
+  - ExpoLinearGradient (from `../node_modules/expo-linear-gradient/ios`)
+  - ExpoModulesCore (from `../node_modules/expo-modules-core/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
   - Flipper (= 0.125.0)
@@ -412,6 +457,7 @@ DEPENDENCIES:
   - FlipperKit/SKIOSNetworkPlugin (= 0.125.0)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes/hermes-engine.podspec`)
+  - "kakao-login (from `../node_modules/@react-native-seoul/kakao-login`)"
   - libevent (~> 2.1.12)
   - OpenSSL-Universal (= 1.1.1100)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
@@ -450,6 +496,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - Alamofire
     - CocoaAsyncSocket
     - Flipper
     - Flipper-Boost-iOSX
@@ -461,6 +508,9 @@ SPEC REPOS:
     - Flipper-RSocket
     - FlipperKit
     - fmt
+    - KakaoSDKAuth
+    - KakaoSDKCommon
+    - KakaoSDKUser
     - libevent
     - OpenSSL-Universal
     - SocketRocket
@@ -471,6 +521,24 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
+  EXApplication:
+    :path: "../node_modules/expo-application/ios"
+  EXConstants:
+    :path: "../node_modules/expo-constants/ios"
+  EXErrorRecovery:
+    :path: "../node_modules/expo-error-recovery/ios"
+  EXFileSystem:
+    :path: "../node_modules/expo-file-system/ios"
+  EXFont:
+    :path: "../node_modules/expo-font/ios"
+  Expo:
+    :path: "../node_modules/expo"
+  ExpoKeepAwake:
+    :path: "../node_modules/expo-keep-awake/ios"
+  ExpoLinearGradient:
+    :path: "../node_modules/expo-linear-gradient/ios"
+  ExpoModulesCore:
+    :path: "../node_modules/expo-modules-core/ios"
   FBLazyVector:
     :path: "../node_modules/react-native/Libraries/FBLazyVector"
   FBReactNativeSpec:
@@ -479,6 +547,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   hermes-engine:
     :podspec: "../node_modules/react-native/sdks/hermes/hermes-engine.podspec"
+  kakao-login:
+    :path: "../node_modules/@react-native-seoul/kakao-login"
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
@@ -543,9 +613,19 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  Alamofire: d368e1ff8a298e6dde360e35a3e68e6c610e7204
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
+  EXApplication: e418d737a036e788510f2c4ad6c10a7d54d18586
+  EXConstants: 7c44785d41d8e959d527d23d29444277a4d1ee73
+  EXErrorRecovery: 74d71ee59f6814315457b09d68e86aa95cc7d05d
+  EXFileSystem: 927e0a8885aa9c49e50fc38eaba2c2389f2f1019
+  EXFont: 06df627203afcb8a3b3152ec06eb2f11f46f0cff
+  Expo: 7e821e708a35d2720ef6baa658e224dd91c4821e
+  ExpoKeepAwake: 0e8f18142e71bbf2c7f6aa66ebed249ba1420320
+  ExpoLinearGradient: 1a3af07c6dab3c612967a294836df9ae717431df
+  ExpoModulesCore: 2d60ec04c49641afb55fee3faac86fb108c68fe0
   FBLazyVector: d3cdc05875c89782840d2f38e1d6174fab24e4d2
   FBReactNativeSpec: 0612c8f2dbd774414bb778247c6ec6cb05aa4c50
   Flipper: 26fc4b7382499f1281eb8cb921e5c3ad6de91fe0
@@ -560,6 +640,10 @@ SPEC CHECKSUMS:
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
   hermes-engine: 9cd393f741bfa14d1d0cd90cc373e3619c0bc7ea
+  kakao-login: d506fe760be606181e206f89bf42fd082720a068
+  KakaoSDKAuth: bb2dfa7be30daa8403c9cfc8001aa6fde7a5b779
+  KakaoSDKCommon: 555e1bb46595b842ded01cf7888cc17bbae4e113
+  KakaoSDKUser: 08c0a4f40bebdebdf948a9e3d0e44ed5c2754f99
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
   RCT-Folly: 0080d0a6ebf2577475bda044aa59e2ca1f909cda
@@ -596,6 +680,6 @@ SPEC CHECKSUMS:
   Yoga: 6c8252e38d65aa387daee699eacf027e055e0b31
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 8ce1902b72b5c7926686a891ca2d09795c886ec3
+PODFILE CHECKSUM: 1f0b7cd2ca50052ce72aea5668404b6c4b285fe7
 
 COCOAPODS: 1.11.3
