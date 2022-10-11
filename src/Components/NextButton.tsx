@@ -6,13 +6,14 @@ import {StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
 
 type Props = {
   navigation: NativeStackNavigationProp<StackParamsList, keyof StackParamsList>;
-  screen: keyof StackParamsList;
+  // from: keyof StackParamsList;
+  to: keyof StackParamsList;
   activateNext: boolean;
 };
 
-export function NextButton({navigation, screen, activateNext}: Props) {
+export function NextButton({navigation, to, activateNext}: Props) {
   function gonext() {
-    navigation.navigate(screen);
+    navigation.navigate(to);
   }
 
   return (

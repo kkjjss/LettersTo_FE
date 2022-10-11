@@ -7,8 +7,13 @@ import {
   StyleSheet,
   Animated,
   TouchableHighlight,
+  SafeAreaView,
 } from 'react-native';
 import type {StackParamsList} from '../../types';
+import {LinearGradient} from 'expo-linear-gradient';
+import {Header} from '../../Components/Header';
+import {SCREEN_HEIGHT} from '../../constants';
+import {NextButton} from '../../Components/NextButton';
 
 type Props = NativeStackScreenProps<StackParamsList, 'InterestsForm'>;
 
@@ -46,13 +51,14 @@ INTERESTS_LIST.map(interest => {
 export function InterestsForm({navigation}: Props) {
   const [counter, setCounter] = useState(0);
   const [interests, setInterests] = useState<InterestsType>(initialInterests);
-  const [alertText, setAlertText] = useState<string>('');
+  const [activateNext, setActivateNext] = useState<boolean>(false);
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   const alert = Animated.sequence([
     Animated.timing(fadeAnim, {
       toValue: 1,
+      duration: 0,
       useNativeDriver: true,
     }),
     Animated.timing(fadeAnim, {
@@ -75,18 +81,7 @@ export function InterestsForm({navigation}: Props) {
         [interest]: {selected: false},
       });
     } else {
-      setAlertText('관심사는 최대 7개까지 가능합니다.');
       alert.start();
-    }
-  };
-
-  const onPressNext = () => {
-    if (counter === 0) {
-      alert.reset();
-      setAlertText('관심사를 선택해 주세요.');
-      alert.start();
-    } else {
-      navigation.navigate('PersonalityForm');
     }
   };
 
@@ -98,100 +93,113 @@ export function InterestsForm({navigation}: Props) {
       }
     }
     setCounter(count);
+    if (count > 0) {
+      setActivateNext(true);
+    } else {
+      setActivateNext(false);
+    }
   }, [interests]);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.titleBox}>
-        <View style={styles.titleWrap}>
-          <Text style={styles.titleText}>
-            나의 <Text style={styles.bold}>관심사</Text>를{'\n'}
-            모두 선택해 주세요
-          </Text>
+    <LinearGradient
+      colors={['#ffccee', 'white', 'white', 'white', '#ffffcc']}
+      style={styles.container}>
+      <SafeAreaView style={styles.container}>
+        <Header navigation={navigation} title={''} />
+        <View style={styles.titleBox}>
+          <View style={styles.titleWrap}>
+            <Text style={styles.titleText}>나의 관심사를</Text>
+            <Text style={styles.titleText}>모두 선택해주세요</Text>
+          </View>
+          <View style={styles.counterWrap}>
+            <Text style={styles.counter}>{counter}/7</Text>
+          </View>
         </View>
-        <View style={styles.counterWrap}>
-          <Text style={styles.counter}>{counter}/7</Text>
+        <View style={styles.interestBox}>
+          <View style={styles.interestWrap}>
+            {INTERESTS_LIST.map(interest => {
+              return (
+                <TouchableHighlight
+                  key={interest}
+                  style={styles.underlayer}
+                  underlayColor={'#0000cc'}
+                  activeOpacity={0.7}
+                  onPress={() => selectInterest(interest)}>
+                  <View
+                    style={[
+                      styles.interest,
+                      interests[interest].selected
+                        ? styles.selectedInterest
+                        : styles.notSelectedInterest,
+                    ]}>
+                    <Text style={styles.interestText}>{interest}</Text>
+                  </View>
+                </TouchableHighlight>
+              );
+            })}
+          </View>
+          <Animated.View style={[styles.alert, {opacity: fadeAnim}]}>
+            <Text style={styles.alertText}>최대 7개까지만 선택 가능해요!</Text>
+          </Animated.View>
         </View>
-      </View>
-      <View style={styles.interestList}>
-        {INTERESTS_LIST.map(interest => {
-          return (
-            <TouchableHighlight
-              key={interest}
-              style={styles.underlayer}
-              activeOpacity={0.8}
-              onPress={() => selectInterest(interest)}>
-              <View
-                style={
-                  interests[interest].selected
-                    ? styles.selectedInterest
-                    : styles.interest
-                }>
-                <Text style={styles.bold}>{interest}</Text>
-              </View>
-            </TouchableHighlight>
-          );
-        })}
-      </View>
-      <Animated.View style={[styles.alert, {opacity: fadeAnim}]}>
-        <Text>{alertText}</Text>
-      </Animated.View>
-      <View style={{marginBottom: 30, marginTop: 10}}>
-        <Button title="다음" onPress={onPressNext} />
-      </View>
-    </View>
+        <NextButton
+          navigation={navigation}
+          to={'PersonalityForm'}
+          activateNext={activateNext}
+        />
+      </SafeAreaView>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {flex: 1, paddingLeft: 30, paddingRight: 30},
+  container: {height: SCREEN_HEIGHT},
   titleBox: {
-    height: 125,
-    marginBottom: 55,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginHorizontal: 24,
   },
   titleWrap: {
+    height: 100,
+    marginBottom: 30,
     justifyContent: 'flex-end',
   },
-  titleText: {fontSize: 25},
-  counterWrap: {justifyContent: 'flex-end'},
-  counter: {fontSize: 20},
-  interestList: {
+  titleText: {fontSize: 18, fontFamily: 'Galmuri11', color: '#0000cc'},
+  counterWrap: {justifyContent: 'center'},
+  counter: {fontSize: 13, fontFamily: 'Galmuri11', color: '#0000cc'},
+  interestBox: {
     flex: 1,
+    marginHorizontal: 24,
+  },
+  interestWrap: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
   },
   underlayer: {
-    minWidth: 90,
-    borderRadius: 10,
-    marginBottom: 10,
+    marginBottom: 12,
+    marginRight: 12,
   },
   interest: {
     height: 35,
-    backgroundColor: 'white',
-    borderColor: '#dddddd',
-    borderRadius: 10,
-    borderWidth: 3,
+    borderColor: '#0000cc',
+    borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   selectedInterest: {
     height: 35,
-    backgroundColor: '#dddddd',
-    borderColor: '#dddddd',
-    borderRadius: 10,
-    borderWidth: 3,
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: '#ccccff',
   },
-  alert: {
-    backgroundColor: '#939393',
-    height: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 100,
+  notSelectedInterest: {backgroundColor: 'white'},
+  interestText: {
+    marginHorizontal: 13,
+    fontFamily: 'Galmuri11',
+    fontSize: 14,
+    color: '#0000cc',
   },
-  bold: {fontWeight: '900'},
+  alert: {},
+  alertText: {
+    fontFamily: 'Galmuri11',
+    color: '#ff44cc',
+  },
 });

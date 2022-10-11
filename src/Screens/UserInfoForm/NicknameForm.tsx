@@ -26,13 +26,11 @@ export function NicknameForm({navigation}: Props) {
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
-  const alert = Animated.sequence([
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 300,
-      useNativeDriver: true,
-    }),
-  ]);
+  const alert = Animated.timing(fadeAnim, {
+    toValue: 1,
+    duration: 0,
+    useNativeDriver: true,
+  });
 
   const checkNicknameFormCorrect = async () => {
     if (nickname) {
@@ -91,11 +89,11 @@ export function NicknameForm({navigation}: Props) {
       <SafeAreaView style={styles.container}>
         <ScrollView>
           <Header navigation={navigation} title={''} />
-          <View style={styles.titleWrap}>
-            <Text style={styles.titleText}>별명을</Text>
-            <Text style={styles.titleText}>입력해주세요</Text>
+          <View style={styles.textWrap}>
+            <Text style={styles.text}>별명을</Text>
+            <Text style={styles.text}>입력해주세요</Text>
           </View>
-          <View style={styles.nicknameWrapper}>
+          <View style={styles.nicknameWrap}>
             <View style={styles.nicknameForm}>
               <TextInput
                 style={styles.nicknameInput}
@@ -120,7 +118,7 @@ export function NicknameForm({navigation}: Props) {
         </ScrollView>
         <NextButton
           navigation={navigation}
-          screen={'InterestsForm'}
+          to={'InterestsForm'}
           activateNext={activateNext}
         />
       </SafeAreaView>
@@ -130,14 +128,14 @@ export function NicknameForm({navigation}: Props) {
 
 const styles = StyleSheet.create({
   container: {height: SCREEN_HEIGHT},
-  titleWrap: {
+  textWrap: {
     height: 100,
     marginBottom: 30,
     marginHorizontal: 24,
     justifyContent: 'flex-end',
   },
-  titleText: {fontSize: 18, fontFamily: 'Galmuri11', color: '#0000cc'},
-  nicknameWrapper: {
+  text: {fontSize: 18, fontFamily: 'Galmuri11', color: '#0000cc'},
+  nicknameWrap: {
     marginBottom: 10,
     marginHorizontal: 24,
   },
@@ -152,7 +150,7 @@ const styles = StyleSheet.create({
     color: '#0000cc',
   },
   alert: {
-    marginHorizontal: 30,
+    marginHorizontal: 24,
   },
   alertSuccess: {
     fontFamily: 'Galmuri11',
@@ -168,8 +166,5 @@ const styles = StyleSheet.create({
   buttonWrap: {
     flex: 2,
     justifyContent: 'center',
-  },
-  bold: {
-    fontWeight: '900',
   },
 });

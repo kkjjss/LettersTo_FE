@@ -3,8 +3,6 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   View,
   Text,
-  Button,
-  Dimensions,
   StyleSheet,
   TouchableWithoutFeedback,
   SafeAreaView,
@@ -16,14 +14,12 @@ import {LinearGradient} from 'expo-linear-gradient';
 
 import {
   login,
-  logout,
-  getProfile as getKakaoProfile,
-  unlink,
+  // getProfile as getKakaoProfile,
 } from '@react-native-seoul/kakao-login';
 
 type Props = NativeStackScreenProps<StackParamsList, 'Auth'>;
 
-const windowWidth = Dimensions.get('window').width;
+// const windowWidth = Dimensions.get('window').width;
 
 export function Auth({navigation}: Props) {
   // const {setIsLoggedIn} = useStore();
@@ -45,7 +41,7 @@ export function Auth({navigation}: Props) {
     }
   }
 
-  const signInWithKakao = async (): Promise<void> => {
+  /* const signInWithKakao = async (): Promise<void> => {
     try {
       const token = await login();
       console.log(token);
@@ -53,19 +49,19 @@ export function Auth({navigation}: Props) {
       // eslint-disable-next-line no-console
       console.error('login err', err);
     }
-  };
+  }; */
 
   return (
     <LinearGradient
       colors={['#ffccee', 'white', 'white', 'white', '#ffffcc']}
       style={styles.container}>
       <SafeAreaView style={styles.container}>
-        <View style={styles.titleWrapper}>
+        <View style={styles.titleWrap}>
           <Text style={styles.titleText}>
             로그인 및 회원가입 1초 만에 시작하기
           </Text>
         </View>
-        <View style={styles.buttonWrapper}>
+        <View style={styles.buttonWrap}>
           <TouchableWithoutFeedback>
             <View style={[styles.loginButton, {backgroundColor: '#F9E54C'}]}>
               <Text style={[styles.loginText]}>카카오로 시작하기</Text>
@@ -92,7 +88,7 @@ export function Auth({navigation}: Props) {
             </View>
           </TouchableWithoutFeedback>
         </View>
-        <View style={styles.bottomWrapper}>
+        <View style={styles.bottomWrap}>
           <Text style={styles.bottomText}>
             회원가입 시 개인정보처리방침을 읽었으며
           </Text>
@@ -107,14 +103,14 @@ export function Auth({navigation}: Props) {
 
 const styles = StyleSheet.create({
   container: {flex: 1},
-  titleWrapper: {
+  titleWrap: {
     flex: 5,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'red',
   },
   titleText: {fontFamily: 'Galmuri11'},
-  buttonWrapper: {
+  buttonWrap: {
     flex: 3,
     justifyContent: 'center',
     alignItems: 'center',
@@ -130,6 +126,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Galmuri11',
     fontSize: 15,
   },
-  bottomWrapper: {flex: 1, alignItems: 'center', justifyContent: 'center'},
+  bottomWrap: {flex: 1, alignItems: 'center', justifyContent: 'center'},
   bottomText: {fontFamily: 'Galmuri11', fontSize: 12, color: '#0000cc'},
 });
