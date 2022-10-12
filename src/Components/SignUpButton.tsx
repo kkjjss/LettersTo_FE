@@ -8,20 +8,15 @@ import {StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
 type Props = {
   navigation: NativeStackNavigationProp<StackParamsList, keyof StackParamsList>;
   complete: boolean;
+  onPress: () => void;
 };
 
-export function SignUpButton({complete}: Props) {
-  const {setIsLoggedIn} = useStore();
-
-  function signUp() {
-    setIsLoggedIn(true);
-  }
-
+export function SignUpButton({complete, onPress}: Props) {
   return (
-    <TouchableWithoutFeedback disabled={!complete} onPress={signUp}>
+    <TouchableWithoutFeedback disabled={!complete} onPress={onPress}>
       <View
         style={[
-          styles.nextButton,
+          styles.signUpButton,
           // eslint-disable-next-line react-native/no-inline-styles
           {
             backgroundColor: complete ? '#ff6ece' : '#ffc7f0',
@@ -34,7 +29,7 @@ export function SignUpButton({complete}: Props) {
 }
 
 const styles = StyleSheet.create({
-  nextButton: {
+  signUpButton: {
     marginHorizontal: 16,
     borderRadius: 10,
     height: 52,

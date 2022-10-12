@@ -7,6 +7,8 @@ import {
   Animated,
   TouchableHighlight,
   SafeAreaView,
+  TouchableWithoutFeedback,
+  Image,
 } from 'react-native';
 import type {StackParamsList} from '../../types';
 import {LinearGradient} from 'expo-linear-gradient';
@@ -68,6 +70,10 @@ export function PersonalityForm({navigation}: Props) {
     }
   };
 
+  const reset = () => {
+    setPersonalities(initialPersonality);
+  };
+
   useEffect(() => {
     let count = 0;
     for (let i in PERSONALITY_LIST) {
@@ -95,7 +101,16 @@ export function PersonalityForm({navigation}: Props) {
             <Text style={styles.titleText}>모두 선택해주세요</Text>
           </View>
           <View style={styles.counterWrap}>
-            <Text style={styles.counter}>{counter}/9</Text>
+            <TouchableWithoutFeedback onPress={reset}>
+              <View style={styles.resetButton}>
+                <Text style={styles.resetButtonText}>초기화</Text>
+                <Image
+                  style={styles.resetButtonImage}
+                  source={require('../../assets/reset.png')}
+                />
+              </View>
+            </TouchableWithoutFeedback>
+            <Text style={styles.counter}>{counter} / 9</Text>
           </View>
         </View>
         <View style={styles.personalityBox}>
@@ -148,8 +163,15 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   titleText: {fontSize: 18, fontFamily: 'Galmuri11', color: '#0000cc'},
-  counterWrap: {justifyContent: 'center'},
-  counter: {fontSize: 13, fontFamily: 'Galmuri11', color: '#0000cc'},
+  counterWrap: {alignItems: 'center', flexDirection: 'row'},
+  counter: {
+    width: 35,
+    fontSize: 13,
+    fontFamily: 'Galmuri11',
+    color: '#0000cc',
+    marginHorizontal: 8,
+    textAlign: 'right',
+  },
   personalityBox: {
     flex: 1,
     marginHorizontal: 24,
@@ -185,4 +207,20 @@ const styles = StyleSheet.create({
     fontFamily: 'Galmuri11',
     color: '#ff44cc',
   },
+  resetButton: {
+    width: 74,
+    height: 22,
+    flexDirection: 'row',
+    backgroundColor: '#ffffcc',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 4,
+    borderRadius: 11,
+  },
+  resetButtonText: {
+    fontFamily: 'Galmuri11',
+    fontSize: 12,
+    color: '#0000cc',
+  },
+  resetButtonImage: {width: 20, height: 20},
 });

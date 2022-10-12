@@ -6,6 +6,9 @@ interface Store {
 
   isLoading: boolean;
   setIsLoading: (value: boolean) => void;
+
+  nickname: string;
+  setNickname: (value: string) => void;
 }
 
 const useStore = create<Store>(set => ({
@@ -14,6 +17,9 @@ const useStore = create<Store>(set => ({
 
   isLoading: true,
   setIsLoading: value => set(() => ({isLoading: value})),
+
+  nickname: 'Aaa',
+  setNickname: value => set(() => ({nickname: value})),
 }));
 
 export default useStore;

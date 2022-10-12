@@ -14,6 +14,7 @@ import {Header} from '../../Components/Header';
 import {SCREEN_HEIGHT} from '../../constants';
 import {NextButton} from '../../Components/NextButton';
 import {INTERESTS_LIST} from '../../constants';
+import {ResetButton} from '../../Components/ResetButton';
 
 type Props = NativeStackScreenProps<StackParamsList, 'InterestsForm'>;
 
@@ -67,6 +68,10 @@ export function InterestsForm({navigation}: Props) {
     }
   };
 
+  const reset = () => {
+    setInterests(initialInterests);
+  };
+
   useEffect(() => {
     let count = 0;
     for (let i in INTERESTS_LIST) {
@@ -94,7 +99,8 @@ export function InterestsForm({navigation}: Props) {
             <Text style={styles.titleText}>모두 선택해주세요</Text>
           </View>
           <View style={styles.counterWrap}>
-            <Text style={styles.counter}>{counter}/7</Text>
+            <ResetButton reset={reset} />
+            <Text style={styles.counter}>{counter} / 7</Text>
           </View>
         </View>
         <View style={styles.interestBox}>
@@ -147,8 +153,15 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   titleText: {fontSize: 18, fontFamily: 'Galmuri11', color: '#0000cc'},
-  counterWrap: {justifyContent: 'center'},
-  counter: {fontSize: 13, fontFamily: 'Galmuri11', color: '#0000cc'},
+  counterWrap: {alignItems: 'center', flexDirection: 'row'},
+  counter: {
+    width: 35,
+    fontSize: 13,
+    fontFamily: 'Galmuri11',
+    color: '#0000cc',
+    marginHorizontal: 8,
+    textAlign: 'right',
+  },
   interestBox: {
     flex: 1,
     marginHorizontal: 24,
@@ -184,4 +197,20 @@ const styles = StyleSheet.create({
     fontFamily: 'Galmuri11',
     color: '#ff44cc',
   },
+  resetButton: {
+    width: 74,
+    height: 22,
+    flexDirection: 'row',
+    backgroundColor: '#ffffcc',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 4,
+    borderRadius: 11,
+  },
+  resetButtonText: {
+    fontFamily: 'Galmuri11',
+    fontSize: 12,
+    color: '#0000cc',
+  },
+  resetButtonImage: {width: 20, height: 20},
 });

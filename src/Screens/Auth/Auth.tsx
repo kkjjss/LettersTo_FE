@@ -41,7 +41,7 @@ export function Auth({navigation}: Props) {
     }
   }
 
-  /* const signInWithKakao = async (): Promise<void> => {
+  const signInWithKakao = async (): Promise<void> => {
     try {
       const token = await login();
       console.log(token);
@@ -49,7 +49,7 @@ export function Auth({navigation}: Props) {
       // eslint-disable-next-line no-console
       console.error('login err', err);
     }
-  }; */
+  };
 
   return (
     <LinearGradient
@@ -62,7 +62,7 @@ export function Auth({navigation}: Props) {
           </Text>
         </View>
         <View style={styles.buttonWrap}>
-          <TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={signInWithKakao}>
             <View style={[styles.loginButton, {backgroundColor: '#F9E54C'}]}>
               <Text style={[styles.loginText]}>카카오로 시작하기</Text>
             </View>
