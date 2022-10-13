@@ -13,31 +13,19 @@ import {LinearGradient} from 'expo-linear-gradient';
 import {Header} from '../../Components/Header';
 import {SCREEN_HEIGHT} from '../../constants';
 import {NextButton} from '../../Components/NextButton';
-import {INTERESTS_LIST} from '../../constants';
 import {ResetButton} from '../../Components/ResetButton';
 import useStore from '../../Store/store';
+import {Topics} from '../../types/topic';
+import {getTopics} from '../../APIs/topic';
 
-type Props = NativeStackScreenProps<StackParamsList, 'InterestsForm'>;
+type Props = NativeStackScreenProps<StackParamsList, 'TopicsForm'>;
 
-type InterestsType = {
-  [index: string]: {selected: boolean};
-};
-
-let initialInterests: InterestsType = {};
-
-INTERESTS_LIST.map(interest => {
-  initialInterests = {
-    ...initialInterests,
-    [interest]: {selected: false},
-  };
-});
-
-export function InterestsForm({navigation}: Props) {
-  const [counter, setCounter] = useState(0);
-  const [interests, setInterests] = useState<InterestsType>(initialInterests);
-  const [activateNext, setActivateNext] = useState<boolean>(false);
-
+export function TopicsForm({navigation}: Props) {
   const store = useStore();
+  const [counter, setCounter] = useState(0);
+  const [topics, setTopics] = useState<Topics>([]);
+  const [selectedTopicIds, setSelectedTopicIds] = useState<number[]>([]);
+  const [activateNext, setActivateNext] = useState<boolean>(false);
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -54,45 +42,41 @@ export function InterestsForm({navigation}: Props) {
     }),
   ]);
 
-  const selectInterest = (interest: string) => {
+  const selectTopic = (topicId: number) => {
     alert.reset();
-    if (counter < 7 && interests[interest].selected === false) {
-      setInterests({
-        ...interests,
-        [interest]: {selected: true},
-      });
-    } else if (interests[interest].selected === true) {
-      setInterests({
-        ...interests,
-        [interest]: {selected: false},
-      });
+    if (counter < 7 && selectedTopicIds.includes(topicId) === false) {
+      setSelectedTopicIds([...selectedTopicIds, topicId]);
+    } else if (selectedTopicIds.includes(topicId) === true) {
+      setSelectedTopicIds([...selectedTopicIds].filter(e => e !== topicId));
     } else {
       alert.start();
     }
   };
 
   const goToPersonalityForm = () => {
-    store.set
-  }
+    store.setTopicIds(selectedTopicIds);
+    navigation.navigate('PersonalityForm');
+  };
 
   const reset = () => {
-    setInterests(initialInterests);
+    setSelectedTopicIds([]);
   };
 
   useEffect(() => {
-    let count = 0;
-    for (let i in INTERESTS_LIST) {
-      if (interests[INTERESTS_LIST[i]].selected) {
-        count++;
-      }
-    }
+    getTopics().then(topicData => {
+      setTopics(topicData);
+    });
+  }, []);
+
+  useEffect(() => {
+    let count = selectedTopicIds.length;
     setCounter(count);
     if (count > 0) {
       setActivateNext(true);
     } else {
       setActivateNext(false);
     }
-  }, [interests]);
+  }, [selectedTopicIds]);
 
   return (
     <LinearGradient
@@ -110,24 +94,24 @@ export function InterestsForm({navigation}: Props) {
             <Text style={styles.counter}>{counter} / 7</Text>
           </View>
         </View>
-        <View style={styles.interestBox}>
-          <View style={styles.interestWrap}>
-            {INTERESTS_LIST.map(interest => {
+        <View style={styles.topicBox}>
+          <View style={styles.topicWrap}>
+            {topics.map(topic => {
               return (
                 <TouchableHighlight
-                  key={interest}
+                  key={topic.id}
                   style={styles.underlayer}
                   underlayColor={'#0000cc'}
                   activeOpacity={0.7}
-                  onPress={() => selectInterest(interest)}>
+                  onPress={() => selectTopic(topic.id)}>
                   <View
                     style={[
-                      styles.interest,
-                      interests[interest].selected
-                        ? styles.selectedInterest
-                        : styles.notSelectedInterest,
+                      styles.topic,
+                      selectedTopicIds.includes(topic.id)
+                        ? styles.selectedTopic
+                        : styles.notSelectedTopic,
                     ]}>
-                    <Text style={styles.interestText}>{interest}</Text>
+                    <Text style={styles.topicText}>{topic.name}</Text>
                   </View>
                 </TouchableHighlight>
               );
@@ -165,11 +149,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
     textAlign: 'right',
   },
-  interestBox: {
+  topicBox: {
     flex: 1,
     marginHorizontal: 24,
   },
-  interestWrap: {
+  topicWrap: {
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
@@ -177,19 +161,19 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     marginRight: 12,
   },
-  interest: {
+  topic: {
     height: 35,
     borderColor: '#0000cc',
     borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  selectedInterest: {
+  selectedTopic: {
     height: 35,
     backgroundColor: '#ccccff',
   },
-  notSelectedInterest: {backgroundColor: 'white'},
-  interestText: {
+  notSelectedTopic: {backgroundColor: 'white'},
+  topicText: {
     marginHorizontal: 13,
     fontFamily: 'Galmuri11',
     fontSize: 14,

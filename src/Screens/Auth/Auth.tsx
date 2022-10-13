@@ -53,6 +53,8 @@ export function Auth({navigation}: Props) {
       }
     } catch (err) {
       console.error(err);
+
+      // dev
       navigation.navigate('NicknameForm');
     }
   };

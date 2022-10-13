@@ -10,7 +10,7 @@ export type StackParamsList = {
 
   // 회원가입 스택
   NicknameForm: undefined;
-  InterestsForm: undefined;
+  TopicsForm: undefined;
   PersonalityForm: undefined;
   LocationForm: undefined;
 

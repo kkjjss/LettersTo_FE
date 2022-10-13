@@ -7,35 +7,26 @@ import {
   Animated,
   TouchableHighlight,
   SafeAreaView,
-  TouchableWithoutFeedback,
-  Image,
 } from 'react-native';
 import type {StackParamsList} from '../../types/stackParamList';
 import {LinearGradient} from 'expo-linear-gradient';
 import {Header} from '../../Components/Header';
 import {SCREEN_HEIGHT} from '../../constants';
 import {NextButton} from '../../Components/NextButton';
-import {PERSONALITY_LIST} from '../../constants';
+import useStore from '../../Store/store';
+import {ResetButton} from '../../Components/ResetButton';
+import {getPersonalities} from '../../APIs/personality';
+import {Personalities} from '../../types/personality';
 
 type Props = NativeStackScreenProps<StackParamsList, 'PersonalityForm'>;
 
-type PersonalityType = {
-  [index: string]: {selected: boolean};
-};
-
-let initialPersonality: PersonalityType = {};
-
-PERSONALITY_LIST.map(personality => {
-  initialPersonality = {
-    ...initialPersonality,
-    [personality]: {selected: false},
-  };
-});
-
 export function PersonalityForm({navigation}: Props) {
+  const store = useStore();
   const [counter, setCounter] = useState(0);
-  const [personalities, setPersonalities] =
-    useState<PersonalityType>(initialPersonality);
+  const [personalities, setPersonalities] = useState<Personalities>([]);
+  const [selectedPersonalityIds, setSelectedPersonalityIds] = useState<
+    number[]
+  >([]);
   const [activateNext, setActivateNext] = useState(false);
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -53,41 +44,46 @@ export function PersonalityForm({navigation}: Props) {
     }),
   ]);
 
-  const selectPersonality = (personality: string) => {
+  const selectPersonality = (personalityId: number) => {
     alert.reset();
-    if (counter < 9 && personalities[personality].selected === false) {
-      setPersonalities({
-        ...personalities,
-        [personality]: {selected: true},
-      });
-    } else if (personalities[personality].selected === true) {
-      setPersonalities({
-        ...personalities,
-        [personality]: {selected: false},
-      });
+    if (
+      counter < 9 &&
+      selectedPersonalityIds.includes(personalityId) === false
+    ) {
+      setSelectedPersonalityIds([...selectedPersonalityIds, personalityId]);
+    } else if (selectedPersonalityIds.includes(personalityId) === true) {
+      setSelectedPersonalityIds(
+        [...selectedPersonalityIds].filter(e => e !== personalityId),
+      );
     } else {
       alert.start();
     }
   };
 
+  const goToLocationForm = () => {
+    store.setPersonalityIds(selectedPersonalityIds);
+    navigation.navigate('LocationForm');
+  };
+
   const reset = () => {
-    setPersonalities(initialPersonality);
+    setSelectedPersonalityIds([]);
   };
 
   useEffect(() => {
-    let count = 0;
-    for (let i in PERSONALITY_LIST) {
-      if (personalities[PERSONALITY_LIST[i]].selected) {
-        count++;
-      }
-    }
+    getPersonalities().then(personalityData => {
+      setPersonalities(personalityData);
+    });
+  });
+
+  useEffect(() => {
+    let count = selectedPersonalityIds.length;
     setCounter(count);
     if (count > 0 && count <= 9) {
       setActivateNext(true);
     } else {
       setActivateNext(false);
     }
-  }, [personalities]);
+  }, [selectedPersonalityIds]);
 
   return (
     <LinearGradient
@@ -101,36 +97,30 @@ export function PersonalityForm({navigation}: Props) {
             <Text style={styles.titleText}>모두 선택해주세요</Text>
           </View>
           <View style={styles.counterWrap}>
-            <TouchableWithoutFeedback onPress={reset}>
-              <View style={styles.resetButton}>
-                <Text style={styles.resetButtonText}>초기화</Text>
-                <Image
-                  style={styles.resetButtonImage}
-                  source={require('../../Assets/reset.png')}
-                />
-              </View>
-            </TouchableWithoutFeedback>
+            <ResetButton reset={reset} />
             <Text style={styles.counter}>{counter} / 9</Text>
           </View>
         </View>
         <View style={styles.personalityBox}>
           <View style={styles.personalityWrap}>
-            {PERSONALITY_LIST.map(personality => {
+            {personalities.map(personality => {
               return (
                 <TouchableHighlight
-                  key={personality}
+                  key={personality.id}
                   style={styles.underlayer}
                   underlayColor={'#0000cc'}
                   activeOpacity={0.7}
-                  onPress={() => selectPersonality(personality)}>
+                  onPress={() => selectPersonality(personality.id)}>
                   <View
                     style={[
                       styles.personality,
-                      personalities[personality].selected
-                        ? styles.selectedInterest
-                        : styles.notSelectedInterest,
+                      selectedPersonalityIds.includes(personality.id)
+                        ? styles.selectedTopic
+                        : styles.notSelectedTopic,
                     ]}>
-                    <Text style={styles.personalityText}>{personality}</Text>
+                    <Text style={styles.personalityText}>
+                      {personality.name}
+                    </Text>
                   </View>
                 </TouchableHighlight>
               );
@@ -140,11 +130,7 @@ export function PersonalityForm({navigation}: Props) {
             <Text style={styles.alertText}>최대 9개까지만 선택 가능해요!</Text>
           </Animated.View>
         </View>
-        <NextButton
-          navigation={navigation}
-          to={'LocationForm'}
-          activateNext={activateNext}
-        />
+        <NextButton activateNext={activateNext} onPress={goToLocationForm} />
       </SafeAreaView>
     </LinearGradient>
   );
@@ -191,11 +177,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  selectedInterest: {
+  selectedTopic: {
     height: 35,
     backgroundColor: '#ccccff',
   },
-  notSelectedInterest: {backgroundColor: 'white'},
+  notSelectedTopic: {backgroundColor: 'white'},
   personalityText: {
     marginHorizontal: 13,
     fontFamily: 'Galmuri11',

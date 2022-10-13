@@ -80,9 +80,7 @@ export function LocationForm({navigation}: Props) {
   }, [selectedCity]);
 
   useEffect(() => {
-    console.log(selectedCity, selectedCounty);
     if (selectedCounty && selectedCity) {
-      console.log(true);
       setComplete(true);
     } else {
       setComplete(false);

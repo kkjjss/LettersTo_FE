@@ -12,6 +12,12 @@ interface Store {
 
   setNickname: (value: string) => void;
 
+  setTopicIds: (value: number[]) => void;
+
+  setPersonalityIds: (value: number[]) => void;
+
+  setAddress: (value: {state: string; city: string}) => void;
+
   signUpInfo: {
     nickname: string | undefined;
     personalityIds: number[] | undefined;
@@ -45,13 +51,13 @@ const useStore = create<Store>(set => ({
   setNickname: value =>
     set(state => ({signUpInfo: {...state.signUpInfo, nickname: value}})),
 
-  setTopicIds: (value: number[]) =>
+  setTopicIds: value =>
     set(state => ({signUpInfo: {...state.signUpInfo, topicIds: value}})),
 
-  setPersonalityIds: (value: number[]) =>
+  setPersonalityIds: value =>
     set(state => ({signUpInfo: {...state.signUpInfo, personalityIds: value}})),
 
-  setAddress: (value: {state: string; city: string}) =>
+  setAddress: value =>
     set(state => ({signUpInfo: {...state.signUpInfo, address: value}})),
 }));
 

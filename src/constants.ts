@@ -259,7 +259,7 @@ export const CITY_LIST: cityListType = {
   제주특별자치도: ['제주시', '서귀포시', '북제주군', '남제주군'],
 };
 
-export const INTERESTS_LIST = [
+export const TOPICS_LIST = [
   '운동',
   '음악',
   '여행',

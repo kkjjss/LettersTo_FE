@@ -67,9 +67,9 @@ export function NicknameForm({navigation}: Props) {
     }
   };
 
-  const goToInterestForm = () => {
+  const goToTopicForm = () => {
     store.setNickname(nickname);
-    navigation.navigate('InterestsForm');
+    navigation.navigate('TopicsForm');
   };
 
   useEffect(() => {
@@ -83,10 +83,6 @@ export function NicknameForm({navigation}: Props) {
     checkNicknameFormCorrect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nickname]);
-
-  useEffect(() => {
-    console.log(store.token);
-  }, []);
 
   return (
     <LinearGradient
@@ -122,7 +118,7 @@ export function NicknameForm({navigation}: Props) {
             )}
           </Animated.View>
         </ScrollView>
-        <NextButton activateNext={activateNext} onPress={goToInterestForm} />
+        <NextButton activateNext={activateNext} onPress={goToTopicForm} />
       </SafeAreaView>
     </LinearGradient>
   );
