@@ -12,7 +12,7 @@
 
 - Node.js: v16.13.1
 - Watchman: 2-22.09.19.00
-- Ruby: 2.7.5
+- Ruby: 2.7.5 <- 진짜 무조건 맞춰야함
 - Xcode: 14.0(14A309)
 - cocoapods: 1.11.3
 - ReactNative: 0.70
