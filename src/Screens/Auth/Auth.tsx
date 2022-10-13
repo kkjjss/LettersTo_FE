@@ -7,47 +7,53 @@ import {
   TouchableWithoutFeedback,
   SafeAreaView,
 } from 'react-native';
-import type {StackParamsList} from '../../types';
+import type {StackParamsList} from '../../types/stackParamList';
 import {LinearGradient} from 'expo-linear-gradient';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
-// import useStore from '../../Store/store';
+import * as tokenAPI from '../../APIs/token';
 
-import {
-  login,
-  // getProfile as getKakaoProfile,
-} from '@react-native-seoul/kakao-login';
+import {KakaoOAuthToken} from '@react-native-seoul/kakao-login';
+
+import {login} from '@react-native-seoul/kakao-login';
+import useStore from '../../Store/store';
 
 type Props = NativeStackScreenProps<StackParamsList, 'Auth'>;
 
-// const windowWidth = Dimensions.get('window').width;
-
 export function Auth({navigation}: Props) {
-  // const {setIsLoggedIn} = useStore();
+  const store = useStore();
 
-  // async function logIn() {
-  //   await AsyncStorage.setItem('user_id', 'aa').then(() => {
-  //     setIsLoggedIn(true);
-  //   });
-  // }
-
-  function signInWithSocialService(socialService: string) {
+  function signUpWithSocialService(socialService: string) {
     switch (socialService) {
       case 'google':
         navigation.navigate('NicknameForm');
         break;
-
       default:
         break;
     }
   }
 
-  const signInWithKakao = async (): Promise<void> => {
+  function isKakaoOAuthToken(arg: any): arg is KakaoOAuthToken {
+    return arg.idToken !== undefined;
+  }
+
+  const signUpWithKakao = async (): Promise<void> => {
     try {
       const token = await login();
-      console.log(token);
+      if (isKakaoOAuthToken(token)) {
+        const tokenInfo = {
+          idToken: token.idToken,
+        };
+        const registerToken = await tokenAPI.postToken(tokenInfo);
+
+        if (registerToken) {
+          store.setToken(registerToken);
+          navigation.navigate('NicknameForm');
+        }
+      } else {
+        throw new Error('KakaoOAuthToken가 아닌 토큰');
+      }
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error('login err', err);
+      console.error(err);
+      navigation.navigate('NicknameForm');
     }
   };
 
@@ -62,7 +68,7 @@ export function Auth({navigation}: Props) {
           </Text>
         </View>
         <View style={styles.buttonWrap}>
-          <TouchableWithoutFeedback onPress={signInWithKakao}>
+          <TouchableWithoutFeedback onPress={signUpWithKakao}>
             <View style={[styles.loginButton, {backgroundColor: '#F9E54C'}]}>
               <Text style={[styles.loginText]}>카카오로 시작하기</Text>
             </View>
@@ -73,7 +79,7 @@ export function Auth({navigation}: Props) {
             </View>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
-            onPress={() => signInWithSocialService('google')}>
+            onPress={() => signUpWithSocialService('google')}>
             <View
               style={[
                 styles.loginButton,

@@ -8,13 +8,14 @@ import {
   TouchableHighlight,
   SafeAreaView,
 } from 'react-native';
-import type {StackParamsList} from '../../types';
+import type {StackParamsList} from '../../types/stackParamList';
 import {LinearGradient} from 'expo-linear-gradient';
 import {Header} from '../../Components/Header';
 import {SCREEN_HEIGHT} from '../../constants';
 import {NextButton} from '../../Components/NextButton';
 import {INTERESTS_LIST} from '../../constants';
 import {ResetButton} from '../../Components/ResetButton';
+import useStore from '../../Store/store';
 
 type Props = NativeStackScreenProps<StackParamsList, 'InterestsForm'>;
 
@@ -35,6 +36,8 @@ export function InterestsForm({navigation}: Props) {
   const [counter, setCounter] = useState(0);
   const [interests, setInterests] = useState<InterestsType>(initialInterests);
   const [activateNext, setActivateNext] = useState<boolean>(false);
+
+  const store = useStore();
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -67,6 +70,10 @@ export function InterestsForm({navigation}: Props) {
       alert.start();
     }
   };
+
+  const goToPersonalityForm = () => {
+    store.set
+  }
 
   const reset = () => {
     setInterests(initialInterests);
@@ -130,11 +137,7 @@ export function InterestsForm({navigation}: Props) {
             <Text style={styles.alertText}>최대 7개까지만 선택 가능해요!</Text>
           </Animated.View>
         </View>
-        <NextButton
-          navigation={navigation}
-          to={'PersonalityForm'}
-          activateNext={activateNext}
-        />
+        <NextButton activateNext={activateNext} onPress={goToPersonalityForm} />
       </SafeAreaView>
     </LinearGradient>
   );

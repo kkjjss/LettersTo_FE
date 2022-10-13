@@ -14,7 +14,7 @@ export function ResetButton({reset}: {reset: () => void}) {
         <Text style={styles.resetButtonText}>초기화</Text>
         <Image
           style={styles.resetButtonImage}
-          source={require('../assets/reset.png')}
+          source={require('../Assets/reset.png')}
         />
       </View>
     </TouchableWithoutFeedback>

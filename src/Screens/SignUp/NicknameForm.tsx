@@ -13,7 +13,10 @@ import {NextButton} from '../../Components/NextButton';
 import {SCREEN_HEIGHT} from '../../constants';
 import {LinearGradient} from 'expo-linear-gradient';
 import {Header} from '../../Components/Header';
-import type {StackParamsList} from '../../types';
+import type {StackParamsList} from '../../types/stackParamList';
+
+import {get} from '../../Utils/http';
+import useStore from '../../Store/store';
 
 type Props = NativeStackScreenProps<StackParamsList, 'NicknameForm'>;
 
@@ -21,8 +24,10 @@ export function NicknameForm({navigation}: Props) {
   const [nickname, setNickname] = useState('');
   const [tempNickname, setTempNickname] = useState('');
   const [isFormCorrect, setIsFormCorrect] = useState(false);
-  const [isDuplicate, setIsDuplicate] = useState(false);
+  const [isExists, setIsExists] = useState(false);
   const [activateNext, setActivateNext] = useState(false);
+
+  const store = useStore();
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -32,11 +37,17 @@ export function NicknameForm({navigation}: Props) {
     useNativeDriver: true,
   });
 
+  const onChangeNickname = (v: string) => {
+    alert.reset();
+    setTempNickname(v);
+    setActivateNext(false);
+  };
+
   const checkNicknameFormCorrect = async () => {
     if (nickname) {
       if (/^[가-힣A-Za-z0-9]{3,10}$/.test(nickname)) {
         setIsFormCorrect(true);
-        checkNicknameDuplicates();
+        checkNicknameExistss();
       } else {
         setIsFormCorrect(false);
         alert.start();
@@ -44,36 +55,27 @@ export function NicknameForm({navigation}: Props) {
     }
   };
 
-  const checkNicknameDuplicates = async () => {
+  const checkNicknameExistss = async () => {
     if (nickname) {
-      // api request
-      let response: boolean;
-      if (nickname === 'Aaa') {
-        response = true;
-      } else {
-        response = false;
-      }
+      let response = await get('/members/nickname/exists', {nickname});
 
-      if (response === true) {
-        setIsDuplicate(false);
+      setIsExists(response);
+      if (response === false) {
         setActivateNext(true);
-      } else {
-        setIsDuplicate(true);
       }
       alert.start();
     }
   };
 
-  const changeNickname = (v: string) => {
-    alert.reset();
-    setTempNickname(v);
-    setActivateNext(false);
+  const goToInterestForm = () => {
+    store.setNickname(nickname);
+    navigation.navigate('InterestsForm');
   };
 
   useEffect(() => {
     const debounce = setTimeout(() => {
       setNickname(tempNickname);
-    }, 300);
+    }, 500);
     return () => clearTimeout(debounce);
   }, [tempNickname]);
 
@@ -81,6 +83,10 @@ export function NicknameForm({navigation}: Props) {
     checkNicknameFormCorrect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nickname]);
+
+  useEffect(() => {
+    console.log(store.token);
+  }, []);
 
   return (
     <LinearGradient
@@ -98,13 +104,13 @@ export function NicknameForm({navigation}: Props) {
               <TextInput
                 style={styles.nicknameInput}
                 value={tempNickname}
-                onChangeText={changeNickname}
+                onChangeText={onChangeNickname}
               />
             </View>
           </View>
           <Animated.View style={[styles.alert, {opacity: fadeAnim}]}>
             {isFormCorrect ? (
-              !isDuplicate ? (
+              !isExists ? (
                 <Text style={styles.alertSuccess}>사용 가능한 별명이에요.</Text>
               ) : (
                 <Text style={styles.alertFail}>이미 사용중인 별명이에요.</Text>
@@ -116,11 +122,7 @@ export function NicknameForm({navigation}: Props) {
             )}
           </Animated.View>
         </ScrollView>
-        <NextButton
-          navigation={navigation}
-          to={'InterestsForm'}
-          activateNext={activateNext}
-        />
+        <NextButton activateNext={activateNext} onPress={goToInterestForm} />
       </SafeAreaView>
     </LinearGradient>
   );

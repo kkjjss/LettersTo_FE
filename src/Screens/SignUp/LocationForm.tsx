@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
-import type {StackParamsList} from '../../types';
+import type {StackParamsList} from '../../types/stackParamList';
 import {LinearGradient} from 'expo-linear-gradient';
 import {Header} from '../../Components/Header';
 import {SCREEN_HEIGHT, CITY_LIST} from '../../constants';
@@ -103,7 +103,7 @@ export function LocationForm({navigation}: Props) {
               <TouchableWithoutFeedback onPress={onStartNotice}>
                 <Image
                   style={{marginLeft: 3, height: 20, width: 20}}
-                  source={require('../../assets/notice.png')}
+                  source={require('../../Assets/notice.png')}
                 />
               </TouchableWithoutFeedback>
             </View>
@@ -125,7 +125,7 @@ export function LocationForm({navigation}: Props) {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}
-              source={require('../../assets/noticeBalloon.png')}>
+              source={require('../../Assets/noticeBalloon.png')}>
               <Text
                 style={{
                   fontFamily: 'Galmuri11',

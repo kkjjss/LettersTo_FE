@@ -2,7 +2,7 @@ import * as React from 'react';
 import useStore from '../Store/store';
 
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import type {StackParamsList} from '../types';
+import type {StackParamsList} from '../types/stackParamList';
 import {StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
 
 type Props = {

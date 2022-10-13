@@ -36,7 +36,7 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
           }}>
           <Pressable onPress={hideModal}>
             <Image
-              source={require('../assets/close.png')}
+              source={require('../Assets/close.png')}
               style={{height: 28, width: 28}}
             />
           </Pressable>

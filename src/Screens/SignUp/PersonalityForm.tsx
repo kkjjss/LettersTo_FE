@@ -10,7 +10,7 @@ import {
   TouchableWithoutFeedback,
   Image,
 } from 'react-native';
-import type {StackParamsList} from '../../types';
+import type {StackParamsList} from '../../types/stackParamList';
 import {LinearGradient} from 'expo-linear-gradient';
 import {Header} from '../../Components/Header';
 import {SCREEN_HEIGHT} from '../../constants';
@@ -106,7 +106,7 @@ export function PersonalityForm({navigation}: Props) {
                 <Text style={styles.resetButtonText}>초기화</Text>
                 <Image
                   style={styles.resetButtonImage}
-                  source={require('../../assets/reset.png')}
+                  source={require('../../Assets/reset.png')}
                 />
               </View>
             </TouchableWithoutFeedback>

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {View, Text, StyleSheet, Button} from 'react-native';
-import type {StackParamsList} from '../../types';
+import type {StackParamsList} from '../../types/stackParamList';
 import useStore from '../../Store/store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 

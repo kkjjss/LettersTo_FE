@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {View, Text, StyleSheet, SafeAreaView, Pressable} from 'react-native';
-import type {StackParamsList} from '../../types';
+import type {StackParamsList} from '../../types/stackParamList';
 import {Header} from '../../Components/Header';
 import {ListItem, ListName} from '../../Components/MyPageList';
 

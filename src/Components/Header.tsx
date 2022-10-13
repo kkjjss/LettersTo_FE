@@ -2,7 +2,7 @@ import * as React from 'react';
 import {StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
 
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import type {StackParamsList} from '../types';
+import type {StackParamsList} from '../types/stackParamList';
 
 type Props = {
   navigation: NativeStackNavigationProp<StackParamsList, keyof StackParamsList>;

@@ -1,23 +1,14 @@
 import * as React from 'react';
-
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import type {StackParamsList} from '../types';
 import {StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
 
 type Props = {
-  navigation: NativeStackNavigationProp<StackParamsList, keyof StackParamsList>;
-  // from: keyof StackParamsList;
-  to: keyof StackParamsList;
   activateNext: boolean;
+  onPress: () => void;
 };
 
-export function NextButton({navigation, to, activateNext}: Props) {
-  function gonext() {
-    navigation.navigate(to);
-  }
-
+export function NextButton({activateNext, onPress}: Props) {
   return (
-    <TouchableWithoutFeedback disabled={!activateNext} onPress={gonext}>
+    <TouchableWithoutFeedback disabled={!activateNext} onPress={onPress}>
       <View
         style={[
           styles.nextButton,
