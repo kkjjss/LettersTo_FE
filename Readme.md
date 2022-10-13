@@ -7,6 +7,7 @@
 
 - react-native
 - react-navigation
+- zustand
 
 ## Dependency
 
@@ -21,6 +22,8 @@
 
 ```
   $ npm install
+  
+  // ios
   $ cd ios
   $ pod install
 ```
