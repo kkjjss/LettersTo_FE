@@ -26,4 +26,11 @@
   // ios
   $ cd ios
   $ pod install
+  
+  // metro 서버 실행
+  $ npm start
+  
+  // 시뮬레이터 또는 핸드폰에서 앱 실행
+  $ npm run android
+  $ npm run ios
 ```
