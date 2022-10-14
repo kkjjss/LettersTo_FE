@@ -10,8 +10,9 @@ type Props = NativeStackScreenProps<StackParamsList, 'Home'>;
 export function Home({navigation}: Props) {
   const {setIsLoggedIn} = useStore();
 
-  async function logout() {
-    await AsyncStorage.removeItem('user_id');
+  function logout() {
+    AsyncStorage.removeItem('accessToken');
+    AsyncStorage.removeItem('refreshToken');
     setIsLoggedIn(false);
   }
 
