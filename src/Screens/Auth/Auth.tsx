@@ -42,10 +42,10 @@ export function Auth({navigation}: Props) {
         const tokenInfo = {
           idToken: token.idToken,
         };
-        const registerToken = await tokenAPI.postToken(tokenInfo);
+        const {registerToken} = await tokenAPI.postToken(tokenInfo);
 
         if (registerToken) {
-          store.setToken(registerToken);
+          store.setRegisterToken(registerToken);
           navigation.navigate('NicknameForm');
         }
       } else {
@@ -54,7 +54,8 @@ export function Auth({navigation}: Props) {
     } catch (err) {
       console.error(err);
 
-      // dev
+      // test
+      store.setRegisterToken('registerToken_test');
       navigation.navigate('NicknameForm');
     }
   };

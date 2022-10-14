@@ -15,7 +15,7 @@ import {SCREEN_HEIGHT} from '../../constants';
 import {NextButton} from '../../Components/NextButton';
 import {ResetButton} from '../../Components/ResetButton';
 import useStore from '../../Store/store';
-import {Topics} from '../../types/topic';
+import {Topics} from '../../types/types';
 import {getTopics} from '../../APIs/topic';
 
 type Props = NativeStackScreenProps<StackParamsList, 'TopicsForm'>;

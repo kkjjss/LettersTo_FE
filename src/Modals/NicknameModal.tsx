@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  SafeAreaView,
   View,
 } from 'react-native';
 import Modal from 'react-native-modal';
@@ -107,73 +108,81 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
       onBackdropPress={hideModal}
       propagateSwipe={true}
       style={{margin: 0, justifyContent: 'flex-end'}}>
-      <View
-        style={{
-          backgroundColor: 'white',
-          borderTopRightRadius: 10,
-          borderTopLeftRadius: 10,
-          borderColor: '#0000cc',
-        }}>
+      <SafeAreaView>
         <View
           style={{
-            flexDirection: 'row',
-            marginVertical: 12,
-            marginHorizontal: 16,
-            justifyContent: 'space-between',
-            alignItems: 'center',
+            backgroundColor: 'white',
+            borderTopRightRadius: 10,
+            borderTopLeftRadius: 10,
+            borderColor: '#0000cc',
           }}>
-          <Pressable onPress={hideModal}>
-            <Image
-              source={require('../Assets/close.png')}
-              style={{height: 28, width: 28}}
-            />
-          </Pressable>
-          <Text
-            style={{fontFamily: 'Galmuri11', fontSize: 15, color: '#0000cc'}}>
-            별명 변경
-          </Text>
-          <View style={{width: 28}} />
-        </View>
-        <ScrollView>
-          <View style={styles.nicknameWrap}>
-            <View style={styles.nicknameForm}>
-              <TextInput
-                style={styles.nicknameInput}
-                value={tempNickname}
-                onChangeText={changeNickname}
-                placeholder="새로운 별명을 입력해주세요."
-              />
-            </View>
-          </View>
-          <Animated.View style={[styles.alert, {opacity: fadeAnim}]}>
-            {isAlreadyUsed ? (
-              <Text style={styles.alertSuccess}>이미 사용중인 별명이에요.</Text>
-            ) : isFormCorrect ? (
-              !isDuplicate ? (
-                <Text style={styles.alertSuccess}>사용 가능한 별명이에요.</Text>
-              ) : (
-                <Text style={styles.alertFail}>이미 사용중인 별명이에요.</Text>
-              )
-            ) : (
-              <Text style={styles.alertFail}>
-                3-10자 이내의 별명을 입력해주세요.
-              </Text>
-            )}
-          </Animated.View>
-        </ScrollView>
-        <Pressable disabled={!activateNext} onPress={hideModal}>
           <View
-            style={[
-              styles.completeButton,
-              // eslint-disable-next-line react-native/no-inline-styles
-              {
-                backgroundColor: activateNext ? '#ff6ece' : '#ffc7f0',
-              },
-            ]}>
-            <Text style={styles.completeButtonText}>변경하기</Text>
+            style={{
+              flexDirection: 'row',
+              marginVertical: 12,
+              marginHorizontal: 16,
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}>
+            <Pressable onPress={hideModal}>
+              <Image
+                source={require('../Assets/close.png')}
+                style={{height: 28, width: 28}}
+              />
+            </Pressable>
+            <Text
+              style={{fontFamily: 'Galmuri11', fontSize: 15, color: '#0000cc'}}>
+              별명 변경
+            </Text>
+            <View style={{width: 28}} />
           </View>
-        </Pressable>
-      </View>
+          <ScrollView>
+            <View style={styles.nicknameWrap}>
+              <View style={styles.nicknameForm}>
+                <TextInput
+                  style={styles.nicknameInput}
+                  value={tempNickname}
+                  onChangeText={changeNickname}
+                  placeholder="새로운 별명을 입력해주세요."
+                />
+              </View>
+            </View>
+            <Animated.View style={[styles.alert, {opacity: fadeAnim}]}>
+              {isAlreadyUsed ? (
+                <Text style={styles.alertSuccess}>
+                  이미 사용중인 별명이에요.
+                </Text>
+              ) : isFormCorrect ? (
+                !isDuplicate ? (
+                  <Text style={styles.alertSuccess}>
+                    사용 가능한 별명이에요.
+                  </Text>
+                ) : (
+                  <Text style={styles.alertFail}>
+                    이미 사용중인 별명이에요.
+                  </Text>
+                )
+              ) : (
+                <Text style={styles.alertFail}>
+                  3-10자 이내의 별명을 입력해주세요.
+                </Text>
+              )}
+            </Animated.View>
+          </ScrollView>
+          <Pressable disabled={!activateNext} onPress={hideModal}>
+            <View
+              style={[
+                styles.completeButton,
+                // eslint-disable-next-line react-native/no-inline-styles
+                {
+                  backgroundColor: activateNext ? '#ff6ece' : '#ffc7f0',
+                },
+              ]}>
+              <Text style={styles.completeButtonText}>변경하기</Text>
+            </View>
+          </Pressable>
+        </View>
+      </SafeAreaView>
     </Modal>
   );
 };

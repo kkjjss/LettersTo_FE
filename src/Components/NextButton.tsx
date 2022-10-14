@@ -26,7 +26,7 @@ export function NextButton({activateNext, onPress}: Props) {
 const styles = StyleSheet.create({
   nextButton: {
     marginHorizontal: 16,
-    borderRadius: 10,
+    borderRadius: 5,
     height: 52,
     justifyContent: 'center',
     alignItems: 'center',

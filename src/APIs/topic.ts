@@ -1,4 +1,4 @@
-import {Topics} from '../types/topic';
+import type {Topics} from '../types/types';
 import {get} from '../Utils/http';
 
 export async function getTopics(): Promise<Topics> {

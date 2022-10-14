@@ -1,5 +1,4 @@
 import create from 'zustand';
-import type {RegisterToken} from '../types/token';
 interface Store {
   isLoggedIn: boolean;
   setIsLoggedIn: (value: boolean) => void;
@@ -7,8 +6,8 @@ interface Store {
   isLoading: boolean;
   setIsLoading: (value: boolean) => void;
 
-  token: RegisterToken | undefined;
-  setToken: (value: RegisterToken) => void;
+  registerToken: string | undefined;
+  setRegisterToken: (value: string) => void;
 
   setNickname: (value: string) => void;
 
@@ -36,8 +35,8 @@ const useStore = create<Store>(set => ({
   isLoading: true,
   setIsLoading: value => set(() => ({isLoading: value})),
 
-  token: undefined,
-  setToken: value => set(() => ({token: value})),
+  registerToken: undefined,
+  setRegisterToken: value => set(() => ({registerToken: value})),
 
   signUpInfo: {
     nickname: undefined,

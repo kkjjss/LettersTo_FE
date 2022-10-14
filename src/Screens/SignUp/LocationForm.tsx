@@ -19,6 +19,9 @@ import {SCREEN_HEIGHT, CITY_LIST} from '../../constants';
 import {SignUpButton} from '../../Components/SignUpButton';
 import useStore from '../../Store/store';
 
+import {signUp} from '../../APIs/member';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 type Props = NativeStackScreenProps<StackParamsList, 'LocationForm'>;
 
 const CITIES = Object.keys(CITY_LIST).map(city => {
@@ -29,16 +32,50 @@ export function LocationForm({navigation}: Props) {
   const [openCity, setOpenCity] = useState(false);
   const [cities] = useState(CITIES);
   const [selectedCity, setSelectedCity] = useState<null | string>(null);
+
   const [openCounty, setOpenCounty] = useState(false);
   const [counties, setCounties] = useState([{label: '', value: ''}]);
-  const [selectedCounty, setSelectedCounty] = useState(null);
-  const [complete, setComplete] = useState(false);
+  const [selectedCounty, setSelectedCounty] = useState<null | string>(null);
+
+  const [activateSignUp, setActivateSignUp] = useState(false);
 
   const store = useStore();
 
-  function signUp() {
-    store.setIsLoading(true);
-    store.setIsLoggedIn(true);
+  function onPressSignUp() {
+    if (selectedCity && selectedCounty) {
+      console.log(selectedCity, selectedCounty);
+      store.setAddress({state: selectedCity, city: selectedCounty});
+
+      setTimeout(async () => {
+        if (
+          store.registerToken &&
+          store.signUpInfo.nickname &&
+          store.signUpInfo.topicIds &&
+          store.signUpInfo.personalityIds
+        ) {
+          console.log('test');
+          // const userInfo = {
+          //   refreshToken: store.registerToken,
+          //   nickname: store.signUpInfo.nickname,
+          //   topickIds: store.signUpInfo.topicIds,
+          //   personalityIds: store.signUpInfo.personalityIds,
+          //   geolocationId: 1,
+          // };
+          // const {accessToken, refreshToken} = await signUp(userInfo);
+
+          // test
+          const {accessToken, refreshToken} = {
+            accessToken: 'accessToken_test',
+            refreshToken: 'refreshToken_test',
+          };
+
+          await AsyncStorage.setItem('accessToken', accessToken);
+          await AsyncStorage.setItem('refreshToken', refreshToken);
+
+          store.setIsLoading(true);
+        }
+      }, 100);
+    }
   }
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -81,9 +118,9 @@ export function LocationForm({navigation}: Props) {
 
   useEffect(() => {
     if (selectedCounty && selectedCity) {
-      setComplete(true);
+      setActivateSignUp(true);
     } else {
-      setComplete(false);
+      setActivateSignUp(false);
     }
   }, [selectedCity, selectedCounty]);
 
@@ -170,8 +207,8 @@ export function LocationForm({navigation}: Props) {
         </View>
         <SignUpButton
           navigation={navigation}
-          complete={complete}
-          onPress={signUp}
+          activateSignUp={activateSignUp}
+          onPress={onPressSignUp}
         />
       </SafeAreaView>
     </LinearGradient>

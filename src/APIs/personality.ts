@@ -1,4 +1,4 @@
-import {Personalities} from '../types/personality';
+import type {Personalities} from '../types/types';
 import {get} from '../Utils/http';
 
 export async function getPersonalities(): Promise<Personalities> {

@@ -17,6 +17,7 @@ import type {StackParamsList} from '../../types/stackParamList';
 
 import {get} from '../../Utils/http';
 import useStore from '../../Store/store';
+import {existNickname} from '../../APIs/member';
 
 type Props = NativeStackScreenProps<StackParamsList, 'NicknameForm'>;
 
@@ -57,7 +58,7 @@ export function NicknameForm({navigation}: Props) {
 
   const checkNicknameExistss = async () => {
     if (nickname) {
-      let response = await get('/members/nickname/exists', {nickname});
+      let response = await existNickname(nickname);
 
       setIsExists(response);
       if (response === false) {
@@ -143,7 +144,7 @@ const styles = StyleSheet.create({
     height: 54,
     borderWidth: 1,
     borderColor: '#0000cc',
-    borderRadius: 10,
+    borderRadius: 5,
     fontFamily: 'Galmuri11',
     color: '#0000cc',
   },

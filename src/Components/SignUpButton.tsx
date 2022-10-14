@@ -1,25 +1,30 @@
 import * as React from 'react';
-import useStore from '../Store/store';
-
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import type {StackParamsList} from '../types/stackParamList';
 import {StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
+import {useState} from 'react';
 
 type Props = {
   navigation: NativeStackNavigationProp<StackParamsList, keyof StackParamsList>;
-  complete: boolean;
+  activateSignUp: boolean;
   onPress: () => void;
 };
 
-export function SignUpButton({complete, onPress}: Props) {
+export function SignUpButton({activateSignUp, onPress}: Props) {
+  const [disable, setDisable] = useState(false);
   return (
-    <TouchableWithoutFeedback disabled={!complete} onPress={onPress}>
+    <TouchableWithoutFeedback
+      disabled={!activateSignUp || disable}
+      onPress={() => {
+        setDisable(true);
+        onPress();
+      }}>
       <View
         style={[
           styles.signUpButton,
           // eslint-disable-next-line react-native/no-inline-styles
           {
-            backgroundColor: complete ? '#ff6ece' : '#ffc7f0',
+            backgroundColor: activateSignUp ? '#ff6ece' : '#ffc7f0',
           },
         ]}>
         <Text style={styles.nextButtonText}>가입 완료!</Text>

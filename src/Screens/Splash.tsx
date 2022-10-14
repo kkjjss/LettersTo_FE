@@ -11,19 +11,16 @@ type Props = NativeStackScreenProps<StackParamsList, 'Splash'>;
 export function Splash({}: Props) {
   //State for ActivityIndicator animation
   const [animating, setAnimating] = useState(true);
-
   const {setIsLoggedIn, setIsLoading} = useStore();
 
   async function checkForService() {
     // 유저 정보 받아옴
-    const user_id = await AsyncStorage.getItem('user_id');
+    const accessToken = await AsyncStorage.getItem('accessToken');
+    const refreshToken = await AsyncStorage.getItem('refreshToken');
 
     // 있으면 로그인
-    if (user_id) {
-      console.log('Already has user info:', user_id);
-
-      /* ... */
-
+    if (accessToken && refreshToken) {
+      console.log('Already has accessToken:', accessToken, refreshToken);
       setIsLoggedIn(true);
     }
 
@@ -33,10 +30,8 @@ export function Splash({}: Props) {
   }
 
   useEffect(() => {
-    console.log('Splash for checking...');
-    setTimeout(() => {
-      checkForService();
-    }, 1000);
+    checkForService();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

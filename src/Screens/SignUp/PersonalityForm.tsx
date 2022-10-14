@@ -7,6 +7,7 @@ import {
   Animated,
   TouchableHighlight,
   SafeAreaView,
+  ScrollView,
 } from 'react-native';
 import type {StackParamsList} from '../../types/stackParamList';
 import {LinearGradient} from 'expo-linear-gradient';
@@ -16,7 +17,7 @@ import {NextButton} from '../../Components/NextButton';
 import useStore from '../../Store/store';
 import {ResetButton} from '../../Components/ResetButton';
 import {getPersonalities} from '../../APIs/personality';
-import {Personalities} from '../../types/personality';
+import {Personalities} from '../../types/types';
 
 type Props = NativeStackScreenProps<StackParamsList, 'PersonalityForm'>;
 
@@ -27,7 +28,7 @@ export function PersonalityForm({navigation}: Props) {
   const [selectedPersonalityIds, setSelectedPersonalityIds] = useState<
     number[]
   >([]);
-  const [activateNext, setActivateNext] = useState(false);
+  const [activateNext, setActivateNext] = useState<boolean>(false);
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -73,12 +74,12 @@ export function PersonalityForm({navigation}: Props) {
     getPersonalities().then(personalityData => {
       setPersonalities(personalityData);
     });
-  });
+  }, []);
 
   useEffect(() => {
     let count = selectedPersonalityIds.length;
     setCounter(count);
-    if (count > 0 && count <= 9) {
+    if (count > 0) {
       setActivateNext(true);
     } else {
       setActivateNext(false);
@@ -101,7 +102,7 @@ export function PersonalityForm({navigation}: Props) {
             <Text style={styles.counter}>{counter} / 9</Text>
           </View>
         </View>
-        <View style={styles.personalityBox}>
+        <ScrollView style={styles.personalityBox}>
           <View style={styles.personalityWrap}>
             {personalities.map(personality => {
               return (
@@ -126,7 +127,9 @@ export function PersonalityForm({navigation}: Props) {
               );
             })}
           </View>
-          <Animated.View style={[styles.alert, {opacity: fadeAnim}]}>
+        </ScrollView>
+        <View style={styles.alertBox}>
+          <Animated.View style={{opacity: fadeAnim}}>
             <Text style={styles.alertText}>최대 9개까지만 선택 가능해요!</Text>
           </Animated.View>
         </View>
@@ -159,8 +162,7 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
   personalityBox: {
-    flex: 1,
-    marginHorizontal: 24,
+    paddingHorizontal: 24,
   },
   personalityWrap: {
     flexDirection: 'row',
@@ -178,7 +180,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   selectedTopic: {
-    height: 35,
     backgroundColor: '#ccccff',
   },
   notSelectedTopic: {backgroundColor: 'white'},
@@ -188,7 +189,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#0000cc',
   },
-  alert: {},
+  alertBox: {
+    marginHorizontal: 24,
+    marginBottom: 20,
+  },
   alertText: {
     fontFamily: 'Galmuri11',
     color: '#ff44cc',
