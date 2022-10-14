@@ -71,9 +71,13 @@ export function PersonalityForm({navigation}: Props) {
   };
 
   useEffect(() => {
-    getPersonalities().then(personalityData => {
-      setPersonalities(personalityData);
-    });
+    try {
+      getPersonalities().then(personalityData => {
+        setPersonalities(personalityData);
+      });
+    } catch (error: any) {
+      console.error(error.message);
+    }
   }, []);
 
   useEffect(() => {

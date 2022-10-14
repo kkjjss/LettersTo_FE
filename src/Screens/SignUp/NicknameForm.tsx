@@ -14,10 +14,9 @@ import {SCREEN_HEIGHT} from '../../constants';
 import {LinearGradient} from 'expo-linear-gradient';
 import {Header} from '../../Components/Header';
 import type {StackParamsList} from '../../types/stackParamList';
+import {existsNickname} from '../../APIs/member';
 
-import {get} from '../../Utils/http';
 import useStore from '../../Store/store';
-import {existNickname} from '../../APIs/member';
 
 type Props = NativeStackScreenProps<StackParamsList, 'NicknameForm'>;
 
@@ -58,13 +57,16 @@ export function NicknameForm({navigation}: Props) {
 
   const checkNicknameExistss = async () => {
     if (nickname) {
-      let response = await existNickname(nickname);
-
-      setIsExists(response);
-      if (response === false) {
-        setActivateNext(true);
+      try {
+        const response = await existsNickname(nickname);
+        setIsExists(response);
+        if (response === false) {
+          setActivateNext(true);
+        }
+        alert.start();
+      } catch (error: any) {
+        console.error(error.message);
       }
-      alert.start();
     }
   };
 

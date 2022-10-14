@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import type {StackParamsList} from '../../types/stackParamList';
 import {LinearGradient} from 'expo-linear-gradient';
-import * as tokenAPI from '../../APIs/token';
+import {postToken} from '../../APIs/token';
 
 import {KakaoOAuthToken} from '@react-native-seoul/kakao-login';
 
@@ -42,17 +42,22 @@ export function Auth({navigation}: Props) {
         const tokenInfo = {
           idToken: token.idToken,
         };
-        const {registerToken} = await tokenAPI.postToken(tokenInfo);
 
-        if (registerToken) {
-          store.setRegisterToken(registerToken);
-          navigation.navigate('NicknameForm');
+        try {
+          const {registerToken} = await postToken(tokenInfo);
+
+          if (registerToken) {
+            store.setRegisterToken(registerToken);
+            navigation.navigate('NicknameForm');
+          }
+        } catch (error: any) {
+          console.error(error.message);
         }
       } else {
         throw new Error('KakaoOAuthToken가 아닌 토큰');
       }
-    } catch (err) {
-      console.error(err);
+    } catch (err: any) {
+      console.error(err.message);
 
       // test
       store.setRegisterToken('registerToken_test');

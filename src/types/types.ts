@@ -19,6 +19,11 @@ export type Personalities = {
   name: string;
 }[];
 
+export type Regions = {
+  id: number;
+  name: string;
+}[];
+
 export interface UserInfo {
   refreshToken: string;
   nickname: string;

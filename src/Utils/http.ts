@@ -15,7 +15,7 @@ export async function post(path: string, body: {}, headers = {}): Promise<any> {
   if (res.ok) {
     return data;
   } else {
-    throw Error(data);
+    throw Error(data.message);
   }
 }
 
@@ -32,6 +32,6 @@ export async function get(path: string, params?: {[key: string]: any}) {
   if (res.ok) {
     return data;
   } else {
-    throw Error(data);
+    throw Error(data.message);
   }
 }

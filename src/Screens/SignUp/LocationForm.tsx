@@ -53,7 +53,6 @@ export function LocationForm({navigation}: Props) {
           store.signUpInfo.topicIds &&
           store.signUpInfo.personalityIds
         ) {
-          console.log('test');
           // const userInfo = {
           //   refreshToken: store.registerToken,
           //   nickname: store.signUpInfo.nickname,
@@ -61,18 +60,21 @@ export function LocationForm({navigation}: Props) {
           //   personalityIds: store.signUpInfo.personalityIds,
           //   geolocationId: 1,
           // };
-          // const {accessToken, refreshToken} = await signUp(userInfo);
+          try {
+            // const {accessToken, refreshToken} = await signUp(userInfo);
 
-          // test
-          const {accessToken, refreshToken} = {
-            accessToken: 'accessToken_test',
-            refreshToken: 'refreshToken_test',
-          };
+            // test
+            const {accessToken, refreshToken} = {
+              accessToken: 'accessToken_test',
+              refreshToken: 'refreshToken_test',
+            };
+            await AsyncStorage.setItem('accessToken', accessToken);
+            await AsyncStorage.setItem('refreshToken', refreshToken);
 
-          await AsyncStorage.setItem('accessToken', accessToken);
-          await AsyncStorage.setItem('refreshToken', refreshToken);
-
-          store.setIsLoading(true);
+            store.setIsLoading(true);
+          } catch (error: any) {
+            console.error(error.message);
+          }
         }
       }, 100);
     }

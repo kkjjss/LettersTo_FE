@@ -63,9 +63,13 @@ export function TopicsForm({navigation}: Props) {
   };
 
   useEffect(() => {
-    getTopics().then(topicData => {
-      setTopics(topicData);
-    });
+    try {
+      getTopics().then(topicData => {
+        setTopics(topicData);
+      });
+    } catch (error: any) {
+      console.error(error.message);
+    }
   }, []);
 
   useEffect(() => {
