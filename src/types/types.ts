@@ -24,6 +24,11 @@ export type Regions = {
   name: string;
 }[];
 
+export type Cities = {
+  id: number;
+  name: string;
+}[];
+
 export interface UserInfo {
   refreshToken: string;
   nickname: string;

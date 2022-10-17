@@ -15,36 +15,34 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import type {StackParamsList} from '../../types/stackParamList';
 import {LinearGradient} from 'expo-linear-gradient';
 import {Header} from '../../Components/Header';
-import {SCREEN_HEIGHT, CITY_LIST} from '../../constants';
+import {SCREEN_HEIGHT} from '../../constants';
 import {SignUpButton} from '../../Components/SignUpButton';
 import useStore from '../../Store/store';
+
+import {getRegions, getCities} from '../../APIs/geolocation';
 
 import {signUp} from '../../APIs/member';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type Props = NativeStackScreenProps<StackParamsList, 'LocationForm'>;
 
-const CITIES = Object.keys(CITY_LIST).map(city => {
-  return {label: city, value: city};
-});
-
 export function LocationForm({navigation}: Props) {
-  const [openCity, setOpenCity] = useState(false);
-  const [cities] = useState(CITIES);
-  const [selectedCity, setSelectedCity] = useState<null | string>(null);
+  const [openRegion, setOpenRegion] = useState(false);
+  const [regions, setRegions] = useState([{label: '', value: 0}]);
+  const [selectedRegionId, setSelectedRegionId] = useState<null | number>(null);
 
-  const [openCounty, setOpenCounty] = useState(false);
-  const [counties, setCounties] = useState([{label: '', value: ''}]);
-  const [selectedCounty, setSelectedCounty] = useState<null | string>(null);
+  const [openCity, setOpenCity] = useState(false);
+  const [cities, setCities] = useState([{label: '', value: 0}]);
+  const [selectedCityId, setSelectedCityId] = useState<null | number>(null);
 
   const [activateSignUp, setActivateSignUp] = useState(false);
 
   const store = useStore();
 
   function onPressSignUp() {
-    if (selectedCity && selectedCounty) {
-      console.log(selectedCity, selectedCounty);
-      store.setAddress({state: selectedCity, city: selectedCounty});
+    if (selectedRegionId && selectedCityId) {
+      console.log(selectedRegionId, selectedCityId);
+      store.setAddress(selectedCityId);
 
       setTimeout(async () => {
         if (
@@ -68,8 +66,11 @@ export function LocationForm({navigation}: Props) {
               accessToken: 'accessToken_test',
               refreshToken: 'refreshToken_test',
             };
-            await AsyncStorage.setItem('accessToken', accessToken);
-            await AsyncStorage.setItem('refreshToken', refreshToken);
+
+            await Promise.all([
+              AsyncStorage.setItem('accessToken', accessToken),
+              AsyncStorage.setItem('refreshToken', refreshToken),
+            ]);
 
             store.setIsLoading(true);
           } catch (error: any) {
@@ -95,11 +96,11 @@ export function LocationForm({navigation}: Props) {
     }),
   ]);
 
-  const onCityOpen = useCallback(() => {
-    setOpenCounty(false);
+  const onRegionOpen = useCallback(() => {
+    setOpenRegion(false);
   }, []);
 
-  const onCountyOpen = useCallback(() => {
+  const onCityOpen = useCallback(() => {
     setOpenCity(false);
   }, []);
 
@@ -108,23 +109,41 @@ export function LocationForm({navigation}: Props) {
     alert.start();
   };
 
-  useEffect(() => {
-    if (selectedCity) {
-      const COUNTIES = CITY_LIST[selectedCity].map(county => {
-        return {label: county, value: county};
-      });
-      setCounties(COUNTIES);
-    }
-    setSelectedCounty(null);
-  }, [selectedCity]);
+  const getRegionsList = async () => {
+    const regionsList = (await getRegions()).map(({id, name}) => {
+      return {value: id, label: name};
+    });
+    setRegions(regionsList);
+    console.log(regionsList);
+  };
+
+  const getCitiesList = async (regionId: number) => {
+    const citiesList = (await getCities(regionId)).map(({id, name}) => {
+      return {value: id, label: name};
+    });
+    setCities(citiesList);
+  };
 
   useEffect(() => {
-    if (selectedCounty && selectedCity) {
+    if (selectedRegionId) {
+      getCitiesList(selectedRegionId);
+    } else {
+      setCities([{label: '', value: 0}]);
+    }
+    setSelectedCityId(null);
+  }, [selectedRegionId]);
+
+  useEffect(() => {
+    if (selectedCityId && selectedRegionId) {
       setActivateSignUp(true);
     } else {
       setActivateSignUp(false);
     }
-  }, [selectedCity, selectedCounty]);
+  }, [selectedRegionId, selectedCityId]);
+
+  useEffect(() => {
+    getRegionsList();
+  }, []);
 
   return (
     <LinearGradient
@@ -135,40 +154,27 @@ export function LocationForm({navigation}: Props) {
         <View style={styles.titleBox}>
           <View style={styles.titleWrap}>
             <Text style={styles.titleText}>편지를 받을 지역을</Text>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={styles.counterWrap}>
               <Text style={styles.titleText}>선택해주세요</Text>
               <TouchableWithoutFeedback onPress={onStartNotice}>
                 <Image
-                  style={{marginLeft: 3, height: 20, width: 20}}
+                  style={styles.noticeButtonImage}
                   source={require('../../Assets/notice.png')}
                 />
               </TouchableWithoutFeedback>
             </View>
           </View>
           <Animated.View
-            style={{
-              position: 'absolute',
-              top: 100,
-              left: 17,
-              width: 288,
-              height: 35,
-              zIndex: 2,
-              opacity: fadeAnim,
-            }}>
+            style={[
+              styles.notice,
+              {
+                opacity: fadeAnim,
+              },
+            ]}>
             <ImageBackground
-              style={{
-                width: 288,
-                height: 35,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
+              style={styles.noticeBGImage}
               source={require('../../Assets/noticeBalloon.png')}>
-              <Text
-                style={{
-                  fontFamily: 'Galmuri11',
-                  fontSize: 12,
-                  color: '#0000cc',
-                }}>
+              <Text style={styles.noticeText}>
                 편지를 배달하는 시간을 계산하기 위해 사용돼요!
               </Text>
             </ImageBackground>
@@ -176,14 +182,14 @@ export function LocationForm({navigation}: Props) {
         </View>
 
         <View style={styles.locationWrap}>
-          <View style={styles.cityBox}>
+          <View style={styles.regionBox}>
             <DropDownPicker
-              open={openCity}
-              value={selectedCity}
-              items={cities}
-              setOpen={setOpenCity}
+              open={openRegion}
+              value={selectedRegionId}
+              items={regions}
+              setOpen={setOpenRegion}
               onOpen={onCityOpen}
-              setValue={setSelectedCity}
+              setValue={setSelectedRegionId}
               autoScroll={true}
               placeholder="시 · 도 선택"
               zIndex={2}
@@ -193,12 +199,12 @@ export function LocationForm({navigation}: Props) {
           </View>
           <View>
             <DropDownPicker
-              open={openCounty}
-              value={selectedCounty}
-              items={counties}
-              setOpen={setOpenCounty}
-              onOpen={onCountyOpen}
-              setValue={setSelectedCounty}
+              open={openCity}
+              value={selectedCityId}
+              items={cities}
+              setOpen={setOpenCity}
+              onOpen={onRegionOpen}
+              setValue={setSelectedCityId}
               autoScroll={true}
               placeholder="군 · 구 선택"
               zIndex={1}
@@ -230,15 +236,36 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   titleText: {fontSize: 18, fontFamily: 'Galmuri11', color: '#0000cc'},
+  counterWrap: {flexDirection: 'row', alignItems: 'center'},
+  noticeButtonImage: {marginLeft: 3, height: 20, width: 20},
+  notice: {
+    position: 'absolute',
+    top: 100,
+    left: 27,
+    width: 288,
+    height: 35,
+  },
+  noticeBGImage: {
+    width: 288,
+    height: 35,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noticeText: {
+    fontFamily: 'Galmuri11',
+    fontSize: 12,
+    color: '#0000cc',
+  },
   locationWrap: {
     flex: 1,
     marginHorizontal: 24,
-    zIndex: 1,
+    zIndex: -1,
   },
-  cityBox: {
+  regionBox: {
     marginBottom: 12,
+    zIndex: 2,
   },
-  countyBox: {},
+  cityBox: {},
   picker: {
     borderRadius: 10,
     borderColor: '#0000cc',

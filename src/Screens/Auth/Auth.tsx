@@ -43,18 +43,14 @@ export function Auth({navigation}: Props) {
           idToken: token.idToken,
         };
 
-        try {
-          const {registerToken} = await postToken(tokenInfo);
+        const {registerToken} = await postToken(tokenInfo);
 
-          if (registerToken) {
-            store.setRegisterToken(registerToken);
-            navigation.navigate('NicknameForm');
-          }
-        } catch (error: any) {
-          console.error(error.message);
+        if (registerToken) {
+          store.setRegisterToken(registerToken);
+          navigation.navigate('NicknameForm');
         }
       } else {
-        throw new Error('KakaoOAuthToken가 아닌 토큰');
+        throw new Error('KakaoOAuthToken 형식이 아님');
       }
     } catch (err: any) {
       console.error(err.message);

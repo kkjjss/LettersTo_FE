@@ -7,11 +7,13 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  SafeAreaView,
   View,
+  Platform,
+  KeyboardAvoidingView,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import useStore from '../Store/store';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 type Props = {
   isModalVisible: boolean;
@@ -19,10 +21,6 @@ type Props = {
 };
 
 export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
-  const hideModal = () => {
-    setModalVisible(false);
-  };
-
   const [nickname, setNickname] = useState('');
   const [tempNickname, setTempNickname] = useState('');
   const [isFormCorrect, setIsFormCorrect] = useState(false);
@@ -31,6 +29,12 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
   const [activateNext, setActivateNext] = useState(false);
 
   const store = useStore();
+
+  const insets = useSafeAreaInsets();
+
+  const hideModal = () => {
+    setModalVisible(false);
+  };
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -41,13 +45,13 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
   });
 
   const checkNicknameAlreadyUsed = async () => {
-    if (nickname === store.nickname) {
-      setIsAlreadyUsed(true);
-      alert.start();
-    } else {
-      setIsAlreadyUsed(false);
-      checkNicknameFormCorrect();
-    }
+    // if (nickname === store.nickname) {
+    setIsAlreadyUsed(true);
+    alert.start();
+    // } else {
+    // setIsAlreadyUsed(false);
+    // checkNicknameFormCorrect();
+    // }
   };
 
   const checkNicknameFormCorrect = async () => {
@@ -103,19 +107,23 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
   return (
     <Modal
       isVisible={isModalVisible}
-      onSwipeComplete={hideModal}
-      swipeDirection={['down']}
       onBackdropPress={hideModal}
       propagateSwipe={true}
       style={{margin: 0, justifyContent: 'flex-end'}}>
-      <SafeAreaView>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <View
-          style={{
-            backgroundColor: 'white',
-            borderTopRightRadius: 10,
-            borderTopLeftRadius: 10,
-            borderColor: '#0000cc',
-          }}>
+          style={[
+            {
+              backgroundColor: 'white',
+              borderTopRightRadius: 10,
+              borderTopLeftRadius: 10,
+              borderColor: '#0000cc',
+            },
+            {
+              paddingBottom: insets.bottom,
+            },
+          ]}>
           <View
             style={{
               flexDirection: 'row',
@@ -131,7 +139,11 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
               />
             </Pressable>
             <Text
-              style={{fontFamily: 'Galmuri11', fontSize: 15, color: '#0000cc'}}>
+              style={{
+                fontFamily: 'Galmuri11',
+                fontSize: 15,
+                color: '#0000cc',
+              }}>
               별명 변경
             </Text>
             <View style={{width: 28}} />
@@ -182,7 +194,7 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
             </View>
           </Pressable>
         </View>
-      </SafeAreaView>
+      </KeyboardAvoidingView>
     </Modal>
   );
 };
