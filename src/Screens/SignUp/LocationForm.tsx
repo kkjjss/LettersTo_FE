@@ -169,6 +169,7 @@ export function LocationForm({navigation}: Props) {
               styles.notice,
               {
                 opacity: fadeAnim,
+                zIndex: 1,
               },
             ]}>
             <ImageBackground
@@ -259,7 +260,7 @@ const styles = StyleSheet.create({
   locationWrap: {
     flex: 1,
     marginHorizontal: 24,
-    zIndex: -1,
+    zIndex: 0,
   },
   regionBox: {
     marginBottom: 12,

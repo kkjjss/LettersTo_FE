@@ -1,19 +1,18 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {
-  Animated,
-  Image,
   Pressable,
-  ScrollView,
-  StyleSheet,
   Text,
-  TextInput,
   View,
-  Platform,
-  KeyboardAvoidingView,
+  Modal,
+  StyleSheet,
+  TextInput,
+  TouchableWithoutFeedback,
+  Image,
+  Animated,
+  ScrollView,
 } from 'react-native';
-import Modal from 'react-native-modal';
+import {useKeyboardHeight} from '../Hooks/useKeyboardHeight';
 import useStore from '../Store/store';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 type Props = {
   isModalVisible: boolean;
@@ -28,9 +27,9 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
   const [isAlreadyUsed, setIsAlreadyUsed] = useState(false);
   const [activateNext, setActivateNext] = useState(false);
 
-  const store = useStore();
+  const {keyboardHeight, keyboardOn} = useKeyboardHeight();
 
-  const insets = useSafeAreaInsets();
+  const store = useStore();
 
   const hideModal = () => {
     setModalVisible(false);
@@ -45,13 +44,13 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
   });
 
   const checkNicknameAlreadyUsed = async () => {
-    // if (nickname === store.nickname) {
-    setIsAlreadyUsed(true);
-    alert.start();
-    // } else {
-    // setIsAlreadyUsed(false);
-    // checkNicknameFormCorrect();
-    // }
+    if (nickname === 'Aaa') {
+      setIsAlreadyUsed(true);
+      alert.start();
+    } else {
+      setIsAlreadyUsed(false);
+      checkNicknameFormCorrect();
+    }
   };
 
   const checkNicknameFormCorrect = async () => {
@@ -106,105 +105,110 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
 
   return (
     <Modal
-      isVisible={isModalVisible}
-      onBackdropPress={hideModal}
-      propagateSwipe={true}
-      style={{margin: 0, justifyContent: 'flex-end'}}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <View
-          style={[
-            {
-              backgroundColor: 'white',
-              borderTopRightRadius: 10,
-              borderTopLeftRadius: 10,
-              borderColor: '#0000cc',
-            },
-            {
-              paddingBottom: insets.bottom,
-            },
-          ]}>
-          <View
-            style={{
-              flexDirection: 'row',
-              marginVertical: 12,
-              marginHorizontal: 16,
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}>
+      statusBarTranslucent={true} // android
+      animationType="slide"
+      transparent={true}
+      visible={isModalVisible}>
+      <View style={styles.container}>
+        <View style={styles.modalView}>
+          <View style={styles.header}>
             <Pressable onPress={hideModal}>
               <Image
                 source={require('../Assets/close.png')}
-                style={{height: 28, width: 28}}
+                style={styles.closeButton}
               />
             </Pressable>
-            <Text
-              style={{
-                fontFamily: 'Galmuri11',
-                fontSize: 15,
-                color: '#0000cc',
-              }}>
-              별명 변경
-            </Text>
-            <View style={{width: 28}} />
+            <Text style={styles.title}>별명 변경</Text>
+            <View style={styles.headerBlank} />
           </View>
-          <ScrollView>
-            <View style={styles.nicknameWrap}>
-              <View style={styles.nicknameForm}>
-                <TextInput
-                  style={styles.nicknameInput}
-                  value={tempNickname}
-                  onChangeText={changeNickname}
-                  placeholder="새로운 별명을 입력해주세요."
-                />
-              </View>
-            </View>
+          <ScrollView
+            style={[
+              styles.nickname,
+              {paddingBottom: (keyboardOn ? 30 : 100) + keyboardHeight},
+            ]}>
+            <TextInput
+              style={styles.nicknameInput}
+              value={tempNickname}
+              onChangeText={changeNickname}
+              placeholder="새로운 별명을 입력해주세요."
+            />
+
             <Animated.View style={[styles.alert, {opacity: fadeAnim}]}>
-              {isAlreadyUsed ? (
-                <Text style={styles.alertSuccess}>
-                  이미 사용중인 별명이에요.
-                </Text>
-              ) : isFormCorrect ? (
-                !isDuplicate ? (
-                  <Text style={styles.alertSuccess}>
-                    사용 가능한 별명이에요.
-                  </Text>
+              {!isAlreadyUsed ? (
+                isFormCorrect ? (
+                  !isDuplicate ? (
+                    <Text style={styles.alertSuccess}>
+                      사용 가능한 별명이에요.
+                    </Text>
+                  ) : (
+                    <Text style={styles.alertFail}>
+                      이미 사용중인 별명이에요.
+                    </Text>
+                  )
                 ) : (
                   <Text style={styles.alertFail}>
-                    이미 사용중인 별명이에요.
+                    3-10자 이내의 별명을 입력해주세요.
                   </Text>
                 )
               ) : (
-                <Text style={styles.alertFail}>
-                  3-10자 이내의 별명을 입력해주세요.
-                </Text>
+                <Text style={styles.alertFail}>이미 사용중인 별명이에요.</Text>
               )}
             </Animated.View>
           </ScrollView>
+
           <Pressable disabled={!activateNext} onPress={hideModal}>
             <View
               style={[
-                styles.completeButton,
+                styles.changeButton,
                 // eslint-disable-next-line react-native/no-inline-styles
                 {
                   backgroundColor: activateNext ? '#ff6ece' : '#ffc7f0',
                 },
               ]}>
-              <Text style={styles.completeButtonText}>변경하기</Text>
+              <Text style={styles.changeButtonText}>변경하기</Text>
             </View>
           </Pressable>
         </View>
-      </KeyboardAvoidingView>
+      </View>
     </Modal>
   );
 };
-
 const styles = StyleSheet.create({
-  nicknameWrap: {
+  container: {
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
+  modalView: {
+    backgroundColor: 'white',
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  header: {
+    flexDirection: 'row',
+    marginVertical: 12,
+    marginHorizontal: 16,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  closeButton: {height: 28, width: 28},
+  title: {
+    fontFamily: 'Galmuri11',
+    fontSize: 15,
+    color: '#0000cc',
+  },
+  headerBlank: {width: 28},
+  nickname: {
     marginBottom: 10,
     marginHorizontal: 24,
   },
-  nicknameForm: {},
   nicknameInput: {
     padding: 17,
     height: 54,
@@ -215,8 +219,7 @@ const styles = StyleSheet.create({
     color: '#0000cc',
   },
   alert: {
-    marginHorizontal: 24,
-    marginBottom: 100,
+    marginTop: 10,
   },
   alertSuccess: {
     fontFamily: 'Galmuri11',
@@ -226,12 +229,12 @@ const styles = StyleSheet.create({
     fontFamily: 'Galmuri11',
     color: '#ff44cc',
   },
-  completeButton: {
+  changeButton: {
     marginHorizontal: 16,
     borderRadius: 10,
     height: 52,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  completeButtonText: {fontFamily: 'Galmuri11', color: 'white'},
+  changeButtonText: {fontFamily: 'Galmuri11', color: 'white'},
 });
