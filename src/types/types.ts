@@ -10,6 +10,7 @@ export interface RegisterToken {
 }
 
 export type Topics = {
+  group: 'ENTERTAINMENT' | 'LIFE_HOBBY' | 'KNOWLEDGE_ETC';
   id: number;
   name: string;
 }[];

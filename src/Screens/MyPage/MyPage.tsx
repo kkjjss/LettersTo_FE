@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {View, Text, StyleSheet, SafeAreaView, Pressable} from 'react-native';
 import type {StackParamsList} from '../../types/stackParamList';
@@ -6,15 +6,20 @@ import {Header} from '../../Components/Header';
 import {ListItem, ListName} from '../../Components/MyPageList';
 
 import {NicknameModal} from '../../Modals/NicknameModal';
+import {TopicsModal} from '../../Modals/TopicsModal';
 
 type Props = NativeStackScreenProps<StackParamsList, 'MyPage'>;
 
 export function MyPage({navigation}: Props) {
-  const [isNicknameModalVisible, setNicknameModalVisible] =
-    React.useState(false);
+  const [isNicknameModalVisible, setNicknameModalVisible] = useState(false);
+  const [isTopicsModalVisible, setTopicsModalVisible] = useState(false);
 
   const openNicknameModal = () => {
     setNicknameModalVisible(true);
+  };
+
+  const openTopicsModal = () => {
+    setTopicsModalVisible(true);
   };
 
   return (
@@ -33,7 +38,7 @@ export function MyPage({navigation}: Props) {
 
       <View style={{margin: 24}}>
         <ListName name="내 정보" />
-        <ListItem itmeName="관심사 관리" openModal={openNicknameModal} />
+        <ListItem itmeName="관심사 관리" openModal={openTopicsModal} />
         <ListItem itmeName="성향 관리" openModal={openNicknameModal} />
         <ListItem itmeName="위치 정보 관리" openModal={openNicknameModal} />
       </View>
@@ -41,6 +46,10 @@ export function MyPage({navigation}: Props) {
       <NicknameModal
         isModalVisible={isNicknameModalVisible}
         setModalVisible={setNicknameModalVisible}
+      />
+      <TopicsModal
+        isModalVisible={isTopicsModalVisible}
+        setModalVisible={setTopicsModalVisible}
       />
     </SafeAreaView>
   );

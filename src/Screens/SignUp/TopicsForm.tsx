@@ -5,8 +5,8 @@ import {
   Text,
   StyleSheet,
   Animated,
-  TouchableHighlight,
   SafeAreaView,
+  ScrollView,
 } from 'react-native';
 import type {StackParamsList} from '../../types/stackParamList';
 import {LinearGradient} from 'expo-linear-gradient';
@@ -17,6 +17,7 @@ import {ResetButton} from '../../Components/ResetButton';
 import useStore from '../../Store/store';
 import {Topics} from '../../types/types';
 import {getTopics} from '../../APIs/topic';
+import {TopicButton} from '../../Components/TopicButton';
 
 type Props = NativeStackScreenProps<StackParamsList, 'TopicsForm'>;
 
@@ -65,7 +66,7 @@ export function TopicsForm({navigation}: Props) {
   useEffect(() => {
     try {
       getTopics().then(topicData => {
-        setTopics(topicData);
+        setTopics([...topicData]);
       });
     } catch (error: any) {
       console.error(error.message);
@@ -98,33 +99,53 @@ export function TopicsForm({navigation}: Props) {
             <Text style={styles.counter}>{counter} / 7</Text>
           </View>
         </View>
-        <View style={styles.topicBox}>
+        <ScrollView style={styles.topicBox}>
+          <Text style={styles.category}>엔터테인먼트</Text>
           <View style={styles.topicWrap}>
-            {topics.map(topic => {
-              return (
-                <TouchableHighlight
-                  key={topic.id}
-                  style={styles.underlayer}
-                  underlayColor={'#0000cc'}
-                  activeOpacity={0.7}
-                  onPress={() => selectTopic(topic.id)}>
-                  <View
-                    style={[
-                      styles.topic,
-                      selectedTopicIds.includes(topic.id)
-                        ? styles.selectedTopic
-                        : styles.notSelectedTopic,
-                    ]}>
-                    <Text style={styles.topicText}>{topic.name}</Text>
-                  </View>
-                </TouchableHighlight>
-              );
-            })}
+            {topics
+              .filter(topic => topic.group === 'ENTERTAINMENT')
+              .map(topic => {
+                return (
+                  <TopicButton
+                    topic={topic}
+                    selectTopic={selectTopic}
+                    selectedTopicIds={selectedTopicIds}
+                  />
+                );
+              })}
           </View>
-          <Animated.View style={[styles.alert, {opacity: fadeAnim}]}>
-            <Text style={styles.alertText}>최대 7개까지만 선택 가능해요!</Text>
-          </Animated.View>
-        </View>
+          <Text style={styles.category}>생활/취미</Text>
+          <View style={styles.topicWrap}>
+            {topics
+              .filter(topic => topic.group === 'LIFE_HOBBY')
+              .map(topic => {
+                return (
+                  <TopicButton
+                    topic={topic}
+                    selectTopic={selectTopic}
+                    selectedTopicIds={selectedTopicIds}
+                  />
+                );
+              })}
+          </View>
+          <Text style={styles.category}>지식/기타</Text>
+          <View style={styles.topicWrap}>
+            {topics
+              .filter(topic => topic.group === 'KNOWLEDGE_ETC')
+              .map(topic => {
+                return (
+                  <TopicButton
+                    topic={topic}
+                    selectTopic={selectTopic}
+                    selectedTopicIds={selectedTopicIds}
+                  />
+                );
+              })}
+          </View>
+        </ScrollView>
+        <Animated.View style={[styles.alert, {opacity: fadeAnim}]}>
+          <Text style={styles.alertText}>최대 7개까지만 선택 가능해요!</Text>
+        </Animated.View>
         <NextButton activateNext={activateNext} onPress={goToPersonalityForm} />
       </SafeAreaView>
     </LinearGradient>
@@ -160,6 +181,11 @@ const styles = StyleSheet.create({
   topicWrap: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+  },
+  category: {
+    fontFamily: 'Galmuri11',
+    color: '#0000cc',
+    marginBottom: 10,
   },
   underlayer: {
     marginBottom: 12,
