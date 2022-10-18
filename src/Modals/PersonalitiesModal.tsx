@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {
   Text,
   View,
@@ -22,7 +22,6 @@ type Props = {
 };
 
 export function PersonalitiesModal({isModalVisible, setModalVisible}: Props) {
-  const [counter, setCounter] = useState(0);
   const [personalities, setPersonalities] = useState<Personalities>([]);
   const [selectedPersonalityIds, setSelectedPersonalityIds] = useState<
     number[]
@@ -45,6 +44,11 @@ export function PersonalitiesModal({isModalVisible, setModalVisible}: Props) {
       useNativeDriver: true,
     }),
   ]);
+
+  const counter = useMemo(
+    () => selectedPersonalityIds.length,
+    [selectedPersonalityIds],
+  );
 
   const selectPersonality = (personalityId: number) => {
     alert.reset();
@@ -91,17 +95,15 @@ export function PersonalitiesModal({isModalVisible, setModalVisible}: Props) {
         setSelectedPersonalityIds(store.userInfo.personalityIds);
       }
     }
-  }, [isModalVisible]);
+  }, [isModalVisible, store.userInfo.personalityIds]);
 
   useEffect(() => {
-    let count = selectedPersonalityIds.length;
-    setCounter(count);
-    if (count > 0) {
+    if (counter > 0) {
       setActivateUpdate(true);
     } else {
       setActivateUpdate(false);
     }
-  }, [selectedPersonalityIds]);
+  }, [counter]);
 
   return (
     <Modal

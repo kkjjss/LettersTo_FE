@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {
   Text,
   View,
@@ -22,7 +22,6 @@ type Props = {
 };
 
 export const TopicsModal = ({isModalVisible, setModalVisible}: Props) => {
-  const [counter, setCounter] = useState(0);
   const [topics, setTopics] = useState<Topics>([]);
   const [selectedTopicIds, setSelectedTopicIds] = useState<number[]>([]);
   const [activateUpdate, setActivateUpdate] = useState(true);
@@ -43,6 +42,8 @@ export const TopicsModal = ({isModalVisible, setModalVisible}: Props) => {
       useNativeDriver: true,
     }),
   ]);
+
+  const counter = useMemo(() => selectedTopicIds.length, [selectedTopicIds]);
 
   const selectTopic = (topicId: number) => {
     alert.reset();
@@ -83,17 +84,15 @@ export const TopicsModal = ({isModalVisible, setModalVisible}: Props) => {
         setSelectedTopicIds(store.userInfo.topicIds);
       }
     }
-  }, [isModalVisible]);
+  }, [isModalVisible, store.userInfo.topicIds]);
 
   useEffect(() => {
-    let count = selectedTopicIds.length;
-    setCounter(count);
-    if (count > 0) {
+    if (counter > 0) {
       setActivateUpdate(true);
     } else {
       setActivateUpdate(false);
     }
-  }, [selectedTopicIds]);
+  }, [counter]);
 
   return (
     <Modal

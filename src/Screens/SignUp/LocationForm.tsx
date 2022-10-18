@@ -21,7 +21,7 @@ import useStore from '../../Store/store';
 
 import {getRegions, getCities} from '../../APIs/geolocation';
 
-import {signUp} from '../../APIs/member';
+// import {signUp} from '../../APIs/member';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type Props = NativeStackScreenProps<StackParamsList, 'LocationForm'>;
@@ -117,19 +117,24 @@ export function LocationForm({navigation}: Props) {
     console.log(regionsList);
   };
 
-  const getCitiesList = async (regionId: number) => {
-    const citiesList = (await getCities(regionId)).map(({id, name}) => {
-      return {value: id, label: name};
-    });
-    setCities(citiesList);
-  };
+  useEffect(() => {
+    getRegionsList();
+  }, []);
 
   useEffect(() => {
+    const getCitiesList = async (regionId: number) => {
+      const citiesList = (await getCities(regionId)).map(({id, name}) => {
+        return {value: id, label: name};
+      });
+      setCities(citiesList);
+    };
+
     if (selectedRegionId) {
       getCitiesList(selectedRegionId);
     } else {
       setCities([{label: '', value: 0}]);
     }
+
     setSelectedCityId(null);
   }, [selectedRegionId]);
 
@@ -140,10 +145,6 @@ export function LocationForm({navigation}: Props) {
       setActivateSignUp(false);
     }
   }, [selectedRegionId, selectedCityId]);
-
-  useEffect(() => {
-    getRegionsList();
-  }, []);
 
   return (
     <LinearGradient

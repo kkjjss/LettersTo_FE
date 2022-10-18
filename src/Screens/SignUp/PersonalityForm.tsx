@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   View,
@@ -23,7 +23,6 @@ type Props = NativeStackScreenProps<StackParamsList, 'PersonalityForm'>;
 
 export function PersonalityForm({navigation}: Props) {
   const store = useStore();
-  const [counter, setCounter] = useState(0);
   const [personalities, setPersonalities] = useState<Personalities>([]);
   const [selectedPersonalityIds, setSelectedPersonalityIds] = useState<
     number[]
@@ -44,6 +43,11 @@ export function PersonalityForm({navigation}: Props) {
       useNativeDriver: true,
     }),
   ]);
+
+  const counter = useMemo(
+    () => selectedPersonalityIds.length,
+    [selectedPersonalityIds],
+  );
 
   const selectPersonality = (personalityId: number) => {
     alert.reset();
@@ -81,14 +85,12 @@ export function PersonalityForm({navigation}: Props) {
   }, []);
 
   useEffect(() => {
-    let count = selectedPersonalityIds.length;
-    setCounter(count);
-    if (count > 0) {
+    if (counter > 0) {
       setActivateNext(true);
     } else {
       setActivateNext(false);
     }
-  }, [selectedPersonalityIds]);
+  }, [counter]);
 
   return (
     <LinearGradient
