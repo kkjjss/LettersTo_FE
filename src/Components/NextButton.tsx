@@ -7,8 +7,14 @@ type Props = {
 };
 
 export function NextButton({activateNext, onPress}: Props) {
+  const [disable, setDisable] = React.useState(false);
   return (
-    <TouchableWithoutFeedback disabled={!activateNext} onPress={onPress}>
+    <TouchableWithoutFeedback
+      disabled={!activateNext || disable}
+      onPress={() => {
+        setDisable(true);
+        onPress();
+      }}>
       <View
         style={[
           styles.nextButton,

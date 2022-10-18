@@ -43,33 +43,6 @@ export function NicknameForm({navigation}: Props) {
     setActivateNext(false);
   };
 
-  const checkNicknameFormCorrect = async () => {
-    if (nickname) {
-      if (/^[가-힣A-Za-z0-9]{3,10}$/.test(nickname)) {
-        setIsFormCorrect(true);
-        checkNicknameExistss();
-      } else {
-        setIsFormCorrect(false);
-        alert.start();
-      }
-    }
-  };
-
-  const checkNicknameExistss = async () => {
-    if (nickname) {
-      try {
-        const response = await existsNickname(nickname);
-        setIsExists(response);
-        if (response === false) {
-          setActivateNext(true);
-        }
-        alert.start();
-      } catch (error: any) {
-        console.error(error.message);
-      }
-    }
-  };
-
   const goToTopicForm = () => {
     store.setNickname(nickname);
     navigation.navigate('TopicsForm');
@@ -83,6 +56,33 @@ export function NicknameForm({navigation}: Props) {
   }, [tempNickname]);
 
   useEffect(() => {
+    const checkNicknameFormCorrect = async () => {
+      if (nickname) {
+        if (/^[가-힣A-Za-z0-9]{3,10}$/.test(nickname)) {
+          setIsFormCorrect(true);
+          checkNicknameExistss();
+        } else {
+          setIsFormCorrect(false);
+          alert.start();
+        }
+      }
+    };
+
+    const checkNicknameExistss = async () => {
+      if (nickname) {
+        try {
+          const response = await existsNickname(nickname);
+          setIsExists(response);
+          if (response === false) {
+            setActivateNext(true);
+          }
+          alert.start();
+        } catch (error: any) {
+          console.error(error.message);
+        }
+      }
+    };
+
     checkNicknameFormCorrect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nickname]);

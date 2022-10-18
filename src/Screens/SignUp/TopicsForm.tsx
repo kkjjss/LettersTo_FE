@@ -17,16 +17,17 @@ import {ResetButton} from '../../Components/ResetButton';
 import useStore from '../../Store/store';
 import {Topics} from '../../types/types';
 import {getTopics} from '../../APIs/topic';
-import {TopicButton} from '../../Components/TopicButton';
+import {TopicList} from '../../Components/TopicList';
 
 type Props = NativeStackScreenProps<StackParamsList, 'TopicsForm'>;
 
 export function TopicsForm({navigation}: Props) {
-  const store = useStore();
   const [counter, setCounter] = useState(0);
   const [topics, setTopics] = useState<Topics>([]);
   const [selectedTopicIds, setSelectedTopicIds] = useState<number[]>([]);
   const [activateNext, setActivateNext] = useState<boolean>(false);
+
+  const store = useStore();
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -100,48 +101,11 @@ export function TopicsForm({navigation}: Props) {
           </View>
         </View>
         <ScrollView style={styles.topicBox}>
-          <Text style={styles.category}>엔터테인먼트</Text>
-          <View style={styles.topicWrap}>
-            {topics
-              .filter(topic => topic.group === 'ENTERTAINMENT')
-              .map(topic => {
-                return (
-                  <TopicButton
-                    topic={topic}
-                    selectTopic={selectTopic}
-                    selectedTopicIds={selectedTopicIds}
-                  />
-                );
-              })}
-          </View>
-          <Text style={styles.category}>생활/취미</Text>
-          <View style={styles.topicWrap}>
-            {topics
-              .filter(topic => topic.group === 'LIFE_HOBBY')
-              .map(topic => {
-                return (
-                  <TopicButton
-                    topic={topic}
-                    selectTopic={selectTopic}
-                    selectedTopicIds={selectedTopicIds}
-                  />
-                );
-              })}
-          </View>
-          <Text style={styles.category}>지식/기타</Text>
-          <View style={styles.topicWrap}>
-            {topics
-              .filter(topic => topic.group === 'KNOWLEDGE_ETC')
-              .map(topic => {
-                return (
-                  <TopicButton
-                    topic={topic}
-                    selectTopic={selectTopic}
-                    selectedTopicIds={selectedTopicIds}
-                  />
-                );
-              })}
-          </View>
+          <TopicList
+            topics={topics}
+            selectTopic={selectTopic}
+            selectedTopicIds={selectedTopicIds}
+          />
         </ScrollView>
         <Animated.View style={[styles.alert, {opacity: fadeAnim}]}>
           <Text style={styles.alertText}>최대 7개까지만 선택 가능해요!</Text>

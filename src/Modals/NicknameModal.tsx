@@ -6,11 +6,12 @@ import {
   Modal,
   StyleSheet,
   TextInput,
-  TouchableWithoutFeedback,
   Image,
   Animated,
   ScrollView,
 } from 'react-native';
+import {existsNickname} from '../APIs/member';
+import {UpdateButton} from '../Components/UpdateButton';
 import {useKeyboardHeight} from '../Hooks/useKeyboardHeight';
 import useStore from '../Store/store';
 
@@ -23,9 +24,9 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
   const [nickname, setNickname] = useState('');
   const [tempNickname, setTempNickname] = useState('');
   const [isFormCorrect, setIsFormCorrect] = useState(false);
-  const [isDuplicate, setIsDuplicate] = useState(false);
+  const [isExists, setIsExists] = useState(false);
   const [isAlreadyUsed, setIsAlreadyUsed] = useState(false);
-  const [activateNext, setActivateNext] = useState(false);
+  const [activateUpdate, setActivateUpdate] = useState(false);
 
   const {keyboardHeight, keyboardOn} = useKeyboardHeight();
 
@@ -33,6 +34,10 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
 
   const hideModal = () => {
     setModalVisible(false);
+  };
+
+  const updateNickname = () => {
+    hideModal();
   };
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -43,52 +48,10 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
     useNativeDriver: true,
   });
 
-  const checkNicknameAlreadyUsed = async () => {
-    if (nickname === 'Aaa') {
-      setIsAlreadyUsed(true);
-      alert.start();
-    } else {
-      setIsAlreadyUsed(false);
-      checkNicknameFormCorrect();
-    }
-  };
-
-  const checkNicknameFormCorrect = async () => {
-    if (nickname) {
-      if (/^[가-힣A-Za-z0-9]{3,10}$/.test(nickname)) {
-        setIsFormCorrect(true);
-        checkNicknameDuplicates();
-      } else {
-        setIsFormCorrect(false);
-        alert.start();
-      }
-    }
-  };
-
-  const checkNicknameDuplicates = async () => {
-    if (nickname) {
-      // api request
-      let response: boolean;
-      if (nickname !== 'Sss') {
-        response = true;
-      } else {
-        response = false;
-      }
-
-      if (response === true) {
-        setIsDuplicate(false);
-        setActivateNext(true);
-      } else {
-        setIsDuplicate(true);
-      }
-      alert.start();
-    }
-  };
-
   const changeNickname = (v: string) => {
     alert.reset();
     setTempNickname(v);
-    setActivateNext(false);
+    setActivateUpdate(false);
   };
 
   useEffect(() => {
@@ -99,6 +62,43 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
   }, [tempNickname]);
 
   useEffect(() => {
+    const checkNicknameAlreadyUsed = async () => {
+      if (nickname === store.userInfo.nickname) {
+        setIsAlreadyUsed(true);
+        alert.start();
+      } else {
+        setIsAlreadyUsed(false);
+        checkNicknameFormCorrect();
+      }
+    };
+
+    const checkNicknameFormCorrect = async () => {
+      if (nickname) {
+        if (/^[가-힣A-Za-z0-9]{3,10}$/.test(nickname)) {
+          setIsFormCorrect(true);
+          checkNicknameExists();
+        } else {
+          setIsFormCorrect(false);
+          alert.start();
+        }
+      }
+    };
+
+    const checkNicknameExists = async () => {
+      if (nickname) {
+        try {
+          const response = await existsNickname(nickname);
+          setIsExists(response);
+          if (response === false) {
+            setActivateUpdate(true);
+          }
+          alert.start();
+        } catch (error: any) {
+          console.error(error.message);
+        }
+      }
+    };
+
     checkNicknameAlreadyUsed();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nickname]);
@@ -108,6 +108,7 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
       statusBarTranslucent={true} // android
       animationType="slide"
       transparent={true}
+      onRequestClose={hideModal}
       visible={isModalVisible}>
       <View style={styles.container}>
         <View style={styles.modalView}>
@@ -136,7 +137,7 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
             <Animated.View style={[styles.alert, {opacity: fadeAnim}]}>
               {!isAlreadyUsed ? (
                 isFormCorrect ? (
-                  !isDuplicate ? (
+                  !isExists ? (
                     <Text style={styles.alertSuccess}>
                       사용 가능한 별명이에요.
                     </Text>
@@ -156,18 +157,10 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
             </Animated.View>
           </ScrollView>
 
-          <Pressable disabled={!activateNext} onPress={hideModal}>
-            <View
-              style={[
-                styles.changeButton,
-                // eslint-disable-next-line react-native/no-inline-styles
-                {
-                  backgroundColor: activateNext ? '#ff6ece' : '#ffc7f0',
-                },
-              ]}>
-              <Text style={styles.changeButtonText}>변경하기</Text>
-            </View>
-          </Pressable>
+          <UpdateButton
+            activateUpdate={activateUpdate}
+            onPress={updateNickname}
+          />
         </View>
       </View>
     </Modal>

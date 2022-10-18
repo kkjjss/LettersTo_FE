@@ -1,6 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {
-  Pressable,
   Text,
   View,
   Modal,
@@ -14,7 +13,8 @@ import {ModalHeader} from '../Components/ModalHeader';
 import {Topics} from '../types/types';
 import {getTopics} from '../APIs/topic';
 import {SCREEN_HEIGHT} from '../constants';
-import {TopicButton} from '../Components/TopicButton';
+import {TopicList} from '../Components/TopicList';
+import {UpdateButton} from '../Components/UpdateButton';
 
 type Props = {
   isModalVisible: boolean;
@@ -22,11 +22,12 @@ type Props = {
 };
 
 export const TopicsModal = ({isModalVisible, setModalVisible}: Props) => {
-  const store = useStore();
   const [counter, setCounter] = useState(0);
   const [topics, setTopics] = useState<Topics>([]);
   const [selectedTopicIds, setSelectedTopicIds] = useState<number[]>([]);
-  const [activateNext, setActivateNext] = useState<boolean>(false);
+  const [activateUpdate, setActivateUpdate] = useState(true);
+
+  const store = useStore();
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -58,6 +59,10 @@ export const TopicsModal = ({isModalVisible, setModalVisible}: Props) => {
     setModalVisible(false);
   };
 
+  const updateTopics = () => {
+    hideModal();
+  };
+
   const reset = () => {
     setSelectedTopicIds([]);
   };
@@ -73,12 +78,20 @@ export const TopicsModal = ({isModalVisible, setModalVisible}: Props) => {
   }, []);
 
   useEffect(() => {
+    if (isModalVisible) {
+      if (store.userInfo.topicIds) {
+        setSelectedTopicIds(store.userInfo.topicIds);
+      }
+    }
+  }, [isModalVisible]);
+
+  useEffect(() => {
     let count = selectedTopicIds.length;
     setCounter(count);
     if (count > 0) {
-      setActivateNext(true);
+      setActivateUpdate(true);
     } else {
-      setActivateNext(false);
+      setActivateUpdate(false);
     }
   }, [selectedTopicIds]);
 
@@ -103,65 +116,20 @@ export const TopicsModal = ({isModalVisible, setModalVisible}: Props) => {
             </View>
           </View>
           <ScrollView style={styles.topicBox}>
-            <Text style={styles.category}>엔터테인먼트</Text>
-            <View style={styles.topicWrap}>
-              {topics
-                .filter(topic => topic.group === 'ENTERTAINMENT')
-                .map(topic => {
-                  return (
-                    <TopicButton
-                      topic={topic}
-                      selectTopic={selectTopic}
-                      selectedTopicIds={selectedTopicIds}
-                    />
-                  );
-                })}
-            </View>
-            <Text style={styles.category}>생활/취미</Text>
-            <View style={styles.topicWrap}>
-              {topics
-                .filter(topic => topic.group === 'LIFE_HOBBY')
-                .map(topic => {
-                  return (
-                    <TopicButton
-                      topic={topic}
-                      selectTopic={selectTopic}
-                      selectedTopicIds={selectedTopicIds}
-                    />
-                  );
-                })}
-            </View>
-            <Text style={styles.category}>지식/기타</Text>
-            <View style={styles.topicWrap}>
-              {topics
-                .filter(topic => topic.group === 'KNOWLEDGE_ETC')
-                .map(topic => {
-                  return (
-                    <TopicButton
-                      topic={topic}
-                      selectTopic={selectTopic}
-                      selectedTopicIds={selectedTopicIds}
-                    />
-                  );
-                })}
-            </View>
+            <TopicList
+              topics={topics}
+              selectTopic={selectTopic}
+              selectedTopicIds={selectedTopicIds}
+            />
           </ScrollView>
           <Animated.View style={[styles.alert, {opacity: fadeAnim}]}>
             <Text style={styles.alertText}>최대 7개까지만 선택 가능해요!</Text>
           </Animated.View>
 
-          <Pressable disabled={!activateNext} onPress={hideModal}>
-            <View
-              style={[
-                styles.changeButton,
-                // eslint-disable-next-line react-native/no-inline-styles
-                {
-                  backgroundColor: activateNext ? '#ff6ece' : '#ffc7f0',
-                },
-              ]}>
-              <Text style={styles.changeButtonText}>변경하기</Text>
-            </View>
-          </Pressable>
+          <UpdateButton
+            activateUpdate={activateUpdate}
+            onPress={updateTopics}
+          />
         </View>
       </View>
     </Modal>

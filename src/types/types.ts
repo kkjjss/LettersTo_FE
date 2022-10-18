@@ -9,11 +9,13 @@ export interface RegisterToken {
   verified: boolean;
 }
 
-export type Topics = {
+export type Topic = {
   group: 'ENTERTAINMENT' | 'LIFE_HOBBY' | 'KNOWLEDGE_ETC';
   id: number;
   name: string;
-}[];
+};
+
+export type Topics = Topic[];
 
 export type Personalities = {
   id: number;

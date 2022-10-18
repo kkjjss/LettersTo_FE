@@ -9,6 +9,12 @@ interface Store {
   registerToken: string | undefined;
   setRegisterToken: (value: string) => void;
 
+  signUpInfo: {
+    nickname: string | undefined;
+    personalityIds: number[] | undefined;
+    topicIds: number[] | undefined;
+    geolocationId: number | undefined;
+  };
   setNickname: (value: string) => void;
 
   setTopicIds: (value: number[]) => void;
@@ -17,12 +23,19 @@ interface Store {
 
   setAddress: (value: number) => void;
 
-  signUpInfo: {
+  userInfo: {
     nickname: string | undefined;
     personalityIds: number[] | undefined;
     topicIds: number[] | undefined;
     geolocationId: number | undefined;
   };
+
+  setUserInfo: (value: {
+    nickname: string | undefined;
+    personalityIds: number[] | undefined;
+    topicIds: number[] | undefined;
+    geolocationId: number | undefined;
+  }) => void;
 }
 
 const useStore = create<Store>(set => ({
@@ -53,6 +66,15 @@ const useStore = create<Store>(set => ({
 
   setAddress: value =>
     set(state => ({signUpInfo: {...state.signUpInfo, geolocationId: value}})),
+
+  userInfo: {
+    nickname: 'Aaa',
+    personalityIds: [1, 2, 3],
+    topicIds: [4, 5, 6],
+    geolocationId: 30,
+  },
+
+  setUserInfo: value => set(() => ({userInfo: value})),
 }));
 
 export default useStore;
