@@ -15,6 +15,7 @@ import {UpdateButton} from '../Components/UpdateButton';
 import {Personalities} from '../types/types';
 import {getPersonalities} from '../APIs/personality';
 import {PersonalityList} from '../Components/PersonalityList';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 type Props = {
   isModalVisible: boolean;
@@ -29,6 +30,8 @@ export function PersonalitiesModal({isModalVisible, setModalVisible}: Props) {
   const [activateUpdate, setActivateUpdate] = useState(true);
 
   const store = useStore();
+
+  const {bottom: SAFE_AREA_BOTTOM} = useSafeAreaInsets();
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -113,7 +116,13 @@ export function PersonalitiesModal({isModalVisible, setModalVisible}: Props) {
       onRequestClose={hideModal}
       visible={isModalVisible}>
       <View style={styles.container}>
-        <View style={styles.modalView}>
+        <View
+          style={[
+            styles.modalView,
+            {
+              paddingBottom: SAFE_AREA_BOTTOM,
+            },
+          ]}>
           <ModalHeader title={'성향 관리'} hideModal={hideModal} />
 
           <View style={styles.titleBox}>
@@ -187,7 +196,7 @@ const styles = StyleSheet.create({
   },
   topicBox: {
     marginHorizontal: 24,
-    height: SCREEN_HEIGHT - 250,
+    height: SCREEN_HEIGHT * 0.6,
   },
   alert: {
     marginHorizontal: 24,

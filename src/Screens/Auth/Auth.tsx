@@ -15,11 +15,14 @@ import {KakaoOAuthToken} from '@react-native-seoul/kakao-login';
 
 import {login} from '@react-native-seoul/kakao-login';
 import useStore from '../../Store/store';
+import {useState} from 'react';
 
 type Props = NativeStackScreenProps<StackParamsList, 'Auth'>;
 
 export function Auth({navigation}: Props) {
   const store = useStore();
+
+  const [disable, setDisable] = useState(false);
 
   function signUpWithSocialService(socialService: string) {
     switch (socialService) {
@@ -36,6 +39,7 @@ export function Auth({navigation}: Props) {
   }
 
   const signUpWithKakao = async (): Promise<void> => {
+    setDisable(true);
     try {
       const token = await login();
       if (isKakaoOAuthToken(token)) {
@@ -56,6 +60,7 @@ export function Auth({navigation}: Props) {
       console.error(err.message);
 
       // test
+      console.log('test');
       store.setRegisterToken('registerToken_test');
       navigation.navigate('NicknameForm');
     }
@@ -72,7 +77,9 @@ export function Auth({navigation}: Props) {
           </Text>
         </View>
         <View style={styles.buttonWrap}>
-          <TouchableWithoutFeedback onPress={signUpWithKakao}>
+          <TouchableWithoutFeedback
+            disabled={disable}
+            onPress={signUpWithKakao}>
             <View style={[styles.loginButton, {backgroundColor: '#F9E54C'}]}>
               <Text style={[styles.loginText]}>카카오로 시작하기</Text>
             </View>
@@ -87,7 +94,6 @@ export function Auth({navigation}: Props) {
             <View
               style={[
                 styles.loginButton,
-                // eslint-disable-next-line react-native/no-inline-styles
                 {
                   backgroundColor: '#ffffff',
                   borderWidth: 1,

@@ -15,6 +15,7 @@ import {getTopics} from '../APIs/topic';
 import {SCREEN_HEIGHT} from '../constants';
 import {TopicList} from '../Components/TopicList';
 import {UpdateButton} from '../Components/UpdateButton';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 type Props = {
   isModalVisible: boolean;
@@ -27,6 +28,8 @@ export const TopicsModal = ({isModalVisible, setModalVisible}: Props) => {
   const [activateUpdate, setActivateUpdate] = useState(true);
 
   const store = useStore();
+
+  const {bottom: SAFE_AREA_BOTTOM} = useSafeAreaInsets();
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -102,7 +105,7 @@ export const TopicsModal = ({isModalVisible, setModalVisible}: Props) => {
       onRequestClose={hideModal}
       visible={isModalVisible}>
       <View style={styles.container}>
-        <View style={styles.modalView}>
+        <View style={[styles.modalView, {paddingBottom: SAFE_AREA_BOTTOM}]}>
           <ModalHeader title={'관심사 관리'} hideModal={hideModal} />
 
           <View style={styles.titleBox}>
@@ -115,7 +118,13 @@ export const TopicsModal = ({isModalVisible, setModalVisible}: Props) => {
               <Text style={styles.counter}>{counter} / 7</Text>
             </View>
           </View>
-          <ScrollView style={styles.topicBox}>
+          <ScrollView
+            style={[
+              styles.topicBox,
+              {
+                height: SCREEN_HEIGHT * 0.6,
+              },
+            ]}>
             <TopicList
               topics={topics}
               selectTopic={selectTopic}
@@ -175,7 +184,6 @@ const styles = StyleSheet.create({
   },
   topicBox: {
     marginHorizontal: 24,
-    height: SCREEN_HEIGHT - 250,
   },
   alert: {
     marginHorizontal: 24,

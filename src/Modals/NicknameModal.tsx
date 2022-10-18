@@ -10,6 +10,7 @@ import {
   Animated,
   ScrollView,
 } from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {existsNickname} from '../APIs/member';
 import {UpdateButton} from '../Components/UpdateButton';
 import {useKeyboardHeight} from '../Hooks/useKeyboardHeight';
@@ -31,6 +32,8 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
   const {keyboardHeight, keyboardOn} = useKeyboardHeight();
 
   const store = useStore();
+
+  const {bottom: SAFE_AREA_BOTTOM} = useSafeAreaInsets();
 
   const hideModal = () => {
     setModalVisible(false);
@@ -110,7 +113,7 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
       onRequestClose={hideModal}
       visible={isModalVisible}>
       <View style={styles.container}>
-        <View style={styles.modalView}>
+        <View style={[styles.modalView, {paddingBottom: SAFE_AREA_BOTTOM}]}>
           <View style={styles.header}>
             <Pressable onPress={hideModal}>
               <Image

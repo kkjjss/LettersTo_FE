@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {
   Text,
   View,
@@ -11,9 +11,13 @@ import {
   ImageBackground,
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {getCities, getRegions} from '../APIs/geolocation';
 import {ModalHeader} from '../Components/ModalHeader';
 import {ResetButton} from '../Components/ResetButton';
-import { SignUpButton } from '../Components/SignUpButton';
+import {SignUpButton} from '../Components/SignUpButton';
+import {UpdateButton} from '../Components/UpdateButton';
+import {SCREEN_HEIGHT} from '../constants';
 type Props = {
   isModalVisible: boolean;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
@@ -28,22 +32,12 @@ export function LocationModal({isModalVisible, setModalVisible}: Props) {
   const [cities, setCities] = useState([{label: '', value: 0}]);
   const [selectedCityId, setSelectedCityId] = useState<null | number>(null);
 
-  const [activateUpdate, setActivateUpdate] = useState(true);
+  const activateUpdate = useMemo(
+    () => (selectedCityId && selectedRegionId ? true : false),
+    [selectedCityId, selectedRegionId],
+  );
 
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-
-  const alert = Animated.sequence([
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 0,
-      useNativeDriver: true,
-    }),
-    Animated.timing(fadeAnim, {
-      toValue: 0,
-      delay: 2000,
-      useNativeDriver: true,
-    }),
-  ]);
+  const {bottom: SAFE_AREA_BOTTOM} = useSafeAreaInsets();
 
   const onRegionOpen = useCallback(() => {
     setOpenRegion(false);
@@ -53,18 +47,41 @@ export function LocationModal({isModalVisible, setModalVisible}: Props) {
     setOpenCity(false);
   }, []);
 
-  const onStartNotice = () => {
-    alert.reset();
-    alert.start();
+  const hideModal = () => {
+    setModalVisible(false);
   };
 
-  const getRegionsList = async () => {
-    const regionsList = (await getRegions()).map(({id, name}) => {
-      return {value: id, label: name};
-    });
-    setRegions(regionsList);
-    console.log(regionsList);
+  const updateLocation = () => {
+    hideModal();
   };
+
+  useEffect(() => {
+    const getRegionsList = async () => {
+      const regionsList = (await getRegions()).map(({id, name}) => {
+        return {value: id, label: name};
+      });
+      setRegions(regionsList);
+    };
+
+    getRegionsList();
+  }, []);
+
+  useEffect(() => {
+    const getCitiesList = async (regionId: number) => {
+      const citiesList = (await getCities(regionId)).map(({id, name}) => {
+        return {value: id, label: name};
+      });
+      setCities(citiesList);
+    };
+
+    if (selectedRegionId) {
+      getCitiesList(selectedRegionId);
+    } else {
+      setCities([{label: '', value: 0}]);
+    }
+
+    setSelectedCityId(null);
+  }, [selectedRegionId]);
 
   return (
     <Modal
@@ -74,7 +91,13 @@ export function LocationModal({isModalVisible, setModalVisible}: Props) {
       onRequestClose={hideModal}
       visible={isModalVisible}>
       <View style={styles.container}>
-        <View style={styles.modalView}>
+        <View
+          style={[
+            styles.modalView,
+            {
+              paddingBottom: SAFE_AREA_BOTTOM,
+            },
+          ]}>
           <ModalHeader title={'위치 정보 관리'} hideModal={hideModal} />
 
           <View style={styles.titleBox}>
@@ -82,30 +105,8 @@ export function LocationModal({isModalVisible, setModalVisible}: Props) {
               <Text style={styles.titleText}>편지를 받을 지역을</Text>
               <View style={styles.counterWrap}>
                 <Text style={styles.titleText}>선택해주세요</Text>
-                <TouchableWithoutFeedback onPress={onStartNotice}>
-                  <Image
-                    style={styles.noticeButtonImage}
-                    source={require('../../Assets/notice.png')}
-                  />
-                </TouchableWithoutFeedback>
               </View>
             </View>
-            <Animated.View
-              style={[
-                styles.notice,
-                {
-                  opacity: fadeAnim,
-                  zIndex: 1,
-                },
-              ]}>
-              <ImageBackground
-                style={styles.noticeBGImage}
-                source={require('../../Assets/noticeBalloon.png')}>
-                <Text style={styles.noticeText}>
-                  편지를 배달하는 시간을 계산하기 위해 사용돼요!
-                </Text>
-              </ImageBackground>
-            </Animated.View>
           </View>
 
           <View style={styles.locationWrap}>
@@ -140,13 +141,95 @@ export function LocationModal({isModalVisible, setModalVisible}: Props) {
               />
             </View>
           </View>
-          <SignUpButton
-            navigation={navigation}
-            activateSignUp={activateSignUp}
-            onPress={onPressSignUp}
+
+          <UpdateButton
+            activateUpdate={activateUpdate}
+            onPress={updateLocation}
           />
         </View>
       </View>
     </Modal>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
+  modalView: {
+    backgroundColor: 'white',
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  header: {
+    flexDirection: 'row',
+    marginVertical: 12,
+    marginHorizontal: 16,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  closeButton: {height: 28, width: 28},
+  title: {
+    fontFamily: 'Galmuri11',
+    fontSize: 15,
+    color: '#0000cc',
+  },
+  titleBox: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 24,
+  },
+  titleWrap: {
+    marginBottom: 30,
+    justifyContent: 'flex-end',
+  },
+  titleText: {fontSize: 18, fontFamily: 'Galmuri11', color: '#0000cc'},
+  counterWrap: {flexDirection: 'row', alignItems: 'center'},
+  noticeButtonImage: {marginLeft: 3, height: 20, width: 20},
+  notice: {
+    position: 'absolute',
+    top: 100,
+    left: 27,
+    width: 288,
+    height: 35,
+    zIndex: 1,
+  },
+  noticeBGImage: {
+    width: 288,
+    height: 35,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noticeText: {
+    fontFamily: 'Galmuri11',
+    fontSize: 12,
+    color: '#0000cc',
+  },
+  locationWrap: {
+    height: SCREEN_HEIGHT * 0.65,
+    marginHorizontal: 24,
+    zIndex: 0,
+  },
+  regionBox: {
+    marginBottom: 12,
+    zIndex: 2,
+  },
+  cityBox: {},
+  picker: {
+    borderRadius: 10,
+    borderColor: '#0000cc',
+  },
+  pickerText: {
+    fontFamily: 'Galmuri11',
+    color: '#0000cc',
+  },
+});
