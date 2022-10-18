@@ -7,12 +7,15 @@ import {ListItem, ListName} from '../../Components/MyPageList';
 
 import {NicknameModal} from '../../Modals/NicknameModal';
 import {TopicsModal} from '../../Modals/TopicsModal';
+import useStore from '../../Store/store';
 
 type Props = NativeStackScreenProps<StackParamsList, 'MyPage'>;
 
 export function MyPage({navigation}: Props) {
   const [isNicknameModalVisible, setNicknameModalVisible] = useState(false);
   const [isTopicsModalVisible, setTopicsModalVisible] = useState(false);
+
+  const store = useStore();
 
   const openNicknameModal = () => {
     setNicknameModalVisible(true);
@@ -27,7 +30,7 @@ export function MyPage({navigation}: Props) {
       <Header navigation={navigation} title={'MY'} />
       <View style={styles.nickname}>
         <View>
-          <Text style={styles.nicknameText}>☺ 즐거운 블루치즈 123</Text>
+          <Text style={styles.nicknameText}>☺ {store.userInfo.nickname}</Text>
         </View>
         <Pressable onPress={openNicknameModal}>
           <View style={styles.nicknameButton}>
