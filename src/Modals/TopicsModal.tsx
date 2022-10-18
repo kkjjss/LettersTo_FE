@@ -10,7 +10,7 @@ import {
 import {ResetButton} from '../Components/ResetButton';
 import useStore from '../Store/store';
 import {ModalHeader} from '../Components/ModalHeader';
-import {Topics} from '../types/types';
+import type {Topics} from '../types/types';
 import {getTopics} from '../APIs/topic';
 import {SCREEN_HEIGHT} from '../constants';
 import {TopicList} from '../Components/TopicList';
@@ -100,6 +100,7 @@ export const TopicsModal = ({isModalVisible, setModalVisible}: Props) => {
       statusBarTranslucent={true} // android
       animationType="slide"
       transparent={true}
+      onRequestClose={hideModal}
       visible={isModalVisible}>
       <View style={styles.container}>
         <View style={styles.modalView}>
@@ -177,37 +178,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 24,
     height: SCREEN_HEIGHT - 250,
   },
-  topicWrap: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  category: {
-    fontFamily: 'Galmuri11',
-    color: '#0000cc',
-    marginBottom: 10,
-  },
-  underlayer: {
-    marginBottom: 12,
-    marginRight: 12,
-  },
-  topic: {
-    height: 35,
-    borderColor: '#0000cc',
-    borderWidth: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  selectedTopic: {
-    height: 35,
-    backgroundColor: '#ccccff',
-  },
-  notSelectedTopic: {backgroundColor: 'white'},
-  topicText: {
-    marginHorizontal: 13,
-    fontFamily: 'Galmuri11',
-    fontSize: 14,
-    color: '#0000cc',
-  },
   alert: {
     marginHorizontal: 24,
     marginBottom: 10,
@@ -216,29 +186,4 @@ const styles = StyleSheet.create({
     fontFamily: 'Galmuri11',
     color: '#ff44cc',
   },
-  resetButton: {
-    width: 74,
-    height: 22,
-    flexDirection: 'row',
-    backgroundColor: '#ffffcc',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 4,
-    borderRadius: 11,
-  },
-  resetButtonText: {
-    fontFamily: 'Galmuri11',
-    fontSize: 12,
-    color: '#0000cc',
-  },
-  resetButtonImage: {width: 20, height: 20},
-
-  changeButton: {
-    marginHorizontal: 16,
-    borderRadius: 10,
-    height: 52,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  changeButtonText: {fontFamily: 'Galmuri11', color: 'white'},
 });

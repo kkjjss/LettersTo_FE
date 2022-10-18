@@ -201,20 +201,4 @@ const styles = StyleSheet.create({
     fontFamily: 'Galmuri11',
     color: '#ff44cc',
   },
-  resetButton: {
-    width: 74,
-    height: 22,
-    flexDirection: 'row',
-    backgroundColor: '#ffffcc',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 4,
-    borderRadius: 11,
-  },
-  resetButtonText: {
-    fontFamily: 'Galmuri11',
-    fontSize: 12,
-    color: '#0000cc',
-  },
-  resetButtonImage: {width: 20, height: 20},
 });

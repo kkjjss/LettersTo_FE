@@ -17,10 +17,12 @@ export type Topic = {
 
 export type Topics = Topic[];
 
-export type Personalities = {
+export type Personality = {
   id: number;
   name: string;
-}[];
+};
+
+export type Personalities = Personality[];
 
 export type Regions = {
   id: number;
