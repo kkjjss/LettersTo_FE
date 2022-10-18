@@ -13,25 +13,24 @@ export function Splash({}: Props) {
   const [animating, setAnimating] = useState(true);
   const {setIsLoggedIn, setIsLoading} = useStore();
 
-  async function checkForService() {
-    // 유저 정보 받아옴
-    const accessToken = await AsyncStorage.getItem('accessToken');
-    const refreshToken = await AsyncStorage.getItem('refreshToken');
+  useEffect(() => {
+    async function checkForService() {
+      // 유저 정보 받아옴
+      const accessToken = await AsyncStorage.getItem('accessToken');
+      const refreshToken = await AsyncStorage.getItem('refreshToken');
 
-    // 있으면 로그인
-    if (accessToken && refreshToken) {
-      console.log('Already has accessToken:', accessToken, refreshToken);
-      setIsLoggedIn(true);
+      // 있으면 로그인
+      if (accessToken && refreshToken) {
+        console.log('Already has accessToken:', accessToken, refreshToken);
+        setIsLoggedIn(true);
+      }
+
+      // 끝나면 로딩 끝
+      setAnimating(false);
+      setIsLoading(false);
     }
 
-    // 끝나면 로딩 끝
-    setAnimating(false);
-    setIsLoading(false);
-  }
-
-  useEffect(() => {
     checkForService();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

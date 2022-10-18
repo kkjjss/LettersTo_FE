@@ -100,7 +100,6 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
     };
 
     checkNicknameAlreadyUsed();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nickname]);
 
   return (

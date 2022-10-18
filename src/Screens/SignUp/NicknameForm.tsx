@@ -84,7 +84,6 @@ export function NicknameForm({navigation}: Props) {
     };
 
     checkNicknameFormCorrect();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nickname]);
 
   return (
