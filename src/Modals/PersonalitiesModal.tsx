@@ -6,7 +6,6 @@ import {
   StyleSheet,
   Animated,
   ScrollView,
-  TouchableHighlight,
 } from 'react-native';
 import {ResetButton} from '../Components/ResetButton';
 import useStore from '../Store/store';
@@ -15,6 +14,7 @@ import {SCREEN_HEIGHT} from '../constants';
 import {UpdateButton} from '../Components/UpdateButton';
 import {Personalities} from '../types/types';
 import {getPersonalities} from '../APIs/personality';
+import {PersonalityList} from '../Components/PersonalityList';
 
 type Props = {
   isModalVisible: boolean;
@@ -63,6 +63,7 @@ export function PersonalitiesModal({isModalVisible, setModalVisible}: Props) {
   };
 
   const hideModal = () => {
+    alert.reset();
     setModalVisible(false);
   };
 
@@ -125,30 +126,11 @@ export function PersonalitiesModal({isModalVisible, setModalVisible}: Props) {
           </View>
 
           <ScrollView style={styles.topicBox}>
-            <View style={styles.personalityWrap}>
-              {personalities.map(personality => {
-                return (
-                  <TouchableHighlight
-                    key={personality.id}
-                    style={styles.underlayer}
-                    underlayColor={'#0000cc'}
-                    activeOpacity={0.7}
-                    onPress={() => selectPersonality(personality.id)}>
-                    <View
-                      style={[
-                        styles.personality,
-                        selectedPersonalityIds.includes(personality.id)
-                          ? styles.selectedTopic
-                          : styles.notSelectedTopic,
-                      ]}>
-                      <Text style={styles.personalityText}>
-                        {personality.name}
-                      </Text>
-                    </View>
-                  </TouchableHighlight>
-                );
-              })}
-            </View>
+            <PersonalityList
+              personalities={personalities}
+              selectPersonality={selectPersonality}
+              selectedPersonalityIds={selectedPersonalityIds}
+            />
           </ScrollView>
           <Animated.View style={[styles.alert, {opacity: fadeAnim}]}>
             <Text style={styles.alertText}>최대 9개까지만 선택 가능해요!</Text>
@@ -204,31 +186,6 @@ const styles = StyleSheet.create({
   topicBox: {
     marginHorizontal: 24,
     height: SCREEN_HEIGHT - 250,
-  },
-  personalityWrap: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  underlayer: {
-    marginBottom: 12,
-    marginRight: 12,
-  },
-  personality: {
-    height: 35,
-    borderColor: '#0000cc',
-    borderWidth: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  selectedTopic: {
-    backgroundColor: '#ccccff',
-  },
-  notSelectedTopic: {backgroundColor: 'white'},
-  personalityText: {
-    marginHorizontal: 13,
-    fontFamily: 'Galmuri11',
-    fontSize: 14,
-    color: '#0000cc',
   },
   alert: {
     marginHorizontal: 24,

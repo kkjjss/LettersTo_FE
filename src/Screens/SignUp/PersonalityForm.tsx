@@ -5,7 +5,6 @@ import {
   Text,
   StyleSheet,
   Animated,
-  TouchableHighlight,
   SafeAreaView,
   ScrollView,
 } from 'react-native';
@@ -18,6 +17,7 @@ import useStore from '../../Store/store';
 import {ResetButton} from '../../Components/ResetButton';
 import {getPersonalities} from '../../APIs/personality';
 import {Personalities} from '../../types/types';
+import {PersonalityList} from '../../Components/PersonalityList';
 
 type Props = NativeStackScreenProps<StackParamsList, 'PersonalityForm'>;
 
@@ -107,30 +107,11 @@ export function PersonalityForm({navigation}: Props) {
           </View>
         </View>
         <ScrollView style={styles.personalityBox}>
-          <View style={styles.personalityWrap}>
-            {personalities.map(personality => {
-              return (
-                <TouchableHighlight
-                  key={personality.id}
-                  style={styles.underlayer}
-                  underlayColor={'#0000cc'}
-                  activeOpacity={0.7}
-                  onPress={() => selectPersonality(personality.id)}>
-                  <View
-                    style={[
-                      styles.personality,
-                      selectedPersonalityIds.includes(personality.id)
-                        ? styles.selectedTopic
-                        : styles.notSelectedTopic,
-                    ]}>
-                    <Text style={styles.personalityText}>
-                      {personality.name}
-                    </Text>
-                  </View>
-                </TouchableHighlight>
-              );
-            })}
-          </View>
+          <PersonalityList
+            personalities={personalities}
+            selectPersonality={selectPersonality}
+            selectedPersonalityIds={selectedPersonalityIds}
+          />
         </ScrollView>
         <View style={styles.alertBox}>
           <Animated.View style={{opacity: fadeAnim}}>
@@ -167,31 +148,6 @@ const styles = StyleSheet.create({
   },
   personalityBox: {
     paddingHorizontal: 24,
-  },
-  personalityWrap: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  underlayer: {
-    marginBottom: 12,
-    marginRight: 12,
-  },
-  personality: {
-    height: 35,
-    borderColor: '#0000cc',
-    borderWidth: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  selectedTopic: {
-    backgroundColor: '#ccccff',
-  },
-  notSelectedTopic: {backgroundColor: 'white'},
-  personalityText: {
-    marginHorizontal: 13,
-    fontFamily: 'Galmuri11',
-    fontSize: 14,
-    color: '#0000cc',
   },
   alertBox: {
     marginHorizontal: 24,
