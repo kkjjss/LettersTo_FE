@@ -170,7 +170,6 @@ export function LocationForm({navigation}: Props) {
               styles.notice,
               {
                 opacity: fadeAnim,
-                zIndex: 1,
               },
             ]}>
             <ImageBackground
@@ -246,6 +245,7 @@ const styles = StyleSheet.create({
     left: 27,
     width: 288,
     height: 35,
+    zIndex: 1,
   },
   noticeBGImage: {
     width: 288,
