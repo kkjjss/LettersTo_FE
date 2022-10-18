@@ -135,8 +135,7 @@ const styles = StyleSheet.create({
   },
   titleWrap: {
     height: 100,
-    marginBottom: 30,
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
   },
   titleText: {fontSize: 18, fontFamily: 'Galmuri11', color: '#0000cc'},
   counterWrap: {alignItems: 'center', flexDirection: 'row'},

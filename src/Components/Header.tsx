@@ -1,5 +1,12 @@
 import * as React from 'react';
-import {StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import type {StackParamsList} from '../types/stackParamList';
@@ -16,17 +23,12 @@ export function Header({navigation, title}: Props) {
 
   return (
     <View style={styles.headerWrap}>
-      <TouchableWithoutFeedback onPress={() => goback()}>
-        <View style={styles.backButton}>
-          <Text
-            style={[
-              styles.backButtonText,
-              title === 'MY' ? {color: 'white'} : {color: '#0000cc'},
-            ]}>
-            {' < '}
-          </Text>
-        </View>
-      </TouchableWithoutFeedback>
+      <Pressable style={styles.backButton} onPress={() => goback()}>
+        <Image
+          source={require('../Assets/back_blue.png')}
+          style={{height: 28, width: 28}}
+        />
+      </Pressable>
       <View style={{justifyContent: 'center'}}>
         <Text style={{color: '#ffffff', fontFamily: 'Galmuri11', fontSize: 15}}>
           {title}
@@ -39,12 +41,13 @@ export function Header({navigation, title}: Props) {
 
 const styles = StyleSheet.create({
   headerWrap: {
-    height: 60,
+    height: 52,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingTop: 12,
+    paddingLeft: 16,
   },
   backButton: {
-    marginLeft: 10,
     width: 40,
   },
   backButtonText: {

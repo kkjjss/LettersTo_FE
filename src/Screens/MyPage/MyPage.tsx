@@ -1,6 +1,14 @@
 import React, {useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {View, Text, StyleSheet, SafeAreaView, Pressable} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  Pressable,
+  ScrollView,
+  Image,
+} from 'react-native';
 import type {StackParamsList} from '../../types/stackParamList';
 import {Header} from '../../Components/Header';
 import {ListItem, ListName} from '../../Components/MyPageList';
@@ -10,6 +18,8 @@ import {TopicsModal} from '../../Modals/TopicsModal';
 import {PersonalitiesModal} from '../../Modals/PersonalitiesModal';
 
 import useStore from '../../Store/store';
+import {LocationModal} from '../../Modals/LocationModal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type Props = NativeStackScreenProps<StackParamsList, 'MyPage'>;
 
@@ -18,8 +28,15 @@ export function MyPage({navigation}: Props) {
   const [isTopicsModalVisible, setTopicsModalVisible] = useState(false);
   const [isPersonalitiesModalVisible, setPersonalitiesModalVisible] =
     useState(false);
+  const [isLocationModalVisible, setLocationModalVisible] = useState(false);
 
   const store = useStore();
+
+  function logout() {
+    AsyncStorage.removeItem('accessToken');
+    AsyncStorage.removeItem('refreshToken');
+    store.setIsLoggedIn(false);
+  }
 
   const openNicknameModal = () => {
     setNicknameModalVisible(true);
@@ -33,12 +50,20 @@ export function MyPage({navigation}: Props) {
     setPersonalitiesModalVisible(true);
   };
 
+  const openLocationModal = () => {
+    setLocationModalVisible(true);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Header navigation={navigation} title={'MY'} />
       <View style={styles.nickname}>
-        <View>
-          <Text style={styles.nicknameText}>☺ {store.userInfo.nickname}</Text>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Image
+            source={require('../../Assets/userIcon.png')}
+            style={{height: 20, width: 20, marginRight: 4}}
+          />
+          <Text style={styles.nicknameText}>{store.userInfo.nickname}</Text>
         </View>
         <Pressable onPress={openNicknameModal}>
           <View style={styles.nicknameButton}>
@@ -47,11 +72,48 @@ export function MyPage({navigation}: Props) {
         </Pressable>
       </View>
 
-      <View style={{margin: 24}}>
-        <ListName name="내 정보" />
-        <ListItem itmeName="관심사 관리" openModal={openTopicsModal} />
-        <ListItem itmeName="성향 관리" openModal={openPersonalitiesModal} />
-        <ListItem itmeName="위치 정보 관리" openModal={openNicknameModal} />
+      <View style={{flex: 1, position: 'relative', paddingHorizontal: 24}}>
+        <View style={{marginBottom: 24}}>
+          <ListName name="내 정보" />
+          <ListItem itmeName="관심사 관리" openModal={openTopicsModal} />
+          <ListItem itmeName="성향 관리" openModal={openPersonalitiesModal} />
+          <ListItem itmeName="위치 정보 관리" openModal={openLocationModal} />
+        </View>
+
+        <View style={{marginBottom: 24}}>
+          <ListName name="이용 정보" />
+          <ListItem
+            itmeName="이용 약관"
+            openModal={() => {
+              return;
+            }}
+          />
+          <ListItem
+            itmeName="개인정보처리방침"
+            openModal={() => {
+              return;
+            }}
+          />
+        </View>
+
+        <Pressable
+          onPress={logout}
+          style={{
+            position: 'absolute',
+            bottom: 24,
+            right: 24,
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          <Text
+            style={{fontFamily: 'Galmuri11', color: 'white', marginRight: 4}}>
+            로그아웃
+          </Text>
+          <Image
+            source={require('../../Assets/logout.png')}
+            style={{height: 24, width: 24}}
+          />
+        </Pressable>
       </View>
 
       <NicknameModal
@@ -67,6 +129,11 @@ export function MyPage({navigation}: Props) {
         isModalVisible={isPersonalitiesModalVisible}
         setModalVisible={setPersonalitiesModalVisible}
       />
+
+      <LocationModal
+        isModalVisible={isLocationModalVisible}
+        setModalVisible={setLocationModalVisible}
+      />
     </SafeAreaView>
   );
 }
@@ -81,6 +148,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderBottomColor: 'white',
     borderBottomWidth: 1,
+    marginBottom: 24,
   },
   nicknameText: {fontFamily: 'Galmuri11', fontSize: 16, color: 'white'},
   nicknameButton: {

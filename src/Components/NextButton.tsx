@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useState} from 'react';
 import {StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
 
 type Props = {
@@ -7,14 +8,8 @@ type Props = {
 };
 
 export function NextButton({activateNext, onPress}: Props) {
-  const [disable, setDisable] = React.useState(false);
   return (
-    <TouchableWithoutFeedback
-      disabled={!activateNext || disable}
-      onPress={() => {
-        setDisable(true);
-        onPress();
-      }}>
+    <TouchableWithoutFeedback disabled={!activateNext} onPress={onPress}>
       <View
         style={[
           styles.nextButton,

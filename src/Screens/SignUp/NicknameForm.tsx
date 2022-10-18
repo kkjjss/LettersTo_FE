@@ -130,9 +130,8 @@ const styles = StyleSheet.create({
   container: {height: SCREEN_HEIGHT},
   textWrap: {
     height: 100,
-    marginBottom: 30,
     marginHorizontal: 24,
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
   },
   text: {fontSize: 18, fontFamily: 'Galmuri11', color: '#0000cc'},
   nicknameWrap: {

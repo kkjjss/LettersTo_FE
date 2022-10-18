@@ -107,9 +107,11 @@ export function TopicsForm({navigation}: Props) {
             selectedTopicIds={selectedTopicIds}
           />
         </ScrollView>
-        <Animated.View style={[styles.alert, {opacity: fadeAnim}]}>
-          <Text style={styles.alertText}>최대 7개까지만 선택 가능해요!</Text>
-        </Animated.View>
+        <View style={styles.alertBox}>
+          <Animated.View style={{opacity: fadeAnim}}>
+            <Text style={styles.alertText}>최대 7개까지만 선택 가능해요!</Text>
+          </Animated.View>
+        </View>
         <NextButton activateNext={activateNext} onPress={goToPersonalityForm} />
       </SafeAreaView>
     </LinearGradient>
@@ -125,8 +127,7 @@ const styles = StyleSheet.create({
   },
   titleWrap: {
     height: 100,
-    marginBottom: 30,
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
   },
   titleText: {fontSize: 18, fontFamily: 'Galmuri11', color: '#0000cc'},
   counterWrap: {alignItems: 'center', flexDirection: 'row'},
@@ -173,7 +174,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#0000cc',
   },
-  alert: {},
+  alertBox: {
+    marginHorizontal: 24,
+    marginBottom: 20,
+  },
   alertText: {
     fontFamily: 'Galmuri11',
     color: '#ff44cc',

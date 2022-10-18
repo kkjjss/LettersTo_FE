@@ -230,22 +230,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: 24,
+    position: 'relative',
   },
   titleWrap: {
     height: 100,
-    marginBottom: 30,
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
   },
   titleText: {fontSize: 18, fontFamily: 'Galmuri11', color: '#0000cc'},
   counterWrap: {flexDirection: 'row', alignItems: 'center'},
   noticeButtonImage: {marginLeft: 3, height: 20, width: 20},
   notice: {
     position: 'absolute',
-    top: 100,
+    bottom: -7,
     left: 27,
     width: 288,
     height: 35,
-    zIndex: 1,
+    zIndex: 100,
   },
   noticeBGImage: {
     width: 288,
@@ -261,11 +261,11 @@ const styles = StyleSheet.create({
   locationWrap: {
     flex: 1,
     marginHorizontal: 24,
-    zIndex: 0,
+    marginTop: 10,
   },
   regionBox: {
     marginBottom: 12,
-    zIndex: 2,
+    zIndex: 1,
   },
   cityBox: {},
   picker: {
