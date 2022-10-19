@@ -15,6 +15,8 @@ import {KakaoOAuthToken, login} from '@react-native-seoul/kakao-login';
 
 import useStore from '../../Store/store';
 import {useState} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {logIn} from '../../APIs/member';
 
 type Props = NativeStackScreenProps<StackParamsList, 'Auth'>;
 
@@ -42,17 +44,31 @@ export function Auth({navigation}: Props) {
     try {
       // 카카오 로그인 호출
       const token = await login();
+      console.log(token);
       if (isKakaoOAuthToken(token)) {
         const tokenInfo = {
           idToken: token.idToken,
         };
 
         // registerToken 발급
-        const {registerToken} = await postToken(tokenInfo);
-
-        if (registerToken) {
-          store.setRegisterToken(registerToken);
+        const userTokens = await postToken(tokenInfo);
+        console.log(userTokens);
+        if (userTokens.verified === false) {
+          store.setRegisterToken(userTokens.registerToken);
           navigation.navigate('NicknameForm');
+        } else {
+          AsyncStorage.setItem('accessToken', userTokens.accessToken);
+          AsyncStorage.setItem('refreshToken', userTokens.refreshToken);
+
+          const userInfo = await logIn();
+          store.setUserInfo({
+            nickname: userInfo.nickname,
+            personalityIds: userInfo.personalityIds,
+            topicIds: userInfo.topicIds,
+            geolocationId: userInfo.geolocationId,
+          });
+
+          store.setIsLoggedIn(true);
         }
       } else {
         throw new Error('KakaoOAuthToken 형식이 아님');
