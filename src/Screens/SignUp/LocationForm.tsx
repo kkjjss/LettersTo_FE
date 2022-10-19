@@ -42,44 +42,7 @@ export function LocationForm({navigation}: Props) {
 
   const onPressSignUp = async () => {
     if (selectedRegionId && selectedCityId) {
-      console.log(selectedRegionId, selectedCityId);
       store.setAddress(selectedCityId);
-
-      setTimeout(async () => {
-        if (
-          store.registerToken &&
-          store.signUpInfo.nickname &&
-          store.signUpInfo.topicIds &&
-          store.signUpInfo.personalityIds &&
-          store.signUpInfo.geolocationId
-        ) {
-          // const userInfo = {
-          //   refreshToken: store.registerToken,
-          //   nickname: store.signUpInfo.nickname,
-          //   topickIds: store.signUpInfo.topicIds,
-          //   personalityIds: store.signUpInfo.personalityIds,
-          //   geolocationId: 1,
-          // };
-          try {
-            // const {accessToken, refreshToken} = await signUp(userInfo);
-
-            // test
-            const {accessToken, refreshToken} = {
-              accessToken: 'accessToken_test',
-              refreshToken: 'refreshToken_test',
-            };
-
-            await Promise.all([
-              AsyncStorage.setItem('accessToken', accessToken),
-              AsyncStorage.setItem('refreshToken', refreshToken),
-            ]);
-
-            store.setIsLoading(true);
-          } catch (error: any) {
-            console.error(error.message);
-          }
-        }
-      }, 100);
     }
   };
 
