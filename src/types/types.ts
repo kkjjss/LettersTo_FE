@@ -35,9 +35,9 @@ export type Cities = {
 }[];
 
 export interface UserInfo {
-  refreshToken: string;
+  registerToken: string;
   nickname: string;
-  topickIds: number[];
+  topicIds: number[];
   personalityIds: number[];
   geolocationId: number;
 }

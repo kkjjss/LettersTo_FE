@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {StackParamsList} from '../types/stackParamList';
 import useStore from '../Store/store';
+import {logIn} from '../APIs/member';
 
 type Props = NativeStackScreenProps<StackParamsList, 'Splash'>;
 
@@ -21,7 +22,15 @@ export function Splash({}: Props) {
 
       // 있으면 로그인
       if (accessToken && refreshToken) {
-        console.log('Already has accessToken:', accessToken, refreshToken);
+        console.log(
+          'Login With AccessToken/RefreshToken: ',
+          accessToken,
+          refreshToken,
+        );
+
+        const userInfo = await logIn();
+        console.log(userInfo);
+
         setIsLoggedIn(true);
       }
 

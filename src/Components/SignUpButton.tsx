@@ -5,6 +5,9 @@ import {StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
 import {useState} from 'react';
 import useStore from '../Store/store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {signUp} from '../APIs/member';
+
+import type {UserInfo} from '../types/types';
 
 type Props = {
   activateSignUp: boolean;
@@ -26,21 +29,23 @@ export function SignUpButton({activateSignUp, onPress: onPressSignUp}: Props) {
         store.signUpInfo.personalityIds &&
         store.signUpInfo.geolocationId
       ) {
-        const signUpInfo = {
-          ...store.signUpInfo,
+        const userInfo: UserInfo = {
           registerToken: store.registerToken,
+          nickname: store.signUpInfo.nickname,
+          topicIds: store.signUpInfo.topicIds,
+          personalityIds: store.signUpInfo.personalityIds,
+          geolocationId: store.signUpInfo.geolocationId,
         };
-        // const {accessToken, refreshToken} = await signUp(userInfo);
-        // test
-        const {accessToken, refreshToken} = {
-          accessToken: 'accessToken_test',
-          refreshToken: 'refreshToken_test',
-        };
+
+        console.log(userInfo);
+
+        const {accessToken, refreshToken} = await signUp(userInfo);
 
         await Promise.all([
           AsyncStorage.setItem('accessToken', accessToken),
           AsyncStorage.setItem('refreshToken', refreshToken),
         ]);
+
         store.setIsLoading(true);
       }
     } catch (error: any) {

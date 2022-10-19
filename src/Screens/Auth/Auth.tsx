@@ -11,9 +11,8 @@ import type {StackParamsList} from '../../types/stackParamList';
 import {LinearGradient} from 'expo-linear-gradient';
 import {postToken} from '../../APIs/token';
 
-import {KakaoOAuthToken} from '@react-native-seoul/kakao-login';
+import {KakaoOAuthToken, login} from '@react-native-seoul/kakao-login';
 
-import {login} from '@react-native-seoul/kakao-login';
 import useStore from '../../Store/store';
 import {useState} from 'react';
 
@@ -41,12 +40,14 @@ export function Auth({navigation}: Props) {
   const signUpWithKakao = async (): Promise<void> => {
     setDisable(true);
     try {
+      // 카카오 로그인 호출
       const token = await login();
       if (isKakaoOAuthToken(token)) {
         const tokenInfo = {
           idToken: token.idToken,
         };
 
+        // registerToken 발급
         const {registerToken} = await postToken(tokenInfo);
 
         if (registerToken) {
@@ -58,11 +59,7 @@ export function Auth({navigation}: Props) {
       }
     } catch (err: any) {
       console.error(err.message);
-
-      // test
-      console.log('test');
-      store.setRegisterToken('registerToken_test');
-      navigation.navigate('NicknameForm');
+    } finally {
       setDisable(false);
     }
   };

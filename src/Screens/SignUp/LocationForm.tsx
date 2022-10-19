@@ -79,7 +79,6 @@ export function LocationForm({navigation}: Props) {
       return {value: id, label: name};
     });
     setRegions(regionsList);
-    console.log(regionsList);
   };
 
   useEffect(() => {
