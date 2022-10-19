@@ -65,6 +65,7 @@ export function Auth({navigation}: Props) {
             personalityIds: userInfo.personalityIds,
             topicIds: userInfo.topicIds,
             geolocationId: userInfo.geolocationId,
+            parentGeolocationId: userInfo.parentGeolocationId,
           });
 
           store.setIsLoggedIn(true);

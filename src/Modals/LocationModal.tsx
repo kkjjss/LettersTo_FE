@@ -1,23 +1,13 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {
-  Text,
-  View,
-  Modal,
-  StyleSheet,
-  Animated,
-  ScrollView,
-  TouchableWithoutFeedback,
-  Image,
-  ImageBackground,
-} from 'react-native';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {Text, View, Modal, StyleSheet} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {getCities, getRegions} from '../APIs/geolocation';
+import {patchUserInfo} from '../APIs/member';
 import {ModalHeader} from '../Components/ModalHeader';
-import {ResetButton} from '../Components/ResetButton';
-import {SignUpButton} from '../Components/SignUpButton';
 import {UpdateButton} from '../Components/UpdateButton';
 import {SCREEN_HEIGHT} from '../constants';
+import useStore from '../Store/store';
 type Props = {
   isModalVisible: boolean;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
@@ -32,10 +22,16 @@ export function LocationModal({isModalVisible, setModalVisible}: Props) {
   const [cities, setCities] = useState([{label: '', value: 0}]);
   const [selectedCityId, setSelectedCityId] = useState<null | number>(null);
 
-  const activateUpdate = useMemo(
-    () => (selectedCityId && selectedRegionId ? true : false),
-    [selectedCityId, selectedRegionId],
-  );
+  const store = useStore();
+
+  const activateUpdate = useMemo(() => {
+    if (selectedRegionId && selectedCityId) {
+      if (selectedCityId !== store.userInfo?.geolocationId) {
+        return true;
+      }
+    }
+    return false;
+  }, [selectedCityId, selectedRegionId, store.userInfo]);
 
   const {bottom: SAFE_AREA_BOTTOM} = useSafeAreaInsets();
 
@@ -51,7 +47,17 @@ export function LocationModal({isModalVisible, setModalVisible}: Props) {
     setModalVisible(false);
   };
 
-  const updateLocation = () => {
+  const updateLocation = async () => {
+    try {
+      const newUserInfo = {
+        nickname: store.userInfo?.nickname,
+        geolocationId: selectedCityId,
+        topicIds: store.userInfo?.topicIds,
+        personalityIds: store.userInfo?.personalityIds,
+      };
+      await patchUserInfo(newUserInfo);
+    } catch (error) {}
+
     hideModal();
   };
 
@@ -64,7 +70,10 @@ export function LocationModal({isModalVisible, setModalVisible}: Props) {
     };
 
     getRegionsList();
-  }, []);
+    if (store.userInfo) {
+      setSelectedRegionId(store.userInfo.parentGeolocationId);
+    }
+  }, [store.userInfo]);
 
   useEffect(() => {
     const getCitiesList = async (regionId: number) => {
@@ -80,8 +89,10 @@ export function LocationModal({isModalVisible, setModalVisible}: Props) {
       setCities([{label: '', value: 0}]);
     }
 
-    setSelectedCityId(null);
-  }, [selectedRegionId]);
+    if (store.userInfo) {
+      setSelectedCityId(store.userInfo.geolocationId);
+    }
+  }, [selectedRegionId, store.userInfo]);
 
   return (
     <Modal

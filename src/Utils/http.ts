@@ -16,6 +16,7 @@ export async function post(path: string, body: {}, headers?: {}): Promise<any> {
   if (res.ok) {
     return data;
   } else {
+    console.log(data);
     throw Error(data.message);
   }
 }
@@ -50,8 +51,79 @@ export async function get(
   };
   const res = await fetch(url, options);
   const data = await res.json();
+
   if (res.ok) {
     return data;
+  } else {
+    if (res.status === 401) {
+      await refreshTokens();
+      get(path, auth, params, headers);
+    } else {
+      throw Error(data.message);
+    }
+  }
+}
+
+export async function patch(
+  path: string,
+  auth = true,
+  params?: {[key: string]: any},
+  headers?: {},
+) {
+  let query = '';
+  if (params) {
+    Object.keys(params).map((key, index) => {
+      query += `${index === 0 ? '?' : '&'}${key}=${params[key]}`;
+    });
+  }
+  const url = host + path + query;
+  if (auth) {
+    const access_token = await AsyncStorage.getItem('accessToken');
+
+    headers = {
+      ...headers,
+      Authorization: `Bearer ${access_token}`,
+    };
+  }
+  const options = {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      ...headers,
+    },
+  };
+  const res = await fetch(url, options);
+  const data = await res.json();
+  if (res.ok) {
+    return data;
+  } else {
+    console.log(data);
+    throw Error(data.message);
+  }
+}
+
+async function refreshTokens() {
+  const path = '/token';
+
+  const accessToken = await AsyncStorage.getItem('accessToken');
+  const refreshToken = await AsyncStorage.getItem('refreshToken');
+
+  const body = {accessToken, refreshToken};
+  const url = host + path;
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      headers: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(body),
+  };
+  const res = await fetch(url, options);
+  const data = await res.json();
+  if (res.ok) {
+    AsyncStorage.setItem('accessToken', data.accessToken);
+    AsyncStorage.setItem('refreshToken', data.refreshToken);
+    return;
   } else {
     throw Error(data.message);
   }

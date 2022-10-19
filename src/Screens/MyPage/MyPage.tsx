@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   View,
@@ -6,7 +6,6 @@ import {
   StyleSheet,
   SafeAreaView,
   Pressable,
-  ScrollView,
   Image,
 } from 'react-native';
 import type {StackParamsList} from '../../types/stackParamList';
@@ -20,6 +19,7 @@ import {PersonalitiesModal} from '../../Modals/PersonalitiesModal';
 import useStore from '../../Store/store';
 import {LocationModal} from '../../Modals/LocationModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {logIn as getUserInfo} from '../../APIs/member';
 
 type Props = NativeStackScreenProps<StackParamsList, 'MyPage'>;
 
@@ -53,6 +53,33 @@ export function MyPage({navigation}: Props) {
   const openLocationModal = () => {
     setLocationModalVisible(true);
   };
+
+  useEffect(() => {
+    const updateUserInfo = async () => {
+      if (
+        !isLocationModalVisible ||
+        !isNicknameModalVisible ||
+        !isPersonalitiesModalVisible ||
+        !isTopicsModalVisible
+      ) {
+        const userInfo = await getUserInfo();
+        store.setUserInfo({
+          nickname: userInfo.nickname,
+          personalityIds: userInfo.personalityIds,
+          topicIds: userInfo.topicIds,
+          geolocationId: userInfo.geolocationId,
+          parentGeolocationId: userInfo.parentGeolocationId,
+        });
+      }
+    };
+    updateUserInfo();
+  }, [
+    isLocationModalVisible,
+    isNicknameModalVisible,
+    isPersonalitiesModalVisible,
+    isTopicsModalVisible,
+    store,
+  ]);
 
   return (
     <SafeAreaView style={styles.container}>

@@ -23,18 +23,22 @@ interface Store {
 
   setAddress: (value: number) => void;
 
-  userInfo: {
-    nickname: string | undefined;
-    personalityIds: number[] | undefined;
-    topicIds: number[] | undefined;
-    geolocationId: number | undefined;
-  };
+  userInfo:
+    | {
+        nickname: string;
+        personalityIds: number[];
+        topicIds: number[];
+        geolocationId: number;
+        parentGeolocationId: number;
+      }
+    | undefined;
 
   setUserInfo: (value: {
-    nickname: string | undefined;
-    personalityIds: number[] | undefined;
-    topicIds: number[] | undefined;
-    geolocationId: number | undefined;
+    nickname: string;
+    personalityIds: number[];
+    topicIds: number[];
+    geolocationId: number;
+    parentGeolocationId: number;
   }) => void;
 }
 
@@ -67,12 +71,7 @@ const useStore = create<Store>(set => ({
   setAddress: value =>
     set(state => ({signUpInfo: {...state.signUpInfo, geolocationId: value}})),
 
-  userInfo: {
-    nickname: 'Aaa',
-    personalityIds: [1, 2, 3],
-    topicIds: [4, 5, 6],
-    geolocationId: 30,
-  },
+  userInfo: undefined,
 
   setUserInfo: value => set(() => ({userInfo: value})),
 }));

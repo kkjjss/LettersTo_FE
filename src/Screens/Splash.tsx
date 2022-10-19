@@ -35,6 +35,7 @@ export function Splash({}: Props) {
             personalityIds: userInfo.personalityIds,
             topicIds: userInfo.topicIds,
             geolocationId: userInfo.geolocationId,
+            parentGeolocationId: userInfo.parentGeolocationId,
           });
 
           store.setIsLoggedIn(true);
