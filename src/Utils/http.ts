@@ -41,7 +41,6 @@ export async function get(
       Authorization: `Bearer ${access_token}`,
     };
   }
-  console.log(headers);
   const options = {
     method: 'GET',
     headers: {

@@ -12,35 +12,44 @@ type Props = NativeStackScreenProps<StackParamsList, 'Splash'>;
 export function Splash({}: Props) {
   //State for ActivityIndicator animation
   const [animating, setAnimating] = useState(true);
-  const {setIsLoggedIn, setIsLoading} = useStore();
+  const store = useStore();
 
   useEffect(() => {
     async function checkForService() {
-      // 유저 정보 받아옴
-      const accessToken = await AsyncStorage.getItem('accessToken');
-      const refreshToken = await AsyncStorage.getItem('refreshToken');
+      try {
+        // 유저 정보 받아옴
+        const accessToken = await AsyncStorage.getItem('accessToken');
+        const refreshToken = await AsyncStorage.getItem('refreshToken');
 
-      // 있으면 로그인
-      if (accessToken && refreshToken) {
-        console.log(
-          'Login With AccessToken/RefreshToken: ',
-          accessToken,
-          refreshToken,
-        );
+        // 있으면 로그인
+        if (accessToken && refreshToken) {
+          console.log(
+            'Login With AccessToken/RefreshToken: ',
+            accessToken,
+            refreshToken,
+          );
 
-        const userInfo = await logIn();
-        console.log(userInfo);
+          const userInfo = await logIn();
+          store.setUserInfo({
+            nickname: userInfo.nickname,
+            personalityIds: userInfo.personalityIds,
+            topicIds: userInfo.topicIds,
+            geolocationId: userInfo.geolocationId,
+          });
 
-        setIsLoggedIn(true);
+          store.setIsLoggedIn(true);
+        }
+
+        // 끝나면 로딩 끝
+        setAnimating(false);
+        store.setIsLoading(false);
+      } catch (error: any) {
+        console.error(error.message);
       }
-
-      // 끝나면 로딩 끝
-      setAnimating(false);
-      setIsLoading(false);
     }
 
     checkForService();
-  }, []);
+  }, [store]);
 
   return (
     <View style={styles.container}>

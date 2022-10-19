@@ -44,7 +44,6 @@ export function Auth({navigation}: Props) {
     try {
       // 카카오 로그인 호출
       const token = await login();
-      console.log(token);
       if (isKakaoOAuthToken(token)) {
         const tokenInfo = {
           idToken: token.idToken,
@@ -52,7 +51,7 @@ export function Auth({navigation}: Props) {
 
         // registerToken 발급
         const userTokens = await postToken(tokenInfo);
-        console.log(userTokens);
+
         if (userTokens.verified === false) {
           store.setRegisterToken(userTokens.registerToken);
           navigation.navigate('NicknameForm');
