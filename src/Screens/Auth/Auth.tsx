@@ -63,6 +63,7 @@ export function Auth({navigation}: Props) {
       console.log('test');
       store.setRegisterToken('registerToken_test');
       navigation.navigate('NicknameForm');
+      setDisable(false);
     }
   };
 

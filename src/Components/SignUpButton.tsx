@@ -5,13 +5,15 @@ import {StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
 import {useState} from 'react';
 
 type Props = {
-  navigation: NativeStackNavigationProp<StackParamsList, keyof StackParamsList>;
   activateSignUp: boolean;
   onPress: () => void;
 };
 
 export function SignUpButton({activateSignUp, onPress}: Props) {
   const [disable, setDisable] = useState(false);
+
+  const onSignUp = () => {};
+
   return (
     <TouchableWithoutFeedback
       disabled={!activateSignUp || disable}

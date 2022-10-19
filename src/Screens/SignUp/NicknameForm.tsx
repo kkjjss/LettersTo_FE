@@ -8,6 +8,7 @@ import {
   ScrollView,
   Animated,
   SafeAreaView,
+  Platform,
 } from 'react-native';
 import {NextButton} from '../../Components/NextButton';
 import {SCREEN_HEIGHT} from '../../constants';
@@ -87,10 +88,13 @@ export function NicknameForm({navigation}: Props) {
   }, [nickname]);
 
   return (
-    <LinearGradient
-      colors={['#ffccee', 'white', 'white', 'white', '#ffffcc']}
-      style={styles.container}>
-      <SafeAreaView style={styles.container}>
+    <LinearGradient colors={['#ffccee', 'white', 'white', 'white', '#ffffcc']}>
+      <SafeAreaView
+        style={
+          Platform.OS === 'android'
+            ? styles.container_android
+            : styles.container_ios
+        }>
         <ScrollView>
           <Header navigation={navigation} title={''} />
           <View style={styles.textWrap}>
@@ -127,7 +131,8 @@ export function NicknameForm({navigation}: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: {height: SCREEN_HEIGHT},
+  container_ios: {height: SCREEN_HEIGHT},
+  container_android: {height: SCREEN_HEIGHT, paddingVertical: 15},
   textWrap: {
     height: 100,
     marginHorizontal: 24,

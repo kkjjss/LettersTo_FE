@@ -7,6 +7,7 @@ import {
   Animated,
   SafeAreaView,
   ScrollView,
+  Platform,
 } from 'react-native';
 import type {StackParamsList} from '../../types/stackParamList';
 import {LinearGradient} from 'expo-linear-gradient';
@@ -93,10 +94,13 @@ export function PersonalityForm({navigation}: Props) {
   }, [counter]);
 
   return (
-    <LinearGradient
-      colors={['#ffccee', 'white', 'white', 'white', '#ffffcc']}
-      style={styles.container}>
-      <SafeAreaView style={styles.container}>
+    <LinearGradient colors={['#ffccee', 'white', 'white', 'white', '#ffffcc']}>
+      <SafeAreaView
+        style={
+          Platform.OS === 'android'
+            ? styles.container_android
+            : styles.container_ios
+        }>
         <Header navigation={navigation} title={''} />
         <View style={styles.titleBox}>
           <View style={styles.titleWrap}>
@@ -127,7 +131,8 @@ export function PersonalityForm({navigation}: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: {height: SCREEN_HEIGHT},
+  container_ios: {height: SCREEN_HEIGHT},
+  container_android: {height: SCREEN_HEIGHT, paddingVertical: 15},
   titleBox: {
     flexDirection: 'row',
     justifyContent: 'space-between',
