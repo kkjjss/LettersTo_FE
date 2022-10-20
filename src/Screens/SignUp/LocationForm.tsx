@@ -22,9 +22,6 @@ import useStore from '../../Store/store';
 
 import {getRegions, getCities} from '../../APIs/geolocation';
 
-// import {signUp} from '../../APIs/member';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 type Props = NativeStackScreenProps<StackParamsList, 'LocationForm'>;
 
 export function LocationForm({navigation}: Props) {

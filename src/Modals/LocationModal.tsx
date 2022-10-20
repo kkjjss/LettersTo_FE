@@ -63,6 +63,15 @@ export function LocationModal({isModalVisible, setModalVisible}: Props) {
   };
 
   useEffect(() => {
+    if (isModalVisible) {
+      if (userInfo) {
+        setSelectedRegionId(userInfo.parentGeolocationId);
+        setSelectedCityId(userInfo.geolocationId);
+      }
+    }
+  }, [isModalVisible, userInfo]);
+
+  useEffect(() => {
     const getRegionsList = async () => {
       const regionsList = (await getRegions()).map(({id, name}) => {
         return {value: id, label: name};
@@ -71,10 +80,7 @@ export function LocationModal({isModalVisible, setModalVisible}: Props) {
     };
 
     getRegionsList();
-    if (userInfo) {
-      setSelectedRegionId(userInfo.parentGeolocationId);
-    }
-  }, [userInfo]);
+  }, []);
 
   useEffect(() => {
     const getCitiesList = async (regionId: number) => {
@@ -89,11 +95,7 @@ export function LocationModal({isModalVisible, setModalVisible}: Props) {
     } else {
       setCities([{label: '', value: 0}]);
     }
-
-    if (userInfo) {
-      setSelectedCityId(userInfo.geolocationId);
-    }
-  }, [selectedRegionId, userInfo]);
+  }, [selectedRegionId]);
 
   return (
     <Modal

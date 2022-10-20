@@ -24,7 +24,12 @@ export function Splash({}: Props) {
 
         // 있으면 로그인
         if (accessToken && refreshToken) {
-          console.log('Login With AccessToken:', accessToken);
+          console.log(
+            'Login With \nAccessToken:',
+            accessToken,
+            '\nRefreshToken: ',
+            refreshToken,
+          );
 
           const userInfo = await logIn();
           setUserInfo({

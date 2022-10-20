@@ -200,7 +200,7 @@ class InstanceWithAuth {
       );
 
       await AsyncStorage.setItem('accessToken', accessToken);
-      await AsyncStorage.setItem('refeshToken', refreshToken);
+      await AsyncStorage.setItem('refreshToken', refreshToken);
 
       if (method === 'post') {
         return await this.post(path, data, headers);
