@@ -180,7 +180,12 @@ class InstanceWithAuth {
     }
   }
 
-  async refreshAccessToken(method, path, data, headers) {
+  async refreshAccessToken(
+    method: string,
+    path: string,
+    data: any,
+    headers?: {},
+  ) {
     try {
       const {accessToken, refreshToken} = await instance.post('/token', {
         accessToken: await this.getAccessToken(),
@@ -205,7 +210,7 @@ class InstanceWithAuth {
         return await this.patch(path, data, headers);
       }
     } catch (error: any) {
-      throw Error(error.message);
+      console.error(error.message);
     }
   }
 }
