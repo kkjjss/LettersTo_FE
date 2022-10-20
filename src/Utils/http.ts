@@ -1,130 +1,214 @@
+import {BASE_URL_TEST} from '../constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {HOST_URL_TEST as host} from '../constants';
 
-export async function post(path: string, body: {}, headers?: {}): Promise<any> {
-  const url = host + path;
-  const options = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      ...headers,
-    },
-    body: JSON.stringify(body),
-  };
-  const res = await fetch(url, options);
-  const data = await res.json();
-  if (res.ok) {
-    return data;
-  } else {
-    console.log(data);
-    throw Error(data.message);
-  }
+function loggingRequest(method: string, url: string, status: number): void {
+  console.log(method, url, '|', status);
 }
 
-export async function get(
-  path: string,
-  auth: boolean,
-  params?: {[key: string]: any},
-  headers?: {},
-) {
-  let query = '';
-  if (params) {
-    Object.keys(params).map((key, index) => {
-      query += `${index === 0 ? '?' : '&'}${key}=${params[key]}`;
-    });
-  }
-  const url = host + path + query;
-  if (auth) {
-    const access_token = await AsyncStorage.getItem('accessToken');
+class Instance {
+  baseUrl: string;
 
-    headers = {
-      ...headers,
-      Authorization: `Bearer ${access_token}`,
+  constructor(BASE_URL: string) {
+    this.baseUrl = BASE_URL;
+  }
+
+  async post(path: string, body: {}, headers?: {}) {
+    const url = this.baseUrl + path;
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...headers,
+      },
+      body: JSON.stringify(body),
     };
-  }
-  const options = {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      ...headers,
-    },
-  };
-  const res = await fetch(url, options);
-  const data = await res.json();
+    const res = await fetch(url, options);
+    const data = await res.json();
+    loggingRequest('POST', url, res.status);
 
-  if (res.ok) {
-    return data;
-  } else {
-    if (res.status === 401) {
-      await refreshTokens();
-      get(path, auth, params, headers);
+    if (res.ok) {
+      return data;
+    } else {
+      throw Error(data.message);
+    }
+  }
+
+  async get(path: string, params?: {[key: string]: any}, headers?: {}) {
+    let query = '';
+    if (params) {
+      Object.keys(params).map((key, index) => {
+        query += `${index === 0 ? '?' : '&'}${key}=${params[key]}`;
+      });
+    }
+    const url = this.baseUrl + path + query;
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        ...headers,
+      },
+    };
+
+    const res = await fetch(url, options);
+    const data = await res.json();
+    loggingRequest('GET', url, res.status);
+
+    if (res.ok) {
+      return data;
     } else {
       throw Error(data.message);
     }
   }
 }
 
-export async function patch(
-  path: string,
-  auth = true,
-  params?: {[key: string]: any},
-  headers?: {},
-) {
-  let query = '';
-  if (params) {
-    Object.keys(params).map((key, index) => {
-      query += `${index === 0 ? '?' : '&'}${key}=${params[key]}`;
-    });
-  }
-  const url = host + path + query;
-  if (auth) {
-    const access_token = await AsyncStorage.getItem('accessToken');
+class InstanceWithAuth {
+  baseUrl: string;
 
-    headers = {
-      ...headers,
-      Authorization: `Bearer ${access_token}`,
+  constructor(BASE_URL: string) {
+    this.baseUrl = BASE_URL;
+  }
+
+  async getAccessToken() {
+    return await AsyncStorage.getItem('accessToken');
+  }
+
+  async getRefreshToken() {
+    return await AsyncStorage.getItem('refreshToken');
+  }
+
+  async post(path: string, body: {}, headers?: {}): Promise<any> {
+    const url = this.baseUrl + path;
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${await this.getAccessToken()}`,
+        ...headers,
+      },
+      body: JSON.stringify(body),
     };
+    const res = await fetch(url, options);
+    const data = await res.json();
+    loggingRequest('POST', url, res.status);
+
+    if (res.ok) {
+      return data;
+    } else {
+      if (res.status === 401) {
+        console.error(data.message);
+        return await this.refreshAccessToken('post', path, body, headers);
+      } else {
+        throw Error(data.message);
+      }
+    }
   }
-  const options = {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-      ...headers,
-    },
-  };
-  const res = await fetch(url, options);
-  const data = await res.json();
-  if (res.ok) {
-    return data;
-  } else {
-    console.log(data);
-    throw Error(data.message);
+
+  async get(
+    path: string,
+    params?: {[key: string]: any},
+    headers?: {},
+  ): Promise<any> {
+    let query = '';
+    if (params) {
+      Object.keys(params).map((key, index) => {
+        query += `${index === 0 ? '?' : '&'}${key}=${params[key]}`;
+      });
+    }
+    const url = this.baseUrl + path + query;
+
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${await this.getAccessToken()}`,
+        ...headers,
+      },
+    };
+
+    const res = await fetch(url, options);
+    const data = await res.json();
+    loggingRequest('GET', url, res.status);
+
+    if (res.ok) {
+      return data;
+    } else {
+      if (res.status === 401) {
+        console.error(data.message);
+        return await this.refreshAccessToken('get', path, params, headers);
+      } else {
+        throw Error(data.message);
+      }
+    }
+  }
+
+  async patch(
+    path: string,
+    params?: {[key: string]: any},
+    headers?: {},
+  ): Promise<any> {
+    let query = '';
+    if (params) {
+      Object.keys(params).map((key, index) => {
+        query += `${index === 0 ? '?' : '&'}${key}=${params[key]}`;
+      });
+    }
+    const url = this.baseUrl + path + query;
+
+    const options = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${await this.getAccessToken()}`,
+        ...headers,
+      },
+    };
+
+    const res = await fetch(url, options);
+    // const data = await res.json();
+    loggingRequest('PATCH', url, res.status);
+
+    if (res.ok) {
+      return res;
+    } else {
+      if (res.status === 401) {
+        console.error(res.statusText);
+        return await this.refreshAccessToken('get', path, params, headers);
+      } else {
+        throw Error(res.statusText);
+      }
+    }
+  }
+
+  async refreshAccessToken(method, path, data, headers) {
+    try {
+      const {accessToken, refreshToken} = await instance.post('/token', {
+        accessToken: await this.getAccessToken(),
+        refreshToken: await this.getRefreshToken(),
+      });
+      console.log(
+        'Get New Tokens',
+        '\nAccessToken',
+        accessToken,
+        '\nRefreshToken',
+        refreshToken,
+      );
+
+      await AsyncStorage.setItem('accessToken', accessToken);
+      await AsyncStorage.setItem('refeshToken', refreshToken);
+
+      if (method === 'post') {
+        return await this.post(path, data, headers);
+      } else if (method === 'get') {
+        return await this.get(path, data, headers);
+      } else if (method === 'patch') {
+        return await this.patch(path, data, headers);
+      }
+    } catch (error: any) {
+      throw Error(error.message);
+    }
   }
 }
 
-async function refreshTokens() {
-  const path = '/token';
-
-  const accessToken = await AsyncStorage.getItem('accessToken');
-  const refreshToken = await AsyncStorage.getItem('refreshToken');
-
-  const body = {accessToken, refreshToken};
-  const url = host + path;
-  const options = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      headers: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify(body),
-  };
-  const res = await fetch(url, options);
-  const data = await res.json();
-  if (res.ok) {
-    AsyncStorage.setItem('accessToken', data.accessToken);
-    AsyncStorage.setItem('refreshToken', data.refreshToken);
-    return;
-  } else {
-    throw Error(data.message);
-  }
-}
+export const instance = new Instance(BASE_URL_TEST);
+export const instanceWithAuth = new InstanceWithAuth(BASE_URL_TEST);
