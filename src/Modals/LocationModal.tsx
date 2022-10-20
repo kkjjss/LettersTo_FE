@@ -22,16 +22,16 @@ export function LocationModal({isModalVisible, setModalVisible}: Props) {
   const [cities, setCities] = useState([{label: '', value: 0}]);
   const [selectedCityId, setSelectedCityId] = useState<null | number>(null);
 
-  const store = useStore();
+  const {userInfo} = useStore();
 
   const activateUpdate = useMemo(() => {
     if (selectedRegionId && selectedCityId) {
-      if (selectedCityId !== store.userInfo?.geolocationId) {
+      if (selectedCityId !== userInfo?.geolocationId) {
         return true;
       }
     }
     return false;
-  }, [selectedCityId, selectedRegionId, store.userInfo]);
+  }, [selectedCityId, selectedRegionId, userInfo]);
 
   const {bottom: SAFE_AREA_BOTTOM} = useSafeAreaInsets();
 
@@ -49,16 +49,17 @@ export function LocationModal({isModalVisible, setModalVisible}: Props) {
 
   const updateLocation = async () => {
     try {
-      const newUserInfo = {
-        nickname: store.userInfo?.nickname,
-        geolocationId: selectedCityId,
-        topicIds: store.userInfo?.topicIds,
-        personalityIds: store.userInfo?.personalityIds,
-      };
-      await patchUserInfo(newUserInfo);
-    } catch (error) {}
+      if (userInfo && selectedCityId) {
+        const newUserInfo = {
+          geolocationId: selectedCityId,
+        };
+        await patchUserInfo(newUserInfo);
+      }
 
-    hideModal();
+      hideModal();
+    } catch (error: any) {
+      console.error(error.message);
+    }
   };
 
   useEffect(() => {
@@ -70,10 +71,10 @@ export function LocationModal({isModalVisible, setModalVisible}: Props) {
     };
 
     getRegionsList();
-    if (store.userInfo) {
-      setSelectedRegionId(store.userInfo.parentGeolocationId);
+    if (userInfo) {
+      setSelectedRegionId(userInfo.parentGeolocationId);
     }
-  }, [store.userInfo]);
+  }, [userInfo]);
 
   useEffect(() => {
     const getCitiesList = async (regionId: number) => {
@@ -89,10 +90,10 @@ export function LocationModal({isModalVisible, setModalVisible}: Props) {
       setCities([{label: '', value: 0}]);
     }
 
-    if (store.userInfo) {
-      setSelectedCityId(store.userInfo.geolocationId);
+    if (userInfo) {
+      setSelectedCityId(userInfo.geolocationId);
     }
-  }, [selectedRegionId, store.userInfo]);
+  }, [selectedRegionId, userInfo]);
 
   return (
     <Modal

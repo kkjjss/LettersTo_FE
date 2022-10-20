@@ -16,6 +16,7 @@ import {SCREEN_HEIGHT} from '../constants';
 import {TopicList} from '../Components/TopicList';
 import {UpdateButton} from '../Components/UpdateButton';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {patchUserInfo} from '../APIs/member';
 
 type Props = {
   isModalVisible: boolean;
@@ -27,7 +28,7 @@ export const TopicsModal = ({isModalVisible, setModalVisible}: Props) => {
   const [selectedTopicIds, setSelectedTopicIds] = useState<number[]>([]);
   const [activateUpdate, setActivateUpdate] = useState(true);
 
-  const store = useStore();
+  const {userInfo} = useStore();
 
   const {bottom: SAFE_AREA_BOTTOM} = useSafeAreaInsets();
 
@@ -63,8 +64,19 @@ export const TopicsModal = ({isModalVisible, setModalVisible}: Props) => {
     setModalVisible(false);
   };
 
-  const updateTopics = () => {
-    hideModal();
+  const updateTopics = async () => {
+    try {
+      if (userInfo && selectedTopicIds) {
+        const newUserInfo = {
+          topicIds: selectedTopicIds,
+        };
+        await patchUserInfo(newUserInfo);
+      }
+
+      hideModal();
+    } catch (error: any) {
+      console.error(error.message);
+    }
   };
 
   const reset = () => {
@@ -83,11 +95,11 @@ export const TopicsModal = ({isModalVisible, setModalVisible}: Props) => {
 
   useEffect(() => {
     if (isModalVisible) {
-      if (store.userInfo.topicIds) {
-        setSelectedTopicIds(store.userInfo.topicIds);
+      if (userInfo?.topicIds) {
+        setSelectedTopicIds(userInfo.topicIds);
       }
     }
-  }, [isModalVisible, store.userInfo.topicIds]);
+  }, [isModalVisible, userInfo]);
 
   useEffect(() => {
     if (counter > 0) {

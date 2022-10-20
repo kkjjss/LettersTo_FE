@@ -11,7 +11,7 @@ import {
   ScrollView,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {existsNickname} from '../APIs/member';
+import {existsNickname, patchUserInfo} from '../APIs/member';
 import {UpdateButton} from '../Components/UpdateButton';
 import {useKeyboardHeight} from '../Hooks/useKeyboardHeight';
 import useStore from '../Store/store';
@@ -31,16 +31,33 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
 
   const {keyboardHeight, keyboardOn} = useKeyboardHeight();
 
-  const store = useStore();
+  const {userInfo} = useStore();
 
   const {bottom: SAFE_AREA_BOTTOM} = useSafeAreaInsets();
 
   const hideModal = () => {
+    alert.reset();
+    setNickname('');
+    setTempNickname('');
+    setIsFormCorrect(false);
+    setIsExists(false);
+    setActivateUpdate(false);
     setModalVisible(false);
   };
 
-  const updateNickname = () => {
-    hideModal();
+  const updateNickname = async () => {
+    try {
+      if (userInfo && nickname) {
+        const newUserInfo = {
+          nickname: nickname,
+        };
+        await patchUserInfo(newUserInfo);
+      }
+
+      hideModal();
+    } catch (error: any) {
+      console.error(error.message);
+    }
   };
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -66,7 +83,7 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
 
   useEffect(() => {
     const checkNicknameAlreadyUsed = async () => {
-      if (nickname === store.userInfo.nickname) {
+      if (userInfo && nickname === userInfo.nickname) {
         setIsAlreadyUsed(true);
         alert.start();
       } else {
@@ -102,8 +119,11 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
       }
     };
 
-    checkNicknameAlreadyUsed();
-  }, [nickname]);
+    if (isModalVisible) {
+      checkNicknameAlreadyUsed();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nickname, userInfo, isModalVisible]);
 
   return (
     <Modal

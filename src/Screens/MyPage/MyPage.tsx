@@ -30,12 +30,12 @@ export function MyPage({navigation}: Props) {
     useState(false);
   const [isLocationModalVisible, setLocationModalVisible] = useState(false);
 
-  const store = useStore();
+  const {setUserInfo, setIsLoggedIn, userInfo} = useStore();
 
   function logout() {
     AsyncStorage.removeItem('accessToken');
     AsyncStorage.removeItem('refreshToken');
-    store.setIsLoggedIn(false);
+    setIsLoggedIn(false);
   }
 
   const openNicknameModal = () => {
@@ -57,18 +57,18 @@ export function MyPage({navigation}: Props) {
   useEffect(() => {
     const updateUserInfo = async () => {
       if (
-        !isLocationModalVisible ||
-        !isNicknameModalVisible ||
-        !isPersonalitiesModalVisible ||
+        !isLocationModalVisible &&
+        !isNicknameModalVisible &&
+        !isPersonalitiesModalVisible &&
         !isTopicsModalVisible
       ) {
-        const userInfo = await getUserInfo();
-        store.setUserInfo({
-          nickname: userInfo.nickname,
-          personalityIds: userInfo.personalityIds,
-          topicIds: userInfo.topicIds,
-          geolocationId: userInfo.geolocationId,
-          parentGeolocationId: userInfo.parentGeolocationId,
+        const userData = await getUserInfo();
+        setUserInfo({
+          nickname: userData.nickname,
+          personalityIds: userData.personalityIds,
+          topicIds: userData.topicIds,
+          geolocationId: userData.geolocationId,
+          parentGeolocationId: userData.parentGeolocationId,
         });
       }
     };
@@ -78,7 +78,7 @@ export function MyPage({navigation}: Props) {
     isNicknameModalVisible,
     isPersonalitiesModalVisible,
     isTopicsModalVisible,
-    store,
+    setUserInfo,
   ]);
 
   return (
@@ -90,7 +90,7 @@ export function MyPage({navigation}: Props) {
             source={require('../../Assets/userIcon.png')}
             style={{height: 20, width: 20, marginRight: 4}}
           />
-          <Text style={styles.nicknameText}>{store.userInfo.nickname}</Text>
+          <Text style={styles.nicknameText}>{userInfo?.nickname}</Text>
         </View>
         <Pressable onPress={openNicknameModal}>
           <View style={styles.nicknameButton}>

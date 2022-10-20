@@ -12,10 +12,11 @@ type Props = NativeStackScreenProps<StackParamsList, 'Splash'>;
 export function Splash({}: Props) {
   //State for ActivityIndicator animation
   const [animating, setAnimating] = useState(true);
-  const store = useStore();
+  const {setUserInfo, setIsLoggedIn, setIsLoading} = useStore();
 
   useEffect(() => {
     async function checkForService() {
+      // await AsyncStorage.clear();
       try {
         // 유저 정보 받아옴
         const accessToken = await AsyncStorage.getItem('accessToken');
@@ -23,14 +24,10 @@ export function Splash({}: Props) {
 
         // 있으면 로그인
         if (accessToken && refreshToken) {
-          console.log(
-            'Login With AccessToken/RefreshToken: ',
-            accessToken,
-            refreshToken,
-          );
+          console.log('Login With AccessToken:', accessToken);
 
           const userInfo = await logIn();
-          store.setUserInfo({
+          setUserInfo({
             nickname: userInfo.nickname,
             personalityIds: userInfo.personalityIds,
             topicIds: userInfo.topicIds,
@@ -38,19 +35,19 @@ export function Splash({}: Props) {
             parentGeolocationId: userInfo.parentGeolocationId,
           });
 
-          store.setIsLoggedIn(true);
+          setIsLoggedIn(true);
         }
 
         // 끝나면 로딩 끝
         setAnimating(false);
-        store.setIsLoading(false);
+        setIsLoading(false);
       } catch (error: any) {
         console.error(error.message);
       }
     }
 
     checkForService();
-  }, [store]);
+  }, [setIsLoading, setIsLoggedIn, setUserInfo]);
 
   return (
     <View style={styles.container}>

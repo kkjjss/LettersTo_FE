@@ -1,6 +1,6 @@
 import {Dimensions, StatusBar} from 'react-native';
 
-export const HOST_URL_TEST = 'http://13.209.12.14/api';
+export const BASE_URL_TEST = 'http://13.209.12.14/api';
 
 export const SCREEN_HEIGHT =
   Dimensions.get('window').height - (StatusBar.currentHeight || 0);

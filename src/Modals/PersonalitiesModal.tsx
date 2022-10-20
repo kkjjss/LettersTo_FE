@@ -16,6 +16,7 @@ import {Personalities} from '../types/types';
 import {getPersonalities} from '../APIs/personality';
 import {PersonalityList} from '../Components/PersonalityList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {patchUserInfo} from '../APIs/member';
 
 type Props = {
   isModalVisible: boolean;
@@ -29,7 +30,7 @@ export function PersonalitiesModal({isModalVisible, setModalVisible}: Props) {
   >([]);
   const [activateUpdate, setActivateUpdate] = useState(true);
 
-  const store = useStore();
+  const {userInfo} = useStore();
 
   const {bottom: SAFE_AREA_BOTTOM} = useSafeAreaInsets();
 
@@ -74,8 +75,19 @@ export function PersonalitiesModal({isModalVisible, setModalVisible}: Props) {
     setModalVisible(false);
   };
 
-  const updatePersonalites = () => {
-    hideModal();
+  const updatePersonalites = async () => {
+    try {
+      if (userInfo && selectedPersonalityIds) {
+        const newUserInfo = {
+          personalityIds: selectedPersonalityIds,
+        };
+        await patchUserInfo(newUserInfo);
+      }
+
+      hideModal();
+    } catch (error: any) {
+      console.error(error.message);
+    }
   };
 
   const reset = () => {
@@ -94,11 +106,11 @@ export function PersonalitiesModal({isModalVisible, setModalVisible}: Props) {
 
   useEffect(() => {
     if (isModalVisible) {
-      if (store.userInfo.personalityIds) {
-        setSelectedPersonalityIds(store.userInfo.personalityIds);
+      if (userInfo && userInfo.personalityIds) {
+        setSelectedPersonalityIds(userInfo.personalityIds);
       }
     }
-  }, [isModalVisible, store.userInfo.personalityIds]);
+  }, [isModalVisible, userInfo]);
 
   useEffect(() => {
     if (counter > 0) {

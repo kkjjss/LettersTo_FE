@@ -1,6 +1,6 @@
 import type {Personalities} from '../types/types';
-import {get} from '../Utils/http';
+import {instance} from '../Utils/http';
 
 export async function getPersonalities(): Promise<Personalities> {
-  return await get('/personalities');
+  return await instance.get('/personalities');
 }

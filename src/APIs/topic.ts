@@ -1,6 +1,6 @@
 import type {Topics} from '../types/types';
-import {get} from '../Utils/http';
+import {instance} from '../Utils/http';
 
 export async function getTopics(): Promise<Topics> {
-  return await get('/topics');
+  return await instance.get('/topics');
 }
