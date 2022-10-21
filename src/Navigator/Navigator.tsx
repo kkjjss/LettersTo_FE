@@ -16,6 +16,7 @@ import {TopicsForm} from '../Screens/SignUp/TopicsForm';
 import {PersonalityForm} from '../Screens/SignUp/PersonalityForm';
 import {LocationForm} from '../Screens/SignUp/LocationForm';
 import {MyPage} from '../Screens/MyPage/MyPage';
+import {AccountDelete} from '../Screens/MyPage/AccountDelete';
 
 const Stack = createNativeStackNavigator<StackParamsList>();
 
@@ -34,6 +35,7 @@ export default function StackNavigator() {
 
           {/* 회원정보 수정 */}
           <Stack.Screen name="MyPage" component={MyPage} />
+          <Stack.Screen name="AccountDelete" component={AccountDelete} />
         </Stack.Group>
       ) : (
         <Stack.Group>

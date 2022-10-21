@@ -68,11 +68,11 @@ class InstanceWithAuth {
     this.baseUrl = BASE_URL;
   }
 
-  async getAccessToken() {
+  private async getAccessToken() {
     return await AsyncStorage.getItem('accessToken');
   }
 
-  async getRefreshToken() {
+  private async getRefreshToken() {
     return await AsyncStorage.getItem('refreshToken');
   }
 
@@ -97,7 +97,12 @@ class InstanceWithAuth {
     } else {
       if (res.status === 401) {
         console.error(data.message);
-        return await this.refreshAccessToken('post', path, body, headers);
+        return await this.refreshAccessToken({
+          method: 'post',
+          path,
+          data: body,
+          headers,
+        });
       } else {
         throw Error(data.message);
       }
@@ -135,7 +140,12 @@ class InstanceWithAuth {
     } else {
       if (res.status === 401) {
         console.error(data.message);
-        return await this.refreshAccessToken('get', path, params, headers);
+        return await this.refreshAccessToken({
+          method: 'get',
+          path,
+          data: params,
+          headers,
+        });
       } else {
         throw Error(data.message);
       }
@@ -173,19 +183,59 @@ class InstanceWithAuth {
     } else {
       if (res.status === 401) {
         console.error(res.statusText);
-        return await this.refreshAccessToken('get', path, params, headers);
+        return await this.refreshAccessToken({
+          method: 'get',
+          path,
+          data: params,
+          headers,
+        });
       } else {
         throw Error(res.statusText);
       }
     }
   }
 
-  async refreshAccessToken(
-    method: string,
-    path: string,
-    data: any,
-    headers?: {},
-  ) {
+  async delete(path: string): Promise<any> {
+    const url = this.baseUrl + path;
+
+    const options = {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${await this.getAccessToken()}`,
+      },
+    };
+
+    const res = await fetch(url, options);
+    // const data = await res.json();
+    loggingRequest('DELETE', url, res.status);
+
+    if (res.ok) {
+      return res;
+    } else {
+      if (res.status === 401) {
+        console.error(res.statusText);
+        return await this.refreshAccessToken({
+          method: 'delete',
+          path,
+        });
+      } else {
+        throw Error(res.statusText);
+      }
+    }
+  }
+
+  private async refreshAccessToken({
+    method,
+    path,
+    data,
+    headers,
+  }: {
+    method: string;
+    path: string;
+    data?: any;
+    headers?: {};
+  }) {
     try {
       const {accessToken, refreshToken} = await instance.post('/token', {
         accessToken: await this.getAccessToken(),
@@ -208,6 +258,8 @@ class InstanceWithAuth {
         return await this.get(path, data, headers);
       } else if (method === 'patch') {
         return await this.patch(path, data, headers);
+      } else if (method === 'delete') {
+        return await this.delete(path);
       }
     } catch (error: any) {
       console.error(error.message);

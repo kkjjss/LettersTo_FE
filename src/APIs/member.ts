@@ -21,3 +21,7 @@ export async function patchUserInfo(userInfo: {
 }) {
   return await instanceWithAuth.patch('/members', userInfo);
 }
+
+export async function deleteAccount() {
+  return await instanceWithAuth.delete('/members');
+}

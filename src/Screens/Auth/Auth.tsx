@@ -51,6 +51,7 @@ export function Auth({navigation}: Props) {
 
         // registerToken 발급
         const userTokens = await postToken(tokenInfo);
+        console.log(userTokens);
 
         if (userTokens.verified === false) {
           store.setRegisterToken(userTokens.registerToken);

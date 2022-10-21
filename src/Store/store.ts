@@ -40,6 +40,8 @@ interface Store {
     geolocationId: number;
     parentGeolocationId: number;
   }) => void;
+
+  signOut: () => void;
 }
 
 const useStore = create<Store>(set => ({
@@ -74,6 +76,9 @@ const useStore = create<Store>(set => ({
   userInfo: undefined,
 
   setUserInfo: value => set(() => ({userInfo: value})),
+
+  signOut: () =>
+    set(() => ({userInfo: undefined, isLoggedIn: false, isLoading: true})),
 }));
 
 export default useStore;

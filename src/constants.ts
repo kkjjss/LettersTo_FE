@@ -5,6 +5,8 @@ export const BASE_URL_TEST = 'http://13.209.12.14/api';
 export const SCREEN_HEIGHT =
   Dimensions.get('window').height - (StatusBar.currentHeight || 0);
 
+export const SCREEN_WIDTH = Dimensions.get('window').width;
+
 export const TOPIC_CATEGORY = [
   {
     text: '엔터테인먼트',

@@ -20,6 +20,8 @@ import useStore from '../../Store/store';
 import {LocationModal} from '../../Modals/LocationModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {logIn as getUserInfo} from '../../APIs/member';
+import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../constants';
+import {ModalBlur} from '../../Modals/ModalBlur';
 
 type Props = NativeStackScreenProps<StackParamsList, 'MyPage'>;
 
@@ -83,7 +85,7 @@ export function MyPage({navigation}: Props) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header navigation={navigation} title={'MY'} />
+      <Header navigation={navigation} title={'MY'} color="white" />
       <View style={styles.nickname}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Image
@@ -123,6 +125,16 @@ export function MyPage({navigation}: Props) {
           />
         </View>
 
+        <View style={{marginBottom: 24}}>
+          <ListName name="계정 관리" />
+          <ListItem
+            itmeName="회원 탈퇴"
+            openModal={() => {
+              navigation.navigate('AccountDelete');
+            }}
+          />
+        </View>
+
         <Pressable
           onPress={logout}
           style={{
@@ -143,6 +155,10 @@ export function MyPage({navigation}: Props) {
         </Pressable>
       </View>
 
+      {(isLocationModalVisible ||
+        isNicknameModalVisible ||
+        isPersonalitiesModalVisible ||
+        isTopicsModalVisible) && <ModalBlur />}
       <NicknameModal
         isModalVisible={isNicknameModalVisible}
         setModalVisible={setNicknameModalVisible}
@@ -190,6 +206,14 @@ const styles = StyleSheet.create({
     fontFamily: 'Galmuri11',
     fontSize: 13,
     color: '#0000cc',
+  },
+  modalBlur: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    backgroundColor: '#000000a0',
+    height: SCREEN_HEIGHT,
+    width: SCREEN_WIDTH,
   },
   modal: {
     margin: 0,
