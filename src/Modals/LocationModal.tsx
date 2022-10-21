@@ -215,7 +215,6 @@ const styles = StyleSheet.create({
     left: 27,
     width: 288,
     height: 35,
-    zIndex: 1,
   },
   noticeBGImage: {
     width: 288,
@@ -231,11 +230,9 @@ const styles = StyleSheet.create({
   locationWrap: {
     height: SCREEN_HEIGHT * 0.65,
     marginHorizontal: 24,
-    zIndex: 0,
   },
   regionBox: {
     marginBottom: 12,
-    zIndex: 2,
   },
   cityBox: {},
   picker: {

@@ -234,10 +234,10 @@ const styles = StyleSheet.create({
   },
   regionBox: {
     marginBottom: 12,
-    zIndex: 2,
+    // zIndex: 2,
   },
   cityBox: {
-    zIndex: 1,
+    // zIndex: 1,
   },
   picker: {
     borderRadius: 10,
