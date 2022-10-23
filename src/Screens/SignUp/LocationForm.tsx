@@ -162,21 +162,27 @@ export function LocationForm({navigation}: Props) {
               textStyle={styles.pickerText}
             />
           </View>
-          <View>
-            <DropDownPicker
-              open={openCity}
-              value={selectedCityId}
-              items={cities}
-              setOpen={setOpenCity}
-              onOpen={onRegionOpen}
-              setValue={setSelectedCityId}
-              autoScroll={true}
-              placeholder="군 · 구 선택"
-              zIndex={1}
-              style={styles.picker}
-              textStyle={styles.pickerText}
-            />
-          </View>
+          {/*
+            ios와 android의 zindex가 다름
+            android에서는 하위 드롭다운을 없어지게 처리
+          */}
+          {Platform.OS === 'ios' && !openRegion && (
+            <View>
+              <DropDownPicker
+                open={openCity}
+                value={selectedCityId}
+                items={cities}
+                setOpen={setOpenCity}
+                onOpen={onRegionOpen}
+                setValue={setSelectedCityId}
+                autoScroll={true}
+                placeholder="군 · 구 선택"
+                zIndex={1}
+                style={styles.picker}
+                textStyle={styles.pickerText}
+              />
+            </View>
+          )}
         </View>
         <SignUpButton activateSignUp={activateSignUp} onPress={onPressSignUp} />
       </SafeAreaView>
