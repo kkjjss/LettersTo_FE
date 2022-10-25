@@ -1,7 +1,15 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 
-export function TopicButton({topic, selectTopic, selectedTopicIds}) {
+import type {Topic} from '../types/types';
+
+type Props = {
+  topic: Topic;
+  selectTopic: (topicId: number) => void;
+  selectedTopicIds: number[];
+};
+
+export function TopicButton({topic, selectTopic, selectedTopicIds}: Props) {
   return (
     <TouchableHighlight
       key={topic.id}

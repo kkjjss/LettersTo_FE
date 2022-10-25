@@ -18,7 +18,6 @@ export function UpdateButton({activateUpdate, onPress}: Props) {
       <View
         style={[
           styles.updateButton,
-          // eslint-disable-next-line react-native/no-inline-styles
           {
             backgroundColor: activateUpdate ? '#ff6ece' : '#ffc7f0',
           },

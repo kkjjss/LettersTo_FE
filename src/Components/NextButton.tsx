@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {useState} from 'react';
 import {StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
 
 type Props = {
@@ -13,7 +12,6 @@ export function NextButton({activateNext, onPress}: Props) {
       <View
         style={[
           styles.nextButton,
-          // eslint-disable-next-line react-native/no-inline-styles
           {
             backgroundColor: activateNext ? '#ff6ece' : '#ffc7f0',
           },

@@ -1,6 +1,4 @@
 import * as React from 'react';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import type {StackParamsList} from '../types/stackParamList';
 import {StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
 import {useState} from 'react';
 import useStore from '../Store/store';
@@ -62,7 +60,6 @@ export function SignUpButton({activateSignUp, onPress: onPressSignUp}: Props) {
       <View
         style={[
           styles.signUpButton,
-          // eslint-disable-next-line react-native/no-inline-styles
           {
             backgroundColor: activateSignUp ? '#ff6ece' : '#ffc7f0',
           },
