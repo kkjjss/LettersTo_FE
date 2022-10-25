@@ -166,7 +166,8 @@ export function LocationForm({navigation}: Props) {
             ios와 android의 zindex가 다름
             android에서는 하위 드롭다운을 없어지게 처리
           */}
-          {Platform.OS === 'ios' && !openRegion && (
+          {((Platform.OS === 'ios' && !openRegion) ||
+            Platform.OS === 'android') && (
             <View>
               <DropDownPicker
                 open={openCity}

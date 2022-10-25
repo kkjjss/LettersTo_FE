@@ -48,6 +48,7 @@ export function Splash({}: Props) {
         setIsLoading(false);
       } catch (error: any) {
         console.error(error.message);
+        setIsLoading(false);
       }
     }
 
