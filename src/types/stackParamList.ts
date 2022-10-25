@@ -8,9 +8,13 @@ export type StackParamsList = {
   // 인증 관련 스택
   Auth: undefined;
 
-  // 회원정보 입력 스택
+  // 회원가입 스택
   NicknameForm: undefined;
-  InterestsForm: undefined;
+  TopicsForm: undefined;
   PersonalityForm: undefined;
   LocationForm: undefined;
+
+  // 회원 정보 수정 스택
+  MyPage: undefined;
+  AccountDelete: undefined;
 };

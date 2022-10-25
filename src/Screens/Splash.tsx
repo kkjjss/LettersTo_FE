@@ -3,41 +3,57 @@ import React, {useState, useEffect} from 'react';
 import {ActivityIndicator, View, StyleSheet} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {StackParamsList} from '../types';
+import {StackParamsList} from '../types/stackParamList';
 import useStore from '../Store/store';
+import {logIn} from '../APIs/member';
 
 type Props = NativeStackScreenProps<StackParamsList, 'Splash'>;
 
 export function Splash({}: Props) {
   //State for ActivityIndicator animation
   const [animating, setAnimating] = useState(true);
-
-  const {setIsLoggedIn, setIsLoading} = useStore();
-
-  async function checkForService() {
-    // 유저 정보 받아옴
-    const user_id = await AsyncStorage.getItem('user_id');
-
-    // 있으면 로그인
-    if (user_id) {
-      console.log('Already has user info:', user_id);
-
-      /* ... */
-
-      setIsLoggedIn(true);
-    }
-
-    // 끝나면 로딩 끝
-    setAnimating(false);
-    setIsLoading(false);
-  }
+  const {setUserInfo, setIsLoggedIn, setIsLoading} = useStore();
 
   useEffect(() => {
-    console.log('Splash for checking...');
-    setTimeout(() => {
-      checkForService();
-    }, 1000);
-  }, []);
+    async function checkForService() {
+      // await AsyncStorage.clear();
+      try {
+        // 유저 정보 받아옴
+        const accessToken = await AsyncStorage.getItem('accessToken');
+        const refreshToken = await AsyncStorage.getItem('refreshToken');
+
+        // 있으면 로그인
+        if (accessToken && refreshToken) {
+          console.log(
+            'Login With \nAccessToken:',
+            accessToken,
+            '\nRefreshToken: ',
+            refreshToken,
+          );
+
+          const userInfo = await logIn();
+          setUserInfo({
+            nickname: userInfo.nickname,
+            personalityIds: userInfo.personalityIds,
+            topicIds: userInfo.topicIds,
+            geolocationId: userInfo.geolocationId,
+            parentGeolocationId: userInfo.parentGeolocationId,
+          });
+
+          setIsLoggedIn(true);
+        }
+
+        // 끝나면 로딩 끝
+        setAnimating(false);
+        setIsLoading(false);
+      } catch (error: any) {
+        console.error(error.message);
+        setIsLoading(false);
+      }
+    }
+
+    checkForService();
+  }, [setIsLoading, setIsLoggedIn, setUserInfo]);
 
   return (
     <View style={styles.container}>

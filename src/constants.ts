@@ -1,7 +1,26 @@
 import {Dimensions, StatusBar} from 'react-native';
 
+export const BASE_URL_TEST = 'http://13.209.12.14/api';
+
 export const SCREEN_HEIGHT =
   Dimensions.get('window').height - (StatusBar.currentHeight || 0);
+
+export const SCREEN_WIDTH = Dimensions.get('window').width;
+
+export const TOPIC_CATEGORY = [
+  {
+    text: '엔터테인먼트',
+    key: 'ENTERTAINMENT',
+  },
+  {
+    text: '생활/취미',
+    key: 'LIFE_HOBBY',
+  },
+  {
+    text: '지식/기타',
+    key: 'KNOWLEDGE_ETC',
+  },
+];
 
 type cityListType = {
   [index: string]: string[];
@@ -256,42 +275,3 @@ export const CITY_LIST: cityListType = {
   ],
   제주특별자치도: ['제주시', '서귀포시', '북제주군', '남제주군'],
 };
-
-export const INTERESTS_LIST = [
-  '운동',
-  '음악',
-  '여행',
-  '사진',
-  '맛집',
-  '게임',
-  '영화',
-  '만화',
-  '일상',
-  '독서',
-  '연애',
-  '스포츠',
-  '연예인',
-  '자기개발',
-  '인관관계',
-];
-
-export const PERSONALITY_LIST = [
-  '열정적인',
-  '신중한',
-  '솔직한',
-  '대담한',
-  '결단력있는',
-  '도전적인',
-  '치밀한',
-  '다정한',
-  '사교적인',
-  '조심성있는',
-  '독창정인',
-  '겸손한',
-  '세심한',
-  '참을성있는',
-  '수줍어하는',
-  '조급한',
-  '내성적인',
-  '외향적인',
-];

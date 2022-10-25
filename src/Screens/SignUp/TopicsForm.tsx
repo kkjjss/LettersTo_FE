@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   View,
@@ -14,21 +14,21 @@ import {LinearGradient} from 'expo-linear-gradient';
 import {Header} from '../../Components/Header';
 import {SCREEN_HEIGHT} from '../../constants';
 import {NextButton} from '../../Components/NextButton';
-import useStore from '../../Store/store';
 import {ResetButton} from '../../Components/ResetButton';
-import {getPersonalities} from '../../APIs/personality';
-import {Personalities} from '../../types/types';
-import {PersonalityList} from '../../Components/PersonalityList';
+import useStore from '../../Store/store';
+import {Topics} from '../../types/types';
+import {getTopics} from '../../APIs/topic';
+import {TopicList} from '../../Components/TopicList';
 
-type Props = NativeStackScreenProps<StackParamsList, 'PersonalityForm'>;
+type Props = NativeStackScreenProps<StackParamsList, 'TopicsForm'>;
 
-export function PersonalityForm({navigation}: Props) {
-  const store = useStore();
-  const [personalities, setPersonalities] = useState<Personalities>([]);
-  const [selectedPersonalityIds, setSelectedPersonalityIds] = useState<
-    number[]
-  >([]);
+export function TopicsForm({navigation}: Props) {
+  const [counter, setCounter] = useState(0);
+  const [topics, setTopics] = useState<Topics>([]);
+  const [selectedTopicIds, setSelectedTopicIds] = useState<number[]>([]);
   const [activateNext, setActivateNext] = useState<boolean>(false);
+
+  const store = useStore();
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -45,40 +45,30 @@ export function PersonalityForm({navigation}: Props) {
     }),
   ]);
 
-  const counter = useMemo(
-    () => selectedPersonalityIds.length,
-    [selectedPersonalityIds],
-  );
-
-  const selectPersonality = (personalityId: number) => {
+  const selectTopic = (topicId: number) => {
     alert.reset();
-    if (
-      counter < 9 &&
-      selectedPersonalityIds.includes(personalityId) === false
-    ) {
-      setSelectedPersonalityIds([...selectedPersonalityIds, personalityId]);
-    } else if (selectedPersonalityIds.includes(personalityId) === true) {
-      setSelectedPersonalityIds(
-        [...selectedPersonalityIds].filter(e => e !== personalityId),
-      );
+    if (counter < 7 && selectedTopicIds.includes(topicId) === false) {
+      setSelectedTopicIds([...selectedTopicIds, topicId]);
+    } else if (selectedTopicIds.includes(topicId) === true) {
+      setSelectedTopicIds([...selectedTopicIds].filter(e => e !== topicId));
     } else {
       alert.start();
     }
   };
 
-  const goToLocationForm = () => {
-    store.setPersonalityIds(selectedPersonalityIds);
-    navigation.navigate('LocationForm');
+  const goToPersonalityForm = () => {
+    store.setTopicIds(selectedTopicIds);
+    navigation.navigate('PersonalityForm');
   };
 
   const reset = () => {
-    setSelectedPersonalityIds([]);
+    setSelectedTopicIds([]);
   };
 
   useEffect(() => {
     try {
-      getPersonalities().then(personalityData => {
-        setPersonalities(personalityData);
+      getTopics().then(topicData => {
+        setTopics([...topicData]);
       });
     } catch (error: any) {
       console.error(error.message);
@@ -86,12 +76,14 @@ export function PersonalityForm({navigation}: Props) {
   }, []);
 
   useEffect(() => {
-    if (counter > 0) {
+    let count = selectedTopicIds.length;
+    setCounter(count);
+    if (count > 0) {
       setActivateNext(true);
     } else {
       setActivateNext(false);
     }
-  }, [counter]);
+  }, [selectedTopicIds]);
 
   return (
     <LinearGradient colors={['#ffccee', 'white', 'white', 'white', '#ffffcc']}>
@@ -104,27 +96,27 @@ export function PersonalityForm({navigation}: Props) {
         <Header navigation={navigation} title={''} />
         <View style={styles.titleBox}>
           <View style={styles.titleWrap}>
-            <Text style={styles.titleText}>나의 성향을</Text>
+            <Text style={styles.titleText}>나의 관심사를</Text>
             <Text style={styles.titleText}>모두 선택해주세요</Text>
           </View>
           <View style={styles.counterWrap}>
             <ResetButton reset={reset} />
-            <Text style={styles.counter}>{counter} / 9</Text>
+            <Text style={styles.counter}>{counter} / 7</Text>
           </View>
         </View>
-        <ScrollView style={styles.personalityBox}>
-          <PersonalityList
-            personalities={personalities}
-            selectPersonality={selectPersonality}
-            selectedPersonalityIds={selectedPersonalityIds}
+        <ScrollView style={styles.topicBox}>
+          <TopicList
+            topics={topics}
+            selectTopic={selectTopic}
+            selectedTopicIds={selectedTopicIds}
           />
         </ScrollView>
         <View style={styles.alertBox}>
           <Animated.View style={{opacity: fadeAnim}}>
-            <Text style={styles.alertText}>최대 9개까지만 선택 가능해요!</Text>
+            <Text style={styles.alertText}>최대 7개까지만 선택 가능해요!</Text>
           </Animated.View>
         </View>
-        <NextButton activateNext={activateNext} onPress={goToLocationForm} />
+        <NextButton activateNext={activateNext} onPress={goToPersonalityForm} />
       </SafeAreaView>
     </LinearGradient>
   );
@@ -152,8 +144,40 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
     textAlign: 'right',
   },
-  personalityBox: {
-    paddingHorizontal: 24,
+  topicBox: {
+    flex: 1,
+    marginHorizontal: 24,
+  },
+  topicWrap: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  category: {
+    fontFamily: 'Galmuri11',
+    color: '#0000cc',
+    marginBottom: 10,
+  },
+  underlayer: {
+    marginBottom: 12,
+    marginRight: 12,
+  },
+  topic: {
+    height: 35,
+    borderColor: '#0000cc',
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  selectedTopic: {
+    height: 35,
+    backgroundColor: '#ccccff',
+  },
+  notSelectedTopic: {backgroundColor: 'white'},
+  topicText: {
+    marginHorizontal: 13,
+    fontFamily: 'Galmuri11',
+    fontSize: 14,
+    color: '#0000cc',
   },
   alertBox: {
     marginHorizontal: 24,
@@ -163,4 +187,20 @@ const styles = StyleSheet.create({
     fontFamily: 'Galmuri11',
     color: '#ff44cc',
   },
+  resetButton: {
+    width: 74,
+    height: 22,
+    flexDirection: 'row',
+    backgroundColor: '#ffffcc',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 4,
+    borderRadius: 11,
+  },
+  resetButtonText: {
+    fontFamily: 'Galmuri11',
+    fontSize: 12,
+    color: '#0000cc',
+  },
+  resetButtonImage: {width: 20, height: 20},
 });

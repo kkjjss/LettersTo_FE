@@ -8,12 +8,16 @@ import {
   ScrollView,
   Animated,
   SafeAreaView,
+  Platform,
 } from 'react-native';
 import {NextButton} from '../../Components/NextButton';
 import {SCREEN_HEIGHT} from '../../constants';
 import {LinearGradient} from 'expo-linear-gradient';
 import {Header} from '../../Components/Header';
-import type {StackParamsList} from '../../types';
+import type {StackParamsList} from '../../types/stackParamList';
+import {existsNickname} from '../../APIs/member';
+
+import useStore from '../../Store/store';
 
 type Props = NativeStackScreenProps<StackParamsList, 'NicknameForm'>;
 
@@ -21,8 +25,10 @@ export function NicknameForm({navigation}: Props) {
   const [nickname, setNickname] = useState('');
   const [tempNickname, setTempNickname] = useState('');
   const [isFormCorrect, setIsFormCorrect] = useState(false);
-  const [isDuplicate, setIsDuplicate] = useState(false);
+  const [isExists, setIsExists] = useState(false);
   const [activateNext, setActivateNext] = useState(false);
+
+  const store = useStore();
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -32,61 +38,64 @@ export function NicknameForm({navigation}: Props) {
     useNativeDriver: true,
   });
 
-  const checkNicknameFormCorrect = async () => {
-    if (nickname) {
-      if (/^[가-힣A-Za-z0-9]{3,10}$/.test(nickname)) {
-        setIsFormCorrect(true);
-        checkNicknameDuplicates();
-      } else {
-        setIsFormCorrect(false);
-        alert.start();
-      }
-    }
-  };
-
-  const checkNicknameDuplicates = async () => {
-    if (nickname) {
-      // api request
-      let response: boolean;
-      if (nickname === 'Aaa') {
-        response = true;
-      } else {
-        response = false;
-      }
-
-      if (response === true) {
-        setIsDuplicate(false);
-        setActivateNext(true);
-      } else {
-        setIsDuplicate(true);
-      }
-      alert.start();
-    }
-  };
-
-  const changeNickname = (v: string) => {
+  const onChangeNickname = (v: string) => {
     alert.reset();
     setTempNickname(v);
     setActivateNext(false);
   };
 
+  const goToTopicForm = () => {
+    store.setNickname(nickname);
+    navigation.navigate('TopicsForm');
+  };
+
   useEffect(() => {
     const debounce = setTimeout(() => {
       setNickname(tempNickname);
-    }, 300);
+    }, 500);
     return () => clearTimeout(debounce);
   }, [tempNickname]);
 
   useEffect(() => {
+    const checkNicknameFormCorrect = async () => {
+      if (nickname) {
+        if (/^[가-힣A-Za-z0-9]{3,10}$/.test(nickname)) {
+          setIsFormCorrect(true);
+          checkNicknameExistss();
+        } else {
+          setIsFormCorrect(false);
+          alert.start();
+        }
+      }
+    };
+
+    const checkNicknameExistss = async () => {
+      if (nickname) {
+        try {
+          const response = await existsNickname(nickname);
+          setIsExists(response);
+          if (response === false) {
+            setActivateNext(true);
+          }
+          alert.start();
+        } catch (error: any) {
+          console.error(error.message);
+        }
+      }
+    };
+
     checkNicknameFormCorrect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nickname]);
 
   return (
-    <LinearGradient
-      colors={['#ffccee', 'white', 'white', 'white', '#ffffcc']}
-      style={styles.container}>
-      <SafeAreaView style={styles.container}>
+    <LinearGradient colors={['#ffccee', 'white', 'white', 'white', '#ffffcc']}>
+      <SafeAreaView
+        style={
+          Platform.OS === 'android'
+            ? styles.container_android
+            : styles.container_ios
+        }>
         <ScrollView>
           <Header navigation={navigation} title={''} />
           <View style={styles.textWrap}>
@@ -98,13 +107,13 @@ export function NicknameForm({navigation}: Props) {
               <TextInput
                 style={styles.nicknameInput}
                 value={tempNickname}
-                onChangeText={changeNickname}
+                onChangeText={onChangeNickname}
               />
             </View>
           </View>
           <Animated.View style={[styles.alert, {opacity: fadeAnim}]}>
             {isFormCorrect ? (
-              !isDuplicate ? (
+              !isExists ? (
                 <Text style={styles.alertSuccess}>사용 가능한 별명이에요.</Text>
               ) : (
                 <Text style={styles.alertFail}>이미 사용중인 별명이에요.</Text>
@@ -116,23 +125,19 @@ export function NicknameForm({navigation}: Props) {
             )}
           </Animated.View>
         </ScrollView>
-        <NextButton
-          navigation={navigation}
-          to={'InterestsForm'}
-          activateNext={activateNext}
-        />
+        <NextButton activateNext={activateNext} onPress={goToTopicForm} />
       </SafeAreaView>
     </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {height: SCREEN_HEIGHT},
+  container_ios: {height: SCREEN_HEIGHT},
+  container_android: {height: SCREEN_HEIGHT, paddingVertical: 15},
   textWrap: {
     height: 100,
-    marginBottom: 30,
     marginHorizontal: 24,
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
   },
   text: {fontSize: 18, fontFamily: 'Galmuri11', color: '#0000cc'},
   nicknameWrap: {
@@ -145,7 +150,7 @@ const styles = StyleSheet.create({
     height: 54,
     borderWidth: 1,
     borderColor: '#0000cc',
-    borderRadius: 10,
+    borderRadius: 5,
     fontFamily: 'Galmuri11',
     color: '#0000cc',
   },

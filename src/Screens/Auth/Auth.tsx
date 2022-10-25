@@ -7,49 +7,79 @@ import {
   TouchableWithoutFeedback,
   SafeAreaView,
 } from 'react-native';
-import type {StackParamsList} from '../../types';
+import type {StackParamsList} from '../../types/stackParamList';
 import {LinearGradient} from 'expo-linear-gradient';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
-// import useStore from '../../Store/store';
+import {postToken} from '../../APIs/token';
 
-import {
-  login,
-  // getProfile as getKakaoProfile,
-} from '@react-native-seoul/kakao-login';
+import {KakaoOAuthToken, login} from '@react-native-seoul/kakao-login';
+
+import useStore from '../../Store/store';
+import {useState} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {logIn} from '../../APIs/member';
 
 type Props = NativeStackScreenProps<StackParamsList, 'Auth'>;
 
-// const windowWidth = Dimensions.get('window').width;
-
 export function Auth({navigation}: Props) {
-  // const {setIsLoggedIn} = useStore();
+  const store = useStore();
 
-  // async function logIn() {
-  //   await AsyncStorage.setItem('user_id', 'aa').then(() => {
-  //     setIsLoggedIn(true);
-  //   });
-  // }
+  const [disable, setDisable] = useState(false);
 
-  function signInWithSocialService(socialService: string) {
+  function signUpWithSocialService(socialService: string) {
     switch (socialService) {
       case 'google':
         navigation.navigate('NicknameForm');
         break;
-
       default:
         break;
     }
   }
 
-  /* const signInWithKakao = async (): Promise<void> => {
+  function isKakaoOAuthToken(arg: any): arg is KakaoOAuthToken {
+    return arg.idToken !== undefined;
+  }
+
+  const signUpWithKakao = async (): Promise<void> => {
+    setDisable(true);
     try {
+      // 카카오 로그인 호출
       const token = await login();
-      console.log(token);
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error('login err', err);
+      if (isKakaoOAuthToken(token)) {
+        const tokenInfo = {
+          idToken: token.idToken,
+        };
+
+        // registerToken 발급
+        const userTokens = await postToken(tokenInfo);
+        console.log(userTokens);
+
+        if (userTokens.verified === false) {
+          store.setRegisterToken(userTokens.registerToken);
+          navigation.navigate('NicknameForm');
+        } else {
+          AsyncStorage.setItem('accessToken', userTokens.accessToken);
+          AsyncStorage.setItem('refreshToken', userTokens.refreshToken);
+
+          const userInfo = await logIn();
+          store.setUserInfo({
+            nickname: userInfo.nickname,
+            personalityIds: userInfo.personalityIds,
+            topicIds: userInfo.topicIds,
+            geolocationId: userInfo.geolocationId,
+            parentGeolocationId: userInfo.parentGeolocationId,
+          });
+
+          store.setIsLoggedIn(true);
+        }
+      } else {
+        throw new Error('KakaoOAuthToken 형식이 아님');
+      }
+    } catch (err: any) {
+      console.error(err.message);
+    } finally {
+      setDisable(false);
     }
-  }; */
+  };
 
   return (
     <LinearGradient
@@ -62,7 +92,9 @@ export function Auth({navigation}: Props) {
           </Text>
         </View>
         <View style={styles.buttonWrap}>
-          <TouchableWithoutFeedback>
+          <TouchableWithoutFeedback
+            disabled={disable}
+            onPress={signUpWithKakao}>
             <View style={[styles.loginButton, {backgroundColor: '#F9E54C'}]}>
               <Text style={[styles.loginText]}>카카오로 시작하기</Text>
             </View>
@@ -73,11 +105,10 @@ export function Auth({navigation}: Props) {
             </View>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback
-            onPress={() => signInWithSocialService('google')}>
+            onPress={() => signUpWithSocialService('google')}>
             <View
               style={[
                 styles.loginButton,
-                // eslint-disable-next-line react-native/no-inline-styles
                 {
                   backgroundColor: '#ffffff',
                   borderWidth: 1,
