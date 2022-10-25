@@ -20,11 +20,16 @@ export function Home({navigation}: Props) {
     navigation.navigate('MyPage');
   }
 
+  function goToLetterEditor() {
+    navigation.navigate('LetterEditor');
+  }
+
   return (
     <View style={styles.container}>
       <Text>Home Screen</Text>
       <Button title="로그아웃" onPress={logout} />
       <Button title="마이페이지" onPress={goToMyPage} />
+      <Button title="편지작성" onPress={goToLetterEditor} />
     </View>
   );
 }

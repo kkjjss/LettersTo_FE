@@ -18,6 +18,9 @@ import {LocationForm} from '../Screens/SignUp/LocationForm';
 import {MyPage} from '../Screens/MyPage/MyPage';
 import {AccountDelete} from '../Screens/MyPage/AccountDelete';
 
+// 편지 작성
+import {LetterEditor} from '../Screens/Letter/LetterEditor';
+
 const Stack = createNativeStackNavigator<StackParamsList>();
 
 export default function StackNavigator() {
@@ -36,6 +39,9 @@ export default function StackNavigator() {
           {/* 회원정보 수정 */}
           <Stack.Screen name="MyPage" component={MyPage} />
           <Stack.Screen name="AccountDelete" component={AccountDelete} />
+
+          {/* 편지 작성 */}
+          <Stack.Screen name="LetterEditor" component={LetterEditor} />
         </Stack.Group>
       ) : (
         <Stack.Group>
