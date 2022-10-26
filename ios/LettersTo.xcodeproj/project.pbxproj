@@ -489,6 +489,7 @@
 			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-LettersTo-LettersToTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 5Q4W666RS5;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -518,6 +519,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 5Q4W666RS5;
 				INFOPLIST_FILE = LettersToTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -548,7 +550,6 @@
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = LettersTo/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = LettersTo;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -580,7 +581,6 @@
 				DEVELOPMENT_TEAM = 5Q4W666RS5;
 				INFOPLIST_FILE = LettersTo/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = LettersTo;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
