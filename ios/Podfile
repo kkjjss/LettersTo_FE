@@ -1,3 +1,5 @@
+$RNFirebaseAsStaticFramework = true
+
 require File.join(File.dirname(`node --print "require.resolve('expo/package.json')"`), "scripts/autolinking")
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
@@ -6,6 +8,8 @@ platform :ios, '12.4'
 install! 'cocoapods', :deterministic_uuids => false
 
 target 'LettersTo' do
+  use_frameworks! :linkage => :static
+
   use_expo_modules!
   post_integrate do |installer|
     begin
@@ -30,7 +34,7 @@ target 'LettersTo' do
     #
     # Note that if you have use_frameworks! enabled, Flipper will not work and
     # you should disable the next line.
-    :flipper_configuration => FlipperConfiguration.enabled,
+    # :flipper_configuration => FlipperConfiguration.enabled,
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
