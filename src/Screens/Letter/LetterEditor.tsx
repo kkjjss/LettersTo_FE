@@ -49,12 +49,13 @@ const paperColors = [
 
 const paperStyles = ['grid', 'dotted', 'plain'];
 
-function Grid({lineColor}: {lineColor: string}) {
-  const renderHorizontal = () => {
+const Grid = ({lineColor}: {lineColor: string}) => {
+  const Horizontal = () => {
     const result = [];
     for (let i = 0; i * 24 < SCREEN_HEIGHT; i++) {
       result.push(
         <View
+          key={i}
           style={{
             height: 24,
             width: SCREEN_WIDTH,
@@ -64,14 +65,15 @@ function Grid({lineColor}: {lineColor: string}) {
         />,
       );
     }
-    return result;
+    return <>{result}</>;
   };
 
-  const renderVertical = () => {
+  const Vertical = () => {
     const result = [];
     for (let i = 0; i * 24 < SCREEN_HEIGHT; i++) {
       result.push(
         <View
+          key={i}
           style={{
             height: SCREEN_HEIGHT,
             width: 24,
@@ -81,27 +83,28 @@ function Grid({lineColor}: {lineColor: string}) {
         />,
       );
     }
-    return result;
+    return <>{result}</>;
   };
 
   return (
     <>
       <View style={{position: 'absolute'}}>
-        <>{renderHorizontal()}</>
+        <Horizontal />
       </View>
       <View style={{position: 'absolute', flexDirection: 'row'}}>
-        <>{renderVertical()}</>
+        <Vertical />
       </View>
     </>
   );
-}
+};
 
-function Dotted({lineColor}: {lineColor: string}) {
-  const dots = () => {
+const Dotted = ({lineColor}: {lineColor: string}) => {
+  const Dots = () => {
     const result = [];
     for (let i = 0; i < (SCREEN_HEIGHT / 24) * (SCREEN_WIDTH / 24); i++) {
       result.push(
         <View
+          key={i}
           style={{
             height: 1,
             width: 1,
@@ -112,8 +115,9 @@ function Dotted({lineColor}: {lineColor: string}) {
         />,
       );
     }
-    return result;
+    return <>{result}</>;
   };
+
   return (
     <View style={{position: 'absolute'}}>
       <View
@@ -123,11 +127,11 @@ function Dotted({lineColor}: {lineColor: string}) {
           flexDirection: 'row',
           flexWrap: 'wrap',
         }}>
-        <>{dots()}</>
+        <Dots />
       </View>
     </View>
   );
-}
+};
 
 export function LetterEditor({navigation}: Props) {
   const [title, setTitle] = useState('');
@@ -190,6 +194,7 @@ export function LetterEditor({navigation}: Props) {
 
   const onFocusText = () => {
     setLastestFocus(textRef);
+    setPaperSelectorVisible(false);
   };
 
   const onToggleTextAlign = () => {
@@ -219,7 +224,9 @@ export function LetterEditor({navigation}: Props) {
       }
     } else {
       dismissKeyboard();
-      if (paperSelectorVisible) setPaperSelectorVisible(false);
+      if (paperSelectorVisible) {
+        setPaperSelectorVisible(false);
+      }
       setTimeout(() => {
         setTexticonSelectorVisible(true);
       }, 300);
@@ -234,7 +241,9 @@ export function LetterEditor({navigation}: Props) {
       setPaperSelectorVisible(false);
     } else {
       dismissKeyboard();
-      if (texticonSelectorVisible) setTexticonSelectorVisible(false);
+      if (texticonSelectorVisible) {
+        setTexticonSelectorVisible(false);
+      }
       setTimeout(() => {
         setPaperSelectorVisible(true);
       }, 300);
