@@ -4,6 +4,7 @@ import React, {
   MutableRefObject,
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -28,9 +29,27 @@ const textAlignLeft = require('../../Assets/textAlignLeft.png');
 const textAlignCenter = require('../../Assets/textAlignCenter.png');
 const textAlignRight = require('../../Assets/textAlignRight.png');
 
+const paperGrid = require('../../Assets/paper/paper_grid.png');
+const paperDotted = require('../../Assets/paper/paper_dotted.png');
+const paperPlain = require('../../Assets/paper/paper_plane.png');
+
 type Props = NativeStackScreenProps<StackParamsList, 'LetterEditor'>;
 
-function Grid() {
+const paperColors = [
+  '#fd40c1',
+  '#fe7542',
+  '#ffd94d',
+  '#bbfd50',
+  '#44febc',
+  '#41edfd',
+  '#3b7bfa',
+  '#806ef9',
+  '#dda0fb',
+];
+
+const paperStyles = ['grid', 'dotted', 'plain'];
+
+function Grid({lineColor}: {lineColor: string}) {
   const renderHorizontal = () => {
     const result = [];
     for (let i = 0; i * 24 < SCREEN_HEIGHT; i++) {
@@ -40,7 +59,7 @@ function Grid() {
             height: 24,
             width: SCREEN_WIDTH,
             borderTopWidth: 1,
-            borderColor: '#ff44cc0f',
+            borderColor: lineColor,
           }}
         />,
       );
@@ -57,7 +76,7 @@ function Grid() {
             height: SCREEN_HEIGHT,
             width: 24,
             borderRightWidth: 1,
-            borderColor: '#ff44cc0f',
+            borderColor: lineColor,
           }}
         />,
       );
@@ -77,11 +96,47 @@ function Grid() {
   );
 }
 
+function Dotted({lineColor}: {lineColor: string}) {
+  const dots = () => {
+    const result = [];
+    for (let i = 0; i < (SCREEN_HEIGHT / 24) * (SCREEN_WIDTH / 24); i++) {
+      result.push(
+        <View
+          style={{
+            height: 1,
+            width: 1,
+            margin: 11.5,
+            borderColor: lineColor,
+            borderWidth: 1,
+          }}
+        />,
+      );
+    }
+    return result;
+  };
+  return (
+    <View style={{position: 'absolute'}}>
+      <View
+        style={{
+          height: SCREEN_HEIGHT,
+          width: SCREEN_WIDTH,
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+        }}>
+        <>{dots()}</>
+      </View>
+    </View>
+  );
+}
+
 export function LetterEditor({navigation}: Props) {
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
   const [align, setAlign] = useState<'left' | 'center' | 'right'>('left');
+  const [paperColor, setPaperColor] = useState<string>(paperColors[0]);
+  const [paperStyle, setPaperStyle] = useState<string>(paperStyles[0]);
   const [texticonSelectorVisible, setTexticonSelectorVisible] = useState(false);
+  const [paperSelectorVisible, setPaperSelectorVisible] = useState(false);
 
   const [selectionText, setSelectionText] = useState<{
     start: number;
@@ -104,6 +159,14 @@ export function LetterEditor({navigation}: Props) {
 
   const {keyboardOn} = useKeyboardHeight();
 
+  const gradientColor = useMemo(() => {
+    return paperColor + '44';
+  }, [paperColor]);
+
+  const lineColor = useMemo(() => {
+    return paperColor + '22';
+  }, [paperColor]);
+
   const dismissKeyboard = () => {
     Keyboard.dismiss();
   };
@@ -111,7 +174,12 @@ export function LetterEditor({navigation}: Props) {
   const onFocusTitle = () => {
     setLastestFocus(titleRef);
     setTitle(title.replace(/(⌜|⌟︎)/g, ''));
-    setTexticonSelectorVisible(false);
+    if (texticonSelectorVisible === true) {
+      setTexticonSelectorVisible(false);
+    }
+    if (paperSelectorVisible === true) {
+      setPaperSelectorVisible(false);
+    }
   };
 
   const onFocusOutTitle = () => {
@@ -151,12 +219,25 @@ export function LetterEditor({navigation}: Props) {
       }
     } else {
       dismissKeyboard();
+      if (paperSelectorVisible) setPaperSelectorVisible(false);
       setTimeout(() => {
         setTexticonSelectorVisible(true);
       }, 300);
       setTimeout(() => {
         lastestFocus?.current.focus();
       }, 600);
+    }
+  };
+
+  const onShowPaper = () => {
+    if (paperSelectorVisible) {
+      setPaperSelectorVisible(false);
+    } else {
+      dismissKeyboard();
+      if (texticonSelectorVisible) setTexticonSelectorVisible(false);
+      setTimeout(() => {
+        setPaperSelectorVisible(true);
+      }, 300);
     }
   };
 
@@ -179,14 +260,14 @@ export function LetterEditor({navigation}: Props) {
 
   return (
     <LinearGradient
-      colors={['#ffccee', 'white', 'white', 'white', '#ffffcc']}
+      colors={[gradientColor, 'white', 'white', 'white', gradientColor]}
       style={styles.container}>
       <SafeAreaView style={styles.container}>
         <Header navigation={navigation} title={'편지 작성'} />
 
-        <View style={{flex: 1, position: 'relative'}}>
-          <Grid />
-          {/* <ScrollView> */}
+        <View style={{flex: 1, position: 'relative', marginTop: 24}}>
+          {paperStyle === 'grid' && <Grid lineColor={lineColor} />}
+          {paperStyle === 'dotted' && <Dotted lineColor={lineColor} />}
           <TextInput
             value={title}
             onChangeText={setTitle}
@@ -243,7 +324,7 @@ export function LetterEditor({navigation}: Props) {
             style={{
               flexDirection: 'row',
             }}>
-            <Pressable style={{marginRight: 16}}>
+            <Pressable onPress={onShowPaper} style={{marginRight: 16}}>
               <Image
                 source={require('../../Assets/paper.png')}
                 style={{height: 24, width: 24}}
@@ -269,6 +350,129 @@ export function LetterEditor({navigation}: Props) {
             </Pressable>
           )}
         </View>
+
+        {paperSelectorVisible && (
+          <View
+            style={{
+              height: SCREEN_HEIGHT * 0.4,
+              backgroundColor: '#0000cc',
+            }}>
+            <ScrollView
+              horizontal
+              style={{paddingVertical: 16, marginHorizontal: 16}}>
+              {paperColors.map((color, index) => {
+                return (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setPaperColor(color);
+                    }}
+                    key={index}
+                    activeOpacity={0.7}
+                    style={{marginRight: 12}}>
+                    <View
+                      style={{
+                        height: 32,
+                        width: 32,
+                        borderRadius: 16,
+                        backgroundColor: color,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
+                      {color === paperColor && (
+                        <Image
+                          style={{height: 16, width: 16}}
+                          source={require('../../Assets/check.png')}
+                        />
+                      )}
+                    </View>
+                  </TouchableOpacity>
+                );
+              })}
+            </ScrollView>
+            <ScrollView horizontal style={{marginHorizontal: 16}}>
+              {paperStyles.map((style, index) => {
+                let source: any;
+                let name: string = '';
+                switch (style) {
+                  case 'grid':
+                    source = paperGrid;
+                    name = '모눈노트';
+                    break;
+                  case 'dotted':
+                    source = paperDotted;
+                    name = '도트노트';
+                    break;
+                  case 'plain':
+                    source = paperPlain;
+                    name = '플레인노트';
+                    break;
+                }
+
+                return (
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    style={{marginRight: 16, position: 'relative'}}
+                    onPress={() => {
+                      setPaperStyle(style);
+                    }}
+                    key={index}>
+                    <Image
+                      source={source}
+                      style={{
+                        height: 160,
+                        width: 118,
+                      }}
+                    />
+                    {style === paperStyle ? (
+                      <View
+                        style={{
+                          backgroundColor: '#ff6ece',
+                          position: 'absolute',
+                          right: 5,
+                          top: 5,
+                          height: 22,
+                          width: 22,
+                          borderRadius: 11,
+                          borderWidth: 2,
+                          borderColor: '#fff',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <Image
+                          source={require('../../Assets/check.png')}
+                          style={{height: 15, width: 15}}
+                        />
+                      </View>
+                    ) : (
+                      <View
+                        style={{
+                          backgroundColor: '#ffc7f0',
+                          position: 'absolute',
+                          right: 5,
+                          top: 5,
+                          height: 22,
+                          width: 22,
+                          borderRadius: 11,
+                          borderWidth: 2,
+                          borderColor: '#fff',
+                        }}
+                      />
+                    )}
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        fontFamily: 'Galmuri11',
+                        fontSize: 14,
+                        color: 'white',
+                      }}>
+                      {name}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </ScrollView>
+          </View>
+        )}
 
         {texticonSelectorVisible && (
           <View
