@@ -186,47 +186,48 @@ export function LetterEditor({navigation}: Props) {
 
         <View style={{flex: 1, position: 'relative'}}>
           <Grid />
-          <ScrollView>
-            <TextInput
-              value={title}
-              onChangeText={setTitle}
-              placeholder={'⌜제목⌟︎'}
-              onFocus={onFocusTitle}
-              onBlur={onFocusOutTitle}
-              ref={titleRef}
-              style={{
-                padding: 0,
-                height: 40,
-                fontSize: 14,
-                fontFamily: 'Galmuri11',
-                marginHorizontal: 24,
-                color: '#0000cc',
-                textAlign: align,
-              }}
-            />
+          {/* <ScrollView> */}
+          <TextInput
+            value={title}
+            onChangeText={setTitle}
+            placeholder={'⌜제목⌟︎'}
+            onFocus={onFocusTitle}
+            onBlur={onFocusOutTitle}
+            ref={titleRef}
+            style={{
+              padding: 0,
+              height: 40,
+              fontSize: 14,
+              fontFamily: 'Galmuri11',
+              marginHorizontal: 24,
+              color: '#0000cc',
+              textAlign: align,
+            }}
+          />
 
-            <TextInput
-              value={text}
-              onChangeText={setText}
-              multiline
-              placeholder="내용"
-              scrollEnabled={false}
-              ref={textRef}
-              onSelectionChange={({nativeEvent: {selection}}) => {
-                setSelectionText(selection);
-              }}
-              showSoftInputOnFocus={!texticonSelectorVisible}
-              onFocus={onFocusText}
-              style={{
-                lineHeight: 40,
-                fontSize: 14,
-                fontFamily: 'Galmuri11',
-                paddingHorizontal: 24,
-                color: '#0000cc',
-                textAlign: align,
-              }}
-            />
-          </ScrollView>
+          <TextInput
+            value={text}
+            onChangeText={setText}
+            multiline
+            placeholder="내용"
+            // scrollEnabled={false}
+            ref={textRef}
+            onSelectionChange={({nativeEvent: {selection}}) => {
+              setSelectionText(selection);
+            }}
+            showSoftInputOnFocus={!texticonSelectorVisible}
+            onFocus={onFocusText}
+            style={{
+              lineHeight: 30,
+              fontSize: 14,
+              fontFamily: 'Galmuri11',
+              paddingHorizontal: 24,
+              paddingBottom: 40,
+              color: '#0000cc',
+              textAlign: align,
+            }}
+          />
+          {/* </ScrollView> */}
         </View>
 
         <View
