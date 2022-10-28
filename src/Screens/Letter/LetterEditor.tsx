@@ -2,6 +2,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {LinearGradient} from 'expo-linear-gradient';
 import React, {
   MutableRefObject,
+  startTransition,
   useCallback,
   useEffect,
   useMemo,
@@ -133,6 +134,260 @@ const Dotted = ({lineColor}: {lineColor: string}) => {
   );
 };
 
+type TexticonCategory =
+  | 'happy'
+  | 'worry'
+  | 'angry'
+  | 'upfeeling'
+  | 'wink'
+  | 'sad'
+  | 'love';
+
+type Texticons = {
+  [key in TexticonCategory]: {
+    key: string;
+    list: string[];
+  };
+};
+
+const texticons: Texticons = {
+  happy: {
+    key: '기쁨',
+    list: [
+      '⸝⸝ʚ̴̶̷̆ᴗʚ̴̶̷̆⸝⸝',
+      '《 ͡꘠ ͜ゝ ͡꘠》',
+      '❣°ʚ(❛ั ᴗ ❛ั)ɞ°❣',
+      'ฅ(^▸ਉ◂^)ฅ',
+      '( ᵔᵒᵔ )ᵍᵒᵒᵈᵎᵎ',
+      '◌ ｡˚✩(  ›   ̫ ‹ )✩˚ ｡◌',
+      '(ꆧ⩊ꆧ )',
+      '( ˊᵕ̤ ̮ ᵕ̤ˋ )',
+      '❉𓂂(◕˓˳◕ )𓂂❉',
+      'ପ(｡ᵔ ⩊ ᵔ｡)ଓ',
+      '(｡⌒𖧉⌒)⋆.˚⊹⁺',
+      '( ◠ •̫̮ ◠)☆',
+      '(ˊ•͈ ˓ •͈ˋ)',
+      "(*' ꈊ'*)ゝ",
+      '(̂˃ꄃ˂ )̂',
+      '( • .̮ •)◞⸒⸒',
+      '（っ ‘ ᵕ ‘ ｃ）',
+      '(ᵔᵕᵔ)',
+      '●̑ᴗ●̑',
+      'ฅ(•ㅅ•❀)ฅ',
+      '₍๐•ᴗ•๐₎',
+      '-ˋˏ * ٩( ◡̉̈ )۶ * ˎˊ-',
+      '(｡•̀ᴗ-ღ)',
+      '◟(ᵔ ̮ ᵔ)͜💐',
+      '(〃´𓎟`〃)',
+      '(๑ ᴖ ༚̮ ᴖ ๑)',
+      'ᑫ•-³•ᑷ',
+    ],
+  },
+  angry: {
+    key: '화남',
+    list: [
+      '๛ก( ’-’* ก)',
+      '(ꐦ°᷄▿°᷅)',
+      'ʰᵘʰ (ꐦ○_○）✧',
+      'ᕙ( ︡’︡益’︠)ง',
+      '٩(`ω´٩ꐦ)',
+      '(✧˃̶͈̀ロ˂̶͈́)੭ु⁾⁾',
+      '█▬▬ ◟(`ﮧ´ ◟ )',
+      'ᕙ( ︡’︡ 益 ’︠)ง▬▬█',
+      '( ◡̀_◡́)▬▬█',
+      '₍ᐡ-᷅ ·̫ -᷄ᐡ₎',
+      '•̀ㅅ•́',
+      '(≡•̀·̯•́≡)',
+      '͡ ͜ʖ ͡ ╭∩╮',
+      'ฅʕ◍·̀·́◍ʔฅ',
+      '₍𝆥ﮦﮧﮦ₎𝆥',
+      '(҂⌣̀_⌣́)',
+      'ಠoಠ',
+      '(˘̶̀• ̯•˘̶́)',
+      '( ˘•~•˘ )',
+      '( `-´ )',
+      '\\( •̀ω•́ )//',
+      '(･⏠･)',
+      '( ‾᷅ᾥ‾᷄ )',
+      '٩(๑˃̌ۿ˂̌๑)۶',
+      '✧ `↼´˵',
+      '(-᷅_-᷄)',
+      '๛∙᷅῞ॄ∙᷄',
+      '(ꐦ°꒫°)',
+      'ᕕ(ꐦ°᷄д°᷅)ᕗ',
+    ],
+  },
+  worry: {
+    key: '걱정',
+    list: [
+      '･᷄-･᷅',
+      '(੭ ･᷄﹏･᷅)੭ु⁾',
+      'ㅇࡇㅇ?',
+      '(´╹〽╹`)',
+      '(ᐢ ܸ. .ܸ ᐢ)՞ ՞',
+      '(•́ι_•̀*)',
+      '=͟͟͞͞(๑º ﾛ º๑)',
+      '(˵ˊᯅˋ˵)',
+      '=͟͟͞͞(꒪ᗜ꒪ ‧̣̥̇)',
+      '( •︠ˍ•︡  )',
+      '(›´ω`‹ )',
+      '( ´△｀)',
+      '(;´・`)>',
+      '(･_-｡ )',
+      '(;´Д`)',
+      '（；￣ェ￣）',
+      '(;° ロ°)',
+      '(；☉_☉)',
+      '（’-’*)',
+      '(((( ;°Д°))))',
+      '((*゜Д゜)ゞ”',
+      '(」゜ロ゜)」',
+      '(´；Д；｀)',
+      '（￣□￣；）',
+      '(￣◇￣;)',
+      '(°◇°;)',
+      '(꒪⌓꒪)',
+      '（ｏ。ｏ；）',
+      '(ι´Д｀)ﾉ',
+    ],
+  },
+  upfeeling: {
+    key: '신남',
+    list: [
+      '(งᐛ)ว (งᐖ )ว',
+      '⸜(｡˃ ᵕ ˂ )⸝',
+      'ଘ꒰ ๑ ˃̶ ᴗ ᵒ̴̶̷๑꒱و  ̑̑',
+      '(｡˃ ᵕ ˂ )b',
+      '٩༼๑･ิﻌ･ิ༽۶٩༼･ิﻌ･ิ๑༽۶',
+      '٩(◕ᗜ◕)و',
+      '(๑˃̶͈̀∇˂̶͈́)و⁾⁾˚*',
+      'ꉂꉂ(ᵔᗜᵔ*)',
+      '(*•̀ᴗ•́*)و ̑̑',
+      '♡⁺◟(●˙▾˙●)◞⁺♡',
+      "(•'ٮ'•)৴",
+      '(ﾉ›_‹)ﾉ',
+      "٩'へ'و",
+      "٩(*'へ'*)و",
+      '(╯✧▽✧)╯',
+      'ʸᵉᵃʰ( ᐛ✌️)',
+      '٩( °ꇴ °)۶',
+      '(๑¯ ³¯๑)',
+      '੧ᐛ੭',
+      'ヽ(^。^)ノ',
+      '❛ ᗜ❛ ฅ',
+      '(੭•̀ᴗ•̀)੭',
+      '٩( ͡◉ ̯ ͡◉)۶',
+      "⸜(*'꒳'* )⸝",
+      '१✌˚◡˚✌५',
+      '( ´ ▽ ` )ﾉ',
+      '(,, ･∀･)ﾉ゛',
+      '(;-_-)ノ',
+      '(｡･ω･)ﾉﾞ',
+    ],
+  },
+  wink: {
+    key: '윙크',
+    list: [
+      '(˵ •̀ ᴗ - ˵ ) ✧',
+      '(･ｪ-)',
+      '(－ｏ⌒)',
+      '(。^_・)ノ',
+      '（＾＿－）',
+      '（＾＿・）',
+      '（＾＿−）',
+      '（＾＿－）≡★',
+      '（○゜ε＾○）',
+      '(o‿∩)',
+      '๏[-ิ_•ิ]๏',
+      '~(＾◇^)/',
+      '☆～（ゝ。∂）',
+      '✩⃛˞(๑ꆨ৺ꉺ๑)',
+      '(๑ꄱͦॢ◡ु ˂̶͈́๑)',
+      '｡ﾟ+.ღ(ゝ◡ ⚈᷀᷁ღ)',
+      '(˃̶᷄︿๏）',
+      '(∗ᵒ̶̶̷̀ω˂̶́∗)੭₎₎̊₊♡',
+      '(*⸰‿-) (☉_☉) (-‿◦☀)',
+      'ヾ(*ゝω・*)ﾉ',
+      'ｄ(ゝc_,・●)',
+      'v(*’-^*)ｂ',
+      'v(°∇^*)⌒☆',
+      'σ(ﾟｰ^*)',
+      '۴(๑ꆨ◡ꉺ๑)',
+      'd(*ゝωб*)',
+      '(ﾟ∇^*)',
+      '৲( ᵒ ૩ᵕ )৴♡*৹',
+      '(๑ゝᴗම๑) ৷ਕკ~ෆ',
+    ],
+  },
+  sad: {
+    key: '슬픔',
+    list: [
+      '૮ ˃̣̣̥᷄ᴥ˂̣̣̥᷅ ა',
+      '˚‧º·(′̥̥̥ ゝ ‵̥̥̥)‧º·˚',
+      '˃̣̣̥᷄‸˂̣̣̥᷅',
+      '˚‧º·(˃̣̣̥˓̭˂̣̣̥)‧º·˚',
+      '( ´•̥̥̥o•̥̥̥`)',
+      '(´•̥̥̥‸•̥̥̥`)',
+      '(˘̩̩̩̩̩̩◅˘̩̩̩̩̩̩ )',
+      '( ꈨຶ ˙̫̮ ꈨຶ )',
+      '( ͒˃̩̩⌂˂̩̩ ͒)',
+      '(　-̥̥̥̥̥̥̥̥̥̥̥̥̥̥̥̥̥̥̥̥̥̥̥̥̥᷄д-̥̥̥̥̥̥̥̥̥̥̥̥̥̥̥̥̥̥̥̥̥̥̥̥̥᷅ )',
+      '(｡ᵕ̣̣̣̣̣̣ ꘍ ᵕ̣̣̣̣̣̣｡)',
+      '(´. ̯.`)',
+      '(o̴̶̷᷄ ̯o̴̶̷̥᷅)',
+      '(˘̩̩̩ ˆ ˘̩̩̩)',
+      '( ᵕ ̯ ᵕ̩̩ )',
+      '૮₍ o̴̶̷̥᷅.o̴̶̷᷄ ₎ა',
+      '(|||❛︵❛。)',
+      '(◞ ‸ ◟ㆀ)',
+      '(´• ͜. •̥`)✧',
+      '(´•̥ ᵔ •̥`)',
+      '( ˘•̥ _•̥ ˘ )',
+      '(｡ﹷ ‸ ﹷ ✿)',
+      'ˢᵒᵇ(ᵕ̣̣̣̣̣ ہ ᵕ̣̣̣̣̣̣ ✿)ˢᵒᵇ',
+      '｡°(°’-‘°)°｡',
+      '(৹ᵒ̴̶̷᷄ ฅᵒ̴̶̷᷅৹) ੭',
+      '(̂ ˃̥̥̥ ˑ̫ ˂̥̥̥ )̂',
+      '｡･ﾟ･(ﾟ`ω´ﾟ)･ﾟ･｡',
+      '( ੭ ›ꪴ .‹ꪴ )੭',
+      'દ ¨̯ﮦ૩',
+    ],
+  },
+  love: {
+    key: '사랑',
+    list: [
+      '(ʃƪ ₀ ³₀)❥',
+      '(｡・‧̫・｡).*＊♡',
+      'ෆ{ @ᵔ֊̫ᵔ@ }ෆ',
+      '｡°(♥ω♥)｡',
+      '(⸝⸝o̴̶̷᷄ ·̭ o̴̶̷̥᷅⸝⸝)♡',
+      '(ˊσ̴̶̷̤⌄σ̴̶̷̤ˋ).♡*.',
+      '(⸝⸝- ̫ -⸝⸝)ෆ⃛',
+      '( つ◍’-’◍)╮—̳͟͞͞♡',
+      '( つ◍’-’◍)╮—̳͟͞͞♥',
+      '♡(ू•‧̫•ू⑅)',
+      "(っ' - ')╮=͟͟͞♡",
+      '( ᵅั ᴈ ᵅั;)',
+      "(~♡'ㅅ')~♡⁼³₌₃",
+      '(ﾉ´ з `)ノ—̳͟͞͞♡',
+      '.◜ɞ◝♡',
+      '♡( ˘ ･𐩅･˘)♡',
+      '( ˊ ᵕ ˋ )♡.°⑅',
+      '(*˙˘˙)♡',
+      '( ⸍ɞ̴̶̷ ·̫ ɞ̴̶̷⸌ )♡',
+      '(o´〰`o)♡*✲ﾟ*｡',
+      '(๓´˘`๓)♡',
+      'ᐡ´• ̫ •̥ ꜀ᐡ♡♡',
+      'ς( ᐡ-ﻌ•ᐡ ) ♡ (^•ﻌ•^ღ)',
+      '♡ᐡ・ ̫・`ᐡ♡',
+      'ღ꒡ ᴈ꒡)♡⃛(꒡ε ꒡ღ',
+      '♡( ૢ⁼̴̤̆ ꇴ ⁼̴̤̆ ૢ)~ෆ♡',
+      '♡(˃͈ દ ˂͈ ༶ )',
+      '♡˖(⁎ᐙॢ*)ॢ(*ॢᐕॢ⁎)♡॰ॱ',
+    ],
+  },
+};
+
 export function LetterEditor({navigation}: Props) {
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
@@ -141,6 +396,8 @@ export function LetterEditor({navigation}: Props) {
   const [paperStyle, setPaperStyle] = useState<string>(paperStyles[0]);
   const [texticonSelectorVisible, setTexticonSelectorVisible] = useState(false);
   const [paperSelectorVisible, setPaperSelectorVisible] = useState(false);
+  const [selectedCategory, setSelectedCategory] =
+    useState<TexticonCategory>('happy');
 
   const [selectionText, setSelectionText] = useState<{
     start: number;
@@ -368,6 +625,7 @@ export function LetterEditor({navigation}: Props) {
             }}>
             <ScrollView
               horizontal
+              showsHorizontalScrollIndicator={false}
               style={{paddingVertical: 16, marginHorizontal: 16}}>
               {paperColors.map((color, index) => {
                 return (
@@ -398,7 +656,10 @@ export function LetterEditor({navigation}: Props) {
                 );
               })}
             </ScrollView>
-            <ScrollView horizontal style={{marginHorizontal: 16}}>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={{marginHorizontal: 16}}>
               {paperStyles.map((style, index) => {
                 let source: any;
                 let name: string = '';
@@ -489,17 +750,101 @@ export function LetterEditor({navigation}: Props) {
               height: SCREEN_HEIGHT * 0.4,
               backgroundColor: '#0000cc',
             }}>
-            <TouchableOpacity
-              onPress={() => {
-                const newText = [
-                  text.slice(0, selectionText.start),
-                  '✧･ﾟ: *✧･ﾟ:* 　　 *:･ﾟ✧*:･ﾟ✧',
-                  text.slice(selectionText.end),
-                ].join('');
-                setText(newText);
-              }}>
-              <Text style={{color: 'white'}}>✧･ﾟ: *✧･ﾟ:* 　　 *:･ﾟ✧*:･ﾟ✧</Text>
-            </TouchableOpacity>
+            <View style={{height: 68, paddingTop: 16}}>
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                style={{
+                  marginHorizontal: 16,
+                }}>
+                {(Object.keys(texticons) as TexticonCategory[]).map(
+                  category => {
+                    return (
+                      <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={() => {
+                          setSelectedCategory(category);
+                        }}
+                        style={{
+                          marginRight: 12,
+                        }}>
+                        <View
+                          style={[
+                            {
+                              paddingHorizontal: 12,
+                              borderRadius: 10,
+                              height: 32,
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                            },
+                            {
+                              backgroundColor:
+                                category === selectedCategory
+                                  ? '#FF6ECE'
+                                  : 'white',
+                            },
+                          ]}>
+                          <Text
+                            style={[
+                              {
+                                fontFamily: 'Galmuri11',
+                                fontSize: 13,
+                              },
+                              {
+                                color:
+                                  category === selectedCategory
+                                    ? 'white'
+                                    : '#0000cc',
+                              },
+                            ]}>
+                            {texticons[category].key}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+                    );
+                  },
+                )}
+              </ScrollView>
+            </View>
+
+            <ScrollView>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  justifyContent: 'space-around',
+                  paddingHorizontal: 16,
+                }}>
+                {texticons[selectedCategory].list.map(t => {
+                  return (
+                    <TouchableOpacity
+                      onPress={() => {
+                        const newText = [
+                          text.slice(0, selectionText.start),
+                          t,
+                          text.slice(selectionText.end),
+                        ].join('');
+                        setText(newText);
+                        setSelectionText({
+                          start: selectionText.start + t.length,
+                          end: selectionText.end + t.length,
+                        });
+                      }}>
+                      <Text
+                        style={{
+                          color: 'white',
+                          height: 40,
+                          minWidth: 100,
+                          textAlign: 'center',
+                          textAlignVertical: 'center',
+                        }}>
+                        {t}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+            </ScrollView>
           </View>
         )}
       </SafeAreaView>
