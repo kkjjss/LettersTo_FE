@@ -2,7 +2,6 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {LinearGradient} from 'expo-linear-gradient';
 import React, {
   MutableRefObject,
-  startTransition,
   useCallback,
   useEffect,
   useMemo,
@@ -12,8 +11,9 @@ import React, {
 import {
   Image,
   Keyboard,
+  KeyboardAvoidingView,
+  Platform,
   Pressable,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -21,6 +21,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Header} from '../../Components/Header';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../constants';
 import {StackParamsList} from '../../types/stackParamList';
@@ -407,9 +408,7 @@ export function LetterEditor({navigation}: Props) {
     end: 0,
   });
 
-  useEffect(() => {
-    console.log(selectionText);
-  }, [selectionText]);
+  const {top: SAFE_AREA_TOP, bottom: SAFE_AREA_BOTTOM} = useSafeAreaInsets();
 
   const [lastestFocus, setLastestFocus] = useState<
     MutableRefObject<any> | undefined
@@ -418,7 +417,7 @@ export function LetterEditor({navigation}: Props) {
   const titleRef = useRef(null);
   const textRef = useRef(null);
 
-  const {keyboardOn} = useKeyboardHeight();
+  const {keyboardVisible} = useKeyboardHeight();
 
   const gradientColor = useMemo(() => {
     return paperColor + '44';
@@ -435,12 +434,12 @@ export function LetterEditor({navigation}: Props) {
   const onFocusTitle = () => {
     setLastestFocus(titleRef);
     setTitle(title.replace(/(⌜|⌟︎)/g, ''));
-    if (texticonSelectorVisible === true) {
-      setTexticonSelectorVisible(false);
-    }
-    if (paperSelectorVisible === true) {
-      setPaperSelectorVisible(false);
-    }
+    // if (texticonSelectorVisible === true) {
+    //   setTexticonSelectorVisible(false);
+    // }
+    // if (paperSelectorVisible === true) {
+    //   setPaperSelectorVisible(false);
+    // }
   };
 
   const onFocusOutTitle = () => {
@@ -527,19 +526,23 @@ export function LetterEditor({navigation}: Props) {
   return (
     <LinearGradient
       colors={[gradientColor, 'white', 'white', 'white', gradientColor]}
-      style={styles.container}>
-      <SafeAreaView style={styles.container}>
-        <Header navigation={navigation} title={'편지 작성'} />
-
+      style={[styles.container, {paddingTop: SAFE_AREA_TOP}]}>
+      <Header navigation={navigation} title={'편지 작성'} />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        style={{flex: 1}}>
         <View style={{flex: 1, position: 'relative', marginTop: 24}}>
           {paperStyle === 'grid' && <Grid lineColor={lineColor} />}
           {paperStyle === 'dotted' && <Dotted lineColor={lineColor} />}
+
           <TextInput
             value={title}
             onChangeText={setTitle}
             placeholder={'⌜제목⌟︎'}
             onFocus={onFocusTitle}
             onBlur={onFocusOutTitle}
+            autoCorrect={false}
+            showSoftInputOnFocus={!texticonSelectorVisible}
             ref={titleRef}
             style={{
               padding: 0,
@@ -557,7 +560,7 @@ export function LetterEditor({navigation}: Props) {
             onChangeText={setText}
             multiline
             placeholder="내용"
-            // scrollEnabled={false}
+            autoCorrect={false}
             ref={textRef}
             onSelectionChange={({nativeEvent: {selection}}) => {
               setSelectionText(selection);
@@ -574,280 +577,289 @@ export function LetterEditor({navigation}: Props) {
               textAlign: align,
             }}
           />
-          {/* </ScrollView> */}
         </View>
 
-        <View
-          style={{
-            height: 50,
-            backgroundColor: '#0000cc',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            paddingHorizontal: 16,
-          }}>
+        <View style={{backgroundColor: '#0000cc'}}>
           <View
-            style={{
-              flexDirection: 'row',
-            }}>
-            <Pressable onPress={onShowPaper} style={{marginRight: 16}}>
-              <Image
-                source={require('../../Assets/paper.png')}
-                style={{height: 24, width: 24}}
-              />
-            </Pressable>
-            <Pressable onPress={onToggleTextAlign} style={{marginRight: 16}}>
-              <TextAlignButton />
-            </Pressable>
+            style={[
+              {
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                paddingHorizontal: 16,
+              },
+              {
+                paddingBottom:
+                  !keyboardVisible &&
+                  !paperSelectorVisible &&
+                  !texticonSelectorVisible
+                    ? SAFE_AREA_BOTTOM
+                    : 0,
+              },
+            ]}>
+            <View
+              style={{
+                marginVertical: 14,
+                flexDirection: 'row',
+              }}>
+              <Pressable onPress={onShowPaper} style={{marginRight: 16}}>
+                <Image
+                  source={require('../../Assets/paper.png')}
+                  style={{height: 24, width: 24}}
+                />
+              </Pressable>
+              <Pressable onPress={onToggleTextAlign} style={{marginRight: 16}}>
+                <TextAlignButton />
+              </Pressable>
 
-            <Pressable onPress={onShowTexticon} style={{marginRight: 16}}>
-              <Image
-                source={require('../../Assets/texticon.png')}
-                style={{height: 24, width: 60}}
-              />
-            </Pressable>
+              <Pressable onPress={onShowTexticon} style={{marginRight: 16}}>
+                <Image
+                  source={require('../../Assets/texticon.png')}
+                  style={{height: 24, width: 60}}
+                />
+              </Pressable>
+            </View>
+            {keyboardVisible && (
+              <Pressable onPress={dismissKeyboard}>
+                <Image
+                  source={require('../../Assets/keyboardDismiss.png')}
+                  style={{height: 24, width: 24}}
+                />
+              </Pressable>
+            )}
           </View>
-          {keyboardOn && (
-            <Pressable onPress={dismissKeyboard}>
-              <Image
-                source={require('../../Assets/keyboardDismiss.png')}
-                style={{height: 24, width: 24}}
-              />
-            </Pressable>
-          )}
-        </View>
-
-        {paperSelectorVisible && (
-          <View
-            style={{
-              height: SCREEN_HEIGHT * 0.4,
-              backgroundColor: '#0000cc',
-            }}>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              style={{paddingVertical: 16, marginHorizontal: 16}}>
-              {paperColors.map((color, index) => {
-                return (
-                  <TouchableOpacity
-                    onPress={() => {
-                      setPaperColor(color);
-                    }}
-                    key={index}
-                    activeOpacity={0.7}
-                    style={{marginRight: 12}}>
-                    <View
-                      style={{
-                        height: 32,
-                        width: 32,
-                        borderRadius: 16,
-                        backgroundColor: color,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}>
-                      {color === paperColor && (
-                        <Image
-                          style={{height: 16, width: 16}}
-                          source={require('../../Assets/check.png')}
-                        />
-                      )}
-                    </View>
-                  </TouchableOpacity>
-                );
-              })}
-            </ScrollView>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              style={{marginHorizontal: 16}}>
-              {paperStyles.map((style, index) => {
-                let source: any;
-                let name: string = '';
-                switch (style) {
-                  case 'grid':
-                    source = paperGrid;
-                    name = '모눈노트';
-                    break;
-                  case 'dotted':
-                    source = paperDotted;
-                    name = '도트노트';
-                    break;
-                  case 'plain':
-                    source = paperPlain;
-                    name = '플레인노트';
-                    break;
-                }
-
-                return (
-                  <TouchableOpacity
-                    activeOpacity={0.7}
-                    style={{marginRight: 16, position: 'relative'}}
-                    onPress={() => {
-                      setPaperStyle(style);
-                    }}
-                    key={index}>
-                    <Image
-                      source={source}
-                      style={{
-                        height: 160,
-                        width: 118,
-                      }}
-                    />
-                    {style === paperStyle ? (
-                      <View
-                        style={{
-                          backgroundColor: '#ff6ece',
-                          position: 'absolute',
-                          right: 5,
-                          top: 5,
-                          height: 22,
-                          width: 22,
-                          borderRadius: 11,
-                          borderWidth: 2,
-                          borderColor: '#fff',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}>
-                        <Image
-                          source={require('../../Assets/check.png')}
-                          style={{height: 15, width: 15}}
-                        />
-                      </View>
-                    ) : (
-                      <View
-                        style={{
-                          backgroundColor: '#ffc7f0',
-                          position: 'absolute',
-                          right: 5,
-                          top: 5,
-                          height: 22,
-                          width: 22,
-                          borderRadius: 11,
-                          borderWidth: 2,
-                          borderColor: '#fff',
-                        }}
-                      />
-                    )}
-                    <Text
-                      style={{
-                        textAlign: 'center',
-                        fontFamily: 'Galmuri11',
-                        fontSize: 14,
-                        color: 'white',
-                      }}>
-                      {name}
-                    </Text>
-                  </TouchableOpacity>
-                );
-              })}
-            </ScrollView>
-          </View>
-        )}
-
-        {texticonSelectorVisible && (
-          <View
-            style={{
-              height: SCREEN_HEIGHT * 0.4,
-              backgroundColor: '#0000cc',
-            }}>
-            <View style={{height: 68, paddingTop: 16}}>
+          {paperSelectorVisible && (
+            <View
+              style={{
+                height: SCREEN_HEIGHT * 0.4,
+              }}>
               <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                style={{
-                  marginHorizontal: 16,
-                }}>
-                {(Object.keys(texticons) as TexticonCategory[]).map(
-                  category => {
-                    return (
-                      <TouchableOpacity
-                        activeOpacity={0.7}
-                        onPress={() => {
-                          setSelectedCategory(category);
-                        }}
-                        style={{
-                          marginRight: 12,
-                        }}>
-                        <View
-                          style={[
-                            {
-                              paddingHorizontal: 12,
-                              borderRadius: 10,
-                              height: 32,
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                            },
-                            {
-                              backgroundColor:
-                                category === selectedCategory
-                                  ? '#FF6ECE'
-                                  : 'white',
-                            },
-                          ]}>
-                          <Text
-                            style={[
-                              {
-                                fontFamily: 'Galmuri11',
-                                fontSize: 13,
-                              },
-                              {
-                                color:
-                                  category === selectedCategory
-                                    ? 'white'
-                                    : '#0000cc',
-                              },
-                            ]}>
-                            {texticons[category].key}
-                          </Text>
-                        </View>
-                      </TouchableOpacity>
-                    );
-                  },
-                )}
-              </ScrollView>
-            </View>
-
-            <ScrollView>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  flexWrap: 'wrap',
-                  justifyContent: 'space-around',
-                  paddingHorizontal: 16,
-                }}>
-                {texticons[selectedCategory].list.map(t => {
+                style={{paddingVertical: 16, marginHorizontal: 16}}>
+                {paperColors.map((color, index) => {
                   return (
                     <TouchableOpacity
                       onPress={() => {
-                        const newText = [
-                          text.slice(0, selectionText.start),
-                          t,
-                          text.slice(selectionText.end),
-                        ].join('');
-                        setText(newText);
-                        setSelectionText({
-                          start: selectionText.start + t.length,
-                          end: selectionText.end + t.length,
-                        });
-                      }}>
+                        setPaperColor(color);
+                      }}
+                      key={index}
+                      activeOpacity={0.7}
+                      style={{marginRight: 12}}>
+                      <View
+                        style={{
+                          height: 32,
+                          width: 32,
+                          borderRadius: 16,
+                          backgroundColor: color,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        {color === paperColor && (
+                          <Image
+                            style={{height: 16, width: 16}}
+                            source={require('../../Assets/check.png')}
+                          />
+                        )}
+                      </View>
+                    </TouchableOpacity>
+                  );
+                })}
+              </ScrollView>
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                style={{marginHorizontal: 16}}>
+                {paperStyles.map((style, index) => {
+                  let source: any;
+                  let name: string = '';
+                  switch (style) {
+                    case 'grid':
+                      source = paperGrid;
+                      name = '모눈노트';
+                      break;
+                    case 'dotted':
+                      source = paperDotted;
+                      name = '도트노트';
+                      break;
+                    case 'plain':
+                      source = paperPlain;
+                      name = '플레인노트';
+                      break;
+                  }
+
+                  return (
+                    <TouchableOpacity
+                      activeOpacity={0.7}
+                      style={{marginRight: 16, position: 'relative'}}
+                      onPress={() => {
+                        setPaperStyle(style);
+                      }}
+                      key={index}>
+                      <Image
+                        source={source}
+                        style={{
+                          height: 160,
+                          width: 118,
+                        }}
+                      />
+                      {style === paperStyle ? (
+                        <View
+                          style={{
+                            backgroundColor: '#ff6ece',
+                            position: 'absolute',
+                            right: 5,
+                            top: 5,
+                            height: 22,
+                            width: 22,
+                            borderRadius: 11,
+                            borderWidth: 2,
+                            borderColor: '#fff',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                          }}>
+                          <Image
+                            source={require('../../Assets/check.png')}
+                            style={{height: 15, width: 15}}
+                          />
+                        </View>
+                      ) : (
+                        <View
+                          style={{
+                            backgroundColor: '#ffc7f0',
+                            position: 'absolute',
+                            right: 5,
+                            top: 5,
+                            height: 22,
+                            width: 22,
+                            borderRadius: 11,
+                            borderWidth: 2,
+                            borderColor: '#fff',
+                          }}
+                        />
+                      )}
                       <Text
                         style={{
-                          color: 'white',
-                          height: 40,
-                          minWidth: 100,
                           textAlign: 'center',
-                          textAlignVertical: 'center',
+                          fontFamily: 'Galmuri11',
+                          fontSize: 14,
+                          color: 'white',
                         }}>
-                        {t}
+                        {name}
                       </Text>
                     </TouchableOpacity>
                   );
                 })}
+              </ScrollView>
+            </View>
+          )}
+
+          {texticonSelectorVisible && (
+            <View
+              style={{
+                height: SCREEN_HEIGHT * 0.4,
+                backgroundColor: '#0000cc',
+              }}>
+              <View style={{height: 68, paddingTop: 16}}>
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  style={{
+                    marginHorizontal: 16,
+                  }}>
+                  {(Object.keys(texticons) as TexticonCategory[]).map(
+                    category => {
+                      return (
+                        <TouchableOpacity
+                          activeOpacity={0.7}
+                          onPress={() => {
+                            setSelectedCategory(category);
+                          }}
+                          style={{
+                            marginRight: 12,
+                          }}>
+                          <View
+                            style={[
+                              {
+                                paddingHorizontal: 12,
+                                borderRadius: 10,
+                                height: 32,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                              },
+                              {
+                                backgroundColor:
+                                  category === selectedCategory
+                                    ? '#FF6ECE'
+                                    : 'white',
+                              },
+                            ]}>
+                            <Text
+                              style={[
+                                {
+                                  fontFamily: 'Galmuri11',
+                                  fontSize: 13,
+                                },
+                                {
+                                  color:
+                                    category === selectedCategory
+                                      ? 'white'
+                                      : '#0000cc',
+                                },
+                              ]}>
+                              {texticons[category].key}
+                            </Text>
+                          </View>
+                        </TouchableOpacity>
+                      );
+                    },
+                  )}
+                </ScrollView>
               </View>
-            </ScrollView>
-          </View>
-        )}
-      </SafeAreaView>
+
+              <ScrollView>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    justifyContent: 'space-around',
+                    paddingHorizontal: 16,
+                  }}>
+                  {texticons[selectedCategory].list.map(t => {
+                    return (
+                      <TouchableOpacity
+                        onPress={() => {
+                          console.log(lastestFocus?.current);
+                          const newText = [
+                            text.slice(0, selectionText.start),
+                            t,
+                            text.slice(selectionText.end),
+                          ].join('');
+                          setText(newText);
+                          setSelectionText({
+                            start: selectionText.start + t.length,
+                            end: selectionText.end + t.length,
+                          });
+                        }}>
+                        <Text
+                          style={{
+                            color: 'white',
+                            height: 40,
+                            minWidth: 100,
+                            textAlign: 'center',
+                            textAlignVertical: 'center',
+                          }}>
+                          {t}
+                        </Text>
+                      </TouchableOpacity>
+                    );
+                  })}
+                </View>
+              </ScrollView>
+            </View>
+          )}
+        </View>
+      </KeyboardAvoidingView>
     </LinearGradient>
   );
 }

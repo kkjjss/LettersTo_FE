@@ -29,7 +29,7 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
   const [isAlreadyUsed, setIsAlreadyUsed] = useState(false);
   const [activateUpdate, setActivateUpdate] = useState(false);
 
-  const {keyboardHeight, keyboardOn} = useKeyboardHeight();
+  const {keyboardHeight, keyboardVisible} = useKeyboardHeight();
 
   const {userInfo} = useStore();
 
@@ -147,7 +147,7 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
           <ScrollView
             style={[
               styles.nickname,
-              {paddingBottom: (keyboardOn ? 30 : 100) + keyboardHeight},
+              {paddingBottom: (keyboardVisible ? 30 : 100) + keyboardHeight},
             ]}>
             <TextInput
               style={styles.nicknameInput}
