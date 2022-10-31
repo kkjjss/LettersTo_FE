@@ -1,3 +1,8 @@
+export interface Selector {
+  start: number;
+  end: number;
+}
+
 export interface Token {
   idToken: string;
 }
@@ -41,3 +46,19 @@ export interface UserInfo {
   personalityIds: number[];
   geolocationId: number;
 }
+
+export type TexticonCategory =
+  | 'happy'
+  | 'worry'
+  | 'angry'
+  | 'upfeeling'
+  | 'wink'
+  | 'sad'
+  | 'love';
+
+export type Texticons = {
+  [key in TexticonCategory]: {
+    key: string;
+    list: string[];
+  };
+};

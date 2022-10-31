@@ -13,7 +13,7 @@ import {
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {existsNickname, patchUserInfo} from '../APIs/member';
 import {UpdateButton} from '../Components/UpdateButton';
-import {useKeyboardHeight} from '../Hooks/useKeyboardHeight';
+import {useKeyboard} from '../Hooks/useKeyboard';
 import useStore from '../Store/store';
 
 type Props = {
@@ -29,7 +29,7 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
   const [isAlreadyUsed, setIsAlreadyUsed] = useState(false);
   const [activateUpdate, setActivateUpdate] = useState(false);
 
-  const {keyboardHeight, keyboardVisible} = useKeyboardHeight();
+  const {keyboardHeight, keyboardVisible} = useKeyboard();
 
   const {userInfo} = useStore();
 
