@@ -6,7 +6,7 @@ import {getCities, getRegions} from '../APIs/geolocation';
 import {patchUserInfo} from '../APIs/member';
 import {ModalHeader} from '../Components/ModalHeader';
 import {UpdateButton} from '../Components/UpdateButton';
-import {SCREEN_HEIGHT} from '../constants';
+import {SCREEN_HEIGHT} from '../Constants/screen';
 import useStore from '../Store/store';
 type Props = {
   isModalVisible: boolean;

@@ -20,7 +20,7 @@ import useStore from '../../Store/store';
 import {LocationModal} from '../../Modals/LocationModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {logIn as getUserInfo} from '../../APIs/member';
-import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../constants';
+import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../Constants/screen';
 import {ModalBlur} from '../../Modals/ModalBlur';
 
 type Props = NativeStackScreenProps<StackParamsList, 'MyPage'>;

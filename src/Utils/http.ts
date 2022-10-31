@@ -1,4 +1,4 @@
-import {BASE_URL_TEST} from '../constants';
+import {BASE_URL_TEST} from '../Constants/common';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function loggingRequest(method: string, url: string, status: number): void {

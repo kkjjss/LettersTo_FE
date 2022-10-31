@@ -11,7 +11,7 @@ import {
   Platform,
 } from 'react-native';
 import {NextButton} from '../../Components/NextButton';
-import {SCREEN_HEIGHT} from '../../constants';
+import {SCREEN_HEIGHT} from '../../Constants/screen';
 import {LinearGradient} from 'expo-linear-gradient';
 import {Header} from '../../Components/Header';
 import type {StackParamsList} from '../../types/stackParamList';

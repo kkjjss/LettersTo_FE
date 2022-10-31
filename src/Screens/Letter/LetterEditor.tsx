@@ -23,7 +23,7 @@ import {
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Header} from '../../Components/Header';
-import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../constants';
+import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../Constants/screen';
 import {StackParamsList} from '../../types/stackParamList';
 import {useKeyboardHeight} from '../../Hooks/useKeyboardHeight';
 

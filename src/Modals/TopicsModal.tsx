@@ -12,7 +12,7 @@ import useStore from '../Store/store';
 import {ModalHeader} from '../Components/ModalHeader';
 import type {Topics} from '../types/types';
 import {getTopics} from '../APIs/topic';
-import {SCREEN_HEIGHT} from '../constants';
+import {SCREEN_HEIGHT} from '../Constants/screen';
 import {TopicList} from '../Components/TopicList';
 import {UpdateButton} from '../Components/UpdateButton';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';

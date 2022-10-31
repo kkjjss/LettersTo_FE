@@ -10,7 +10,7 @@ import {
 import {ResetButton} from '../Components/ResetButton';
 import useStore from '../Store/store';
 import {ModalHeader} from '../Components/ModalHeader';
-import {SCREEN_HEIGHT} from '../constants';
+import {SCREEN_HEIGHT} from '../Constants/screen';
 import {UpdateButton} from '../Components/UpdateButton';
 import {Personalities} from '../types/types';
 import {getPersonalities} from '../APIs/personality';

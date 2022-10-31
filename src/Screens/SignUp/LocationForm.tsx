@@ -16,7 +16,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import type {StackParamsList} from '../../types/stackParamList';
 import {LinearGradient} from 'expo-linear-gradient';
 import {Header} from '../../Components/Header';
-import {SCREEN_HEIGHT} from '../../constants';
+import {SCREEN_HEIGHT} from '../../Constants/screen';
 import {SignUpButton} from '../../Components/SignUpButton';
 import useStore from '../../Store/store';
 
