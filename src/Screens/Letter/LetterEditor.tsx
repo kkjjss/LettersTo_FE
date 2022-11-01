@@ -19,15 +19,17 @@ import {
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Header} from '../../Components/Header';
 
+import useStore from '../../Store/store';
+
 import {useKeyboard} from '../../Hooks/useKeyboard';
 
 import {PAPER_COLORS, PAPER_STYLES} from '../../Constants/letter';
 
 import type {StackParamsList} from '../../types/stackParamList';
 import type {Selector, TexticonCategory} from '../../types/types';
-import {PaperStyle} from '../../Components/paperStyles/PaperStyle';
-import {PaperSelector} from '../../Components/paperStyles/PaperSelector';
-import {TexticonSelector} from '../../Components/paperStyles/TexticonSelector';
+import {PaperStyle} from '../../Components/PaperStyles/PaperStyle';
+import {PaperSelector} from '../../Components/PaperStyles/PaperSelector';
+import {TexticonSelector} from '../../Components/PaperStyles/TexticonSelector';
 
 const textAlignLeft = require('../../Assets/textAlignLeft.png');
 const textAlignCenter = require('../../Assets/textAlignCenter.png');
@@ -56,6 +58,8 @@ export function LetterEditor({navigation}: Props) {
   const [lastestFocus, setLastestFocus] = useState<
     {ref: MutableRefObject<any>; name: string} | undefined
   >();
+
+  const {setLetter} = useStore();
 
   const {top: SAFE_AREA_TOP, bottom: SAFE_AREA_BOTTOM} = useSafeAreaInsets();
 
@@ -184,16 +188,23 @@ export function LetterEditor({navigation}: Props) {
         return (
           <Image source={textAlignRight} style={{height: 24, width: 24}} />
         );
-      default:
-        return <></>;
     }
   }, [align]);
+
+  function setLetterData() {
+    setLetter(title, text);
+  }
 
   return (
     <LinearGradient
       colors={[gradientColor, 'white', 'white', 'white', gradientColor]}
       style={[styles.container, {paddingTop: SAFE_AREA_TOP}]}>
-      <Header navigation={navigation} title={'편지 작성'} />
+      <Header
+        navigation={navigation}
+        title={'편지 작성'}
+        next="Home"
+        onPressNext={setLetterData}
+      />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         style={{flex: 1, marginTop: 24}}>

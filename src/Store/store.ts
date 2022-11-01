@@ -44,6 +44,15 @@ interface Store {
   }) => void;
 
   signOut: () => void;
+
+  letter:
+    | {
+        title: string;
+        text: string;
+      }
+    | undefined;
+
+  setLetter: (title: string, text: string) => void;
 }
 
 const useStore = create<Store>(set => ({
@@ -91,6 +100,10 @@ const useStore = create<Store>(set => ({
 
   signOut: () =>
     set(() => ({userInfo: undefined, isLoggedIn: false, isLoading: true})),
+
+  letter: undefined,
+
+  setLetter: (title, text) => set(() => ({letter: {title, text}})),
 }));
 
 export default useStore;

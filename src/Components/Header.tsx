@@ -1,42 +1,61 @@
 import * as React from 'react';
-import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import type {StackParamsList} from '../types/stackParamList';
+import {useCallback} from 'react';
+import {LinearGradient} from 'expo-linear-gradient';
+
+const back_blue = require('../Assets/back_blue.png');
+const back_white = require('../Assets/back_white.png');
 
 type Props = {
   navigation: NativeStackNavigationProp<StackParamsList, keyof StackParamsList>;
   title: string;
   color?: 'blue' | 'white';
+  next?: keyof StackParamsList;
+  onPressNext?: () => void;
 };
 
-export function Header({navigation, title, color = 'blue'}: Props) {
-  function goback() {
+const BackButtonImage = {
+  blue: <Image source={back_blue} style={{height: 28, width: 28}} />,
+  white: <Image source={back_white} style={{height: 28, width: 28}} />,
+};
+
+export function Header({
+  navigation,
+  title,
+  color = 'blue',
+  next,
+  onPressNext,
+}: Props) {
+  function goBack() {
     navigation.pop();
   }
 
-  const backButtonImage = () => {
-    if (color === 'blue') {
-      return (
-        <Image
-          source={require('../Assets/back_blue.png')}
-          style={{height: 28, width: 28}}
-        />
-      );
-    } else {
-      return (
-        <Image
-          source={require('../Assets/back_white.png')}
-          style={{height: 28, width: 28}}
-        />
-      );
+  const BackButton = useCallback(() => BackButtonImage[color], [color]);
+
+  function goNext() {
+    if (next) {
+      navigation.navigate(next);
     }
-  };
+  }
 
   return (
     <View style={styles.headerWrap}>
-      <Pressable style={styles.backButton} onPress={() => goback()}>
-        {backButtonImage}
+      <Pressable
+        style={styles.backButton}
+        onPress={() => {
+          goBack();
+        }}>
+        <BackButton />
       </Pressable>
       <View style={styles.titleWrap}>
         <Text
@@ -47,7 +66,36 @@ export function Header({navigation, title, color = 'blue'}: Props) {
           {title}
         </Text>
       </View>
-      <View style={{width: 52}} />
+      {next ? (
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={() => {
+            if (onPressNext) {
+              onPressNext();
+            }
+            goNext();
+          }}>
+          <LinearGradient
+            colors={['#FF6ECE', '#FF3DBD']}
+            style={{
+              width: 48,
+              height: 26,
+              borderRadius: 10,
+            }}>
+            <Text
+              style={{
+                fontFamily: 'Galmuri11',
+                color: 'white',
+                textAlign: 'center',
+                textAlignVertical: 'center',
+              }}>
+              다음
+            </Text>
+          </LinearGradient>
+        </TouchableOpacity>
+      ) : (
+        <View style={{width: 40}} />
+      )}
     </View>
   );
 }
@@ -59,10 +107,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingTop: 12,
-    paddingLeft: 16,
+    paddingHorizontal: 16,
   },
   backButton: {
-    width: 40,
+    width: 48,
   },
   backButtonText: {
     fontFamily: 'Galmuri11',
