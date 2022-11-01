@@ -23,6 +23,8 @@ interface Store {
 
   setAddress: (value: number) => void;
 
+  clearSignupInfo: () => void;
+
   userInfo:
     | {
         nickname: string;
@@ -72,6 +74,16 @@ const useStore = create<Store>(set => ({
 
   setAddress: value =>
     set(state => ({signUpInfo: {...state.signUpInfo, geolocationId: value}})),
+
+  clearSignupInfo: () =>
+    set(() => ({
+      signUpInfo: {
+        nickname: undefined,
+        personalityIds: undefined,
+        topicIds: undefined,
+        geolocationId: undefined,
+      },
+    })),
 
   userInfo: undefined,
 

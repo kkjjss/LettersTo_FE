@@ -44,6 +44,7 @@ export function SignUpButton({activateSignUp, onPress: onPressSignUp}: Props) {
           AsyncStorage.setItem('refreshToken', refreshToken),
         ]);
 
+        store.clearSignupInfo();
         store.setIsLoading(true);
       }
     } catch (error: any) {
