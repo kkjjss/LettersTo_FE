@@ -17,7 +17,7 @@ import {
   View,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {Header} from '../../Components/Header';
+import {Header} from '../../Components/Headers/Header';
 
 import useStore from '../../Store/store';
 
@@ -195,6 +195,8 @@ export function LetterEditor({navigation}: Props) {
     setLetter(title, text);
   }
 
+  const disableNext = useMemo(() => !!title && !!text, [title, text]);
+
   return (
     <LinearGradient
       colors={[gradientColor, 'white', 'white', 'white', gradientColor]}
@@ -204,6 +206,7 @@ export function LetterEditor({navigation}: Props) {
         title={'편지 작성'}
         next="Home"
         onPressNext={setLetterData}
+        disableNext={disableNext}
       />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}

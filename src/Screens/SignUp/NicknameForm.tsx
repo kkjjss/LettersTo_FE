@@ -13,7 +13,7 @@ import {
 import {NextButton} from '../../Components/NextButton';
 import {SCREEN_HEIGHT} from '../../Constants/screen';
 import {LinearGradient} from 'expo-linear-gradient';
-import {Header} from '../../Components/Header';
+import {Header} from '../../Components/Headers/Header';
 import type {StackParamsList} from '../../types/stackParamList';
 import {existsNickname} from '../../APIs/member';
 

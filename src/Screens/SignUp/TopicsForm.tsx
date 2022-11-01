@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import type {StackParamsList} from '../../types/stackParamList';
 import {LinearGradient} from 'expo-linear-gradient';
-import {Header} from '../../Components/Header';
+import {Header} from '../../Components/Headers/Header';
 import {SCREEN_HEIGHT} from '../../Constants/screen';
 import {NextButton} from '../../Components/NextButton';
 import {ResetButton} from '../../Components/ResetButton';

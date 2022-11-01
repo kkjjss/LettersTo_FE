@@ -1,20 +1,10 @@
 import * as React from 'react';
-import {
-  Image,
-  Pressable,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import type {StackParamsList} from '../types/stackParamList';
-import {useCallback} from 'react';
+import type {StackParamsList} from '../../types/stackParamList';
 import {LinearGradient} from 'expo-linear-gradient';
-
-const back_blue = require('../Assets/back_blue.png');
-const back_white = require('../Assets/back_white.png');
+import {BackButton} from './BackButton';
 
 type Props = {
   navigation: NativeStackNavigationProp<StackParamsList, keyof StackParamsList>;
@@ -22,11 +12,7 @@ type Props = {
   color?: 'blue' | 'white';
   next?: keyof StackParamsList;
   onPressNext?: () => void;
-};
-
-const BackButtonImage = {
-  blue: <Image source={back_blue} style={{height: 28, width: 28}} />,
-  white: <Image source={back_white} style={{height: 28, width: 28}} />,
+  disableNext?: boolean;
 };
 
 export function Header({
@@ -35,12 +21,11 @@ export function Header({
   color = 'blue',
   next,
   onPressNext,
+  disableNext,
 }: Props) {
   function goBack() {
     navigation.pop();
   }
-
-  const BackButton = useCallback(() => BackButtonImage[color], [color]);
 
   function goNext() {
     if (next) {
@@ -50,13 +35,7 @@ export function Header({
 
   return (
     <View style={styles.headerWrap}>
-      <Pressable
-        style={styles.backButton}
-        onPress={() => {
-          goBack();
-        }}>
-        <BackButton />
-      </Pressable>
+      <BackButton color={color} onPress={goBack} />
       <View style={styles.titleWrap}>
         <Text
           style={[
@@ -108,9 +87,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 12,
     paddingHorizontal: 16,
-  },
-  backButton: {
-    width: 48,
   },
   backButtonText: {
     fontFamily: 'Galmuri11',

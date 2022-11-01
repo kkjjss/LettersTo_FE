@@ -9,7 +9,7 @@ import {
   Image,
 } from 'react-native';
 import type {StackParamsList} from '../../types/stackParamList';
-import {Header} from '../../Components/Header';
+import {Header} from '../../Components/Headers/Header';
 import {ListItem, ListName} from '../../Components/MyPageList';
 
 import {NicknameModal} from '../../Modals/NicknameModal';
