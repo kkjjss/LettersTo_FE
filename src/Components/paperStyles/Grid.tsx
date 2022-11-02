@@ -2,51 +2,53 @@ import React from 'react';
 import {View} from 'react-native';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../Constants/screen';
 
-export const Grid = ({lineColor}: {lineColor: string}) => {
-  const Horizontal = () => {
-    const result = [];
-    for (let i = 0; i * 24 < SCREEN_HEIGHT; i++) {
-      result.push(
-        <View
-          key={i}
-          style={{
-            height: 24,
-            width: SCREEN_WIDTH,
-            borderTopWidth: 1,
-            borderColor: lineColor,
-          }}
-        />,
-      );
-    }
-    return <>{result}</>;
-  };
+type Props = {lineColor: string};
 
-  const Vertical = () => {
-    const result = [];
-    for (let i = 0; i * 24 < SCREEN_HEIGHT; i++) {
-      result.push(
-        <View
-          key={i}
-          style={{
-            height: SCREEN_HEIGHT,
-            width: 24,
-            borderRightWidth: 1,
-            borderColor: lineColor,
-          }}
-        />,
-      );
-    }
-    return <>{result}</>;
-  };
+const Horizontal = ({lineColor}: Props) => {
+  const result = [];
+  for (let i = 0; i * 24 < SCREEN_HEIGHT; i++) {
+    result.push(
+      <View
+        key={i}
+        style={{
+          height: 24,
+          width: SCREEN_WIDTH,
+          borderTopWidth: 1,
+          borderColor: lineColor,
+        }}
+      />,
+    );
+  }
+  return <>{result}</>;
+};
 
+const Vertical = ({lineColor}: Props) => {
+  const result = [];
+  for (let i = 0; i * 24 < SCREEN_HEIGHT; i++) {
+    result.push(
+      <View
+        key={i}
+        style={{
+          height: SCREEN_HEIGHT,
+          width: 24,
+          borderRightWidth: 1,
+          borderColor: lineColor,
+        }}
+      />,
+    );
+  }
+  return <>{result}</>;
+};
+
+export const Grid = React.memo(({lineColor}: Props) => {
   return (
     <>
       <View style={{position: 'absolute'}}>
-        <Horizontal />
+        <Horizontal lineColor={lineColor} />
       </View>
       <View style={{position: 'absolute', flexDirection: 'row'}}>
-        <Vertical />
+        <Vertical lineColor={lineColor} />
       </View>
     </>
   );
-};
+});

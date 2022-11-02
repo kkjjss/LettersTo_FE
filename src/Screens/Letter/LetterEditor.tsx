@@ -191,11 +191,12 @@ export function LetterEditor({navigation}: Props) {
     }
   }, [align]);
 
-  function setLetterData() {
+  const setLetterData = useCallback(() => {
     setLetter(title, text);
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const disableNext = useMemo(() => !!title && !!text, [title, text]);
+  const disableNext = useMemo(() => title === '' || text === '', [title, text]);
 
   return (
     <LinearGradient

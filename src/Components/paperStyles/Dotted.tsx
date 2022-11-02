@@ -2,25 +2,25 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../Constants/screen';
 
-export const Dotted = ({lineColor}: {lineColor: string}) => {
-  const Dots = () => {
-    const result = [];
-    for (let i = 0; i < (SCREEN_HEIGHT / 24) * (SCREEN_WIDTH / 24); i++) {
-      result.push(
-        <View
-          key={i}
-          style={[
-            styles.dot,
-            {
-              borderColor: lineColor,
-            },
-          ]}
-        />,
-      );
-    }
-    return <>{result}</>;
-  };
+const Dots = ({lineColor}: {lineColor: string}) => {
+  const result = [];
+  for (let i = 0; i < (SCREEN_HEIGHT / 24) * (SCREEN_WIDTH / 24); i++) {
+    result.push(
+      <View
+        key={i}
+        style={[
+          styles.dot,
+          {
+            borderColor: lineColor,
+          },
+        ]}
+      />,
+    );
+  }
+  return <>{result}</>;
+};
 
+export const Dotted = React.memo(({lineColor}: {lineColor: string}) => {
   return (
     <View style={{position: 'absolute'}}>
       <View
@@ -31,11 +31,11 @@ export const Dotted = ({lineColor}: {lineColor: string}) => {
             width: SCREEN_WIDTH,
           },
         ]}>
-        <Dots />
+        <Dots lineColor={lineColor} />
       </View>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {
