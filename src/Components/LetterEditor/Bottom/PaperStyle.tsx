@@ -1,7 +1,7 @@
 import React from 'react';
 import {View} from 'react-native';
-import {Dotted} from './Dotted';
-import {Grid} from './Grid';
+import {Dotted} from '../Dotted';
+import {Grid} from '../Grid';
 
 interface Props {
   lineColor: string;
@@ -9,6 +9,7 @@ interface Props {
 }
 
 export const PaperStyle = React.memo(({lineColor, paperStyle}: Props) => {
+  console.log('PaperStyle');
   return (
     <View style={{position: 'relative'}}>
       {paperStyle === 'grid' && <Grid lineColor={lineColor} />}

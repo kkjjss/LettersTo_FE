@@ -3,13 +3,14 @@ import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 
 type Props = {
   texticon: string;
-  onInsertTexticon: (t: string) => void;
+  onSelectTexticon: (t: string) => void;
 };
 
 export const TexticonItem = React.memo(
-  ({texticon, onInsertTexticon}: Props) => {
+  ({texticon, onSelectTexticon}: Props) => {
+    console.log(texticon);
     return (
-      <TouchableOpacity onPress={() => onInsertTexticon(texticon)}>
+      <TouchableOpacity onPress={() => onSelectTexticon(texticon)}>
         <Text style={styles.texticonItem}>{texticon}</Text>
       </TouchableOpacity>
     );

@@ -9,46 +9,53 @@ import React, {
   useState,
 } from 'react';
 import {
+  Image,
   KeyboardAvoidingView,
   Platform,
+  Pressable,
   StyleSheet,
   TextInput,
   View,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Header} from '../../Components/Headers/Header';
-import {PAPER_COLORS, PAPER_STYLES} from '../../Constants/letter';
-import {StackParamsList} from '../../types/stackParamList';
 
 import useStore from '../../Store/store';
-import {PaperStyle} from '../../Components/LetterEditor/Bottom/PaperStyle';
-import {useKeyboard} from '../../Hooks/useKeyboard';
-import {BottomBar} from '../../Components/LetterEditor/Bottom/BottomBar';
-import {PaperSelector} from '../../Components/LetterEditor/Bottom/PaperSelector';
-import {TexticonSelector} from '../../Components/LetterEditor/Bottom/TexticonSelector';
 
+import {useKeyboard} from '../../Hooks/useKeyboard';
+
+import {PAPER_COLORS, PAPER_STYLES} from '../../Constants/letter';
+
+import type {StackParamsList} from '../../types/stackParamList';
 import type {Selector, TexticonCategory} from '../../types/types';
+import {PaperStyle} from '../../Components/LetterEditor/PaperStyle';
+import {PaperSelector} from '../../Components/LetterEditor/PaperSelector';
+import {TexticonSelector} from '../../Components/LetterEditor/TexticonSelector';
+
+const textAlignLeft = require('../../Assets/textAlignLeft.png');
+const textAlignCenter = require('../../Assets/textAlignCenter.png');
+const textAlignRight = require('../../Assets/textAlignRight.png');
 
 type Props = NativeStackScreenProps<StackParamsList, 'LetterEditor'>;
 
 export function LetterEditor({navigation}: Props) {
-  console.log('LetterEditor');
-
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
   const [align, setAlign] = useState<'left' | 'center' | 'right'>('left');
-  const [texticonSelectorVisible, setTexticonSelectorVisible] = useState(false);
-  const [paperSelectorVisible, setPaperSelectorVisible] = useState(false);
   const [paperColor, setPaperColor] = useState<string>(PAPER_COLORS[0]);
   const [paperStyle, setPaperStyle] = useState<typeof PAPER_STYLES[number]>(
     PAPER_STYLES[0],
   );
+  const [texticonSelectorVisible, setTexticonSelectorVisible] = useState(false);
+  const [paperSelectorVisible, setPaperSelectorVisible] = useState(false);
   const [selectedCategory, setSelectedCategory] =
     useState<TexticonCategory>('happy');
   const [selectedTexticon, setSelectedTexticon] = useState<string>('');
 
-  const selection = useRef<Selector>({start: 0, end: 0});
-  // const align = useRef<'left' | 'center' | 'right'>('left');
+  const [selection, setSelection] = useState<Selector>({
+    start: 0,
+    end: 0,
+  });
 
   const titleRef = useRef(null);
   const textRef = useRef(null);
@@ -60,6 +67,10 @@ export function LetterEditor({navigation}: Props) {
 
   const {setLetter} = useStore();
 
+  const {top: SAFE_AREA_TOP, bottom: SAFE_AREA_BOTTOM} = useSafeAreaInsets();
+
+  const {keyboardVisible, dismissKeyboard} = useKeyboard();
+
   const gradientColor = useMemo(() => {
     return paperColor + '44'; // 투명도 44
   }, [paperColor]);
@@ -68,31 +79,9 @@ export function LetterEditor({navigation}: Props) {
     return paperColor + '22'; // 투명도 22
   }, [paperColor]);
 
-  const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
-
-  const {keyboardVisible, dismissKeyboard} = useKeyboard();
-
-  const setLetterData = useCallback(() => {
-    setLetter(title, text);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const onFocusTitle = () => {
     setLastestFocus({name: 'title', ref: titleRef});
-
     setTitle(title.replace(/(⌜|⌟︎)/g, ''));
-
-    if (paperSelectorVisible) {
-      setPaperSelectorVisible(false);
-    }
-  };
-
-  const onFocusText = () => {
-    setLastestFocus({name: 'text', ref: textRef});
-
-    if (paperSelectorVisible) {
-      setPaperSelectorVisible(false);
-    }
   };
 
   const onFocusOutTitle = () => {
@@ -101,29 +90,12 @@ export function LetterEditor({navigation}: Props) {
     }
   };
 
-  const onChangeSelection = ({
-    nativeEvent: {selection: currentSelection},
-  }: {
-    nativeEvent: {selection: Selector};
-  }) => {
-    selection.current = currentSelection;
+  const onFocusText = () => {
+    setLastestFocus({name: 'text', ref: textRef});
+    setPaperSelectorVisible(false);
   };
 
-  const onShowPaper = useCallback(() => {
-    if (paperSelectorVisible) {
-      setPaperSelectorVisible(false);
-    } else {
-      dismissKeyboard();
-      if (texticonSelectorVisible) {
-        setTexticonSelectorVisible(false);
-      }
-      setTimeout(() => {
-        setPaperSelectorVisible(true);
-      }, 300);
-    }
-  }, [dismissKeyboard, paperSelectorVisible, texticonSelectorVisible]);
-
-  const onToggleTextAlign = useCallback(() => {
+  const onToggleTextAlign = () => {
     switch (align) {
       case 'left':
         setAlign('center');
@@ -135,9 +107,22 @@ export function LetterEditor({navigation}: Props) {
         setAlign('left');
         break;
     }
+  };
+
+  useEffect(() => {
+    if (Platform.OS === 'ios') {
+      const tempText = text;
+      setText('');
+      lastestFocus.ref.current.blur();
+      setTimeout(() => {
+        setText(tempText);
+      }, 1);
+
+      // lastestFocus.ref.current.focus
+    }
   }, [align]);
 
-  const onShowTexticon = useCallback(() => {
+  const onShowTexticon = () => {
     if (texticonSelectorVisible) {
       setTexticonSelectorVisible(false);
       if (lastestFocus) {
@@ -158,12 +143,31 @@ export function LetterEditor({navigation}: Props) {
         lastestFocus?.ref.current.focus();
       }, 600);
     }
-  }, [
-    dismissKeyboard,
-    lastestFocus,
-    paperSelectorVisible,
-    texticonSelectorVisible,
-  ]);
+  };
+
+  const onShowPaper = () => {
+    if (paperSelectorVisible) {
+      setPaperSelectorVisible(false);
+    } else {
+      dismissKeyboard();
+      if (texticonSelectorVisible) {
+        setTexticonSelectorVisible(false);
+      }
+      setTimeout(() => {
+        setPaperSelectorVisible(true);
+      }, 300);
+    }
+  };
+
+  const setCurrentSelection = useCallback(
+    (length: number) => {
+      setSelection({
+        start: selection.start + length,
+        end: selection.end + length,
+      });
+    },
+    [selection.end, selection.start],
+  );
 
   const onSelectTexticon = useCallback(
     (texticon: string) => {
@@ -172,47 +176,23 @@ export function LetterEditor({navigation}: Props) {
     [setSelectedTexticon],
   );
 
-  const paddingOn = useMemo(
-    () => !keyboardVisible && !paperSelectorVisible && !texticonSelectorVisible,
-    [keyboardVisible, paperSelectorVisible, texticonSelectorVisible],
-  );
-
-  const setCurrentSelection = useCallback((length: number) => {
-    selection.current = {
-      start: selection.current.start + length,
-      end: selection.current.end + length,
-    };
-  }, []);
-
-  useEffect(() => {
-    if (Platform.OS === 'ios') {
-      const tempText = text;
-      setText('');
-      lastestFocus.ref.current.blur();
-      setTimeout(() => {
-        setText(tempText);
-      }, 1);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [align]);
-
   useEffect(() => {
     if (selectedTexticon) {
       if (lastestFocus.name === 'title') {
         const newTitle = [
-          title.slice(0, selection.current.start),
+          title.slice(0, selection.start),
           selectedTexticon,
-          title.slice(selection.current.end),
-        ].join('');
+          title.slice(selection.end),
+        ].join();
 
         setTitle(newTitle);
 
         setCurrentSelection(selectedTexticon.length);
       } else if (lastestFocus.name === 'text') {
         const newText = [
-          text.slice(0, selection.current.start),
+          text.slice(0, selection.start),
           selectedTexticon,
-          text.slice(selection.current.end),
+          text.slice(selection.end),
         ].join('');
 
         setText(newText);
@@ -230,6 +210,28 @@ export function LetterEditor({navigation}: Props) {
     title,
   ]);
 
+  const TextAlignButton = useCallback(() => {
+    switch (align) {
+      case 'left':
+        return <Image source={textAlignLeft} style={{height: 24, width: 24}} />;
+      case 'center':
+        return (
+          <Image source={textAlignCenter} style={{height: 24, width: 24}} />
+        );
+      case 'right':
+        return (
+          <Image source={textAlignRight} style={{height: 24, width: 24}} />
+        );
+    }
+  }, [align]);
+
+  const setLetterData = useCallback(() => {
+    setLetter(title, text);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const disableNext = useMemo(() => title === '' || text === '', [title, text]);
+
   return (
     <LinearGradient
       colors={[gradientColor, 'white', 'white', 'white', gradientColor]}
@@ -239,9 +241,8 @@ export function LetterEditor({navigation}: Props) {
         title={'편지 작성'}
         next="Home"
         onPressNext={setLetterData}
-        disableNext={false}
+        disableNext={disableNext}
       />
-
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         style={{flex: 1, marginTop: 24}}>
@@ -250,6 +251,7 @@ export function LetterEditor({navigation}: Props) {
 
           <TextInput
             value={title}
+            key="title"
             onChangeText={setTitle}
             placeholder={'⌜제목⌟︎'}
             onFocus={onFocusTitle}
@@ -257,13 +259,15 @@ export function LetterEditor({navigation}: Props) {
             autoCorrect={false}
             showSoftInputOnFocus={!texticonSelectorVisible}
             ref={titleRef}
-            onSelectionChange={onChangeSelection}
-            placeholderTextColor="#00000066"
+            onSelectionChange={({
+              nativeEvent: {selection: currentSelection},
+            }) => {
+              setSelection(currentSelection);
+            }}
             style={[
               styles.titleInput,
               {
                 textAlign: align,
-                // textAlign: align.current,
               },
             ]}
           />
@@ -274,12 +278,15 @@ export function LetterEditor({navigation}: Props) {
             onChangeText={setText}
             multiline
             placeholder="내용"
-            onFocus={onFocusText}
             autoCorrect={false}
             ref={textRef}
-            onSelectionChange={onChangeSelection}
+            onSelectionChange={({
+              nativeEvent: {selection: currentSelection},
+            }) => {
+              setSelection(currentSelection);
+            }}
             showSoftInputOnFocus={!texticonSelectorVisible}
-            placeholderTextColor="#00000066"
+            onFocus={onFocusText}
             style={[
               styles.textInput,
               {
@@ -290,13 +297,50 @@ export function LetterEditor({navigation}: Props) {
         </View>
 
         <View style={styles.bottom}>
-          <BottomBar
-            paddingOn={paddingOn}
-            align={align}
-            onToggleTextAlign={onToggleTextAlign}
-            onShowPaper={onShowPaper}
-            onShowTexticon={onShowTexticon}
-          />
+          <View
+            style={[
+              styles.bottomBar,
+              {
+                paddingBottom:
+                  !keyboardVisible &&
+                  !paperSelectorVisible &&
+                  !texticonSelectorVisible
+                    ? SAFE_AREA_BOTTOM
+                    : 0,
+              },
+            ]}>
+            <View style={styles.bottomBarButtonWrap}>
+              <Pressable onPress={onShowPaper} style={styles.bottomBarButton}>
+                <Image
+                  source={require('../../Assets/paper.png')}
+                  style={{height: 24, width: 24}}
+                />
+              </Pressable>
+              <Pressable
+                onPress={onToggleTextAlign}
+                style={styles.bottomBarButton}>
+                <TextAlignButton />
+              </Pressable>
+
+              <Pressable
+                onPress={onShowTexticon}
+                style={styles.bottomBarButton}>
+                <Image
+                  source={require('../../Assets/texticon.png')}
+                  style={{height: 24, width: 60}}
+                />
+              </Pressable>
+            </View>
+            {keyboardVisible && (
+              <Pressable onPress={dismissKeyboard}>
+                <Image
+                  source={require('../../Assets/keyboardDismiss.png')}
+                  style={{height: 24, width: 24}}
+                />
+              </Pressable>
+            )}
+          </View>
+
           {paperSelectorVisible && (
             <PaperSelector
               setPaperColor={setPaperColor}
@@ -305,6 +349,7 @@ export function LetterEditor({navigation}: Props) {
               paperStyle={paperStyle}
             />
           )}
+
           {texticonSelectorVisible && (
             <TexticonSelector
               setSelectedCategory={setSelectedCategory}
@@ -339,4 +384,15 @@ const styles = StyleSheet.create({
   bottom: {
     backgroundColor: '#0000cc',
   },
+  bottomBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+  },
+  bottomBarButtonWrap: {
+    marginVertical: 14,
+    flexDirection: 'row',
+  },
+  bottomBarButton: {marginRight: 16},
 });

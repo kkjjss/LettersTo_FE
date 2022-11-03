@@ -1,16 +1,17 @@
 import React from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import {TEXTICONS} from '../../Constants/letter';
-import type {TexticonCategory} from '../../types/types';
+import {TEXTICONS} from '../../../Constants/letter';
+import type {TexticonCategory} from '../../../types/types';
 import {TexticonItem} from './TexticonItem';
 
 type Props = {
   selectedCategory: TexticonCategory;
-  onInsertTexticon: (t: string) => void;
+  onSelectTexticon: (t: string) => void;
 };
 
 export const TexticonItemSelector = React.memo(
-  ({selectedCategory, onInsertTexticon}: Props) => {
+  ({selectedCategory, onSelectTexticon}: Props) => {
+    console.log(selectedCategory);
     return (
       <ScrollView>
         <View style={styles.texticonItemSelector}>
@@ -19,7 +20,7 @@ export const TexticonItemSelector = React.memo(
               <TexticonItem
                 key={index}
                 texticon={texticon}
-                onInsertTexticon={onInsertTexticon}
+                onSelectTexticon={onSelectTexticon}
               />
             );
           })}

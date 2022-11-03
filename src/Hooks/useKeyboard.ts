@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {Keyboard} from 'react-native';
 
 export function useKeyboard(): {
@@ -7,30 +7,42 @@ export function useKeyboard(): {
   dismissKeyboard: () => void;
 } {
   const [keyboardHeight, setKeyboardHeight] = useState<number>(0);
-  const [keyboardVisible, setKeyboardOn] = useState<boolean>(false);
+  const [keyboardVisible, setKeyboardVisible] = useState<boolean>(false);
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardWillShow', e => {
-      setKeyboardOn(true);
-      setKeyboardHeight(e.endCoordinates.height);
+      if (keyboardHeight === 0) {
+        setKeyboardHeight(e.endCoordinates.height);
+      }
+      if (keyboardVisible === false) {
+        setKeyboardVisible(true);
+      }
     });
 
     const showAndroidSubscription = Keyboard.addListener(
       'keyboardDidShow',
       () => {
-        setKeyboardOn(true);
+        if (keyboardVisible === false) {
+          setKeyboardVisible(true);
+        }
       },
     );
 
     const hideSubscription = Keyboard.addListener('keyboardWillHide', () => {
-      setKeyboardOn(false);
-      setKeyboardHeight(0);
+      if (keyboardHeight !== 0) {
+        setKeyboardHeight(0);
+      }
+      if (keyboardVisible === true) {
+        setKeyboardVisible(false);
+      }
     });
 
     const hideAndroidSubscription = Keyboard.addListener(
       'keyboardDidHide',
       () => {
-        setKeyboardOn(false);
+        if (keyboardVisible === true) {
+          setKeyboardVisible(false);
+        }
       },
     );
     return () => {
@@ -39,11 +51,15 @@ export function useKeyboard(): {
       hideSubscription.remove();
       hideAndroidSubscription.remove();
     };
-  }, [setKeyboardHeight, setKeyboardOn]);
+  }, [keyboardHeight, keyboardVisible, setKeyboardHeight]);
 
-  const dismissKeyboard = () => {
+  const dismissKeyboard = useCallback(() => {
     Keyboard.dismiss();
-  };
+  }, []);
 
-  return {keyboardHeight, keyboardVisible, dismissKeyboard};
+  return {
+    keyboardHeight,
+    keyboardVisible,
+    dismissKeyboard,
+  };
 }

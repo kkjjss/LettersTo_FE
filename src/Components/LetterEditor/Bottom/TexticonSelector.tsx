@@ -1,18 +1,18 @@
 import React from 'react';
 import {View} from 'react-native';
-import {SCREEN_HEIGHT} from '../../Constants/screen';
-import type {TexticonCategory} from '../../types/types';
+import {SCREEN_HEIGHT} from '../../../Constants/screen';
+import type {TexticonCategory} from '../../../types/types';
 import {TexticonCategorySelector} from './TexticonCategorySelector';
 import {TexticonItemSelector} from './TexticonItemSelector';
 
 type Props = {
   setSelectedCategory: React.Dispatch<React.SetStateAction<TexticonCategory>>;
   selectedCategory: TexticonCategory;
-  onInsertTexticon: (t: string) => void;
+  onSelectTexticon: (t: string) => void;
 };
 
 export const TexticonSelector = React.memo(
-  ({setSelectedCategory, selectedCategory, onInsertTexticon}: Props) => {
+  ({setSelectedCategory, selectedCategory, onSelectTexticon}: Props) => {
     return (
       <View
         style={{
@@ -24,7 +24,7 @@ export const TexticonSelector = React.memo(
         />
         <TexticonItemSelector
           selectedCategory={selectedCategory}
-          onInsertTexticon={onInsertTexticon}
+          onSelectTexticon={onSelectTexticon}
         />
       </View>
     );

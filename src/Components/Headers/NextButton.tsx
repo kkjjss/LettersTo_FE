@@ -9,7 +9,6 @@ type Props = {
 
 export const NextButton = React.memo(
   ({onPress: processAndNext, disable}: Props) => {
-    console.log(disable);
     return (
       <TouchableOpacity
         activeOpacity={0.7}

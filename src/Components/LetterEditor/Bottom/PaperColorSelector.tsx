@@ -1,6 +1,6 @@
 import React from 'react';
 import {ScrollView, StyleSheet} from 'react-native';
-import {PAPER_COLORS} from '../../Constants/letter';
+import {PAPER_COLORS} from '../../../Constants/letter';
 import {PaperColorButton} from './PaperColorButton';
 
 type Props = {

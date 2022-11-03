@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react';
 import {Image, StyleSheet, TouchableOpacity} from 'react-native';
 
-const checkMark = require('../../Assets/check.png');
+const checkMark = require('../../../Assets/check.png');
 
 type Props = {
   color: string;
