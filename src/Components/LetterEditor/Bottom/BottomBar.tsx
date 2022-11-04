@@ -3,6 +3,7 @@ import {Image, Pressable, StyleSheet, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useKeyboard} from '../../../Hooks/useKeyboard';
 
+const photoButton = require('../../../Assets/photo.png');
 const paperButton = require('../../../Assets/paper.png');
 const texticonButton = require('../../../Assets/texticon.png');
 const keyboardButton = require('../../../Assets/keyboardDismiss.png');
@@ -19,6 +20,7 @@ type Props = {
   onToggleTextAlign: () => void;
   onShowPaper: () => void;
   onShowTexticon: () => void;
+  pickImage: () => void;
 };
 
 export const BottomBar = React.memo(
@@ -28,6 +30,7 @@ export const BottomBar = React.memo(
     onToggleTextAlign,
     onShowPaper,
     onShowTexticon,
+    pickImage,
   }: Props) => {
     console.log('BottomBar');
 
@@ -44,6 +47,9 @@ export const BottomBar = React.memo(
           },
         ]}>
         <View style={styles.bottomBarButtonWrap}>
+          <Pressable onPress={pickImage} style={styles.bottomBarButton}>
+            <Image source={photoButton} style={styles.buttonImage} />
+          </Pressable>
           <Pressable onPress={onShowPaper} style={styles.bottomBarButton}>
             <Image source={paperButton} style={styles.buttonImage} />
           </Pressable>

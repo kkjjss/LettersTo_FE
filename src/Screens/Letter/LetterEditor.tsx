@@ -15,18 +15,20 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import * as imagePicker from 'expo-image-picker';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+
 import {Header} from '../../Components/Headers/Header';
 import {PAPER_COLORS, PAPER_STYLES} from '../../Constants/letter';
-import {StackParamsList} from '../../types/stackParamList';
-
 import useStore from '../../Store/store';
 import {PaperStyle} from '../../Components/LetterEditor/Bottom/PaperStyle';
 import {useKeyboard} from '../../Hooks/useKeyboard';
 import {BottomBar} from '../../Components/LetterEditor/Bottom/BottomBar';
 import {PaperSelector} from '../../Components/LetterEditor/Bottom/PaperSelector';
 import {TexticonSelector} from '../../Components/LetterEditor/Bottom/TexticonSelector';
+import {ImagePicker} from '../../Components/LetterEditor/ImagePicker';
 
+import type {StackParamsList} from '../../types/stackParamList';
 import type {Selector, TexticonCategory} from '../../types/types';
 
 type Props = NativeStackScreenProps<StackParamsList, 'LetterEditor'>;
@@ -46,6 +48,8 @@ export function LetterEditor({navigation}: Props) {
   const [selectedCategory, setSelectedCategory] =
     useState<TexticonCategory>('happy');
   const [selectedTexticon, setSelectedTexticon] = useState<string>('');
+  const [image, setImage] = useState<string[]>([]);
+  const [isLoadingImage, setLoadingImage] = useState(false);
 
   const selection = useRef<Selector>({start: 0, end: 0});
   // const align = useRef<'left' | 'center' | 'right'>('left');
@@ -184,6 +188,73 @@ export function LetterEditor({navigation}: Props) {
     };
   }, []);
 
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await imagePicker.launchImageLibraryAsync({
+      allowsMultipleSelection: true,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setLoadingImage(true);
+      handleImagePicked(result.selected.slice(0, 5));
+      // handleImagePicked(result);
+    }
+  };
+
+  const handleImagePicked = async (pickerResult: imagePicker.ImageInfo[]) => {
+    try {
+      const ids = await Promise.all(
+        pickerResult.map(async localImg => {
+          const img = await fetchImageFromUri(localImg.uri);
+          return await uploadImage(img, localImg.fileName);
+        }),
+      );
+      setImage(ids);
+    } catch (err: any) {
+      console.error(err.message);
+    } finally {
+      setLoadingImage(false);
+    }
+  };
+
+  const fetchImageFromUri = async (uri: string) => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    return blob;
+  };
+
+  const uploadImage = async (
+    img: Blob,
+    filename?: string | null,
+  ): Promise<string> => {
+    const presignUrl = await fetch(
+      'http://13.209.12.14/api/files?filename=' + filename,
+      {
+        method: 'POST',
+      },
+    ).then(response => response.json());
+
+    console.log(presignUrl);
+
+    await fetch(presignUrl.uploadUrl, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'image/*',
+      },
+      body: img,
+    });
+
+    console.log('Image Upload Success');
+
+    return presignUrl.id;
+  };
+
+  const deleteImage = async (id: string) => {
+    setImage([...image].filter(img => img !== id));
+  };
+
   useEffect(() => {
     if (Platform.OS === 'ios') {
       const tempText = text;
@@ -290,12 +361,18 @@ export function LetterEditor({navigation}: Props) {
         </View>
 
         <View style={styles.bottom}>
+          <ImagePicker
+            images={image}
+            loading={isLoadingImage}
+            deleteImage={deleteImage}
+          />
           <BottomBar
             paddingOn={paddingOn}
             align={align}
             onToggleTextAlign={onToggleTextAlign}
             onShowPaper={onShowPaper}
             onShowTexticon={onShowTexticon}
+            pickImage={pickImage}
           />
           {paperSelectorVisible && (
             <PaperSelector
@@ -338,5 +415,6 @@ const styles = StyleSheet.create({
   },
   bottom: {
     backgroundColor: '#0000cc',
+    position: 'relative',
   },
 });

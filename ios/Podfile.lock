@@ -12,7 +12,12 @@ PODS:
     - ExpoModulesCore
   - EXFont (10.2.1):
     - ExpoModulesCore
+  - EXImageLoader (3.2.0):
+    - ExpoModulesCore
+    - React-Core
   - Expo (46.0.15):
+    - ExpoModulesCore
+  - ExpoImagePicker (13.3.1):
     - ExpoModulesCore
   - ExpoKeepAwake (10.2.0):
     - ExpoModulesCore
@@ -418,7 +423,9 @@ DEPENDENCIES:
   - EXErrorRecovery (from `../node_modules/expo-error-recovery/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
   - EXFont (from `../node_modules/expo-font/ios`)
+  - EXImageLoader (from `../node_modules/expo-image-loader/ios`)
   - Expo (from `../node_modules/expo`)
+  - ExpoImagePicker (from `../node_modules/expo-image-picker/ios`)
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - ExpoLinearGradient (from `../node_modules/expo-linear-gradient/ios`)
   - ExpoModulesCore (from `../node_modules/expo-modules-core/ios`)
@@ -496,8 +503,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-file-system/ios"
   EXFont:
     :path: "../node_modules/expo-font/ios"
+  EXImageLoader:
+    :path: "../node_modules/expo-image-loader/ios"
   Expo:
     :path: "../node_modules/expo"
+  ExpoImagePicker:
+    :path: "../node_modules/expo-image-picker/ios"
   ExpoKeepAwake:
     :path: "../node_modules/expo-keep-awake/ios"
   ExpoLinearGradient:
@@ -590,7 +601,9 @@ SPEC CHECKSUMS:
   EXErrorRecovery: 550d48c3575dcd83538abd7f13f52d30c4fecdb0
   EXFileSystem: 3b71e2d1d4a3cd7cc4e2875913b9a96b34d323e3
   EXFont: 0be44924d5000938c74715b2056fd7972ba65a05
+  EXImageLoader: fce288cd59b5366cfcf6b26f7fdb65d12af0c808
   Expo: df720d1621976459f4c03bc483e4c124ecd18a4d
+  ExpoImagePicker: d6e19385043133dd5ad2afb3a7676f73fcaa9167
   ExpoKeepAwake: d8ca9d3195d7d30f39d04ce79d2f0890f8d7ba00
   ExpoLinearGradient: 6d3047fddff1b61fafac00968dc1e1116499888f
   ExpoModulesCore: 3266ff8a46e34d54f82c0bb97c35ff8bdff26161
