@@ -20,10 +20,12 @@ export const ImagePicker = React.memo(
     images,
     loading,
     deleteImage,
+    onShowImageModal,
   }: {
     images: string[];
     loading: boolean;
     deleteImage: (id: string) => void;
+    onShowImageModal: (id: string) => void;
   }) => {
     const [visible, setVisible] = useState(false);
     const [borderColor, setBorderColor] = useState('#0000cc');
@@ -127,6 +129,9 @@ export const ImagePicker = React.memo(
             {images &&
               images.map((image, index) => (
                 <Pressable
+                  onPress={() => {
+                    onShowImageModal(image);
+                  }}
                   key={index}
                   style={{
                     position: 'relative',

@@ -255,6 +255,8 @@ export function LetterEditor({navigation}: Props) {
     setImage([...image].filter(img => img !== id));
   };
 
+  const onShowImageModal = useCallback((id: string) => {}, []);
+
   useEffect(() => {
     if (Platform.OS === 'ios') {
       const tempText = text;
@@ -365,6 +367,7 @@ export function LetterEditor({navigation}: Props) {
             images={image}
             loading={isLoadingImage}
             deleteImage={deleteImage}
+            onShowImageModal={onShowImageModal}
           />
           <BottomBar
             paddingOn={paddingOn}
