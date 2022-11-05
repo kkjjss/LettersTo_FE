@@ -31,7 +31,7 @@ export function Home({navigation}: Props) {
     setPositionY(positionY);
   }
 
-  const scrollRef = useRef();
+  const scrollRef = useRef<ScrollView>(null);
   const scrollToTop = () => {
     scrollRef.current?.scrollTo({y: 0, animated: true});
   }
