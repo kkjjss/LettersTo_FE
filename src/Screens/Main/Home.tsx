@@ -25,6 +25,17 @@ export function Home({navigation}: Props) {
   ];
   const cardAngle = [-5, 5, 5, -5, 15, 5];
 
+  const [positionY, setPositionY] = useState<Number>(0);
+  const handleScroll = (event: any) => {
+    const positionY = event.nativeEvent.contentOffset.y;
+    setPositionY(positionY);
+  }
+
+  const scrollRef = useRef<ScrollView>(null);
+  const scrollToTop = () => {
+    scrollRef.current?.scrollTo({y: 0, animated: true});
+  }
+
   function logout() {
     AsyncStorage.removeItem('accessToken');
     AsyncStorage.removeItem('refreshToken');
@@ -41,6 +52,7 @@ export function Home({navigation}: Props) {
         {/* <Text>Home Screen</Text> */}
         {/* <Button title="로그아웃" onPress={logout} /> */}
         {/* <Button title="마이페이지" onPress={goToMyPage} /> */}
+
         <LinearGradient colors={['rgba(255, 204, 238, 1)', 'rgba(255, 255, 255, 0)']} style={styles.header}>
           <View style={styles.headerInner}>
             <View style={{flexDirection: 'row'}}>
@@ -55,7 +67,7 @@ export function Home({navigation}: Props) {
             </View>
           </View>
         </LinearGradient>
-        <ScrollView style={styles.scrollView}>
+        <ScrollView ref={scrollRef} style={styles.scrollView} onScroll={handleScroll}>
           <View style={styles.cardList}>
             {
               cards.map((item, idx) => (
@@ -93,9 +105,10 @@ export function Home({navigation}: Props) {
           </View>
         </View>
         <View style={styles.floatArea}>
-          <TouchableOpacity style={[styles.btn, styles.btnPrimary]}>
-            <Image source={require('../../Assets/refresh.png')} style={{height: 28, width: 28}} />
-          </TouchableOpacity>
+          {positionY > 0
+            ? <TouchableOpacity style={[styles.btn, styles.btnPrimary]} onPress={scrollToTop}><Image source={require('../../Assets/top.png')} style={{height: 28, width: 28}} /></TouchableOpacity>
+            : <TouchableOpacity style={[styles.btn, styles.btnPrimary]}><Image source={require('../../Assets/refresh.png')} style={{height: 28, width: 28}} /></TouchableOpacity>
+          }
           <TouchableOpacity style={[styles.btn, styles.btnSecondary]}>
             <Image source={require('../../Assets/write.png')} style={{height: 28, width: 28}} />
           </TouchableOpacity>
