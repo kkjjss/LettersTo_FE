@@ -1,14 +1,15 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {StatusBar, View, Text, StyleSheet, Button, ScrollView, TouchableOpacity, TouchableWithoutFeedback, Pressable, Image} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, TouchableWithoutFeedback, Pressable, Image} from 'react-native';
 import type {StackParamsList} from '../../types/stackParamList';
 import useStore from '../../Store/store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {LinearGradient} from 'expo-linear-gradient';
 import {cards} from './CardData.json';
 import {Card} from '../../Components/Card';
-import {SCREEN_HEIGHT} from '../../constants';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {EnvelopeModal} from '../../Modals/EnvelopeModal';
+import {Letter} from '../../types/types';
 
 type Props = NativeStackScreenProps<StackParamsList, 'Home'>;
 
@@ -24,6 +25,12 @@ export function Home({navigation}: Props) {
     'rgba(140, 117, 255, 0.25)',
   ];
   const cardAngle = [-5, 5, 5, -5, 15, 5];
+  const imagePath = {
+    "237": require('../../Assets/237.jpg'),
+    "1003": require('../../Assets/1003.jpg'),
+    "1056": require('../../Assets/1056.jpg'),
+    "1062": require('../../Assets/1062.jpg'),
+  }
 
   const [positionY, setPositionY] = useState<Number>(0);
   const handleScroll = (event: any) => {
@@ -34,6 +41,15 @@ export function Home({navigation}: Props) {
   const scrollRef = useRef<ScrollView>(null);
   const scrollToTop = () => {
     scrollRef.current?.scrollTo({y: 0, animated: true});
+  }
+
+  const [isEnvelopeModalVisible, setEnvelopeModalVisible] = useState(false);
+  const [selectedItem, setSelectedItem] = useState({});
+  const openEnvelopeModal = (data: any) => {
+    // console.log('openEnvelopeModal ~~~~~~', data);
+    
+    setEnvelopeModalVisible(true);
+    setSelectedItem(data);
   }
 
   function logout() {
@@ -55,16 +71,12 @@ export function Home({navigation}: Props) {
 
         <LinearGradient colors={['rgba(255, 204, 238, 1)', 'rgba(255, 255, 255, 0)']} style={styles.header}>
           <View style={styles.headerInner}>
-            <View style={{flexDirection: 'row'}}>
-              <TouchableOpacity>
-                <Image source={require('../../Assets/alert_off.png')} style={{height: 28, width: 28}} />
-              </TouchableOpacity>
-            </View>
-            <View style={{flexDirection: 'row'}}>
-              <TouchableOpacity>
-                <Image source={require('../../Assets/menu.png')} style={{height: 28, width: 28}} />
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity>
+              <Image source={require('../../Assets/alert_on.png')} style={styles.icon} />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Image source={require('../../Assets/menu.png')} style={styles.icon} />
+            </TouchableOpacity>
           </View>
         </LinearGradient>
         <ScrollView ref={scrollRef} style={styles.scrollView} onScroll={handleScroll}>
@@ -72,10 +84,10 @@ export function Home({navigation}: Props) {
             {
               cards.map((item, idx) => (
                 <Card
-                  key={idx}
+                  key={item.id}
                   title={item.title}
-                  stampId={item.stampId}
-                  from={item.fromInfo}
+                  stampSrc={imagePath[item.stampId]}
+                  fromInfo={item.fromInfo}
                   topic={item.topic}
                   personality={item.personality}
                   color={cardColor[idx % 6]}
@@ -83,6 +95,11 @@ export function Home({navigation}: Props) {
                     idx % 2 === 0 ? {left: '27.7%', marginTop: -36} : {left: '-6.4%', marginTop: -152},
                     {transform: [{ rotate: `${cardAngle[idx % 6]}deg` }]}
                   ]}
+                  onPress={() => openEnvelopeModal({
+                    ...item,
+                    color: cardColor[idx % 6],
+                    stampSrc: imagePath[item.stampId],
+                  })}
                 />
               ))
             }
@@ -106,13 +123,22 @@ export function Home({navigation}: Props) {
         </View>
         <View style={styles.floatArea}>
           {positionY > 0
-            ? <TouchableOpacity style={[styles.btn, styles.btnPrimary]} onPress={scrollToTop}><Image source={require('../../Assets/top.png')} style={{height: 28, width: 28}} /></TouchableOpacity>
-            : <TouchableOpacity style={[styles.btn, styles.btnPrimary]}><Image source={require('../../Assets/refresh.png')} style={{height: 28, width: 28}} /></TouchableOpacity>
+            ? <TouchableOpacity style={[styles.btn, styles.btnPrimary]} onPress={scrollToTop}>
+                <Image source={require('../../Assets/top.png')} style={styles.icon} />
+              </TouchableOpacity>
+            : <TouchableOpacity style={[styles.btn, styles.btnPrimary]}>
+                <Image source={require('../../Assets/refresh.png')} style={styles.icon} />
+              </TouchableOpacity>
           }
           <TouchableOpacity style={[styles.btn, styles.btnSecondary]}>
-            <Image source={require('../../Assets/write.png')} style={{height: 28, width: 28}} />
+            <Image source={require('../../Assets/write.png')} style={styles.icon} />
           </TouchableOpacity>
         </View>
+        <EnvelopeModal
+          data={selectedItem}
+          isModalVisible={isEnvelopeModalVisible}
+          setModalVisible={setEnvelopeModalVisible}
+        />
       </SafeAreaView>
     </LinearGradient>
   );
@@ -134,5 +160,6 @@ const styles = StyleSheet.create({
   btn: {width: 48, height: 48, alignItems: 'center', justifyContent: 'center', marginTop: 8, borderRadius: 24},
   btnPrimary: {backgroundColor: '#0000CC'},
   btnSecondary: {backgroundColor: '#FFFFCC', borderWidth: 1, borderColor: '#0000CC'},
-  triangle: {position: 'absolute', bottom: 0, width: 4, height: 5}
+  triangle: {position: 'absolute', bottom: 0, width: 4, height: 5},
+  icon: {width: 28, height: 28}
 });

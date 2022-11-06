@@ -41,3 +41,18 @@ export interface UserInfo {
   personalityIds: number[];
   geolocationId: number;
 }
+
+export interface FromInfo {
+  nickname: string;
+  city: string;
+}
+
+export interface Letter {
+  id: number;
+  title: string;
+  stampId: number;
+  fromInfo: FromInfo;
+  topic: string[];
+  personality: string[];
+  [key: string]: any;
+}
