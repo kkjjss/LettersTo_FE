@@ -30,6 +30,9 @@ import {ImagePicker} from '../../Components/LetterEditor/ImagePicker';
 
 import type {StackParamsList} from '../../types/stackParamList';
 import type {Selector, TexticonCategory} from '../../types/types';
+import {getImageUploadUrl} from '../../APIs/file';
+import {ImageModal} from '../../Modals/ImageModal';
+import {ModalBlur} from '../../Modals/ModalBlur';
 
 type Props = NativeStackScreenProps<StackParamsList, 'LetterEditor'>;
 
@@ -48,8 +51,9 @@ export function LetterEditor({navigation}: Props) {
   const [selectedCategory, setSelectedCategory] =
     useState<TexticonCategory>('happy');
   const [selectedTexticon, setSelectedTexticon] = useState<string>('');
-  const [image, setImage] = useState<string[]>([]);
+  const [images, setImages] = useState<string[]>([]);
   const [isLoadingImage, setLoadingImage] = useState(false);
+  const [isImageModalVisible, setImageModalVisible] = useState(false);
 
   const selection = useRef<Selector>({start: 0, end: 0});
   // const align = useRef<'left' | 'center' | 'right'>('left');
@@ -69,17 +73,18 @@ export function LetterEditor({navigation}: Props) {
   }, [paperColor]);
 
   const lineColor = useMemo(() => {
-    return paperColor + '22'; // 투명도 22
+    return paperColor + '19'; // 투명도 10%
   }, [paperColor]);
+
+  const disableNext = useMemo(() => title === '' || text === '', [title, text]);
 
   const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
 
   const {keyboardVisible, dismissKeyboard} = useKeyboard();
 
   const setLetterData = useCallback(() => {
-    setLetter(title, text);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    setLetter({title, text, paperColor, paperStyle, align, images});
+  }, [setLetter, title, text, paperColor, paperStyle, align, images]);
 
   const onFocusTitle = () => {
     setLastestFocus({name: 'title', ref: titleRef});
@@ -188,7 +193,7 @@ export function LetterEditor({navigation}: Props) {
     };
   }, []);
 
-  const pickImage = async () => {
+  const pickImage = useCallback(async () => {
     // No permissions request is necessary for launching the image library
     let result = await imagePicker.launchImageLibraryAsync({
       allowsMultipleSelection: true,
@@ -201,7 +206,7 @@ export function LetterEditor({navigation}: Props) {
       handleImagePicked(result.selected.slice(0, 5));
       // handleImagePicked(result);
     }
-  };
+  }, []);
 
   const handleImagePicked = async (pickerResult: imagePicker.ImageInfo[]) => {
     try {
@@ -211,7 +216,7 @@ export function LetterEditor({navigation}: Props) {
           return await uploadImage(img, localImg.fileName);
         }),
       );
-      setImage(ids);
+      setImages(ids);
     } catch (err: any) {
       console.error(err.message);
     } finally {
@@ -229,12 +234,7 @@ export function LetterEditor({navigation}: Props) {
     img: Blob,
     filename?: string | null,
   ): Promise<string> => {
-    const presignUrl = await fetch(
-      'http://13.209.12.14/api/files?filename=' + filename,
-      {
-        method: 'POST',
-      },
-    ).then(response => response.json());
+    const presignUrl = await getImageUploadUrl(filename ?? 'UNKNOWN_FILENAME');
 
     console.log(presignUrl);
 
@@ -251,11 +251,16 @@ export function LetterEditor({navigation}: Props) {
     return presignUrl.id;
   };
 
-  const deleteImage = async (id: string) => {
-    setImage([...image].filter(img => img !== id));
-  };
+  const deleteImage = useCallback(
+    async (id: string) => {
+      setImages([...images].filter(img => img !== id));
+    },
+    [images],
+  );
 
-  const onShowImageModal = useCallback((id: string) => {}, []);
+  const onShowImageModal = useCallback(() => {
+    setImageModalVisible(true);
+  }, [setImageModalVisible]);
 
   useEffect(() => {
     if (Platform.OS === 'ios') {
@@ -312,7 +317,7 @@ export function LetterEditor({navigation}: Props) {
         title={'편지 작성'}
         next="Home"
         onPressNext={setLetterData}
-        disableNext={false}
+        disableNext={disableNext}
       />
 
       <KeyboardAvoidingView
@@ -364,7 +369,7 @@ export function LetterEditor({navigation}: Props) {
 
         <View style={styles.bottom}>
           <ImagePicker
-            images={image}
+            images={images}
             loading={isLoadingImage}
             deleteImage={deleteImage}
             onShowImageModal={onShowImageModal}
@@ -394,6 +399,13 @@ export function LetterEditor({navigation}: Props) {
           )}
         </View>
       </KeyboardAvoidingView>
+
+      {isImageModalVisible && <ModalBlur />}
+      <ImageModal
+        isImageModalVisible={isImageModalVisible}
+        setImageModalVisible={setImageModalVisible}
+        images={images}
+      />
     </LinearGradient>
   );
 }

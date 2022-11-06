@@ -49,10 +49,21 @@ interface Store {
     | {
         title: string;
         text: string;
+        paperStyle: string;
+        paperColor: string;
+        align: string;
+        images?: string[];
       }
     | undefined;
 
-  setLetter: (title: string, text: string) => void;
+  setLetter: (letterData: {
+    title: string;
+    text: string;
+    paperStyle: string;
+    paperColor: string;
+    align: string;
+    images?: string[];
+  }) => void;
 }
 
 const useStore = create<Store>(set => ({
@@ -103,7 +114,7 @@ const useStore = create<Store>(set => ({
 
   letter: undefined,
 
-  setLetter: (title, text) => set(() => ({letter: {title, text}})),
+  setLetter: letterData => set(() => ({letter: {...letterData}})),
 }));
 
 export default useStore;
