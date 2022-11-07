@@ -204,8 +204,8 @@ export function LetterEditor({navigation}: Props) {
     if (!result.cancelled) {
       setLoadingImage(true);
       handleImagePicked(result.selected.slice(0, 5));
-      // handleImagePicked(result);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleImagePicked = async (pickerResult: imagePicker.ImageInfo[]) => {
@@ -315,7 +315,7 @@ export function LetterEditor({navigation}: Props) {
       <Header
         navigation={navigation}
         title={'편지 작성'}
-        next="Home"
+        next={{name: 'CoverEditor', params: {property: 'topic'}}}
         onPressNext={setLetterData}
         disableNext={disableNext}
       />

@@ -1,15 +1,15 @@
 import {Texticons} from '../types/types';
 
 export const PAPER_COLORS: string[] = [
-  '#fd40c1',
-  '#fe7542',
-  '#ffd94d',
-  '#bbfd50',
-  '#44febc',
-  '#41edfd',
-  '#3b7bfa',
-  '#806ef9',
-  '#dda0fb',
+  '#ff44cc',
+  '#ff8244',
+  '#FFE044',
+  '#AEF81A',
+  '#44FFC1',
+  '#44D2FF',
+  '#4482FF',
+  '#AA75FF',
+  '#E2A8FF',
 ];
 
 export const PAPER_STYLES = ['grid', 'dotted', 'plain'] as const;
