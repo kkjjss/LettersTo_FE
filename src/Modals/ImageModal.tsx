@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 import {BASE_URL_TEST} from '../Constants/common';
-import {SCREEN_WIDTH} from '../Constants/screen';
+import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../Constants/screen';
 
 type Props = {
   isImageModalVisible: boolean;
@@ -43,6 +43,8 @@ export const ImageModal = React.memo(
             horizontal
             pagingEnabled
             snapToInterval={SCREEN_WIDTH - 70}
+            snapToAlignment="start"
+            decelerationRate="fast"
             contentContainerStyle={styles.imageWrap}>
             {images.map((image, index) => (
               <Image
@@ -74,7 +76,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: SCREEN_WIDTH - 100,
-    height: 200,
+    minHeight: SCREEN_HEIGHT - 300,
     resizeMode: 'contain',
     marginRight: 30,
   },
