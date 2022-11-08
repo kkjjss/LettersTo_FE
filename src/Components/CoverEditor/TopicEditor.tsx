@@ -7,21 +7,20 @@ import {Topics} from '../../types/types';
 import {ResetButton} from '../ResetButton';
 import {TopicList} from '../TopicList';
 
-export const TopicEditor = () => {
-  const [topics, setTopics] = useState<Topics>([]);
-  const [selectedTopicIds, setSelectedTopicIds] = useState<number[]>([]);
+type Props = {
+  selectedTopicIds: number[];
+  setSelectedTopicIds: React.Dispatch<React.SetStateAction<number[]>>;
+};
 
-  const counter = useMemo(() => selectedTopicIds.length, [selectedTopicIds]);
+export const TopicEditor = ({selectedTopicIds, setSelectedTopicIds}: Props) => {
+  const [topics, setTopics] = useState<Topics>([]);
+  // const [selectedTopicIds, setSelectedTopicIds] = useState<number[]>([]);
 
   const {userInfo} = useStore();
 
   const {bottom} = useSafeAreaInsets();
 
-  const getUserTopics = useCallback(() => {
-    if (userInfo) {
-      setSelectedTopicIds([...userInfo.topicIds]);
-    }
-  }, [userInfo]);
+  const counter = useMemo(() => selectedTopicIds.length, [selectedTopicIds]);
 
   const selectTopic = useCallback(
     (topicId: number) => {
@@ -34,18 +33,8 @@ export const TopicEditor = () => {
         // alert.start();
       }
     },
-    [counter, selectedTopicIds],
+    [counter, selectedTopicIds, setSelectedTopicIds],
   );
-
-  const getTopicsList = () => {
-    try {
-      getTopics().then(topicData => {
-        setTopics([...topicData]);
-      });
-    } catch (error: any) {
-      console.error(error.message);
-    }
-  };
 
   const reset = () => {
     if (userInfo) {
@@ -54,9 +43,25 @@ export const TopicEditor = () => {
   };
 
   useEffect(() => {
+    const getUserTopics = () => {
+      if (userInfo) {
+        setSelectedTopicIds([...userInfo.topicIds]);
+      }
+    };
+
+    const getTopicsList = () => {
+      try {
+        getTopics().then(topicData => {
+          setTopics([...topicData]);
+        });
+      } catch (error: any) {
+        console.error(error.message);
+      }
+    };
+
     getUserTopics();
     getTopicsList();
-  }, []);
+  }, [setSelectedTopicIds, userInfo]);
 
   return (
     <View

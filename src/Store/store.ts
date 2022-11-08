@@ -56,6 +56,14 @@ interface Store {
       }
     | undefined;
 
+  cover:
+    | {
+        topicIds: number[];
+        personalityIds: number[];
+        stamp: string;
+      }
+    | undefined;
+
   setLetter: (letterData: {
     title: string;
     text: string;
@@ -63,6 +71,12 @@ interface Store {
     paperColor: string;
     align: string;
     images?: string[];
+  }) => void;
+
+  setCover: (coverData: {
+    topicIds: number[];
+    personalityIds: number[];
+    stamp: string;
   }) => void;
 }
 
@@ -115,6 +129,10 @@ const useStore = create<Store>(set => ({
   letter: undefined,
 
   setLetter: letterData => set(() => ({letter: {...letterData}})),
+
+  cover: undefined,
+
+  setCover: coverData => set(() => ({cover: {...coverData}})),
 }));
 
 export default useStore;

@@ -22,7 +22,7 @@ export const NextButton = React.memo(
               borderRadius: 10,
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: '#FFCCEE',
+              backgroundColor: 'rgba(255, 68, 204, 0.15)',
             }}>
             <Text
               style={{

@@ -20,7 +20,8 @@ import {AccountDelete} from '../Screens/MyPage/AccountDelete';
 
 // 편지 작성
 import {LetterEditor} from '../Screens/Letter/LetterEditor';
-import {CoverEditor} from '../Screens/Letter/CoverEditor';
+import {CoverTopicEditor} from '../Screens/Letter/CoverEditor/CoverTopicEditor';
+import {CoverPersonalityEditor} from '../Screens/Letter/CoverEditor/CoverPersonalityEditor';
 
 const Stack = createNativeStackNavigator<StackParamsList>();
 
@@ -43,7 +44,11 @@ export default function StackNavigator() {
 
           {/* 편지 작성 */}
           <Stack.Screen name="LetterEditor" component={LetterEditor} />
-          <Stack.Screen name="CoverEditor" component={CoverEditor} />
+          <Stack.Screen name="CoverTopicEditor" component={CoverTopicEditor} />
+          <Stack.Screen
+            name="CoverPersonalityEditor"
+            component={CoverPersonalityEditor}
+          />
         </Stack.Group>
       ) : (
         <Stack.Group>

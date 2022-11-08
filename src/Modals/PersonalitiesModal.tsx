@@ -139,7 +139,7 @@ export function PersonalitiesModal({isModalVisible, setModalVisible}: Props) {
 
           <View style={styles.titleBox}>
             <View style={styles.titleWrap}>
-              <Text style={styles.titleText}>나의 관심사를</Text>
+              <Text style={styles.titleText}>나의 성향을</Text>
               <Text style={styles.titleText}>모두 선택해주세요</Text>
             </View>
             <View style={styles.counterWrap}>

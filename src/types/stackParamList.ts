@@ -20,7 +20,6 @@ export type StackParamsList = {
 
   // 편지 작성
   LetterEditor: undefined;
-  CoverEditor: {
-    property: 'topic' | 'personality' | 'stamp';
-  };
+  CoverTopicEditor: undefined;
+  CoverPersonalityEditor: undefined;
 };

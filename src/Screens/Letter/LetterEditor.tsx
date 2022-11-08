@@ -315,7 +315,7 @@ export function LetterEditor({navigation}: Props) {
       <Header
         navigation={navigation}
         title={'편지 작성'}
-        next={{name: 'CoverEditor', params: {property: 'topic'}}}
+        next={'CoverTopicEditor'}
         onPressNext={setLetterData}
         disableNext={disableNext}
       />

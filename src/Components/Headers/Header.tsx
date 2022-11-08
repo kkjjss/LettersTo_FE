@@ -11,7 +11,7 @@ type Props = {
   navigation: NativeStackNavigationProp<StackParamsList, keyof StackParamsList>;
   title: string;
   color?: 'blue' | 'white';
-  next?: {name: keyof StackParamsList; params?: any};
+  next?: keyof StackParamsList;
   onPressNext?: () => void;
   disableNext?: boolean;
 };
@@ -33,7 +33,7 @@ export const Header = React.memo(
 
     const goNext = useCallback(() => {
       if (next) {
-        navigation.navigate(next.name, next.params);
+        navigation.navigate(next);
       }
     }, [navigation, next]);
 
