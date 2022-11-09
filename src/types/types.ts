@@ -48,9 +48,9 @@ export interface FromInfo {
 }
 
 export interface Letter {
-  id: number;
+  id?: number;
   title: string;
-  stampId: number;
+  stampId?: number;
   fromInfo: FromInfo;
   topic: string[];
   personality: string[];
