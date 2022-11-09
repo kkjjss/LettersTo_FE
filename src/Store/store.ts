@@ -56,13 +56,11 @@ interface Store {
       }
     | undefined;
 
-  cover:
-    | {
-        topicIds: number[];
-        personalityIds: number[];
-        stamp: string;
-      }
-    | undefined;
+  cover: {
+    topicIds: number[];
+    personalityIds: number[];
+    stamp: string | undefined;
+  };
 
   setLetter: (letterData: {
     title: string;
@@ -73,11 +71,10 @@ interface Store {
     images?: string[];
   }) => void;
 
-  setCover: (coverData: {
-    topicIds: number[];
-    personalityIds: number[];
-    stamp: string;
-  }) => void;
+  setCoverTopicIds: (topicIds: number[]) => void;
+  setCoverPersonalityIds: (personalityIds: number[]) => void;
+  setCoverStampId: (stampId: string) => void;
+  setInitialCoverData: () => void;
 }
 
 const useStore = create<Store>(set => ({
@@ -130,9 +127,29 @@ const useStore = create<Store>(set => ({
 
   setLetter: letterData => set(() => ({letter: {...letterData}})),
 
-  cover: undefined,
+  cover: {
+    topicIds: [],
+    personalityIds: [],
+    stamp: undefined,
+  },
 
-  setCover: coverData => set(() => ({cover: {...coverData}})),
+  setCoverTopicIds: topicIds =>
+    set(state => ({cover: {...state.cover, topicIds: topicIds}})),
+
+  setCoverPersonalityIds: personalityIds =>
+    set(state => ({cover: {...state.cover, personalityIds: personalityIds}})),
+
+  setCoverStampId: stampId =>
+    set(state => ({cover: {...state.cover, stamp: stampId}})),
+
+  setInitialCoverData: () =>
+    set(state => ({
+      cover: {
+        topicIds: state.userInfo?.topicIds ?? [],
+        personalityIds: state.userInfo?.personalityIds ?? [],
+        stamp: undefined,
+      },
+    })),
 }));
 
 export default useStore;

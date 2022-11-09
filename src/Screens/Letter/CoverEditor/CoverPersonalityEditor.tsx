@@ -5,6 +5,7 @@ import {Header} from '../../../Components/Headers/Header';
 import {StackParamsList} from '../../../types/stackParamList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {PersonalityEditor} from '../../../Components/CoverEditor/PersonalityEditor';
+import { LetterCover } from '../../../Components/LetterCoverPreview';
 
 type Props = NativeStackScreenProps<StackParamsList, 'CoverPersonalityEditor'>;
 
@@ -20,11 +21,6 @@ export function CoverPersonalityEditor({navigation}: Props) {
     [selectedPersonalityIds],
   );
 
-  const LetterCover = () => {
-    // 나중에 구현
-    return <View style={{backgroundColor: 'white', height: 212}} />;
-  };
-
   return (
     <View style={{flex: 1}}>
       <View
@@ -38,12 +34,12 @@ export function CoverPersonalityEditor({navigation}: Props) {
         <Header
           navigation={navigation}
           title={'성향 선택'}
-          // next={'CoverPersonalityEditor'}
+          next={'CoverStampSelector'}
           // onPressNext={onPressNext}
           disableNext={disableNext}
         />
         <View style={styles.cover}>
-          <LetterCover />
+          <LetterCoverPreview />
         </View>
       </View>
       <PersonalityEditor

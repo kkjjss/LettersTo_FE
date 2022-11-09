@@ -1,7 +1,8 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableHighlight, View} from 'react-native';
+import {StyleSheet, TouchableHighlight} from 'react-native';
 
 import type {Topic} from '../types/types';
+import {TopicItem} from './TopicItem';
 
 type Props = {
   topic: Topic;
@@ -17,15 +18,7 @@ export function TopicButton({topic, selectTopic, selectedTopicIds}: Props) {
       underlayColor={'#0000cc'}
       activeOpacity={0.7}
       onPress={() => selectTopic(topic.id)}>
-      <View
-        style={[
-          styles.topic,
-          selectedTopicIds.includes(topic.id)
-            ? styles.selectedTopic
-            : styles.notSelectedTopic,
-        ]}>
-        <Text style={styles.topicText}>{topic.name}</Text>
-      </View>
+      <TopicItem topic={topic} selectedTopicIds={selectedTopicIds} />
     </TouchableHighlight>
   );
 }

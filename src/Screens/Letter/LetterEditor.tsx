@@ -66,7 +66,7 @@ export function LetterEditor({navigation}: Props) {
     name: 'title' | 'text';
   }>({name: 'title', ref: titleRef});
 
-  const {setLetter} = useStore();
+  const {setLetter, setInitialCoverData} = useStore();
 
   const gradientColor = useMemo(() => {
     return paperColor + '44'; // 투명도 44
@@ -84,7 +84,17 @@ export function LetterEditor({navigation}: Props) {
 
   const setLetterData = useCallback(() => {
     setLetter({title, text, paperColor, paperStyle, align, images});
-  }, [setLetter, title, text, paperColor, paperStyle, align, images]);
+    setInitialCoverData();
+  }, [
+    setLetter,
+    title,
+    text,
+    paperColor,
+    paperStyle,
+    align,
+    images,
+    setInitialCoverData,
+  ]);
 
   const onFocusTitle = () => {
     setLastestFocus({name: 'title', ref: titleRef});

@@ -22,6 +22,7 @@ import {AccountDelete} from '../Screens/MyPage/AccountDelete';
 import {LetterEditor} from '../Screens/Letter/LetterEditor';
 import {CoverTopicEditor} from '../Screens/Letter/CoverEditor/CoverTopicEditor';
 import {CoverPersonalityEditor} from '../Screens/Letter/CoverEditor/CoverPersonalityEditor';
+import {CoverStampSelector} from '../Screens/Letter/CoverEditor/CoverStampSelector';
 
 const Stack = createNativeStackNavigator<StackParamsList>();
 
@@ -48,6 +49,10 @@ export default function StackNavigator() {
           <Stack.Screen
             name="CoverPersonalityEditor"
             component={CoverPersonalityEditor}
+          />
+          <Stack.Screen
+            name="CoverStampSelector"
+            component={CoverStampSelector}
           />
         </Stack.Group>
       ) : (
