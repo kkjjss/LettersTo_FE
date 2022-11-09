@@ -48,7 +48,9 @@ export function PersonalityEditor({
   );
 
   const reset = () => {
-    setSelectedPersonalityIds([]);
+    if (userInfo) {
+      setSelectedPersonalityIds([...userInfo.personalityIds]);
+    }
   };
 
   useEffect(() => {

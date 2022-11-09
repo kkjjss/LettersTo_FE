@@ -26,11 +26,13 @@ export function CoverTopicEditor({navigation}: Props) {
   return (
     <View style={{flex: 1}}>
       <View
-        style={{
-          height: 332 + SAFE_AREA_TOP,
-          backgroundColor: '#ffccee',
-          paddingTop: SAFE_AREA_TOP,
-        }}>
+        style={[
+          styles.coverContainer,
+          {
+            height: 332 + SAFE_AREA_TOP,
+            paddingTop: SAFE_AREA_TOP,
+          },
+        ]}>
         <Header
           navigation={navigation}
           title={'관심사 선택'}
@@ -38,7 +40,7 @@ export function CoverTopicEditor({navigation}: Props) {
           // onPressNext={onPressNext}
           disableNext={disableNext}
         />
-        <View style={{paddingTop: 12, paddingHorizontal: 40}}>
+        <View style={styles.cover}>
           <LetterCover />
         </View>
       </View>
@@ -50,4 +52,9 @@ export function CoverTopicEditor({navigation}: Props) {
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  coverContainer: {
+    backgroundColor: '#ffccee',
+  },
+  cover: {paddingTop: 12, paddingHorizontal: 40},
+});
