@@ -10,6 +10,7 @@ import {
   ImageBackground,
   Animated,
   ScrollView,
+  Easing,
 } from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 import {Letter} from '../types/types';
@@ -18,9 +19,10 @@ type Props = {
   data: any;
   isModalVisible: boolean;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  onEnter: () => void;
 };
 
-export const EnvelopeModal = ({data, isModalVisible, setModalVisible}: Props) => {  
+export const EnvelopeModal = ({data, isModalVisible, setModalVisible, onEnter}: Props) => {  
 
   /* useEffect(() => {
     console.log('EnvelopeModal !!!!!!!!', data);
@@ -30,8 +32,23 @@ export const EnvelopeModal = ({data, isModalVisible, setModalVisible}: Props) =>
 
   const hideModal = () => {
     setModalVisible(false);
+    moveUp.reset();
   }
 
+  const moveAnim = useRef(new Animated.ValueXY()).current;
+  const moveUp = Animated.timing(moveAnim, {
+    toValue: { x: 0, y: -9 },
+    duration: 1000,
+    useNativeDriver: true,
+    easing: Easing.elastic(2)
+  });
+
+  const openLetter = () => {
+    moveUp.start(onEnter);
+  }
+  useEffect(()=>{
+    moveUp.reset();
+  }, []);
   return (
     <Modal
       animationType="fade"
@@ -41,48 +58,62 @@ export const EnvelopeModal = ({data, isModalVisible, setModalVisible}: Props) =>
     >
       <View style={styles.container}>
         <LinearGradient colors={['rgba(0, 0, 204, 0)', 'rgba(0, 0, 204, 0.5)']} style={styles.modalBg}>
-          <Pressable onPress={hideModal} style={styles.closeButton}>
+          {/* 팝업 닫기 버튼 */}
+          <Pressable style={styles.closeButton} onPress={hideModal}>
             <Image
               source={require('../Assets/close_white.png')}
               style={styles.closeIcon}
             />
           </Pressable>
-          <View style={styles.cardTop}>
-            <View style={{flex: 1, backgroundColor: color}} />
-          </View>
-          <View style={styles.cardItem}>
-            <LinearGradient locations={[0, 0.5]} colors={[color, 'white']} style={{flex: 1}}>
-              {/* 편지 제목 */}
-              <Text style={styles.title}>⌜{title || '무제'}⌟︎︎</Text>
-              {/* 보내는 이 */}
-              <View style={styles.fromArea}>
-                <Image style={styles.fromImg} source={require('../Assets/from.png')} />
-                <Text style={styles.fromText}>{`${fromInfo?.nickname}, ${fromInfo?.city}`}</Text>
-              </View>
-              {/* 우표 */}
-              <ImageBackground source={require('../Assets/bg_stamp.png')} style={styles.stampArea}>
-                <Image style={styles.stampImg} source={stampSrc} />
-              </ImageBackground>
-              {/* 관심사, 성향 */}
-              <View style={styles.tagArea}>
-                <ScrollView horizontal style={styles.tagList}>
-                  {topic?.map((item:string, idx:number) => (
-                    <Text key={idx} style={styles.tagItem}>{item}</Text>
-                  ))}
-                </ScrollView>
-                <ScrollView horizontal style={styles.tagList}>
-                  {personality?.map((item:string, idx:number) => (
-                    <Text key={idx} style={styles.tagItem}>{item}</Text>
-                  ))}
-                </ScrollView>
-              </View>
-            </LinearGradient>
-          </View>
-          <Pressable style={styles.openButton}>
-            <LinearGradient colors={['rgba(255, 110, 206, 1)', 'rgba(255, 61, 189, 1)']} style={{flex: 1}}>
-              <Text style={styles.openText}>열어보기</Text>
-            </LinearGradient>
+          <Pressable style={styles.openArea} onPress={openLetter}>
+            <Text style={styles.openText}>뜯어서 편지 열어보기</Text>
+            <Image source={require('../Assets/arrow_long.png')} style={styles.openArrow} resizeMode="contain" />
           </Pressable>
+          <View style={styles.envelope}>
+            {/* 봉투 */}
+            <Animated.View style={[styles.cardTop, {transform: [{translateY: moveAnim.y}]}]}>
+              <View style={{flex: 1, backgroundColor: color}} />
+              <View style={styles.dash} />
+            </Animated.View>
+            {/* <View style={[styles.cardTop, {marginBottom: 10}]}>
+              <View style={{flex: 1, backgroundColor: color}} />
+              <View style={styles.dash} />
+            </View> */}
+            <View style={styles.cardItem}>
+              <LinearGradient locations={[0, 0.5]} colors={[color, 'white']} style={{flex: 1}}>
+                {/* 편지 제목 */}
+                <Text style={styles.title}>⌜{title || '무제'}⌟︎︎</Text>
+                {/* 보내는 이 */}
+                <View style={styles.fromArea}>
+                  <Image style={styles.fromImg} source={require('../Assets/from.png')} />
+                  <Text style={styles.fromText}>{`${fromInfo?.nickname}, ${fromInfo?.city}`}</Text>
+                </View>
+                {/* 우표 */}
+                <ImageBackground source={require('../Assets/bg_stamp.png')} style={styles.stampArea}>
+                  <Image style={styles.stampImg} source={stampSrc} />
+                </ImageBackground>
+                {/* 관심사, 성향 */}
+                <View style={styles.tagArea}>
+                  <ScrollView horizontal style={styles.tagList}>
+                    {topic?.map((item:string, idx:number) => (
+                      <Text key={idx} style={styles.tagItem}>{item}</Text>
+                    ))}
+                  </ScrollView>
+                  <ScrollView horizontal style={styles.tagList}>
+                    {personality?.map((item:string, idx:number) => (
+                      <Text key={idx} style={styles.tagItem}>{item}</Text>
+                    ))}
+                  </ScrollView>
+                </View>
+              </LinearGradient>
+            </View>
+            {/* 열어보기 버튼 */}
+            {/* <Pressable style={styles.openButton}>
+              <LinearGradient colors={['rgba(255, 110, 206, 1)', 'rgba(255, 61, 189, 1)']} style={{flex: 1}}>
+                <Text style={styles.openButtonText}>열어보기</Text>
+              </LinearGradient>
+            </Pressable> */}
+          </View>
         </LinearGradient>
       </View>
     </Modal>
@@ -93,10 +124,15 @@ const styles = StyleSheet.create({
   modalBg: {flex: 1, alignItems: 'center', justifyContent: 'center'},
   closeButton: {position: 'absolute', top: 12, left: 16},
   closeIcon: {width: 28, height: 28},
-  cardTop: {width: '78.7%', height: 8, marginBottom: -1, backgroundColor: 'white', borderWidth: 1, borderBottomWidth: 0, borderColor: '#0000CC', borderTopRightRadius: 10, borderTopLeftRadius: 10},
-  cardItem: {overflow: 'hidden', width: '78.7%', height: 206, backgroundColor: 'white', borderWidth: 1, borderTopWidth: 0, borderColor: '#0000CC', borderBottomRightRadius: 10, borderBottomLeftRadius: 10},
+  openArea: {position: 'absolute', top: '30%', alignItems: 'center'},
+  openText: {fontFamily: 'Galmuri11', fontSize: 15},
+  openArrow: {width: 144, height: 10, marginTop: 16},
+  envelope: {position: 'absolute', bottom: '30%', width: '78.7%'},
+  dash: {position: 'absolute', bottom: -0.5, width: '100%', borderBottomWidth: 1, borderStyle: 'dashed', borderColor: '#0000CC'},
+  cardTop: {position: 'relative', zIndex: 1, height: 8, backgroundColor: 'white', borderWidth: 1, borderBottomWidth: 0, borderColor: '#0000CC', borderTopRightRadius: 10, borderTopLeftRadius: 10},
+  cardItem: {overflow: 'hidden', height: 206, backgroundColor: 'white', borderWidth: 1, borderTopWidth: 0, borderColor: '#0000CC', borderBottomRightRadius: 10, borderBottomLeftRadius: 10},
   title: {width: 173, marginTop: 10, marginLeft: 16, fontFamily: 'Galmuri11', fontSize: 13, lineHeight: 23, color: '#0000CC'},
-  fromArea: {position: 'absolute', bottom: 106, right: 106},
+  fromArea: {position: 'absolute', bottom: 106, left: 16},
   fromImg: {width: 48, height: 22},
   fromText: {marginLeft: 16, fontFamily: 'Galmuri11', fontSize: 12, color: '#0000CC'},
   stampArea: {position: 'absolute', top: 16, right: 16, padding: 7},
@@ -104,6 +140,6 @@ const styles = StyleSheet.create({
   tagArea: {position: 'absolute', bottom: 16, right: 16, left: 16},
   tagList: {flexDirection: 'row', marginTop: 8},
   tagItem: {height: 24, lineHeight: 24, paddingRight: 3, paddingLeft: 6, marginRight: 4, fontFamily: 'Galmuri11', fontSize: 12, color: '#0000CC', backgroundColor: 'rgba(0, 0, 204, 0.05)', borderWidth: 1, borderColor: '#0000CC'},
-  openButton: {overflow: 'hidden', width: '78.7%', height: 52, marginTop: 16, borderWidth: 1, borderColor: '#FF6ECE', borderRadius: 10},
-  openText: {fontFamily: 'Galmuri11', lineHeight: 48, textAlign: 'center'}
+  openButton: {overflow: 'hidden', height: 52, marginTop: 16, borderWidth: 1, borderColor: '#FF6ECE', borderRadius: 10},
+  openButtonText: {fontFamily: 'Galmuri11', lineHeight: 48, textAlign: 'center'}
 });

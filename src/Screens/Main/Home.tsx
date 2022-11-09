@@ -52,6 +52,10 @@ export function Home({navigation}: Props) {
     setSelectedItem(data);
   }
 
+  const goToReadLetter = () => {
+    navigation.navigate('ReadLetter');
+  }
+
   function logout() {
     AsyncStorage.removeItem('accessToken');
     AsyncStorage.removeItem('refreshToken');
@@ -71,9 +75,14 @@ export function Home({navigation}: Props) {
 
         <LinearGradient colors={['rgba(255, 204, 238, 1)', 'rgba(255, 255, 255, 0)']} style={styles.header}>
           <View style={styles.headerInner}>
-            <TouchableOpacity>
-              <Image source={require('../../Assets/alert_on.png')} style={styles.icon} />
-            </TouchableOpacity>
+            <View style={{flexDirection: 'row'}}>
+              <TouchableOpacity>
+                <Image source={require('../../Assets/alert_off.png')} style={styles.icon} />
+              </TouchableOpacity>
+              <View style={{marginLeft: 12}}>
+                <Image source={require('../../Assets/alert_on.png')} style={styles.icon} />
+              </View>
+            </View>
             <TouchableOpacity>
               <Image source={require('../../Assets/menu.png')} style={styles.icon} />
             </TouchableOpacity>
@@ -138,6 +147,7 @@ export function Home({navigation}: Props) {
           data={selectedItem}
           isModalVisible={isEnvelopeModalVisible}
           setModalVisible={setEnvelopeModalVisible}
+          onEnter={goToReadLetter}
         />
       </SafeAreaView>
     </LinearGradient>

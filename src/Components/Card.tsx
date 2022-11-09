@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, View, Text, Image, ImageBackground, TouchableOpacity, TouchableWithoutFeedback, TouchableHighlight, Pressable } from 'react-native';
-import {LinearGradient} from 'expo-linear-gradient';
-import {Letter} from '../types/types';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Letter } from '../types/types';
 
 interface Props extends Letter {
   stampSrc?: any;
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   cardItem: {position: 'relative', overflow: 'hidden', width: '78.7%', height: 212, backgroundColor: '#FFFFFF', borderWidth: 1, borderColor: '#0000CC', borderRadius: 10},
   linearGradient: {flex: 1},
   title: {width: 173, marginTop: 16, marginLeft: 16, fontFamily: 'Galmuri11', fontSize: 13, lineHeight: 23, color: '#0000CC'},
-  fromArea: {position: 'absolute', bottom: 106, right: 106},
+  fromArea: {position: 'absolute', bottom: 106, left: 16},
   fromImg: {width: 48, height: 22},
   fromText: {marginLeft: 16, fontFamily: 'Galmuri11', fontSize: 12, color: '#0000CC'},
   stampArea: {position: 'absolute', top: 16, right: 16, padding: 7},

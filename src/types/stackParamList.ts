@@ -5,6 +5,9 @@ export type StackParamsList = {
   // 메인 서비스 스택
   Home: undefined;
 
+  // 편지 관련 스택
+  ReadLetter: undefined;
+
   // 인증 관련 스택
   Auth: undefined;
 
