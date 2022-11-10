@@ -1,4 +1,6 @@
 import create from 'zustand';
+import {Personalities, Topics, Stamps} from '../types/types';
+
 interface Store {
   isLoggedIn: boolean;
   setIsLoggedIn: (value: boolean) => void;
@@ -9,6 +11,12 @@ interface Store {
   registerToken: string | undefined;
   setRegisterToken: (value: string) => void;
 
+  topics: Topics;
+  setTopics: (value: Topics) => void;
+
+  personalities: Personalities;
+  setPersonalities: (value: Personalities) => void;
+
   signUpInfo: {
     nickname: string | undefined;
     personalityIds: number[] | undefined;
@@ -16,13 +24,9 @@ interface Store {
     geolocationId: number | undefined;
   };
   setNickname: (value: string) => void;
-
   setTopicIds: (value: number[]) => void;
-
   setPersonalityIds: (value: number[]) => void;
-
   setAddress: (value: number) => void;
-
   clearSignupInfo: () => void;
 
   userInfo:
@@ -34,7 +38,6 @@ interface Store {
         parentGeolocationId: number;
       }
     | undefined;
-
   setUserInfo: (value: {
     nickname: string;
     personalityIds: number[];
@@ -55,13 +58,6 @@ interface Store {
         images?: string[];
       }
     | undefined;
-
-  cover: {
-    topicIds: number[];
-    personalityIds: number[];
-    stamp: string | undefined;
-  };
-
   setLetter: (letterData: {
     title: string;
     text: string;
@@ -71,10 +67,18 @@ interface Store {
     images?: string[];
   }) => void;
 
+  cover: {
+    topicIds: number[];
+    personalityIds: number[];
+    stamp: string | undefined;
+  };
   setCoverTopicIds: (topicIds: number[]) => void;
   setCoverPersonalityIds: (personalityIds: number[]) => void;
   setCoverStampId: (stampId: string) => void;
   setInitialCoverData: () => void;
+
+  stamps: Stamps;
+  setStamps: (value: Stamps) => void;
 }
 
 const useStore = create<Store>(set => ({
@@ -86,6 +90,12 @@ const useStore = create<Store>(set => ({
 
   registerToken: undefined,
   setRegisterToken: value => set(() => ({registerToken: value})),
+
+  topics: [],
+  setTopics: value => set(() => ({topics: value})),
+
+  personalities: [],
+  setPersonalities: value => set(() => ({personalities: value})),
 
   signUpInfo: {
     nickname: undefined,
@@ -150,6 +160,10 @@ const useStore = create<Store>(set => ({
         stamp: undefined,
       },
     })),
+
+  stamps: [],
+
+  setStamps: value => set(() => ({stamps: [...value]})),
 }));
 
 export default useStore;

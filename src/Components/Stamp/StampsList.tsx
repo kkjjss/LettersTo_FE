@@ -1,24 +1,19 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
+import {StampButton} from './StampButton';
+import type {Stamps} from '../../types/types';
 
-import {Stamp} from './Stamp';
-
-type Stamp = {
-  id: string;
-  image: any;
+type Props = {
+  stamps: Stamps;
+  selectedStampId: string;
+  onPressStamp: (id: string) => void;
 };
 
-export function StampsList({
-  stamps,
-  onPressStamp: selectStamp,
-}: {
-  stamps: Stamp[];
-  onPressStamp: (id: string) => void;
-}) {
+export function StampsList({stamps, onPressStamp: selectStamp}: Props) {
   return (
     <View style={styles.personalityWrap}>
       {stamps.map(stamp => (
-        <Stamp key={stamp.id} stamp={stamp} onPress={selectStamp} />
+        <StampButton key={stamp.id} stamp={stamp} onPress={selectStamp} />
       ))}
     </View>
   );

@@ -1,11 +1,13 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Header} from '../../../Components/Headers/Header';
 import {StackParamsList} from '../../../types/stackParamList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {PersonalityEditor} from '../../../Components/CoverEditor/PersonalityEditor';
-import { LetterCover } from '../../../Components/LetterCoverPreview';
+import {LetterCoverPreview} from '../../../Components/LetterCoverPreview';
+import {getPersonalities} from '../../../APIs/personality';
+import useStore from '../../../Store/store';
 
 type Props = NativeStackScreenProps<StackParamsList, 'CoverPersonalityEditor'>;
 
@@ -14,12 +16,40 @@ export function CoverPersonalityEditor({navigation}: Props) {
     number[]
   >([]);
 
+  const {
+    setPersonalities,
+    setCoverPersonalityIds,
+    cover: {personalityIds},
+  } = useStore();
+
   const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
 
   const disableNext = useMemo(
     () => selectedPersonalityIds.length === 0,
     [selectedPersonalityIds],
   );
+
+  useEffect(() => {
+    const getPersonalitiesList = () => {
+      try {
+        getPersonalities().then(personalityData => {
+          setPersonalities(personalityData);
+        });
+      } catch (error: any) {
+        console.error(error.message);
+      }
+    };
+
+    getPersonalitiesList();
+
+    if (personalityIds) {
+      setSelectedPersonalityIds(personalityIds);
+    }
+  }, [setPersonalities]);
+
+  useEffect(() => {
+    setCoverPersonalityIds(selectedPersonalityIds);
+  }, [selectedPersonalityIds, setCoverPersonalityIds]);
 
   return (
     <View style={{flex: 1}}>

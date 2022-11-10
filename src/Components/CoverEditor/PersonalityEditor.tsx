@@ -1,10 +1,8 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {Text, View, StyleSheet, ScrollView} from 'react-native';
 import {ResetButton} from '../../Components/ResetButton';
 import useStore from '../../Store/store';
 import {SCREEN_HEIGHT} from '../../Constants/screen';
-import {Personalities} from '../../types/types';
-import {getPersonalities} from '../../APIs/personality';
 import {PersonalityList} from '../../Components/PersonalityList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
@@ -17,9 +15,7 @@ export function PersonalityEditor({
   selectedPersonalityIds,
   setSelectedPersonalityIds,
 }: Props) {
-  const [personalities, setPersonalities] = useState<Personalities>([]);
-
-  const {userInfo} = useStore();
+  const {userInfo, personalities} = useStore();
 
   const {bottom} = useSafeAreaInsets();
 
@@ -54,23 +50,12 @@ export function PersonalityEditor({
   };
 
   useEffect(() => {
-    const getPersonalityList = () => {
-      try {
-        getPersonalities().then(personalityData => {
-          setPersonalities(personalityData);
-        });
-      } catch (error: any) {
-        console.error(error.message);
-      }
-    };
-
     const getUserPersonalities = () => {
       if (userInfo) {
         setSelectedPersonalityIds([...userInfo.personalityIds]);
       }
     };
 
-    getPersonalityList();
     getUserPersonalities();
   }, [setSelectedPersonalityIds, userInfo]);
 

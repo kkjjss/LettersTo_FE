@@ -1,28 +1,43 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {Image, ScrollView, Text, View} from 'react-native';
+import React from 'react';
+import {Image, ImageBackground, ScrollView, Text, View} from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 import useStore from '../Store/store';
 import {TopicItem} from './TopicItem';
-import {Topics} from '../types/types';
-import {getTopics} from '../APIs/topic';
+import {PersonalityItem} from './PersonalityItem';
 
 export const LetterCoverPreview = React.memo(() => {
-  const [topics, setTopics] = useState<Topics>([]);
-  const {userInfo, cover} = useStore();
+  const {userInfo, cover, topics, personalities, stamps} = useStore();
 
-  useEffect(() => {
-    const getTopicsList = () => {
-      try {
-        getTopics().then(topicData => {
-          setTopics([...topicData]);
-        });
-      } catch (error: any) {
-        console.error(error.message);
-      }
-    };
-
-    getTopicsList();
-  }, [userInfo]);
+  const SelectedStampImage = (props: any) =>
+    cover.stamp ? (
+      <Image
+        style={{
+          width: '85%',
+          height: undefined,
+          aspectRatio: 94 / 116,
+          backgroundColor: '#0000cc13',
+        }}
+        source={stamps.find(stamp => stamp.id === cover.stamp)?.image}
+      />
+    ) : (
+      <View
+        style={{
+          width: '85%',
+          height: undefined,
+          aspectRatio: 94 / 116,
+          backgroundColor: '#0000cc13',
+          borderColor: '#0000cc',
+          borderStyle: 'dashed',
+          borderWidth: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <Image
+          style={{height: 18, width: 18}}
+          source={require('../Assets/photo_blue.png')}
+        />
+      </View>
+    );
 
   return (
     <LinearGradient
@@ -68,14 +83,17 @@ export const LetterCoverPreview = React.memo(() => {
           </Text>
         </View>
         <View style={{flex: 74}}>
-          <Image
+          <ImageBackground
             source={require('../Assets/stamp.png')}
             style={{
               width: 74,
               height: undefined,
               aspectRatio: 94 / 116,
-            }}
-          />
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <SelectedStampImage />
+          </ImageBackground>
         </View>
       </View>
       <View>
@@ -83,7 +101,20 @@ export const LetterCoverPreview = React.memo(() => {
           {topics
             .filter(({id}) => cover.topicIds.includes(id))
             .map(topic => (
-              <TopicItem topic={topic} parent="preview" />
+              <TopicItem key={topic.id} topic={topic} parent="preview" />
+            ))}
+        </ScrollView>
+      </View>
+      <View>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {personalities
+            .filter(({id}) => cover.personalityIds.includes(id))
+            .map(personality => (
+              <PersonalityItem
+                key={personality.id}
+                personality={personality}
+                parent="preview"
+              />
             ))}
         </ScrollView>
       </View>

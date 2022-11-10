@@ -2,7 +2,7 @@ import React from 'react';
 import {Image, ImageBackground, TouchableOpacity} from 'react-native';
 import {SCREEN_WIDTH} from '../../Constants/screen';
 
-export function Stamp({stamp, onPress: selectStamp}: any) {
+export function StampButton({stamp, onPress: selectStamp}: any) {
   return (
     <TouchableOpacity
       onPress={() => {
@@ -28,7 +28,7 @@ export function Stamp({stamp, onPress: selectStamp}: any) {
             width: '85%',
             height: undefined,
             aspectRatio: 94 / 116,
-            backgroundColor: 'gray',
+            backgroundColor: '#0000cc13',
           }}
         />
       </ImageBackground>

@@ -7,6 +7,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {TopicEditor} from '../../../Components/CoverEditor/TopicEditor';
 import {LetterCoverPreview} from '../../../Components/LetterCoverPreview';
 import useStore from '../../../Store/store';
+import {getTopics} from '../../../APIs/topic';
 
 type Props = NativeStackScreenProps<StackParamsList, 'CoverTopicEditor'>;
 
@@ -15,16 +16,30 @@ export function CoverTopicEditor({navigation}: Props) {
 
   const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
 
-  const {setCoverTopicIds} = useStore();
-
-  useEffect(() => {
-    setCoverTopicIds(selectedTopicIds);
-  }, [selectedTopicIds, setCoverTopicIds]);
+  const {setCoverTopicIds, setTopics} = useStore();
 
   const disableNext = useMemo(
     () => selectedTopicIds.length === 0,
     [selectedTopicIds],
   );
+
+  useEffect(() => {
+    const getTopicsList = () => {
+      try {
+        getTopics().then(topicData => {
+          setTopics([...topicData]);
+        });
+      } catch (error: any) {
+        console.error(error.message);
+      }
+    };
+
+    getTopicsList();
+  }, [setTopics]);
+
+  useEffect(() => {
+    setCoverTopicIds(selectedTopicIds);
+  }, [selectedTopicIds, setCoverTopicIds]);
 
   return (
     <View style={{flex: 1}}>

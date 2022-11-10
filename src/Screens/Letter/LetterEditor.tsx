@@ -37,8 +37,6 @@ import {ModalBlur} from '../../Modals/ModalBlur';
 type Props = NativeStackScreenProps<StackParamsList, 'LetterEditor'>;
 
 export function LetterEditor({navigation}: Props) {
-  console.log('LetterEditor');
-
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
   const [align, setAlign] = useState<'left' | 'center' | 'right'>('left');

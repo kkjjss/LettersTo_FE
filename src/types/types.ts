@@ -62,3 +62,10 @@ export type Texticons = {
     list: string[];
   };
 };
+
+export type Stamp = {
+  id: string;
+  image: any;
+};
+
+export type Stamps = Stamp[];

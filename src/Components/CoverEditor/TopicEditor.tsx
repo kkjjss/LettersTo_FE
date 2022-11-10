@@ -1,9 +1,7 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {getTopics} from '../../APIs/topic';
 import useStore from '../../Store/store';
-import {Topics} from '../../types/types';
 import {ResetButton} from '../ResetButton';
 import {TopicList} from '../TopicList';
 
@@ -13,10 +11,7 @@ type Props = {
 };
 
 export const TopicEditor = ({selectedTopicIds, setSelectedTopicIds}: Props) => {
-  const [topics, setTopics] = useState<Topics>([]);
-  // const [selectedTopicIds, setSelectedTopicIds] = useState<number[]>([]);
-
-  const {userInfo} = useStore();
+  const {userInfo, topics} = useStore();
 
   const {bottom} = useSafeAreaInsets();
 
@@ -49,18 +44,7 @@ export const TopicEditor = ({selectedTopicIds, setSelectedTopicIds}: Props) => {
       }
     };
 
-    const getTopicsList = () => {
-      try {
-        getTopics().then(topicData => {
-          setTopics([...topicData]);
-        });
-      } catch (error: any) {
-        console.error(error.message);
-      }
-    };
-
     getUserTopics();
-    getTopicsList();
   }, [setSelectedTopicIds, userInfo]);
 
   return (

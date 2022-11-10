@@ -3,32 +3,29 @@ import {Text, View, StyleSheet, ScrollView, Image} from 'react-native';
 import {SCREEN_HEIGHT} from '../../Constants/screen';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {StampsList} from '../Stamp/StampsList';
-
-type Stamp = {
-  id: string;
-  image: any;
-};
+import useStore from '../../Store/store';
 
 type Props = {
-  stamps: Stamp[];
   selectedStampId: string;
   setSelectedStampId: React.Dispatch<React.SetStateAction<string>>;
 };
 
-export function StampSelector({
-  stamps,
-  selectedStampId,
-  setSelectedStampId,
-}: Props) {
+export function StampSelector({selectedStampId, setSelectedStampId}: Props) {
   const [numberStamps, setNumberStamps] = useState<number>(5);
+
+  const {stamps} = useStore();
 
   const {bottom} = useSafeAreaInsets();
 
   const selectStamp = useCallback(
     (id: string) => {
-      setSelectedStampId(id);
+      if (selectedStampId !== id) {
+        setSelectedStampId(id);
+      } else {
+        setSelectedStampId('');
+      }
     },
-    [setSelectedStampId],
+    [setSelectedStampId, selectedStampId],
   );
 
   return (
@@ -56,7 +53,11 @@ export function StampSelector({
 
       <ScrollView style={styles.personalityBox}>
         <View style={{paddingTop: 16, paddingBottom: bottom}}>
-          <StampsList stamps={stamps} onPressStamp={selectStamp} />
+          <StampsList
+            stamps={stamps}
+            selectedStampId={selectedStampId}
+            onPressStamp={selectStamp}
+          />
         </View>
       </ScrollView>
     </View>
