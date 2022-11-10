@@ -45,6 +45,7 @@ export function CoverPersonalityEditor({navigation}: Props) {
     if (personalityIds) {
       setSelectedPersonalityIds(personalityIds);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setPersonalities]);
 
   useEffect(() => {
