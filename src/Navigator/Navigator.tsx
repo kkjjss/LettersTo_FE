@@ -23,6 +23,7 @@ import {LetterEditor} from '../Screens/Letter/LetterEditor';
 import {CoverTopicEditor} from '../Screens/Letter/CoverEditor/CoverTopicEditor';
 import {CoverPersonalityEditor} from '../Screens/Letter/CoverEditor/CoverPersonalityEditor';
 import {CoverStampSelector} from '../Screens/Letter/CoverEditor/CoverStampSelector';
+import {LetterComplete} from '../Screens/Letter/LetterComplete';
 
 const Stack = createNativeStackNavigator<StackParamsList>();
 
@@ -54,6 +55,7 @@ export default function StackNavigator() {
             name="CoverStampSelector"
             component={CoverStampSelector}
           />
+          <Stack.Screen name="LetterComplete" component={LetterComplete} />
         </Stack.Group>
       ) : (
         <Stack.Group>

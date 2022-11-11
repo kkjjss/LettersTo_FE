@@ -54,10 +54,17 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Give LettersTo permission to access your camera</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Give LettersTo permission to use your microphone</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Give LettersTo permission to save photos</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>font/Galmuri11-Bold.ttf</string>
 		<string>font/Galmuri11.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
@@ -74,11 +81,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Give LettersTo permission to save photos</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Give LettersTo permission to access your camera</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Give LettersTo permission to use your microphone</string>
 </dict>
 </plist>

@@ -21,7 +21,7 @@ export function CoverStampSelector({navigation}: Props) {
 
   const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
 
-  const disableNext = useMemo(() => !!selectedStampId, [selectedStampId]);
+  const disableNext = useMemo(() => !selectedStampId, [selectedStampId]);
 
   useEffect(() => {
     const getStampList = () => {
@@ -56,7 +56,7 @@ export function CoverStampSelector({navigation}: Props) {
         <Header
           navigation={navigation}
           title={'우표 선택'}
-          // next={'CoverPersonalityEditor'}
+          next={'LetterComplete'}
           // onPressNext={onPressNext}
           disableNext={disableNext}
         />

@@ -23,4 +23,5 @@ export type StackParamsList = {
   CoverTopicEditor: undefined;
   CoverPersonalityEditor: undefined;
   CoverStampSelector: undefined;
+  LetterComplete: undefined;
 };
