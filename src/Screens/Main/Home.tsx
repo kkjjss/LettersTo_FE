@@ -4,7 +4,7 @@ import type { StackParamsList } from '../../types/stackParamList';
 import useStore from '../../Store/store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, FlatList, VirtualizedList, TouchableOpacity, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { getPublicLetters } from '../../APIs/public';
 import { PublicLetters } from '../../types/types';
@@ -43,12 +43,14 @@ export function Home({navigation}: Props) {
   };
 
   // 공개 편지 목록
-  const [publicLetters, setPublicLetters] = useState<PublicLetters>([]);
+  const [publicLetters, setPublicLetters] = useState<PublicLetters | []>([]);
+  const [cursor, setCursor] = useState<number>();
   useEffect(() => {
     try {
       getPublicLetters().then(publicLettersData => {
-        const { content } = publicLettersData;
+        const { content, cursor } = publicLettersData;
         setPublicLetters(content);
+        setCursor(cursor);
       })
     } catch (error: any) {
       console.error(error.message);
@@ -68,6 +70,38 @@ export function Home({navigation}: Props) {
     publicLetterListRef.current?.scrollToIndex({ animated: true, index: 0 });
   }
 
+  // 무한 스크롤
+  const handleEndReached = () => {
+    if (cursor) {
+      try {
+        getPublicLetters(cursor).then(publicLettersData => {
+          const { content, cursor } = publicLettersData;
+          const updatedArray = [...publicLetters].concat(content);
+          setPublicLetters(updatedArray);
+          setCursor(cursor);
+        })
+      } catch (error: any) {
+        console.error(error.message);
+      }
+    }
+  }
+
+  // 새로고침
+  const [refreshing, setRefreshing] = useState(false);
+  const handleRefresh = () => {
+    setRefreshing(true);
+    try {
+      getPublicLetters().then(publicLettersData => {
+        const { content, cursor } = publicLettersData;
+        setPublicLetters(content);
+        setCursor(cursor);
+        setRefreshing(false);
+      })
+    } catch (error: any) {
+      console.error(error.message);
+    }
+  }
+
   // 봉투 열기
   const [selectedItem, setSelectedItem] = useState({});
   const [isEnvelopeModalVisible, setEnvelopeModalVisible] = useState(false);
@@ -76,7 +110,7 @@ export function Home({navigation}: Props) {
     setEnvelopeModalVisible(true);
   }
 
-  // 봉투 조회
+  // 편지 조회
   const goToReadLetter = () => {
     navigation.navigate('ReadLetter');
   }
@@ -116,7 +150,12 @@ export function Home({navigation}: Props) {
         <FlatList
           ref={publicLetterListRef}
           onScroll={handleScroll}
+          onEndReached={handleEndReached}
+          onEndReachedThreshold={0.2}
+          refreshing={refreshing}
+          onRefresh={handleRefresh}
           data={publicLetters}
+          keyExtractor={(item, index) => item.id}
           renderItem={({item, index}) => {
             const { id, title, fromNickname, fromAddress, topics, personalities, paperColor, stampId } = item;
             const isFirst: boolean = index === 0;
@@ -124,12 +163,12 @@ export function Home({navigation}: Props) {
             const cardAngle = [-5, 5, 5, -5, 15, 5];
             return (
               <View style={[
-                isFirst && {paddingTop: 120},
+                isFirst && {paddingTop: 116},
                 isLast && {paddingBottom: 60},
               ]}>
                 <PublicLetterItem
                   id={id}
-                  title={`${index} ${title}`}
+                  title={title}
                   fromNickname={fromNickname}
                   fromAddress={fromAddress}
                   topics={topics}
