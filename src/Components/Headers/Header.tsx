@@ -9,7 +9,7 @@ import {useCallback} from 'react';
 
 type Props = {
   navigation: NativeStackNavigationProp<StackParamsList, keyof StackParamsList>;
-  title: string;
+  title?: string;
   color?: 'blue' | 'white';
   next?: keyof StackParamsList;
   onPressNext?: () => void;
