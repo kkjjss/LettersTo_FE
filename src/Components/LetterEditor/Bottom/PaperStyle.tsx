@@ -1,7 +1,7 @@
 import React from 'react';
 import {View} from 'react-native';
-import {Dotted} from '../Dotted';
-import {Grid} from '../Grid';
+import {Dotted} from '../../PaperStyle/Dotted';
+import {Grid} from '../../PaperStyle/Grid';
 
 interface Props {
   lineColor: string;

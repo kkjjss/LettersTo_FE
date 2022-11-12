@@ -4,7 +4,7 @@ import {StyleSheet, View} from 'react-native';
 import {Header} from '../../../Components/Headers/Header';
 import {StackParamsList} from '../../../types/stackParamList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {StampSelector} from '../../../Components/CoverEditor/StampSelector';
+import {StampSelector} from '../../../Components/LetterEditor/Cover/StampSelector';
 import {LetterCoverPreview} from '../../../Components/LetterCoverPreview';
 import useStore from '../../../Store/store';
 

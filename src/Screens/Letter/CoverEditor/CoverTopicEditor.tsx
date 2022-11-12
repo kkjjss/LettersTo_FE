@@ -4,7 +4,7 @@ import {StyleSheet, View} from 'react-native';
 import {Header} from '../../../Components/Headers/Header';
 import {StackParamsList} from '../../../types/stackParamList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {TopicEditor} from '../../../Components/CoverEditor/TopicEditor';
+import {TopicEditor} from '../../../Components/LetterEditor/Cover/TopicEditor';
 import {LetterCoverPreview} from '../../../Components/LetterCoverPreview';
 import useStore from '../../../Store/store';
 import {getTopics} from '../../../APIs/topic';

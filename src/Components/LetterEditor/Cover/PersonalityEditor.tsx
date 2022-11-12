@@ -1,9 +1,9 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {Text, View, StyleSheet, ScrollView} from 'react-native';
-import {ResetButton} from '../../Components/ResetButton';
-import useStore from '../../Store/store';
-import {SCREEN_HEIGHT} from '../../Constants/screen';
-import {PersonalityList} from '../../Components/PersonalityList';
+import {ResetButton} from '../../ResetButton';
+import useStore from '../../../Store/store';
+import {SCREEN_HEIGHT} from '../../../Constants/screen';
+import {PersonalityList} from '../../PersonalityList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 type Props = {

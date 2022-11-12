@@ -1,9 +1,9 @@
 import React, {useCallback, useState} from 'react';
 import {Text, View, StyleSheet, ScrollView, Image} from 'react-native';
-import {SCREEN_HEIGHT} from '../../Constants/screen';
+import {SCREEN_HEIGHT} from '../../../Constants/screen';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {StampsList} from '../Stamp/StampsList';
-import useStore from '../../Store/store';
+import {StampsList} from '../../Stamp/StampsList';
+import useStore from '../../../Store/store';
 
 type Props = {
   selectedStampId: string;
@@ -44,7 +44,7 @@ export function StampSelector({selectedStampId, setSelectedStampId}: Props) {
         <View style={styles.counterWrap}>
           <Text style={styles.counter}>보유 우표</Text>
           <Image
-            source={require('../../Assets/numberStamps.png')}
+            source={require('../../../Assets/numberStamps.png')}
             style={{height: 24, width: 24}}
           />
           <Text style={styles.counter}>X {numberStamps}</Text>

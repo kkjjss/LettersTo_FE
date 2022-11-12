@@ -4,7 +4,7 @@ import {StyleSheet, View} from 'react-native';
 import {Header} from '../../../Components/Headers/Header';
 import {StackParamsList} from '../../../types/stackParamList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {PersonalityEditor} from '../../../Components/CoverEditor/PersonalityEditor';
+import {PersonalityEditor} from '../../../Components/LetterEditor/Cover/PersonalityEditor';
 import {LetterCoverPreview} from '../../../Components/LetterCoverPreview';
 import {getPersonalities} from '../../../APIs/personality';
 import useStore from '../../../Store/store';

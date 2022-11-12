@@ -1,9 +1,9 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import useStore from '../../Store/store';
-import {ResetButton} from '../ResetButton';
-import {TopicList} from '../TopicList';
+import useStore from '../../../Store/store';
+import {ResetButton} from '../../ResetButton';
+import {TopicList} from '../../TopicList';
 
 type Props = {
   selectedTopicIds: number[];
