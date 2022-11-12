@@ -1,17 +1,15 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {PAPER_STYLES} from '../../../Constants/letter';
 import {SCREEN_HEIGHT} from '../../../Constants/screen';
+import {PaperColor, PaperStyle} from '../../../types/types';
 import {PaperColorSelector} from './PaperColorSelector';
 import {PaperStyleSelector} from './PaperStyleSelector';
 
 type Props = {
-  setPaperColor: React.Dispatch<React.SetStateAction<string>>;
-  paperColor: string;
-  setPaperStyle: React.Dispatch<
-    React.SetStateAction<typeof PAPER_STYLES[number]>
-  >;
-  paperStyle: typeof PAPER_STYLES[number];
+  setPaperColor: React.Dispatch<React.SetStateAction<PaperColor>>;
+  paperColor: PaperColor;
+  setPaperStyle: React.Dispatch<React.SetStateAction<PaperStyle>>;
+  paperStyle: PaperStyle;
 };
 
 export const PaperSelector = React.memo(

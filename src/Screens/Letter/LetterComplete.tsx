@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {LetterCoverPreview} from '../../Components/LetterCoverPreview';
+import {LetterCoverPreview} from '../../Components/LetterEditor/LetterCoverPreview';
 
 export const LetterComplete = () => {
   return (

@@ -5,7 +5,7 @@ import {Header} from '../../../Components/Headers/Header';
 import {StackParamsList} from '../../../types/stackParamList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {StampSelector} from '../../../Components/LetterEditor/Cover/StampSelector';
-import {LetterCoverPreview} from '../../../Components/LetterCoverPreview';
+import {LetterCoverPreview} from '../../../Components/LetterEditor/LetterCoverPreview';
 import useStore from '../../../Store/store';
 
 type Props = NativeStackScreenProps<StackParamsList, 'CoverStampSelector'>;

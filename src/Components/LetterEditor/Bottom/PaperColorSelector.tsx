@@ -1,11 +1,12 @@
 import React from 'react';
 import {ScrollView, StyleSheet} from 'react-native';
 import {PAPER_COLORS} from '../../../Constants/letter';
+import {PaperColor} from '../../../types/types';
 import {PaperColorButton} from './PaperColorButton';
 
 type Props = {
-  setPaperColor: React.Dispatch<React.SetStateAction<string>>;
-  paperColor: string;
+  setPaperColor: React.Dispatch<React.SetStateAction<PaperColor>>;
+  paperColor: PaperColor;
 };
 
 export const PaperColorSelector = React.memo(
@@ -15,7 +16,7 @@ export const PaperColorSelector = React.memo(
         horizontal
         showsHorizontalScrollIndicator={false}
         style={styles.paperColorSelector}>
-        {PAPER_COLORS.map((color, index) => (
+        {(Object.keys(PAPER_COLORS) as PaperColor[]).map((color, index) => (
           <PaperColorButton
             key={index}
             color={color}

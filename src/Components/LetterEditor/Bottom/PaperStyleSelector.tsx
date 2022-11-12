@@ -1,13 +1,12 @@
 import React from 'react';
 import {ScrollView, StyleSheet} from 'react-native';
 import {PAPER_STYLES} from '../../../Constants/letter';
+import {PaperStyle} from '../../../types/types';
 import {PaperStyleButton} from './PaperStyleButton';
 
 type Props = {
-  setPaperStyle: React.Dispatch<
-    React.SetStateAction<typeof PAPER_STYLES[number]>
-  >;
-  paperStyle: typeof PAPER_STYLES[number];
+  setPaperStyle: React.Dispatch<React.SetStateAction<PaperStyle>>;
+  paperStyle: PaperStyle;
 };
 
 export const PaperStyleSelector = React.memo(

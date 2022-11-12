@@ -1,5 +1,11 @@
 import create from 'zustand';
-import {Personalities, Topics, Stamps} from '../types/types';
+import {
+  Personalities,
+  Topics,
+  Stamps,
+  PaperColor,
+  PaperStyle,
+} from '../types/types';
 
 interface Store {
   isLoggedIn: boolean;
@@ -52,18 +58,19 @@ interface Store {
     | {
         title: string;
         text: string;
-        paperStyle: string;
-        paperColor: string;
-        align: string;
+        paperStyle: PaperStyle;
+        paperColor: PaperColor;
+        align: 'left' | 'center' | 'right';
         images?: string[];
       }
     | undefined;
+
   setLetter: (letterData: {
     title: string;
     text: string;
-    paperStyle: string;
-    paperColor: string;
-    align: string;
+    paperStyle: PaperStyle;
+    paperColor: PaperColor;
+    align: 'left' | 'center' | 'right';
     images?: string[];
   }) => void;
 

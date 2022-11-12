@@ -5,9 +5,10 @@ import {Header} from '../../../Components/Headers/Header';
 import {StackParamsList} from '../../../types/stackParamList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {TopicEditor} from '../../../Components/LetterEditor/Cover/TopicEditor';
-import {LetterCoverPreview} from '../../../Components/LetterCoverPreview';
+import {LetterCoverPreview} from '../../../Components/LetterEditor/LetterCoverPreview';
 import useStore from '../../../Store/store';
 import {getTopics} from '../../../APIs/topic';
+import {getPersonalities} from '../../../APIs/personality';
 
 type Props = NativeStackScreenProps<StackParamsList, 'CoverTopicEditor'>;
 
@@ -16,7 +17,7 @@ export function CoverTopicEditor({navigation}: Props) {
 
   const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
 
-  const {setCoverTopicIds, setTopics} = useStore();
+  const {setCoverTopicIds, setTopics, setPersonalities} = useStore();
 
   const disableNext = useMemo(
     () => selectedTopicIds.length === 0,
@@ -34,8 +35,20 @@ export function CoverTopicEditor({navigation}: Props) {
       }
     };
 
+    const getPersonalitiesList = () => {
+      try {
+        getPersonalities().then(personalityData => {
+          setPersonalities(personalityData);
+        });
+      } catch (error: any) {
+        console.error(error.message);
+      }
+    };
+
+    getPersonalitiesList();
+
     getTopicsList();
-  }, [setTopics]);
+  }, [setPersonalities, setTopics]);
 
   useEffect(() => {
     setCoverTopicIds(selectedTopicIds);

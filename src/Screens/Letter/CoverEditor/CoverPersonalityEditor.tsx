@@ -5,8 +5,7 @@ import {Header} from '../../../Components/Headers/Header';
 import {StackParamsList} from '../../../types/stackParamList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {PersonalityEditor} from '../../../Components/LetterEditor/Cover/PersonalityEditor';
-import {LetterCoverPreview} from '../../../Components/LetterCoverPreview';
-import {getPersonalities} from '../../../APIs/personality';
+import {LetterCoverPreview} from '../../../Components/LetterEditor/LetterCoverPreview';
 import useStore from '../../../Store/store';
 
 type Props = NativeStackScreenProps<StackParamsList, 'CoverPersonalityEditor'>;
@@ -30,18 +29,6 @@ export function CoverPersonalityEditor({navigation}: Props) {
   );
 
   useEffect(() => {
-    const getPersonalitiesList = () => {
-      try {
-        getPersonalities().then(personalityData => {
-          setPersonalities(personalityData);
-        });
-      } catch (error: any) {
-        console.error(error.message);
-      }
-    };
-
-    getPersonalitiesList();
-
     if (personalityIds) {
       setSelectedPersonalityIds(personalityIds);
     }

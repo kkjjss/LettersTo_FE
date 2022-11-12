@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {PAPER_STYLES} from '../../../Constants/letter';
+import {PaperStyle} from '../../../types/types';
 
 const paperGrid = require('../../../Assets/paper/paper_grid.png');
 const paperDotted = require('../../../Assets/paper/paper_dotted.png');
@@ -9,11 +9,9 @@ const paperPlain = require('../../../Assets/paper/paper_plane.png');
 const checkMark = require('../../../Assets/check.png');
 
 type Props = {
-  style: typeof PAPER_STYLES[number];
-  setPaperStyle: React.Dispatch<
-    React.SetStateAction<typeof PAPER_STYLES[number]>
-  >;
-  paperStyle: typeof PAPER_STYLES[number];
+  style: PaperStyle;
+  setPaperStyle: React.Dispatch<React.SetStateAction<PaperStyle>>;
+  paperStyle: PaperStyle;
 };
 
 export const PaperStyleButton = React.memo(
@@ -22,15 +20,15 @@ export const PaperStyleButton = React.memo(
     let name: string = '';
 
     switch (style) {
-      case 'grid':
+      case 'GRID':
         source = paperGrid;
         name = '모눈노트';
         break;
-      case 'dotted':
+      case 'DOT':
         source = paperDotted;
         name = '도트노트';
         break;
-      case 'plain':
+      case 'PLAIN':
         source = paperPlain;
         name = '플레인노트';
         break;

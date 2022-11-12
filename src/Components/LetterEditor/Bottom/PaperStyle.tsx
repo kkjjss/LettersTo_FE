@@ -1,18 +1,19 @@
 import React from 'react';
 import {View} from 'react-native';
-import {Dotted} from '../../PaperStyle/Dotted';
-import {Grid} from '../../PaperStyle/Grid';
+import {PaperStyle as _PaperStyle} from '../../../types/types';
+import {Dotted} from '../../Letter/PaperStyle/Dotted';
+import {Grid} from '../../Letter/PaperStyle/Grid';
 
 interface Props {
   lineColor: string;
-  paperStyle?: 'dotted' | 'grid' | 'plain';
+  paperStyle: _PaperStyle;
 }
 
 export const PaperStyle = React.memo(({lineColor, paperStyle}: Props) => {
   return (
-    <View style={{position: 'relative'}}>
-      {paperStyle === 'grid' && <Grid lineColor={lineColor} />}
-      {paperStyle === 'dotted' && <Dotted lineColor={lineColor} />}
+    <View>
+      {paperStyle === 'GRID' && <Grid lineColor={lineColor} />}
+      {paperStyle === 'DOT' && <Dotted lineColor={lineColor} />}
     </View>
   );
 });

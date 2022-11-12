@@ -69,3 +69,16 @@ export type Stamp = {
 };
 
 export type Stamps = Stamp[];
+
+export type PaperColor =
+  | 'PINK'
+  | 'ORANGE'
+  | 'YELLOW'
+  | 'GREEN'
+  | 'MINT'
+  | 'SKY_BLUE'
+  | 'BLUE'
+  | 'PURPLE'
+  | 'LAVENDER';
+
+export type PaperStyle = 'GRID' | 'DOT' | 'PLAIN';

@@ -1,6 +1,6 @@
 import React from 'react';
 import {View} from 'react-native';
-import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../Constants/screen';
+import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../Constants/screen';
 
 type Props = {lineColor: string};
 

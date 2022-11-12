@@ -1,18 +1,32 @@
-import {Texticons} from '../types/types';
+import {Texticons, PaperColor} from '../types/types';
 
-export const PAPER_COLORS: string[] = [
-  '#ff44cc',
-  '#ff8244',
-  '#FFE044',
-  '#AEF81A',
-  '#44FFC1',
-  '#44D2FF',
-  '#4482FF',
-  '#AA75FF',
-  '#E2A8FF',
-];
+export const PAPER_COLORS: {
+  [key in PaperColor]: string;
+} = {
+  PINK: '#ff44cc',
+  ORANGE: '#ff8244',
+  YELLOW: '#FFE044',
+  GREEN: '#AEF81A',
+  MINT: '#44FFC1',
+  SKY_BLUE: '#44D2FF',
+  BLUE: '#4482FF',
+  PURPLE: '#AA75FF',
+  LAVENDER: '#E2A8FF',
+} as const;
 
-export const PAPER_STYLES = ['grid', 'dotted', 'plain'] as const;
+export const GRADIENT_COLORS = {
+  PINK: '#FFCCEE',
+  ORANGE: '#FFDDCC',
+  YELLOW: '#FFF7CC',
+  GREEN: '#EDFDCE',
+  MINT: '#CCFFEE',
+  SKY_BLUE: '#CCF3FF',
+  BLUE: '#CCDDFF',
+  PURPLE: '#E0CCFF',
+  LAVENDER: '#EECCFF',
+} as const;
+
+export const PAPER_STYLES = ['GRID', 'DOT', 'PLAIN'] as const;
 
 const HAPPY_TEXTICONS = [
   '⸝⸝ʚ̴̶̷̆ᴗʚ̴̶̷̆⸝⸝',

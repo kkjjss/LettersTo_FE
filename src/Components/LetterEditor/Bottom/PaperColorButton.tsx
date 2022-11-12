@@ -1,12 +1,14 @@
 import React, {useMemo} from 'react';
 import {Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {PAPER_COLORS} from '../../../Constants/letter';
+import {PaperColor} from '../../../types/types';
 
 const checkMark = require('../../../Assets/check.png');
 
 type Props = {
-  color: string;
-  paperColor: string;
-  setPaperColor: React.Dispatch<React.SetStateAction<string>>;
+  color: PaperColor;
+  paperColor: PaperColor;
+  setPaperColor: React.Dispatch<React.SetStateAction<PaperColor>>;
 };
 
 export const PaperColorButton = React.memo(
@@ -25,7 +27,7 @@ export const PaperColorButton = React.memo(
         style={[
           styles.paperColorButton,
           {
-            backgroundColor: color,
+            backgroundColor: PAPER_COLORS[color],
           },
         ]}>
         {isSelectedColor && (
