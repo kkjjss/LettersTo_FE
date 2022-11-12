@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React from 'react';
 import {
   Pressable,
   Text,
@@ -11,10 +11,11 @@ import {
   ScrollView,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {existsNickname, patchUserInfo} from '../APIs/member';
-import {UpdateButton} from '../Components/UpdateButton';
-import {useKeyboard} from '../Hooks/useKeyboard';
-import useStore from '../Store/store';
+import {patchUserInfo} from '../../APIs/member';
+import {UpdateButton} from '../../Components/UpdateButton';
+import {useKeyboard} from '../../Hooks/useKeyboard';
+import {useNickname} from '../../Hooks/UserInfo/useNickname';
+import useStore from '../../Store/store';
 
 type Props = {
   isModalVisible: boolean;
@@ -22,26 +23,26 @@ type Props = {
 };
 
 export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
-  const [nickname, setNickname] = useState('');
-  const [tempNickname, setTempNickname] = useState('');
-  const [isFormCorrect, setIsFormCorrect] = useState(false);
-  const [isExists, setIsExists] = useState(false);
-  const [isAlreadyUsed, setIsAlreadyUsed] = useState(false);
-  const [activateUpdate, setActivateUpdate] = useState(false);
+  const {userInfo} = useStore();
+
+  const {
+    nickname,
+    tempNickname,
+    isFormCorrect,
+    isExists,
+    disable,
+    alterOpacity,
+    isAlreadyUsed,
+    onChangeNickname,
+    initializeNicknameModal,
+  } = useNickname(userInfo?.nickname);
 
   const {keyboardHeight, keyboardVisible} = useKeyboard();
-
-  const {userInfo} = useStore();
 
   const {bottom: SAFE_AREA_BOTTOM} = useSafeAreaInsets();
 
   const hideModal = () => {
-    alert.reset();
-    setNickname('');
-    setTempNickname('');
-    setIsFormCorrect(false);
-    setIsExists(false);
-    setActivateUpdate(false);
+    initializeNicknameModal();
     setModalVisible(false);
   };
 
@@ -59,71 +60,6 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
       console.error(error.message);
     }
   };
-
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-
-  const alert = Animated.timing(fadeAnim, {
-    toValue: 1,
-    duration: 0,
-    useNativeDriver: true,
-  });
-
-  const changeNickname = (v: string) => {
-    alert.reset();
-    setTempNickname(v);
-    setActivateUpdate(false);
-  };
-
-  useEffect(() => {
-    const debounce = setTimeout(() => {
-      setNickname(tempNickname);
-    }, 300);
-    return () => clearTimeout(debounce);
-  }, [tempNickname]);
-
-  useEffect(() => {
-    const checkNicknameAlreadyUsed = async () => {
-      if (userInfo && nickname === userInfo.nickname) {
-        setIsAlreadyUsed(true);
-        alert.start();
-      } else {
-        setIsAlreadyUsed(false);
-        checkNicknameFormCorrect();
-      }
-    };
-
-    const checkNicknameFormCorrect = async () => {
-      if (nickname) {
-        if (/^[가-힣A-Za-z0-9]{3,10}$/.test(nickname)) {
-          setIsFormCorrect(true);
-          checkNicknameExists();
-        } else {
-          setIsFormCorrect(false);
-          alert.start();
-        }
-      }
-    };
-
-    const checkNicknameExists = async () => {
-      if (nickname) {
-        try {
-          const response = await existsNickname(nickname);
-          setIsExists(response);
-          if (response === false) {
-            setActivateUpdate(true);
-          }
-          alert.start();
-        } catch (error: any) {
-          console.error(error.message);
-        }
-      }
-    };
-
-    if (isModalVisible) {
-      checkNicknameAlreadyUsed();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nickname, userInfo, isModalVisible]);
 
   return (
     <Modal
@@ -152,11 +88,11 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
             <TextInput
               style={styles.nicknameInput}
               value={tempNickname}
-              onChangeText={changeNickname}
+              onChangeText={onChangeNickname}
               placeholder="새로운 별명을 입력해주세요."
             />
 
-            <Animated.View style={[styles.alert, {opacity: fadeAnim}]}>
+            <Animated.View style={[styles.alert, {opacity: alterOpacity}]}>
               {!isAlreadyUsed ? (
                 isFormCorrect ? (
                   !isExists ? (
@@ -179,10 +115,7 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
             </Animated.View>
           </ScrollView>
 
-          <UpdateButton
-            activateUpdate={activateUpdate}
-            onPress={updateNickname}
-          />
+          <UpdateButton activateUpdate={!disable} onPress={updateNickname} />
         </View>
       </View>
     </Modal>

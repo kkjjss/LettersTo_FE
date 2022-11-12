@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   View,
@@ -20,20 +20,25 @@ import {SCREEN_HEIGHT} from '../../Constants/screen';
 import {SignUpButton} from '../../Components/SignUpButton';
 import useStore from '../../Store/store';
 
-import {getRegions, getCities} from '../../APIs/geolocation';
+import {useLocation} from '../../Hooks/UserInfo/useLocation';
 
 type Props = NativeStackScreenProps<StackParamsList, 'LocationForm'>;
 
 export function LocationForm({navigation}: Props) {
+  const {
+    regions,
+    selectedRegionId,
+    setSelectedRegionId,
+    cities,
+    selectedCityId,
+    setSelectedCityId,
+    noticeOpacity,
+    onStartNotice,
+    disable,
+  } = useLocation();
+
   const [openRegion, setOpenRegion] = useState(false);
-  const [regions, setRegions] = useState([{label: '', value: 0}]);
-  const [selectedRegionId, setSelectedRegionId] = useState<null | number>(null);
-
   const [openCity, setOpenCity] = useState(false);
-  const [cities, setCities] = useState([{label: '', value: 0}]);
-  const [selectedCityId, setSelectedCityId] = useState<null | number>(null);
-
-  const [activateSignUp, setActivateSignUp] = useState(false);
 
   const store = useStore();
 
@@ -42,70 +47,6 @@ export function LocationForm({navigation}: Props) {
       store.setAddress(selectedCityId);
     }
   };
-
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-
-  const alert = Animated.sequence([
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 0,
-      useNativeDriver: true,
-    }),
-    Animated.timing(fadeAnim, {
-      toValue: 0,
-      delay: 2000,
-      useNativeDriver: true,
-    }),
-  ]);
-
-  const onRegionOpen = useCallback(() => {
-    setOpenRegion(false);
-  }, []);
-
-  const onCityOpen = useCallback(() => {
-    setOpenCity(false);
-  }, []);
-
-  const onStartNotice = () => {
-    alert.reset();
-    alert.start();
-  };
-
-  const getRegionsList = async () => {
-    const regionsList = (await getRegions()).map(({id, name}) => {
-      return {value: id, label: name};
-    });
-    setRegions(regionsList);
-  };
-
-  useEffect(() => {
-    getRegionsList();
-  }, []);
-
-  useEffect(() => {
-    const getCitiesList = async (regionId: number) => {
-      const citiesList = (await getCities(regionId)).map(({id, name}) => {
-        return {value: id, label: name};
-      });
-      setCities(citiesList);
-    };
-
-    if (selectedRegionId) {
-      getCitiesList(selectedRegionId);
-    } else {
-      setCities([{label: '', value: 0}]);
-    }
-
-    setSelectedCityId(null);
-  }, [selectedRegionId]);
-
-  useEffect(() => {
-    if (selectedCityId && selectedRegionId) {
-      setActivateSignUp(true);
-    } else {
-      setActivateSignUp(false);
-    }
-  }, [selectedRegionId, selectedCityId]);
 
   return (
     <LinearGradient colors={['#ffccee', 'white', 'white', 'white', '#ffffcc']}>
@@ -133,7 +74,7 @@ export function LocationForm({navigation}: Props) {
             style={[
               Platform.OS === 'ios' ? styles.notice_ios : styles.notice_android,
               {
-                opacity: fadeAnim,
+                opacity: noticeOpacity,
               },
             ]}>
             <ImageBackground
@@ -153,7 +94,6 @@ export function LocationForm({navigation}: Props) {
               value={selectedRegionId}
               items={regions}
               setOpen={setOpenRegion}
-              onOpen={onCityOpen}
               setValue={setSelectedRegionId}
               autoScroll={true}
               placeholder="시 · 도 선택"
@@ -174,7 +114,6 @@ export function LocationForm({navigation}: Props) {
                 value={selectedCityId}
                 items={cities}
                 setOpen={setOpenCity}
-                onOpen={onRegionOpen}
                 setValue={setSelectedCityId}
                 autoScroll={true}
                 placeholder="군 · 구 선택"
@@ -185,7 +124,7 @@ export function LocationForm({navigation}: Props) {
             </View>
           )}
         </View>
-        <SignUpButton activateSignUp={activateSignUp} onPress={onPressSignUp} />
+        <SignUpButton disableSignUp={disable} onPress={onPressSignUp} />
       </SafeAreaView>
     </LinearGradient>
   );

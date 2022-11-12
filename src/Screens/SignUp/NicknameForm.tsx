@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   View,
@@ -15,78 +15,29 @@ import {SCREEN_HEIGHT} from '../../Constants/screen';
 import {LinearGradient} from 'expo-linear-gradient';
 import {Header} from '../../Components/Headers/Header';
 import type {StackParamsList} from '../../types/stackParamList';
-import {existsNickname} from '../../APIs/member';
+import {useNickname} from '../../Hooks/UserInfo/useNickname';
 
 import useStore from '../../Store/store';
 
 type Props = NativeStackScreenProps<StackParamsList, 'NicknameForm'>;
 
 export function NicknameForm({navigation}: Props) {
-  const [nickname, setNickname] = useState('');
-  const [tempNickname, setTempNickname] = useState('');
-  const [isFormCorrect, setIsFormCorrect] = useState(false);
-  const [isExists, setIsExists] = useState(false);
-  const [activateNext, setActivateNext] = useState(false);
+  const {
+    nickname,
+    tempNickname,
+    isFormCorrect,
+    isExists,
+    disable,
+    alterOpacity,
+    onChangeNickname,
+  } = useNickname();
 
   const store = useStore();
-
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-
-  const alert = Animated.timing(fadeAnim, {
-    toValue: 1,
-    duration: 0,
-    useNativeDriver: true,
-  });
-
-  const onChangeNickname = (v: string) => {
-    alert.reset();
-    setTempNickname(v);
-    setActivateNext(false);
-  };
 
   const goToTopicForm = () => {
     store.setNickname(nickname);
     navigation.navigate('TopicsForm');
   };
-
-  useEffect(() => {
-    const debounce = setTimeout(() => {
-      setNickname(tempNickname);
-    }, 500);
-    return () => clearTimeout(debounce);
-  }, [tempNickname]);
-
-  useEffect(() => {
-    const checkNicknameFormCorrect = async () => {
-      if (nickname) {
-        if (/^[가-힣A-Za-z0-9]{3,10}$/.test(nickname)) {
-          setIsFormCorrect(true);
-          checkNicknameExistss();
-        } else {
-          setIsFormCorrect(false);
-          alert.start();
-        }
-      }
-    };
-
-    const checkNicknameExistss = async () => {
-      if (nickname) {
-        try {
-          const response = await existsNickname(nickname);
-          setIsExists(response);
-          if (response === false) {
-            setActivateNext(true);
-          }
-          alert.start();
-        } catch (error: any) {
-          console.error(error.message);
-        }
-      }
-    };
-
-    checkNicknameFormCorrect();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nickname]);
 
   return (
     <LinearGradient colors={['#ffccee', 'white', 'white', 'white', '#ffffcc']}>
@@ -111,7 +62,7 @@ export function NicknameForm({navigation}: Props) {
               />
             </View>
           </View>
-          <Animated.View style={[styles.alert, {opacity: fadeAnim}]}>
+          <Animated.View style={[styles.alert, {opacity: alterOpacity}]}>
             {isFormCorrect ? (
               !isExists ? (
                 <Text style={styles.alertSuccess}>사용 가능한 별명이에요.</Text>
@@ -125,7 +76,7 @@ export function NicknameForm({navigation}: Props) {
             )}
           </Animated.View>
         </ScrollView>
-        <NextButton activateNext={activateNext} onPress={goToTopicForm} />
+        <NextButton disable={disable} onPress={goToTopicForm} />
       </SafeAreaView>
     </LinearGradient>
   );

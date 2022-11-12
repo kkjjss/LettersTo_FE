@@ -3,7 +3,7 @@ import {Animated} from 'react-native';
 import {getTopics} from '../../APIs/topic';
 import {Topics} from '../../types/types';
 
-export const useTopics = () => {
+export const useTopic = () => {
   const [topics, setTopics] = useState<Topics>([]);
   const [selectedTopicIds, setSelectedTopicIds] = useState<number[]>([]);
 
@@ -23,6 +23,10 @@ export const useTopics = () => {
       useNativeDriver: true,
     }),
   ]);
+
+  const resetAlert = () => {
+    alert.reset();
+  };
 
   const selectTopic = (topicId: number) => {
     alert.reset();
@@ -57,5 +61,6 @@ export const useTopics = () => {
     alertOpacity,
     counter,
     reset,
+    resetAlert,
   };
 };

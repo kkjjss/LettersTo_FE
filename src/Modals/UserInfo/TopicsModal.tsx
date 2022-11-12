@@ -7,15 +7,15 @@ import {
   Animated,
   ScrollView,
 } from 'react-native';
-import {ResetButton} from '../Components/ResetButton';
-import useStore from '../Store/store';
-import {ModalHeader} from '../Components/ModalHeader';
-import {SCREEN_HEIGHT} from '../Constants/screen';
-import {TopicList} from '../Components/TopicList';
-import {UpdateButton} from '../Components/UpdateButton';
+import {ResetButton} from '../../Components/ResetButton';
+import useStore from '../../Store/store';
+import {ModalHeader} from '../../Components/ModalHeader';
+import {SCREEN_HEIGHT} from '../../Constants/screen';
+import {TopicList} from '../../Components/TopicList';
+import {UpdateButton} from '../../Components/UpdateButton';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {patchUserInfo} from '../APIs/member';
-import {useTopics} from '../Hooks/UserInfo/useTopics';
+import {patchUserInfo} from '../../APIs/member';
+import {useTopic} from '../../Hooks/UserInfo/useTopic';
 
 type Props = {
   isModalVisible: boolean;
@@ -31,7 +31,8 @@ export const TopicsModal = ({isModalVisible, setModalVisible}: Props) => {
     alertOpacity,
     counter,
     reset,
-  } = useTopics();
+    resetAlert,
+  } = useTopic();
 
   const {userInfo} = useStore();
 
@@ -43,6 +44,7 @@ export const TopicsModal = ({isModalVisible, setModalVisible}: Props) => {
   );
 
   const hideModal = () => {
+    resetAlert();
     setModalVisible(false);
   };
 
@@ -54,6 +56,7 @@ export const TopicsModal = ({isModalVisible, setModalVisible}: Props) => {
         };
         await patchUserInfo(newUserInfo);
       }
+
       hideModal();
     } catch (error: any) {
       console.error(error.message);

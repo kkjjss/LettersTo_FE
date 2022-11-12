@@ -17,13 +17,13 @@ import {NextButton} from '../../Components/NextButton';
 import {ResetButton} from '../../Components/ResetButton';
 import useStore from '../../Store/store';
 import {TopicList} from '../../Components/TopicList';
-import {useTopics} from '../../Hooks/UserInfo/useTopics';
+import {useTopic} from '../../Hooks/UserInfo/useTopic';
 
 type Props = NativeStackScreenProps<StackParamsList, 'TopicsForm'>;
 
 export function TopicsForm({navigation}: Props) {
   const {topics, selectedTopicIds, selectTopic, alertOpacity, counter, reset} =
-    useTopics();
+    useTopic();
 
   const disableNext = useMemo(
     () => selectedTopicIds.length === 0,
