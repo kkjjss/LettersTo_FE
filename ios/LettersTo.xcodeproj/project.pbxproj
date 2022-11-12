@@ -546,7 +546,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 5Q4W666RS5;
+				DEVELOPMENT_TEAM = UWL8SJ2YMP;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = LettersTo/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = LettersTo;
@@ -561,7 +561,7 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = com.lettersto;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lettersto.beside;
 				PRODUCT_NAME = LettersTo;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "LettersTo-Bridging-Header.h";
@@ -578,7 +578,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 5Q4W666RS5;
+				DEVELOPMENT_TEAM = UWL8SJ2YMP;
 				INFOPLIST_FILE = LettersTo/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = LettersTo;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -592,7 +592,7 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = com.lettersto;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lettersto.beside;
 				PRODUCT_NAME = LettersTo;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "LettersTo-Bridging-Header.h";

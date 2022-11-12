@@ -32,8 +32,6 @@ export const BottomBar = React.memo(
     onShowTexticon,
     pickImage,
   }: Props) => {
-    console.log('BottomBar');
-
     const {bottom: SAFE_AREA_BOTTOM} = useSafeAreaInsets();
 
     const {keyboardVisible, dismissKeyboard} = useKeyboard();

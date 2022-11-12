@@ -25,8 +25,6 @@ export const Header = React.memo(
     onPressNext: processBeforeNext,
     disableNext,
   }: Props) => {
-    console.log('Header');
-
     function goBack() {
       navigation.pop();
     }

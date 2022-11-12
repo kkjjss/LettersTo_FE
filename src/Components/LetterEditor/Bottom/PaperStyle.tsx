@@ -9,7 +9,6 @@ interface Props {
 }
 
 export const PaperStyle = React.memo(({lineColor, paperStyle}: Props) => {
-  console.log('PaperStyle');
   return (
     <View style={{position: 'relative'}}>
       {paperStyle === 'grid' && <Grid lineColor={lineColor} />}
