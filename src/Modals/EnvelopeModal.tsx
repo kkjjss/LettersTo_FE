@@ -1,40 +1,18 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {
-  Pressable,
-  Text,
-  View,
-  Modal,
-  StyleSheet,
-  TextInput,
-  Image,
-  ImageBackground,
-  Animated,
-  ScrollView,
-  Easing,
-} from 'react-native';
-import {LinearGradient} from 'expo-linear-gradient';
-import {Letter} from '../types/types';
+import React, { useEffect, useRef, useState } from 'react';
+import { StyleSheet, Pressable, Text, View, Modal, Image, ImageBackground, ScrollView, Animated, Easing } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
-type Props = {
-  data: any;
+interface EnvelopeModalProps {
+  letter: any;
   isModalVisible: boolean;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  onEnter: () => void;
+  onOpenLetter: () => void;
 };
 
-export const EnvelopeModal = ({data, isModalVisible, setModalVisible, onEnter}: Props) => {  
+export const EnvelopeModal = ({ letter, isModalVisible, setModalVisible, onOpenLetter }: EnvelopeModalProps) => {  
+  const { title, fromAddress, fromNickname, topics, personalities, paperColor, stampSource } = letter;
 
-  /* useEffect(() => {
-    console.log('EnvelopeModal !!!!!!!!', data);
-  }, [data]); */
-  
-  const { title, stampSrc, fromInfo, topic, personality, color } = data;
-
-  const hideModal = () => {
-    setModalVisible(false);
-    moveUp.reset();
-  }
-
+  // 애니메이션
   const moveAnim = useRef(new Animated.ValueXY()).current;
   const moveUp = Animated.timing(moveAnim, {
     toValue: { x: 0, y: -9 },
@@ -43,12 +21,21 @@ export const EnvelopeModal = ({data, isModalVisible, setModalVisible, onEnter}: 
     easing: Easing.elastic(2)
   });
 
+  // 뜯어서 편지 열어보기
   const openLetter = () => {
-    moveUp.start(onEnter);
+    moveUp.start(onOpenLetter);
   }
+
+  // 모달 닫기
+  const hideModal = () => {
+    setModalVisible(false);
+    moveUp.reset();
+  }
+
   useEffect(()=>{
     moveUp.reset();
   }, []);
+  
   return (
     <Modal
       animationType="fade"
@@ -58,61 +45,44 @@ export const EnvelopeModal = ({data, isModalVisible, setModalVisible, onEnter}: 
     >
       <View style={styles.container}>
         <LinearGradient colors={['rgba(0, 0, 204, 0)', 'rgba(0, 0, 204, 0.5)']} style={styles.modalBg}>
-          {/* 팝업 닫기 버튼 */}
+          {/* 모달 닫기 버튼 */}
           <Pressable style={styles.closeButton} onPress={hideModal}>
-            <Image
-              source={require('../Assets/close_white.png')}
-              style={styles.closeIcon}
-            />
+            <Image source={require('../Assets/close_white.png')} style={styles.closeIcon} />
           </Pressable>
+          {/* 뜯어서 편지 열어보기 */}
           <Pressable style={styles.openArea} onPress={openLetter}>
             <Text style={styles.openText}>뜯어서 편지 열어보기</Text>
             <Image source={require('../Assets/arrow_long.png')} style={styles.openArrow} resizeMode="contain" />
           </Pressable>
           <View style={styles.envelope}>
-            {/* 봉투 */}
             <Animated.View style={[styles.cardTop, {transform: [{translateY: moveAnim.y}]}]}>
-              <View style={{flex: 1, backgroundColor: color}} />
+              <View style={{flex: 1, backgroundColor: paperColor}} />
               <View style={styles.dash} />
             </Animated.View>
-            {/* <View style={[styles.cardTop, {marginBottom: 10}]}>
-              <View style={{flex: 1, backgroundColor: color}} />
-              <View style={styles.dash} />
-            </View> */}
             <View style={styles.cardItem}>
-              <LinearGradient locations={[0, 0.5]} colors={[color, 'white']} style={{flex: 1}}>
-                {/* 편지 제목 */}
+              <LinearGradient locations={[0, 0.5]} colors={[paperColor, 'white']} style={{flex: 1}}>
                 <Text style={styles.title}>⌜{title || '무제'}⌟︎︎</Text>
-                {/* 보내는 이 */}
                 <View style={styles.fromArea}>
                   <Image style={styles.fromImg} source={require('../Assets/from.png')} />
-                  <Text style={styles.fromText}>{`${fromInfo?.nickname}, ${fromInfo?.city}`}</Text>
+                  <Text style={styles.fromText}>{`${fromNickname}, ${fromAddress}`}</Text>
                 </View>
-                {/* 우표 */}
                 <ImageBackground source={require('../Assets/bg_stamp.png')} style={styles.stampArea}>
-                  <Image style={styles.stampImg} source={stampSrc} />
+                  <Image style={styles.stampImg} source={stampSource} />
                 </ImageBackground>
-                {/* 관심사, 성향 */}
                 <View style={styles.tagArea}>
                   <ScrollView horizontal style={styles.tagList}>
-                    {topic?.map((item:string, idx:number) => (
+                    {topics?.map((item:string, idx:number) => (
                       <Text key={idx} style={styles.tagItem}>{item}</Text>
                     ))}
                   </ScrollView>
                   <ScrollView horizontal style={styles.tagList}>
-                    {personality?.map((item:string, idx:number) => (
+                    {personalities?.map((item:string, idx:number) => (
                       <Text key={idx} style={styles.tagItem}>{item}</Text>
                     ))}
                   </ScrollView>
                 </View>
               </LinearGradient>
             </View>
-            {/* 열어보기 버튼 */}
-            {/* <Pressable style={styles.openButton}>
-              <LinearGradient colors={['rgba(255, 110, 206, 1)', 'rgba(255, 61, 189, 1)']} style={{flex: 1}}>
-                <Text style={styles.openButtonText}>열어보기</Text>
-              </LinearGradient>
-            </Pressable> */}
           </View>
         </LinearGradient>
       </View>
@@ -140,6 +110,4 @@ const styles = StyleSheet.create({
   tagArea: {position: 'absolute', bottom: 16, right: 16, left: 16},
   tagList: {flexDirection: 'row', marginTop: 8},
   tagItem: {height: 24, lineHeight: 24, paddingRight: 3, paddingLeft: 6, marginRight: 4, fontFamily: 'Galmuri11', fontSize: 12, color: '#0000CC', backgroundColor: 'rgba(0, 0, 204, 0.05)', borderWidth: 1, borderColor: '#0000CC'},
-  openButton: {overflow: 'hidden', height: 52, marginTop: 16, borderWidth: 1, borderColor: '#FF6ECE', borderRadius: 10},
-  openButtonText: {fontFamily: 'Galmuri11', lineHeight: 48, textAlign: 'center'}
 });

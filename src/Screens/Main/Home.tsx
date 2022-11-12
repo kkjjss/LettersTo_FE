@@ -1,57 +1,82 @@
-import React, {useRef, useState} from 'react';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {View, Text, StyleSheet, ScrollView, FlatList, TouchableOpacity, TouchableWithoutFeedback, Pressable, Image} from 'react-native';
-import type {StackParamsList} from '../../types/stackParamList';
+import React, { useRef, useState, useEffect } from 'react';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import type { StackParamsList } from '../../types/stackParamList';
 import useStore from '../../Store/store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {LinearGradient} from 'expo-linear-gradient';
-import {cards} from './CardData.json';
-import {Card} from '../../Components/Card';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {EnvelopeModal} from '../../Modals/EnvelopeModal';
-import {Letter} from '../../types/types';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { getPublicLetters } from '../../APIs/public';
+import { PublicLetters } from '../../types/types';
+import { PublicLetterItem } from './PublicLetterItem';
+import { EnvelopeModal } from '../../Modals/EnvelopeModal';
 
 type Props = NativeStackScreenProps<StackParamsList, 'Home'>;
 
 export function Home({navigation}: Props) {
   const {setIsLoggedIn} = useStore();
 
-  const cardColor = [
-    'rgba(255, 68, 204, 0.25)',
-    'rgba(140, 117, 255, 0.25)',
-    'rgba(255, 224, 68, 0.25)',
-    'rgba(193, 255, 68, 0.25)',
-    'rgba(68, 239, 255, 0.25)',
-    'rgba(140, 117, 255, 0.25)',
-  ];
-  const cardAngle = [-5, 5, 5, -5, 15, 5];
-  const imagePath = {
-    "237": require('../../Assets/237.jpg'),
-    "1003": require('../../Assets/1003.jpg'),
-    "1056": require('../../Assets/1056.jpg'),
-    "1062": require('../../Assets/1062.jpg'),
+  type ColorType = {
+    [key: string]: string;
+  };
+  const COLORS: ColorType = {
+    PINK: 'rgba(255, 68, 204, 0.25)',
+    ORANGE: 'rgba(255, 130, 68, 0.25)',
+    YELLOW: 'rgba(255, 224, 68, 0.25)',
+    LIGHTGREEN: 'rgba(174, 248, 26, 0.25)',
+    TEAL: 'rgba(68, 255, 193, 0.25)',
+    LIGHTBLUE: 'rgba(68, 210, 255, 0.25)',
+    BLUE: 'rgba(68, 130, 255, 0.25)',
+    PURPLE: 'rgba(170, 117, 255, 0.25)',
+    LIGHTPURPLE: 'rgba(226, 168, 255, 0.25)',
+  };
+  
+  type StampType = {
+    [key: number]: any;
   }
+  const STAMPS: StampType = {
+    1: require('../../Assets/1062.jpg'),
+    237: require('../../Assets/237.jpg'),
+    1003: require('../../Assets/1003.jpg'),
+    1056: require('../../Assets/1056.jpg'),
+    1062: require('../../Assets/1062.jpg'),
+  };
 
+  // 공개 편지 목록
+  const [publicLetters, setPublicLetters] = useState<PublicLetters>([]);
+  useEffect(() => {
+    try {
+      getPublicLetters().then(publicLettersData => {
+        const { content } = publicLettersData;
+        setPublicLetters(content);
+      })
+    } catch (error: any) {
+      console.error(error.message);
+    }
+  }, []);
+
+  // 스크롤 시 y 위치 저장
   const [positionY, setPositionY] = useState<Number>(0);
   const handleScroll = (event: any) => {
     const positionY = event.nativeEvent.contentOffset.y;
     setPositionY(positionY);
   }
 
-  const scrollRef = useRef<ScrollView>(null);
+  // 맨 상단으로 스크롤
+  const publicLetterListRef = React.useRef<FlatList>(null);
   const scrollToTop = () => {
-    scrollRef.current?.scrollTo({y: 0, animated: true});
+    publicLetterListRef.current?.scrollToIndex({ animated: true, index: 0 });
   }
 
-  const [isEnvelopeModalVisible, setEnvelopeModalVisible] = useState(false);
+  // 봉투 열기
   const [selectedItem, setSelectedItem] = useState({});
-  const openEnvelopeModal = (data: any) => {
-    // console.log('openEnvelopeModal ~~~~~~', data);
-    
+  const [isEnvelopeModalVisible, setEnvelopeModalVisible] = useState(false);
+  const onOpenPublicLetter = (item: any) => {
+    setSelectedItem(item);
     setEnvelopeModalVisible(true);
-    setSelectedItem(data);
   }
 
+  // 봉투 조회
   const goToReadLetter = () => {
     navigation.navigate('ReadLetter');
   }
@@ -88,32 +113,43 @@ export function Home({navigation}: Props) {
             </TouchableOpacity>
           </View>
         </LinearGradient>
-        <ScrollView ref={scrollRef} style={styles.scrollView} onScroll={handleScroll}>
-          <View style={styles.cardList}>
-            {
-              cards.map((item, idx) => (
-                <Card
-                  key={item.id}
-                  title={item.title}
-                  stampSrc={imagePath[item.stampId]}
-                  fromInfo={item.fromInfo}
-                  topic={item.topic}
-                  personality={item.personality}
-                  color={cardColor[idx % 6]}
-                  style={[
-                    idx % 2 === 0 ? {left: '27.7%', marginTop: -36} : {left: '-6.4%', marginTop: -152},
-                    {transform: [{ rotate: `${cardAngle[idx % 6]}deg` }]}
-                  ]}
-                  onPress={() => openEnvelopeModal({
+        <FlatList
+          ref={publicLetterListRef}
+          onScroll={handleScroll}
+          data={publicLetters}
+          renderItem={({item, index}) => {
+            const { id, title, fromNickname, fromAddress, topics, personalities, paperColor, stampId } = item;
+            const isFirst: boolean = index === 0;
+            const isLast: boolean = index === publicLetters.length - 1;
+            const cardAngle = [-5, 5, 5, -5, 15, 5];
+            return (
+              <View style={[
+                isFirst && {paddingTop: 120},
+                isLast && {paddingBottom: 60},
+              ]}>
+                <PublicLetterItem
+                  id={id}
+                  title={`${index} ${title}`}
+                  fromNickname={fromNickname}
+                  fromAddress={fromAddress}
+                  topics={topics}
+                  personalities={personalities}
+                  paperColor={COLORS[paperColor]}
+                  stampSource={STAMPS[stampId]}
+                  onOpenPublicLetter={() => onOpenPublicLetter({
                     ...item,
-                    color: cardColor[idx % 6],
-                    stampSrc: imagePath[item.stampId],
+                    paperColor: COLORS[paperColor],
+                    stampSource: STAMPS[stampId],
                   })}
+                  style={[
+                    index % 2 === 0 ? {left: '27.7%', marginTop: -36} : {left: '-6.4%', marginTop: -152},
+                    {transform: [{ rotate: `${cardAngle[index % 6]}deg` }]}
+                  ]}
                 />
-              ))
-            }
-          </View>
-        </ScrollView>
+              </View>
+            )
+          }}
+        />
         <View style={styles.tabBottom}>
           <View style={styles.tabArea}>
             <TouchableOpacity>
@@ -144,10 +180,10 @@ export function Home({navigation}: Props) {
           </TouchableOpacity>
         </View>
         <EnvelopeModal
-          data={selectedItem}
+          letter={selectedItem}
           isModalVisible={isEnvelopeModalVisible}
           setModalVisible={setEnvelopeModalVisible}
-          onEnter={goToReadLetter}
+          onOpenLetter={goToReadLetter}
         />
       </SafeAreaView>
     </LinearGradient>
@@ -164,8 +200,6 @@ const styles = StyleSheet.create({
   tabInactive: {width: 164, height: 38, alignItems: 'center', justifyContent: 'center', backgroundColor: '#FFFFFF', borderWidth: 1, borderBottomWidth: 0, borderColor: '#0000CC', borderTopLeftRadius: 10, borderTopRightRadius: 10},
   tabActiveText: {fontFamily: 'Galmuri11', fontSize: 15, color:'#FFFFFF'},
   tabInactiveText: {fontFamily: 'Galmuri11', fontSize: 15, color:'#0000CC'},
-  scrollView: {width: '100%'},
-  cardList: {paddingTop: 112, paddingBottom: 60},
   floatArea: {position: 'absolute', right: 24, bottom: 100},
   btn: {width: 48, height: 48, alignItems: 'center', justifyContent: 'center', marginTop: 8, borderRadius: 24},
   btnPrimary: {backgroundColor: '#0000CC'},

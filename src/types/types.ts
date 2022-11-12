@@ -42,17 +42,17 @@ export interface UserInfo {
   geolocationId: number;
 }
 
-export interface FromInfo {
-  nickname: string;
-  city: string;
-}
-
-export interface Letter {
-  id?: number;
+export interface PublicLetter {
+  id: number;
   title: string;
+  fromAddress: string;
+  fromNickname: string;
+  topics: string[];
+  personalities: string[];
+  paperColor: string;
   stampId?: number;
-  fromInfo: FromInfo;
-  topic: string[];
-  personality: string[];
+  createDate?: string;
   [key: string]: any;
-}
+};
+
+export type PublicLetters = PublicLetter[];
