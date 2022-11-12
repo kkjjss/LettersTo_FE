@@ -73,7 +73,7 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
           <View style={styles.header}>
             <Pressable onPress={hideModal}>
               <Image
-                source={require('../Assets/close.png')}
+                source={require('../../Assets/close.png')}
                 style={styles.closeButton}
               />
             </Pressable>
