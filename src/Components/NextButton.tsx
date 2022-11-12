@@ -2,18 +2,18 @@ import * as React from 'react';
 import {StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
 
 type Props = {
-  activateNext: boolean;
+  disable: boolean;
   onPress: () => void;
 };
 
-export function NextButton({activateNext, onPress}: Props) {
+export function NextButton({disable, onPress}: Props) {
   return (
-    <TouchableWithoutFeedback disabled={!activateNext} onPress={onPress}>
+    <TouchableWithoutFeedback disabled={disable} onPress={onPress}>
       <View
         style={[
           styles.nextButton,
           {
-            backgroundColor: activateNext ? '#ff6ece' : '#ffc7f0',
+            backgroundColor: disable ? '#ffc7f0' : '#ff6ece',
           },
         ]}>
         <Text style={styles.nextButtonText}>다음</Text>

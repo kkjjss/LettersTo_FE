@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useMemo} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   View,
@@ -16,74 +16,26 @@ import {SCREEN_HEIGHT} from '../../Constants/screen';
 import {NextButton} from '../../Components/NextButton';
 import {ResetButton} from '../../Components/ResetButton';
 import useStore from '../../Store/store';
-import {Topics} from '../../types/types';
-import {getTopics} from '../../APIs/topic';
 import {TopicList} from '../../Components/TopicList';
+import {useTopics} from '../../Hooks/UserInfo/useTopics';
 
 type Props = NativeStackScreenProps<StackParamsList, 'TopicsForm'>;
 
 export function TopicsForm({navigation}: Props) {
-  const [counter, setCounter] = useState(0);
-  const [topics, setTopics] = useState<Topics>([]);
-  const [selectedTopicIds, setSelectedTopicIds] = useState<number[]>([]);
-  const [activateNext, setActivateNext] = useState<boolean>(false);
+  const {topics, selectedTopicIds, selectTopic, alertOpacity, counter, reset} =
+    useTopics();
+
+  const disableNext = useMemo(
+    () => selectedTopicIds.length === 0,
+    [selectedTopicIds],
+  );
 
   const store = useStore();
-
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-
-  const alert = Animated.sequence([
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 0,
-      useNativeDriver: true,
-    }),
-    Animated.timing(fadeAnim, {
-      toValue: 0,
-      delay: 2000,
-      useNativeDriver: true,
-    }),
-  ]);
-
-  const selectTopic = (topicId: number) => {
-    alert.reset();
-    if (counter < 7 && selectedTopicIds.includes(topicId) === false) {
-      setSelectedTopicIds([...selectedTopicIds, topicId]);
-    } else if (selectedTopicIds.includes(topicId) === true) {
-      setSelectedTopicIds([...selectedTopicIds].filter(e => e !== topicId));
-    } else {
-      alert.start();
-    }
-  };
 
   const goToPersonalityForm = () => {
     store.setTopicIds(selectedTopicIds);
     navigation.navigate('PersonalityForm');
   };
-
-  const reset = () => {
-    setSelectedTopicIds([]);
-  };
-
-  useEffect(() => {
-    try {
-      getTopics().then(topicData => {
-        setTopics([...topicData]);
-      });
-    } catch (error: any) {
-      console.error(error.message);
-    }
-  }, []);
-
-  useEffect(() => {
-    let count = selectedTopicIds.length;
-    setCounter(count);
-    if (count > 0) {
-      setActivateNext(true);
-    } else {
-      setActivateNext(false);
-    }
-  }, [selectedTopicIds]);
 
   return (
     <LinearGradient colors={['#ffccee', 'white', 'white', 'white', '#ffffcc']}>
@@ -112,11 +64,11 @@ export function TopicsForm({navigation}: Props) {
           />
         </ScrollView>
         <View style={styles.alertBox}>
-          <Animated.View style={{opacity: fadeAnim}}>
+          <Animated.View style={{opacity: alertOpacity}}>
             <Text style={styles.alertText}>최대 7개까지만 선택 가능해요!</Text>
           </Animated.View>
         </View>
-        <NextButton activateNext={activateNext} onPress={goToPersonalityForm} />
+        <NextButton disable={disableNext} onPress={goToPersonalityForm} />
       </SafeAreaView>
     </LinearGradient>
   );
