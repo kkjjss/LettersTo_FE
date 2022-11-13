@@ -2,21 +2,48 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {postPublicLetter} from '../../APIs/publicLetter';
 import {Header} from '../../Components/Headers/Header';
 import {LetterCoverPreview} from '../../Components/LetterEditor/LetterCoverPreview';
 import {SendLetterButton} from '../../Components/LetterEditor/SendLetterButton';
+import useStore from '../../Store/store';
 import {StackParamsList} from '../../types/stackParamList';
+import {PublicLetterWriteRequest} from '../../types/types';
 
 type Props = NativeStackScreenProps<StackParamsList, 'LetterComplete'>;
 
 export const LetterComplete = ({navigation}: Props) => {
+  const {cover, letter} = useStore();
+  const onPressPostLetter = async () => {
+    if (cover.stamp && letter) {
+      try {
+        const letterData: PublicLetterWriteRequest = {
+          title: letter.title,
+          content: letter.text,
+          paperType: letter.paperStyle,
+          paperColor: letter.paperColor,
+          stampId: cover.stamp,
+          topics: cover.topicIds,
+          personalities: cover.personalityIds,
+          files: letter.images,
+        };
+
+        await postPublicLetter(letterData);
+
+        navigation.navigate('Home');
+      } catch (error: any) {
+        console.error(error.message);
+      }
+    }
+  };
+
   return (
     <View style={{backgroundColor: '#ffccee', flex: 1}}>
       <SafeAreaView
         style={{
           flex: 1,
         }}>
-        <Header navigation={navigation} />
+        <Header navigation={navigation} title={'작성완료'} />
         <View
           style={{
             flex: 1,
@@ -47,7 +74,7 @@ export const LetterComplete = ({navigation}: Props) => {
             <LetterCoverPreview />
           </View>
         </View>
-        <SendLetterButton />
+        <SendLetterButton onPress={onPressPostLetter} />
       </SafeAreaView>
     </View>
   );

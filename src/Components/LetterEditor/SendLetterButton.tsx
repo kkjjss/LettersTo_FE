@@ -2,9 +2,9 @@ import {LinearGradient} from 'expo-linear-gradient';
 import React from 'react';
 import {Text, TouchableOpacity} from 'react-native';
 
-export const SendLetterButton = () => {
+export const SendLetterButton = ({onPress}: {onPress: () => Promise<void>}) => {
   return (
-    <TouchableOpacity activeOpacity={0.7}>
+    <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
       <LinearGradient
         colors={['#ff6ece', '#ff3dbd']}
         style={{

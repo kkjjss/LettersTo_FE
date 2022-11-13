@@ -77,11 +77,11 @@ interface Store {
   cover: {
     topicIds: number[];
     personalityIds: number[];
-    stamp: string | undefined;
+    stamp: number | undefined;
   };
   setCoverTopicIds: (topicIds: number[]) => void;
   setCoverPersonalityIds: (personalityIds: number[]) => void;
-  setCoverStampId: (stampId: string) => void;
+  setCoverStampId: (stampId: number) => void;
   setInitialCoverData: () => void;
 
   stamps: Stamps;

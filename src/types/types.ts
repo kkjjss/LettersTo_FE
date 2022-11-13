@@ -82,3 +82,14 @@ export type PaperColor =
   | 'LAVENDER';
 
 export type PaperStyle = 'GRID' | 'DOT' | 'PLAIN';
+
+export type PublicLetterWriteRequest = {
+  title: string;
+  content: string;
+  paperType: PaperStyle;
+  paperColor: PaperColor;
+  stampId: number;
+  topics: number[];
+  personalities: number[];
+  files?: string[];
+};
