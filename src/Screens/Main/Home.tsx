@@ -9,16 +9,17 @@ import {
   Text,
   StyleSheet,
   FlatList,
-  VirtualizedList,
+  Pressable,
   TouchableOpacity,
   Image,
   TouchableWithoutFeedback,
 } from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
-import {getPublicLetters} from '../../APIs/public';
+import {getPublicLetters} from '../../APIs/publicLetter';
 import {PublicLetters} from '../../types/types';
 import {PublicLetterItem} from './PublicLetterItem';
 import {EnvelopeModal} from '../../Modals/EnvelopeModal';
+import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../Constants/screen';
 
 type Props = NativeStackScreenProps<StackParamsList, 'Home'>;
 
@@ -54,7 +55,7 @@ export function Home({navigation}: Props) {
   // 공개 편지 목록
   const [publicLetters, setPublicLetters] = useState<PublicLetters | []>([]);
   const [cursor, setCursor] = useState<number>();
-  useEffect(() => {
+  const getPublicLettersInit = () => {
     try {
       getPublicLetters().then(publicLettersData => {
         const {content, cursor} = publicLettersData;
@@ -64,6 +65,11 @@ export function Home({navigation}: Props) {
     } catch (error: any) {
       console.error(error.message);
     }
+  }
+  useEffect(() => {
+    // console.log('Home');
+    
+    getPublicLettersInit();
   }, []);
 
   // 스크롤 시 y 위치 저장
@@ -124,6 +130,11 @@ export function Home({navigation}: Props) {
     navigation.navigate('ReadLetter');
   };
 
+  // 내 사서함
+  const goToLetterBox = () => {
+    navigation.navigate('LetterBox');
+  };
+
   function logout() {
     AsyncStorage.removeItem('accessToken');
     AsyncStorage.removeItem('refreshToken');
@@ -140,10 +151,27 @@ export function Home({navigation}: Props) {
 
   const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
 
+  // cold case
+  const Empty = () => (
+    <View style={styles.emptyArea}>
+      <ImageBackground style={{width: 100, height: 100, backgroundColor: 'rgba(0, 0, 204, 0.05)'}} />
+      <Text style={styles.emptyText}>잘못된 접근/네트워크연결확인{"\n"}잠시 후 다시 시도해주세요.</Text>
+      <TouchableOpacity style={styles.emptyBtn} activeOpacity={0.7} onPress={handleRefresh}>
+        <LinearGradient colors={['#FF6ECE', '#FF3DBD']} style={styles.emptyBtnBg}>
+          <Text style={styles.emptyBtnText}>다시 시도</Text>
+          <Image
+            source={require('../../Assets/refresh.png')}
+            style={styles.emptyBtnIcon}
+          />
+        </LinearGradient>
+      </TouchableOpacity>
+    </View>
+  );
+
   return (
     <LinearGradient
       locations={[0, 0.1, 0.8, 1]}
-      colors={['#FFCCEE', '#FFFFFF', '#FFFFFF', '#FFFFCC']}
+      colors={['#FFCCEE', 'white', 'white', '#FFFFCC']}
       style={styles.container}>
       {/* <SafeAreaView style={styles.container}> */}
       <View style={[styles.header, {marginTop: SAFE_AREA_TOP}]}>
@@ -172,6 +200,7 @@ export function Home({navigation}: Props) {
       </View>
       <FlatList
         ref={publicLetterListRef}
+        ListEmptyComponent={Empty}
         onScroll={handleScroll}
         onEndReached={handleEndReached}
         onEndReachedThreshold={0.2}
@@ -254,7 +283,8 @@ export function Home({navigation}: Props) {
           <TouchableOpacity
             activeOpacity={0.7}
             style={[styles.btn, styles.btnPrimary]}
-            onPress={scrollToTop}>
+            onPress={scrollToTop}
+          >
             <Image
               source={require('../../Assets/top.png')}
               style={styles.icon}
@@ -263,7 +293,9 @@ export function Home({navigation}: Props) {
         ) : (
           <TouchableOpacity
             activeOpacity={0.7}
-            style={[styles.btn, styles.btnPrimary]}>
+            style={[styles.btn, styles.btnPrimary]}
+            onPress={handleRefresh}
+          >
             <Image
               source={require('../../Assets/refresh.png')}
               style={styles.icon}
@@ -293,17 +325,26 @@ export function Home({navigation}: Props) {
 
 const styles = StyleSheet.create({
   container: {flex: 1},
-  header: {position: 'absolute', zIndex: 10, width: '100%'},
+  header: {position: 'absolute', zIndex: 10, top: 0, left: 0, width: '100%'},
   headerInner: {
+    position: 'relative',
     height: 52,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 16,
   },
-  tabBottom: {width: '100%', height: 37, backgroundColor: '#0000CC'},
+  tabBottom: {
+    position: 'absolute',
+    left: 0,
+    bottom: 0,
+    width: '100%',
+    height: 37,
+    backgroundColor: '#0000CC',
+  },
   tabArea: {
     position: 'absolute',
+    left: 0,
     bottom: '100%',
     flexDirection: 'row',
     width: '100%',
@@ -311,6 +352,8 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   tabActive: {
+    position: 'relative',
+    left: 1,
     width: 164,
     height: 45,
     alignItems: 'center',
@@ -324,14 +367,14 @@ const styles = StyleSheet.create({
     height: 38,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'white',
     borderWidth: 1,
     borderBottomWidth: 0,
     borderColor: '#0000CC',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
   },
-  tabActiveText: {fontFamily: 'Galmuri11', fontSize: 15, color: '#FFFFFF'},
+  tabActiveText: {fontFamily: 'Galmuri11', fontSize: 15, color: 'white'},
   tabInactiveText: {fontFamily: 'Galmuri11', fontSize: 15, color: '#0000CC'},
   floatArea: {position: 'absolute', right: 24, bottom: 100},
   btn: {
@@ -350,4 +393,10 @@ const styles = StyleSheet.create({
   },
   triangle: {position: 'absolute', bottom: 0, width: 4, height: 5},
   icon: {width: 28, height: 28},
+  emptyArea: {height: SCREEN_HEIGHT, alignItems: 'center', justifyContent: 'center'},
+  emptyText: {marginTop: 8, textAlign: 'center', fontFamily: 'Galmuri11', fontSize: 14, lineHeight: 25, color: '#0000CC'},
+  emptyBtn: {overflow: 'hidden', height: 28, marginTop: 24, borderWidth: 1, borderColor: '#FF44CC', borderRadius: 10},
+  emptyBtnBg: {flex: 1, flexDirection: 'row', alignItems: 'center', paddingRight: 6, paddingLeft: 12},
+  emptyBtnText: {fontFamily: 'Galmuri11', fontSize: 13, color: 'white', marginBottom: 2},
+  emptyBtnIcon: {width: 20, height: 20, marginLeft: 2},
 });

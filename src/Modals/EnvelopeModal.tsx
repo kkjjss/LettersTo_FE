@@ -172,6 +172,7 @@ export const EnvelopeModal = ({
                   </View>
                 </LinearGradient>
               </View>
+
             </View>
           </View>
         </LinearGradient>
@@ -190,14 +191,15 @@ const styles = StyleSheet.create({
   envelope: {width: '80%'},
   dash: {
     position: 'absolute',
-    bottom: -0.5,
+    bottom: 0,
     width: '100%',
-    borderWidth: 1,
+    borderBottomWidth: 1,
     borderStyle: 'dashed',
     borderColor: '#0000CC',
   },
   cardTop: {
     position: 'relative',
+    overflow: 'hidden',
     zIndex: 1,
     height: 8,
     backgroundColor: 'white',
