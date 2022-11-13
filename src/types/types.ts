@@ -64,7 +64,7 @@ export type Texticons = {
 };
 
 export type Stamp = {
-  id: string;
+  id: number;
   image: any;
 };
 
@@ -104,6 +104,6 @@ export interface PublicLetter {
   stampId?: number;
   createDate?: string;
   [key: string]: any;
-};
+}
 
 export type PublicLetters = PublicLetter[];
