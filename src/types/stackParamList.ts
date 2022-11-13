@@ -20,4 +20,11 @@ export type StackParamsList = {
   // 회원 정보 수정 스택
   MyPage: undefined;
   AccountDelete: undefined;
+
+  // 편지 작성
+  LetterEditor: undefined;
+  CoverTopicEditor: undefined;
+  CoverPersonalityEditor: undefined;
+  CoverStampSelector: undefined;
+  LetterComplete: undefined;
 };

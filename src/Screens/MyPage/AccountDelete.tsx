@@ -3,7 +3,7 @@ import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {StackParamsList} from '../../types/stackParamList';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {Header} from '../../Components/Header';
+import {Header} from '../../Components/Headers/Header';
 import {ModalBlur} from '../../Modals/ModalBlur';
 import {AccountDeleteModal} from '../../Modals/AccountDeleteModal';
 

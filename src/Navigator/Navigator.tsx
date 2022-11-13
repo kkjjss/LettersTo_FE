@@ -21,6 +21,13 @@ import {LocationForm} from '../Screens/SignUp/LocationForm';
 import {MyPage} from '../Screens/MyPage/MyPage';
 import {AccountDelete} from '../Screens/MyPage/AccountDelete';
 
+// 편지 작성
+import {LetterEditor} from '../Screens/Letter/LetterEditor';
+import {CoverTopicEditor} from '../Screens/Letter/CoverEditor/CoverTopicEditor';
+import {CoverPersonalityEditor} from '../Screens/Letter/CoverEditor/CoverPersonalityEditor';
+import {CoverStampSelector} from '../Screens/Letter/CoverEditor/CoverStampSelector';
+import {LetterComplete} from '../Screens/Letter/LetterComplete';
+
 const Stack = createNativeStackNavigator<StackParamsList>();
 
 export default function StackNavigator() {
@@ -40,6 +47,19 @@ export default function StackNavigator() {
           {/* 회원정보 수정 */}
           <Stack.Screen name="MyPage" component={MyPage} />
           <Stack.Screen name="AccountDelete" component={AccountDelete} />
+
+          {/* 편지 작성 */}
+          <Stack.Screen name="LetterEditor" component={LetterEditor} />
+          <Stack.Screen name="CoverTopicEditor" component={CoverTopicEditor} />
+          <Stack.Screen
+            name="CoverPersonalityEditor"
+            component={CoverPersonalityEditor}
+          />
+          <Stack.Screen
+            name="CoverStampSelector"
+            component={CoverStampSelector}
+          />
+          <Stack.Screen name="LetterComplete" component={LetterComplete} />
         </Stack.Group>
       ) : (
         <Stack.Group>

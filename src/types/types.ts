@@ -1,3 +1,8 @@
+export interface Selector {
+  start: number;
+  end: number;
+}
+
 export interface Token {
   idToken: string;
 }
@@ -42,6 +47,52 @@ export interface UserInfo {
   geolocationId: number;
 }
 
+export type TexticonCategory =
+  | 'happy'
+  | 'worry'
+  | 'angry'
+  | 'upfeeling'
+  | 'wink'
+  | 'sad'
+  | 'love';
+
+export type Texticons = {
+  [key in TexticonCategory]: {
+    key: string;
+    list: string[];
+  };
+};
+
+export type Stamp = {
+  id: string;
+  image: any;
+};
+
+export type Stamps = Stamp[];
+
+export type PaperColor =
+  | 'PINK'
+  | 'ORANGE'
+  | 'YELLOW'
+  | 'GREEN'
+  | 'MINT'
+  | 'SKY_BLUE'
+  | 'BLUE'
+  | 'PURPLE'
+  | 'LAVENDER';
+
+export type PaperStyle = 'GRID' | 'DOT' | 'PLAIN';
+
+export type PublicLetterWriteRequest = {
+  title: string;
+  content: string;
+  paperType: PaperStyle;
+  paperColor: PaperColor;
+  stampId: number;
+  topics: number[];
+  personalities: number[];
+  files?: string[];
+};
 export interface PublicLetter {
   id: number;
   title: string;

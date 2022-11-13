@@ -1,4 +1,12 @@
 import create from 'zustand';
+import {
+  Personalities,
+  Topics,
+  Stamps,
+  PaperColor,
+  PaperStyle,
+} from '../types/types';
+
 interface Store {
   isLoggedIn: boolean;
   setIsLoggedIn: (value: boolean) => void;
@@ -9,6 +17,12 @@ interface Store {
   registerToken: string | undefined;
   setRegisterToken: (value: string) => void;
 
+  topics: Topics;
+  setTopics: (value: Topics) => void;
+
+  personalities: Personalities;
+  setPersonalities: (value: Personalities) => void;
+
   signUpInfo: {
     nickname: string | undefined;
     personalityIds: number[] | undefined;
@@ -16,12 +30,10 @@ interface Store {
     geolocationId: number | undefined;
   };
   setNickname: (value: string) => void;
-
   setTopicIds: (value: number[]) => void;
-
   setPersonalityIds: (value: number[]) => void;
-
   setAddress: (value: number) => void;
+  clearSignupInfo: () => void;
 
   userInfo:
     | {
@@ -32,7 +44,6 @@ interface Store {
         parentGeolocationId: number;
       }
     | undefined;
-
   setUserInfo: (value: {
     nickname: string;
     personalityIds: number[];
@@ -42,6 +53,39 @@ interface Store {
   }) => void;
 
   signOut: () => void;
+
+  letter:
+    | {
+        title: string;
+        text: string;
+        paperStyle: PaperStyle;
+        paperColor: PaperColor;
+        align: 'left' | 'center' | 'right';
+        images?: string[];
+      }
+    | undefined;
+
+  setLetter: (letterData: {
+    title: string;
+    text: string;
+    paperStyle: PaperStyle;
+    paperColor: PaperColor;
+    align: 'left' | 'center' | 'right';
+    images?: string[];
+  }) => void;
+
+  cover: {
+    topicIds: number[];
+    personalityIds: number[];
+    stamp: number | undefined;
+  };
+  setCoverTopicIds: (topicIds: number[]) => void;
+  setCoverPersonalityIds: (personalityIds: number[]) => void;
+  setCoverStampId: (stampId: number) => void;
+  setInitialCoverData: () => void;
+
+  stamps: Stamps;
+  setStamps: (value: Stamps) => void;
 }
 
 const useStore = create<Store>(set => ({
@@ -53,6 +97,12 @@ const useStore = create<Store>(set => ({
 
   registerToken: undefined,
   setRegisterToken: value => set(() => ({registerToken: value})),
+
+  topics: [],
+  setTopics: value => set(() => ({topics: value})),
+
+  personalities: [],
+  setPersonalities: value => set(() => ({personalities: value})),
 
   signUpInfo: {
     nickname: undefined,
@@ -73,12 +123,54 @@ const useStore = create<Store>(set => ({
   setAddress: value =>
     set(state => ({signUpInfo: {...state.signUpInfo, geolocationId: value}})),
 
+  clearSignupInfo: () =>
+    set(() => ({
+      signUpInfo: {
+        nickname: undefined,
+        personalityIds: undefined,
+        topicIds: undefined,
+        geolocationId: undefined,
+      },
+    })),
+
   userInfo: undefined,
 
   setUserInfo: value => set(() => ({userInfo: value})),
 
   signOut: () =>
     set(() => ({userInfo: undefined, isLoggedIn: false, isLoading: true})),
+
+  letter: undefined,
+
+  setLetter: letterData => set(() => ({letter: {...letterData}})),
+
+  cover: {
+    topicIds: [],
+    personalityIds: [],
+    stamp: undefined,
+  },
+
+  setCoverTopicIds: topicIds =>
+    set(state => ({cover: {...state.cover, topicIds: topicIds}})),
+
+  setCoverPersonalityIds: personalityIds =>
+    set(state => ({cover: {...state.cover, personalityIds: personalityIds}})),
+
+  setCoverStampId: stampId =>
+    set(state => ({cover: {...state.cover, stamp: stampId}})),
+
+  setInitialCoverData: () =>
+    set(state => ({
+      cover: {
+        topicIds: state.userInfo?.topicIds ?? [],
+        personalityIds: state.userInfo?.personalityIds ?? [],
+        stamp: undefined,
+      },
+    })),
+
+  stamps: [],
+
+  setStamps: value => set(() => ({stamps: [...value]})),
 }));
 
 export default useStore;

@@ -1,47 +1,40 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {Text, View, Modal, StyleSheet, Platform} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {getCities, getRegions} from '../APIs/geolocation';
-import {patchUserInfo} from '../APIs/member';
-import {ModalHeader} from '../Components/ModalHeader';
-import {UpdateButton} from '../Components/UpdateButton';
-import {SCREEN_HEIGHT} from '../constants';
-import useStore from '../Store/store';
+import {patchUserInfo} from '../../APIs/member';
+import {ModalHeader} from '../../Components/ModalHeader';
+import {UpdateButton} from '../../Components/UpdateButton';
+import {SCREEN_HEIGHT} from '../../Constants/screen';
+import {useLocation} from '../../Hooks/UserInfo/useLocation';
+import useStore from '../../Store/store';
 type Props = {
   isModalVisible: boolean;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export function LocationModal({isModalVisible, setModalVisible}: Props) {
-  const [openRegion, setOpenRegion] = useState(false);
-  const [regions, setRegions] = useState([{label: '', value: 0}]);
-  const [selectedRegionId, setSelectedRegionId] = useState<null | number>(null);
+  const {
+    regions,
+    selectedRegionId,
+    setSelectedRegionId,
+    cities,
+    selectedCityId,
+    setSelectedCityId,
+    disable,
+  } = useLocation();
 
+  const [openRegion, setOpenRegion] = useState(false);
   const [openCity, setOpenCity] = useState(false);
-  const [cities, setCities] = useState([{label: '', value: 0}]);
-  const [selectedCityId, setSelectedCityId] = useState<null | number>(null);
 
   const {userInfo} = useStore();
 
-  const activateUpdate = useMemo(() => {
-    if (selectedRegionId && selectedCityId) {
-      if (selectedCityId !== userInfo?.geolocationId) {
-        return true;
-      }
-    }
-    return false;
-  }, [selectedCityId, selectedRegionId, userInfo]);
+  const disableUpdate = useMemo(
+    () => disable && selectedCityId === userInfo?.geolocationId,
+    [disable, selectedCityId, userInfo],
+  );
 
   const {bottom: SAFE_AREA_BOTTOM} = useSafeAreaInsets();
-
-  const onRegionOpen = useCallback(() => {
-    setOpenRegion(false);
-  }, []);
-
-  const onCityOpen = useCallback(() => {
-    setOpenCity(false);
-  }, []);
 
   const hideModal = () => {
     setModalVisible(false);
@@ -61,41 +54,6 @@ export function LocationModal({isModalVisible, setModalVisible}: Props) {
       console.error(error.message);
     }
   };
-
-  useEffect(() => {
-    if (isModalVisible) {
-      if (userInfo) {
-        setSelectedRegionId(userInfo.parentGeolocationId);
-        setSelectedCityId(userInfo.geolocationId);
-      }
-    }
-  }, [isModalVisible, userInfo]);
-
-  useEffect(() => {
-    const getRegionsList = async () => {
-      const regionsList = (await getRegions()).map(({id, name}) => {
-        return {value: id, label: name};
-      });
-      setRegions(regionsList);
-    };
-
-    getRegionsList();
-  }, []);
-
-  useEffect(() => {
-    const getCitiesList = async (regionId: number) => {
-      const citiesList = (await getCities(regionId)).map(({id, name}) => {
-        return {value: id, label: name};
-      });
-      setCities(citiesList);
-    };
-
-    if (selectedRegionId) {
-      getCitiesList(selectedRegionId);
-    } else {
-      setCities([{label: '', value: 0}]);
-    }
-  }, [selectedRegionId]);
 
   return (
     <Modal
@@ -130,7 +88,6 @@ export function LocationModal({isModalVisible, setModalVisible}: Props) {
                 value={selectedRegionId}
                 items={regions}
                 setOpen={setOpenRegion}
-                onOpen={onCityOpen}
                 setValue={setSelectedRegionId}
                 autoScroll={true}
                 placeholder="시 · 도 선택"
@@ -151,7 +108,6 @@ export function LocationModal({isModalVisible, setModalVisible}: Props) {
                   value={selectedCityId}
                   items={cities}
                   setOpen={setOpenCity}
-                  onOpen={onRegionOpen}
                   setValue={setSelectedCityId}
                   autoScroll={true}
                   placeholder="군 · 구 선택"
@@ -164,7 +120,7 @@ export function LocationModal({isModalVisible, setModalVisible}: Props) {
           </View>
 
           <UpdateButton
-            activateUpdate={activateUpdate}
+            activateUpdate={!disableUpdate}
             onPress={updateLocation}
           />
         </View>

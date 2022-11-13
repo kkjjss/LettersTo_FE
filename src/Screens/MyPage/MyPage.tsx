@@ -9,18 +9,18 @@ import {
   Image,
 } from 'react-native';
 import type {StackParamsList} from '../../types/stackParamList';
-import {Header} from '../../Components/Header';
+import {Header} from '../../Components/Headers/Header';
 import {ListItem, ListName} from '../../Components/MyPageList';
 
-import {NicknameModal} from '../../Modals/NicknameModal';
-import {TopicsModal} from '../../Modals/TopicsModal';
-import {PersonalitiesModal} from '../../Modals/PersonalitiesModal';
+import {NicknameModal} from '../../Modals/UserInfo/NicknameModal';
+import {TopicsModal} from '../../Modals/UserInfo/TopicsModal';
+import {PersonalitiesModal} from '../../Modals/UserInfo/PersonalitiesModal';
 
 import useStore from '../../Store/store';
-import {LocationModal} from '../../Modals/LocationModal';
+import {LocationModal} from '../../Modals/UserInfo/LocationModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {logIn as getUserInfo} from '../../APIs/member';
-import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../constants';
+import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../Constants/screen';
 import {ModalBlur} from '../../Modals/ModalBlur';
 
 type Props = NativeStackScreenProps<StackParamsList, 'MyPage'>;

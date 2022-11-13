@@ -1,4 +1,4 @@
-import {BASE_URL_TEST} from '../constants';
+import {BASE_URL_TEST} from '../Constants/common';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function loggingRequest(method: string, url: string, status: number): void {
@@ -12,16 +12,18 @@ class Instance {
     this.baseUrl = BASE_URL;
   }
 
-  async post(path: string, body: {}, headers?: {}) {
+  async post(path: string, body?: {}, headers?: {}) {
     const url = this.baseUrl + path;
-    const options = {
+    const options: {method: 'POST'; headers: any; body?: string} = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         ...headers,
       },
-      body: JSON.stringify(body),
     };
+    if (body) {
+      options.body = JSON.stringify(body);
+    }
     const res = await fetch(url, options);
     const data = await res.json();
     loggingRequest('POST', url, res.status);

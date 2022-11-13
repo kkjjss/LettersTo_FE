@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+  </head>
+  <body>
+    <button onclick="upload()">업로드</button>
+    <script>
+      async function upload() {
+        async function openDialog() {
+          const input = document.createElement('input');
+          input.type = 'file';
+          return new Promise(resolve => {
+            input.onchange = async () => {
+              resolve(await input.files[0]);
+            };
+
+            input.click();
+          });
+        }
+
+        const file = await openDialog();
+
+        const presignUrl = await fetch(
+          'http://13.209.12.14/api/files?filename=' + file.name,
+          {
+            method: 'POST',
+          },
+        ).then(response => response.json());
+
+        console.log(presignUrl);
+
+        const data = await file.arrayBuffer();
+
+        await fetch(presignUrl.uploadUrl, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'image/*',
+          },
+          body: data,
+        });
+      }
+    </script>
+  </body>
+</html>

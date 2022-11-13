@@ -8,11 +8,11 @@ import {signUp} from '../APIs/member';
 import type {UserInfo} from '../types/types';
 
 type Props = {
-  activateSignUp: boolean;
+  disableSignUp: boolean;
   onPress: () => void;
 };
 
-export function SignUpButton({activateSignUp, onPress: onPressSignUp}: Props) {
+export function SignUpButton({disableSignUp, onPress: onPressSignUp}: Props) {
   const [disable, setDisable] = useState(false);
   const store = useStore();
 
@@ -44,6 +44,7 @@ export function SignUpButton({activateSignUp, onPress: onPressSignUp}: Props) {
           AsyncStorage.setItem('refreshToken', refreshToken),
         ]);
 
+        store.clearSignupInfo();
         store.setIsLoading(true);
       }
     } catch (error: any) {
@@ -55,13 +56,13 @@ export function SignUpButton({activateSignUp, onPress: onPressSignUp}: Props) {
 
   return (
     <TouchableWithoutFeedback
-      disabled={!activateSignUp || disable}
+      disabled={disableSignUp || disable}
       onPress={onPress}>
       <View
         style={[
           styles.signUpButton,
           {
-            backgroundColor: activateSignUp ? '#ff6ece' : '#ffc7f0',
+            backgroundColor: !disableSignUp ? '#ff6ece' : '#ffc7f0',
           },
         ]}>
         <Text style={styles.nextButtonText}>가입 완료!</Text>

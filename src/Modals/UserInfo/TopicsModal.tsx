@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {
   Text,
   View,
@@ -7,16 +7,15 @@ import {
   Animated,
   ScrollView,
 } from 'react-native';
-import {ResetButton} from '../Components/ResetButton';
-import useStore from '../Store/store';
-import {ModalHeader} from '../Components/ModalHeader';
-import type {Topics} from '../types/types';
-import {getTopics} from '../APIs/topic';
-import {SCREEN_HEIGHT} from '../constants';
-import {TopicList} from '../Components/TopicList';
-import {UpdateButton} from '../Components/UpdateButton';
+import {ResetButton} from '../../Components/ResetButton';
+import useStore from '../../Store/store';
+import {ModalHeader} from '../../Components/ModalHeader';
+import {SCREEN_HEIGHT} from '../../Constants/screen';
+import {TopicList} from '../../Components/TopicList';
+import {UpdateButton} from '../../Components/UpdateButton';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {patchUserInfo} from '../APIs/member';
+import {patchUserInfo} from '../../APIs/member';
+import {useTopic} from '../../Hooks/UserInfo/useTopic';
 
 type Props = {
   isModalVisible: boolean;
@@ -24,43 +23,28 @@ type Props = {
 };
 
 export const TopicsModal = ({isModalVisible, setModalVisible}: Props) => {
-  const [topics, setTopics] = useState<Topics>([]);
-  const [selectedTopicIds, setSelectedTopicIds] = useState<number[]>([]);
-  const [activateUpdate, setActivateUpdate] = useState(true);
+  const {
+    topics,
+    selectedTopicIds,
+    setSelectedTopicIds,
+    selectTopic,
+    alertOpacity,
+    counter,
+    reset,
+    resetAlert,
+  } = useTopic();
 
   const {userInfo} = useStore();
 
   const {bottom: SAFE_AREA_BOTTOM} = useSafeAreaInsets();
 
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-
-  const alert = Animated.sequence([
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 0,
-      useNativeDriver: true,
-    }),
-    Animated.timing(fadeAnim, {
-      toValue: 0,
-      delay: 2000,
-      useNativeDriver: true,
-    }),
-  ]);
-
-  const counter = useMemo(() => selectedTopicIds.length, [selectedTopicIds]);
-
-  const selectTopic = (topicId: number) => {
-    alert.reset();
-    if (counter < 7 && selectedTopicIds.includes(topicId) === false) {
-      setSelectedTopicIds([...selectedTopicIds, topicId]);
-    } else if (selectedTopicIds.includes(topicId) === true) {
-      setSelectedTopicIds([...selectedTopicIds].filter(e => e !== topicId));
-    } else {
-      alert.start();
-    }
-  };
+  const disableUpdate = useMemo(
+    () => selectedTopicIds.length === 0,
+    [selectedTopicIds],
+  );
 
   const hideModal = () => {
+    resetAlert();
     setModalVisible(false);
   };
 
@@ -79,35 +63,11 @@ export const TopicsModal = ({isModalVisible, setModalVisible}: Props) => {
     }
   };
 
-  const reset = () => {
-    setSelectedTopicIds([]);
-  };
-
   useEffect(() => {
-    try {
-      getTopics().then(topicData => {
-        setTopics([...topicData]);
-      });
-    } catch (error: any) {
-      console.error(error.message);
+    if (userInfo) {
+      setSelectedTopicIds(userInfo.topicIds);
     }
-  }, []);
-
-  useEffect(() => {
-    if (isModalVisible) {
-      if (userInfo?.topicIds) {
-        setSelectedTopicIds(userInfo.topicIds);
-      }
-    }
-  }, [isModalVisible, userInfo]);
-
-  useEffect(() => {
-    if (counter > 0) {
-      setActivateUpdate(true);
-    } else {
-      setActivateUpdate(false);
-    }
-  }, [counter]);
+  }, [setSelectedTopicIds, userInfo]);
 
   return (
     <Modal
@@ -143,12 +103,12 @@ export const TopicsModal = ({isModalVisible, setModalVisible}: Props) => {
               selectedTopicIds={selectedTopicIds}
             />
           </ScrollView>
-          <Animated.View style={[styles.alert, {opacity: fadeAnim}]}>
+          <Animated.View style={[styles.alert, {opacity: alertOpacity}]}>
             <Text style={styles.alertText}>최대 7개까지만 선택 가능해요!</Text>
           </Animated.View>
 
           <UpdateButton
-            activateUpdate={activateUpdate}
+            activateUpdate={!disableUpdate}
             onPress={updateTopics}
           />
         </View>

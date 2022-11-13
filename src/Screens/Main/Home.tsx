@@ -125,6 +125,10 @@ export function Home({navigation}: Props) {
     navigation.navigate('MyPage');
   }
 
+  function goToLetterEditor() {
+    navigation.navigate('LetterEditor');
+  }
+
   return (
     <LinearGradient locations={[0, 0.1, 0.8, 1]} colors={['#FFCCEE', '#FFFFFF', '#FFFFFF', '#FFFFCC']} style={styles.container}>
       <SafeAreaView style={styles.container}>

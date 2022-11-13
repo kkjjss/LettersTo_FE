@@ -1,3 +1,6 @@
+#import <Firebase.h>
+#import <RNKakaoLogins.h>
+
 #import "AppDelegate.h"
 
 #import <React/RCTBridge.h>
@@ -16,18 +19,6 @@
 
 #import <react/config/ReactNativeConfig.h>
 
-#import <RNKakaoLogins.h>
-
-- (BOOL)application:(UIApplication *)app
-     openURL:(NSURL *)url
-     options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
- if([RNKakaoLogins isKakaoTalkLoginUrl:url]) {
-    return [RNKakaoLogins handleOpenUrl: url];
- }
-
- return NO;
-}
-
 static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
 @interface AppDelegate () <RCTCxxBridgeDelegate, RCTTurboModuleManagerDelegate> {
@@ -43,6 +34,8 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [FIRApp configure];
+
   RCTAppSetupPrepareApp(application);
 
   RCTBridge *bridge = [self.reactDelegate createBridgeWithDelegate:self launchOptions:launchOptions];
@@ -71,6 +64,17 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
   [self.window makeKeyAndVisible];
   [super application:application didFinishLaunchingWithOptions:launchOptions];
   return YES;
+}
+
+
+- (BOOL)application:(UIApplication *)app
+     openURL:(NSURL *)url
+     options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+ if([RNKakaoLogins isKakaoTalkLoginUrl:url]) {
+    return [RNKakaoLogins handleOpenUrl: url];
+ }
+
+ return NO;
 }
 
 /// This method controls whether the `concurrentRoot`feature of React18 is turned on or off.
