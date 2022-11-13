@@ -93,3 +93,17 @@ export type PublicLetterWriteRequest = {
   personalities: number[];
   files?: string[];
 };
+export interface PublicLetter {
+  id: number;
+  title: string;
+  fromAddress: string;
+  fromNickname: string;
+  topics: string[];
+  personalities: string[];
+  paperColor: string;
+  stampId?: number;
+  createDate?: string;
+  [key: string]: any;
+};
+
+export type PublicLetters = PublicLetter[];

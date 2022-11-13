@@ -9,6 +9,9 @@ import {Splash} from '../Screens/Splash';
 // 메인 서비스 스크린
 import {Home} from '../Screens/Main/Home';
 
+// 편지 관련 스크린
+import {ReadLetter} from '../Screens/Letter/ReadLetter';
+
 // 인증 관련 스크린
 import {Auth} from '../Screens/Auth/Auth';
 import {NicknameForm} from '../Screens/SignUp/NicknameForm';
@@ -39,6 +42,7 @@ export default function StackNavigator() {
       ) : isLoggedIn ? (
         <Stack.Group screenOptions={{headerShown: false}}>
           <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="ReadLetter" component={ReadLetter} />
 
           {/* 회원정보 수정 */}
           <Stack.Screen name="MyPage" component={MyPage} />

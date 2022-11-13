@@ -1,0 +1,103 @@
+{
+  "cards": [
+    {
+      "id": 0,
+      "title": "오늘 서울은 하루종일 맑고 청아함",
+      "stampId": 237,
+      "fromInfo": {
+        "nickname": "Minju",
+        "city": "Busan"
+      },
+      "topic": ["음악", "여행", "자기계발"],
+      "personality": ["신중한", "세심한", "수줍은", "어쩌구한"]
+    },
+    {
+      "id": 1,
+      "title": "정신차려 이 각박한 세상 속에서",
+      "stampId": 1003,
+      "fromInfo": {
+        "nickname": "Maria",
+        "city": "Jeju"
+      },
+      "topic": ["음악", "여행", "자기계발", "커리어", "음악", "여행", "자기계발", "커리어"],
+      "personality": ["신중한", "세심한", "수줍은", "어쩌구한", "저쩌구한"]
+    },
+    {
+      "id": 2,
+      "title": "내가 커서 직장인이 될 줄 알았겠냐구",
+      "stampId": 1056,
+      "fromInfo": {
+        "nickname": "Nara Kim",
+        "city": "Seoul"
+      },
+      "topic": ["여행", "자기계발", "커리어"],
+      "personality": ["신중한", "세심한", "어쩌구한"]
+    },
+    {
+      "id": 3,
+      "title": "C’est la vie",
+      "stampId": 1062,
+      "fromInfo": {
+        "nickname": "Celine",
+        "city": "Incheon"
+      },
+      "topic": ["여행", "자기계발", "커리어"],
+      "personality": ["신중한", "세심한", "어쩌구한"]
+    },
+    {
+      "id": 4,
+      "title": "밈대결하실분괌",
+      "stampId": 237,
+      "fromInfo": {
+        "nickname": "Mimmy",
+        "city": "Ansan"
+      },
+      "topic": [],
+      "personality": []
+    },
+    {
+      "id": 5,
+      "title": "오늘 서울은 하루종일 맑고 청아함",
+      "stampId": 237,
+      "fromInfo": {
+        "nickname": "Minju",
+        "city": "Busan"
+      },
+      "topic": ["음악", "여행", "자기계발"],
+      "personality": ["신중한", "세심한", "수줍은", "어쩌구한"]
+    },
+    {
+      "id": 6,
+      "title": "정신차려 이 각박한 세상 속에서",
+      "stampId": 1003,
+      "fromInfo": {
+        "nickname": "Maria",
+        "city": "Jeju"
+      },
+      "topic": ["음악", "여행", "자기계발", "커리어", "음악", "여행", "자기계발", "커리어"],
+      "personality": ["신중한", "세심한", "수줍은", "어쩌구한", "저쩌구한"]
+    },
+    {
+      "id": 7,
+      "title": "내가 커서 직장인이 될 줄 알았겠냐구",
+      "stampId": 1056,
+      "fromInfo": {
+        "nickname": "Nara Kim",
+        "city": "Seoul"
+      },
+      "topic": ["여행", "자기계발", "커리어"],
+      "personality": ["신중한", "세심한", "어쩌구한"]
+    },
+    {
+      "id": 8,
+      "title": "C’est la vie",
+      "stampId": 1062,
+      "fromInfo": {
+        "nickname": "Celine",
+        "city": "Incheon"
+      },
+      "topic": ["여행", "자기계발", "커리어"],
+      "personality": ["신중한", "세심한", "어쩌구한"]
+    }
+  ]
+}
