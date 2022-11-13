@@ -109,7 +109,7 @@ export const EnvelopeModal = ({
             <Animated.View
               style={[
                 styles.cardTop,
-                {transform: [{translateY: moveAnim.y}], overflow: 'hidden'},
+                {transform: [{translateY: moveAnim.y}]},
               ]}>
               <View style={{flex: 1, backgroundColor: paperColor}} />
               <View style={styles.dash} />
@@ -186,14 +186,15 @@ const styles = StyleSheet.create({
   envelope: {position: 'absolute', bottom: '30%', width: '78.7%'},
   dash: {
     position: 'absolute',
-    bottom: -0.5,
+    bottom: 0,
     width: '100%',
-    borderWidth: 1,
+    borderBottomWidth: 1,
     borderStyle: 'dashed',
     borderColor: '#0000CC',
   },
   cardTop: {
     position: 'relative',
+    overflow: 'hidden',
     zIndex: 1,
     height: 8,
     backgroundColor: 'white',
