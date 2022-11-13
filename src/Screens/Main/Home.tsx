@@ -12,7 +12,7 @@ import {
   Pressable,
   TouchableOpacity,
   Image,
-  TouchableWithoutFeedback,
+  ImageBackground,
 } from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 import {getPublicLetters} from '../../APIs/publicLetter';
@@ -190,7 +190,7 @@ export function Home({navigation}: Props) {
               />
             </View>
           </View>
-          <TouchableOpacity activeOpacity={0.7} onPress={goToMyPage}>
+          <TouchableOpacity activeOpacity={0.7}>
             <Image
               source={require('../../Assets/menu.png')}
               style={styles.icon}
@@ -207,8 +207,7 @@ export function Home({navigation}: Props) {
         refreshing={refreshing}
         onRefresh={handleRefresh}
         data={publicLetters}
-        style={{paddingTop: 30}}
-        keyExtractor={item => item.id}
+        keyExtractor={(item, index) => item.id}
         renderItem={({item, index}) => {
           const {
             id,
@@ -258,7 +257,7 @@ export function Home({navigation}: Props) {
       />
       <View style={styles.tabBottom}>
         <View style={styles.tabArea}>
-          <TouchableWithoutFeedback>
+          <Pressable disabled>
             <View style={styles.tabActive}>
               <Image
                 source={require('../../Assets/triangle.png')}
@@ -266,8 +265,8 @@ export function Home({navigation}: Props) {
               />
               <Text style={styles.tabActiveText}>편지탐색</Text>
             </View>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback>
+          </Pressable>
+          <Pressable onPress={goToLetterBox}>
             <View style={styles.tabInactive}>
               <Image
                 source={require('../../Assets/triangle.png')}
@@ -275,7 +274,7 @@ export function Home({navigation}: Props) {
               />
               <Text style={styles.tabInactiveText}>내 사서함</Text>
             </View>
-          </TouchableWithoutFeedback>
+          </Pressable>
         </View>
       </View>
       <View style={styles.floatArea}>
@@ -304,8 +303,9 @@ export function Home({navigation}: Props) {
         )}
         <TouchableOpacity
           activeOpacity={0.7}
-          onPress={goToLetterEditor}
-          style={[styles.btn, styles.btnSecondary]}>
+          style={[styles.btn, styles.btnSecondary]}
+          onPress={() => setPublicLetters([])}
+        >
           <Image
             source={require('../../Assets/write.png')}
             style={styles.icon}

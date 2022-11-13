@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   StyleSheet,
   Pressable,
@@ -28,6 +28,14 @@ export const EnvelopeModal = ({
   setModalVisible,
   onOpenLetter,
 }: EnvelopeModalProps) => {
+  // const [gestureStartLocation, setGestureStartLocation] = useState<{
+  //   x: number;
+  //   timestamp: number;
+  // }>({
+  //   x: 0,
+  //   timestamp: 0,
+  // });
+
   const {
     title,
     fromAddress,
@@ -89,90 +97,77 @@ export const EnvelopeModal = ({
             />
           </Pressable>
           {/* 뜯어서 편지 열어보기 */}
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginBottom: 100,
-            }}>
-            <Pressable style={styles.openArea} onPress={openLetter}>
-              <Text style={styles.openText}>뜯어서 편지 열어보기</Text>
-              <Image
-                source={require('../Assets/arrow_long.png')}
-                style={styles.openArrow}
-                resizeMode="contain"
-              />
-            </Pressable>
-            <View style={styles.envelope}>
-              <Animated.View
-                style={[
-                  styles.cardTop,
-                  {transform: [{translateY: moveAnim.y}], overflow: 'hidden'},
-                ]}>
-                <View style={{flex: 1, backgroundColor: paperColor}} />
-                <View style={styles.dash} />
-              </Animated.View>
-              <View style={styles.cardItem}>
-                <LinearGradient
-                  locations={[0, 0.5]}
-                  colors={[paperColor, 'white']}
-                  style={{flex: 1}}>
-                  <View
-                    style={{flex: 1}}
-                    onStartShouldSetResponder={() => true}
-                    onResponderStart={event => {
-                      onSwipeXStart(
-                        event.nativeEvent.locationX,
-                        event.nativeEvent.timestamp,
-                      );
-                    }}
-                    onResponderEnd={event => {
-                      onSwipteXEnd(
-                        event.nativeEvent.locationX,
-                        event.nativeEvent.timestamp,
-                        150,
-                        1000,
-                        openLetter,
-                      );
-                    }}>
-                    <Text style={styles.title}>⌜{title || '무제'}⌟︎︎</Text>
-                    <View style={styles.fromArea}>
-                      <Image
-                        style={styles.fromImg}
-                        source={require('../Assets/from.png')}
-                      />
-                      <Text
-                        style={
-                          styles.fromText
-                        }>{`${fromNickname}, ${fromAddress}`}</Text>
-                    </View>
-                    <ImageBackground
-                      source={require('../Assets/bg_stamp.png')}
-                      style={styles.stampArea}>
-                      <Image style={styles.stampImg} source={stampSource} />
-                    </ImageBackground>
-                  </View>
-
-                  <View style={styles.tagArea}>
-                    <ScrollView horizontal style={styles.tagList}>
-                      {topics?.map((item: string, idx: number) => (
-                        <Text key={idx} style={styles.tagItem}>
-                          {item}
-                        </Text>
-                      ))}
-                    </ScrollView>
-                    <ScrollView horizontal style={styles.tagList}>
-                      {personalities?.map((item: string, idx: number) => (
-                        <Text key={idx} style={styles.tagItem}>
-                          {item}
-                        </Text>
-                      ))}
-                    </ScrollView>
-                  </View>
-                </LinearGradient>
-              </View>
-
+          <Pressable style={styles.openArea} onPress={openLetter}>
+            <Text style={styles.openText}>뜯어서 편지 열어보기</Text>
+            <Image
+              source={require('../Assets/arrow_long.png')}
+              style={styles.openArrow}
+              resizeMode="contain"
+            />
+          </Pressable>
+          <View style={styles.envelope}>
+            <Animated.View
+              style={[
+                styles.cardTop,
+                {transform: [{translateY: moveAnim.y}]},
+              ]}>
+              <View style={{flex: 1, backgroundColor: paperColor}} />
+              <View style={styles.dash} />
+            </Animated.View>
+            <View style={styles.cardItem}>
+              <LinearGradient
+                onStartShouldSetResponder={() => true}
+                onResponderStart={event => {
+                  onSwipeXStart(
+                    event.nativeEvent.locationX,
+                    event.nativeEvent.timestamp,
+                  );
+                }}
+                onResponderEnd={event => {
+                  onSwipteXEnd(
+                    event.nativeEvent.locationX,
+                    event.nativeEvent.timestamp,
+                    150,
+                    1000,
+                    openLetter,
+                  );
+                }}
+                locations={[0, 0.5]}
+                colors={[paperColor, 'white']}
+                style={{flex: 1}}>
+                <Text style={styles.title}>⌜{title || '무제'}⌟︎︎</Text>
+                <View style={styles.fromArea}>
+                  <Image
+                    style={styles.fromImg}
+                    source={require('../Assets/from.png')}
+                  />
+                  <Text
+                    style={
+                      styles.fromText
+                    }>{`${fromNickname}, ${fromAddress}`}</Text>
+                </View>
+                <ImageBackground
+                  source={require('../Assets/bg_stamp.png')}
+                  style={styles.stampArea}>
+                  <Image style={styles.stampImg} source={stampSource} />
+                </ImageBackground>
+                <View style={styles.tagArea}>
+                  <ScrollView horizontal style={styles.tagList}>
+                    {topics?.map((item: string, idx: number) => (
+                      <Text key={idx} style={styles.tagItem}>
+                        {item}
+                      </Text>
+                    ))}
+                  </ScrollView>
+                  <ScrollView horizontal style={styles.tagList}>
+                    {personalities?.map((item: string, idx: number) => (
+                      <Text key={idx} style={styles.tagItem}>
+                        {item}
+                      </Text>
+                    ))}
+                  </ScrollView>
+                </View>
+              </LinearGradient>
             </View>
           </View>
         </LinearGradient>
@@ -182,13 +177,13 @@ export const EnvelopeModal = ({
 };
 const styles = StyleSheet.create({
   container: {flex: 1, backgroundColor: 'rgba(0, 0, 204, 0.7)'},
-  modalBg: {flex: 1},
-  closeButton: {marginTop: 12, marginLeft: 16},
+  modalBg: {flex: 1, alignItems: 'center', justifyContent: 'center'},
+  closeButton: {position: 'absolute', top: 12, left: 16},
   closeIcon: {width: 28, height: 28},
-  openArea: {paddingBottom: 30},
-  openText: {fontFamily: 'Galmuri11', fontSize: 15, color: 'white'},
+  openArea: {position: 'absolute', top: '30%', alignItems: 'center'},
+  openText: {fontFamily: 'Galmuri11', fontSize: 15},
   openArrow: {width: 144, height: 10, marginTop: 16},
-  envelope: {width: '80%'},
+  envelope: {position: 'absolute', bottom: '30%', width: '78.7%'},
   dash: {
     position: 'absolute',
     bottom: 0,
