@@ -1,5 +1,18 @@
-import {PublicLetterWriteRequest} from '../types/types';
-import {instanceWithAuth} from '../Utils/http';
+import {PublicLetters, PublicLetterWriteRequest} from '../types/types';
+import {instance, instanceWithAuth} from '../Utils/http';
+
+type PublicLetterData = {
+  content: PublicLetters | [];
+  cursor: number;
+}
+
+export async function getPublicLetters(cursor?: number): Promise<PublicLetterData> {
+  if (cursor) {
+    return await instance.get('/public-letters', {cursor});
+  } else {
+    return await instance.get('/public-letters');
+  }
+}
 
 export async function postPublicLetter(
   publicLetterData: PublicLetterWriteRequest,
