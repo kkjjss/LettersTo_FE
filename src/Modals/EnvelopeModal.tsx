@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useGesture} from '../Hooks/Hardware/useGesture';
 
 interface EnvelopeModalProps {
   letter: any;
@@ -27,6 +28,14 @@ export const EnvelopeModal = ({
   setModalVisible,
   onOpenLetter,
 }: EnvelopeModalProps) => {
+  // const [gestureStartLocation, setGestureStartLocation] = useState<{
+  //   x: number;
+  //   timestamp: number;
+  // }>({
+  //   x: 0,
+  //   timestamp: 0,
+  // });
+
   const {
     title,
     fromAddress,
@@ -50,8 +59,13 @@ export const EnvelopeModal = ({
 
   // 뜯어서 편지 열어보기
   const openLetter = () => {
-    moveUp.start(onOpenLetter);
+    moveUp.start(() => {
+      onOpenLetter();
+      setTimeout(hideModal, 0);
+    });
   };
+
+  const {onSwipeXStart, onSwipteXEnd} = useGesture();
 
   // 모달 닫기
   const hideModal = () => {
@@ -102,6 +116,22 @@ export const EnvelopeModal = ({
             </Animated.View>
             <View style={styles.cardItem}>
               <LinearGradient
+                onStartShouldSetResponder={() => true}
+                onResponderStart={event => {
+                  onSwipeXStart(
+                    event.nativeEvent.locationX,
+                    event.nativeEvent.timestamp,
+                  );
+                }}
+                onResponderEnd={event => {
+                  onSwipteXEnd(
+                    event.nativeEvent.locationX,
+                    event.nativeEvent.timestamp,
+                    150,
+                    1000,
+                    openLetter,
+                  );
+                }}
                 locations={[0, 0.5]}
                 colors={[paperColor, 'white']}
                 style={{flex: 1}}>

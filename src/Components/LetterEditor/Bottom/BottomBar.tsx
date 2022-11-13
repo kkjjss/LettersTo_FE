@@ -1,7 +1,7 @@
 import React from 'react';
 import {Image, Pressable, StyleSheet, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {useKeyboard} from '../../../Hooks/useKeyboard';
+import {useKeyboard} from '../../../Hooks/Hardware/useKeyboard';
 
 const photoButton = require('../../../Assets/photo.png');
 const paperButton = require('../../../Assets/paper.png');

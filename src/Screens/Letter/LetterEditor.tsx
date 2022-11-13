@@ -19,7 +19,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import {Header} from '../../Components/Headers/Header';
 import useStore from '../../Store/store';
-import {useKeyboard} from '../../Hooks/useKeyboard';
+import {useKeyboard} from '../../Hooks/Hardware/useKeyboard';
 import {BottomBar} from '../../Components/LetterEditor/Bottom/BottomBar';
 import {PaperSelector} from '../../Components/LetterEditor/Bottom/PaperSelector';
 import {TexticonSelector} from '../../Components/LetterEditor/Bottom/TexticonSelector';
