@@ -46,6 +46,7 @@ export const useLocation = () => {
   }, []);
 
   useEffect(() => {
+    setSelectedCityId(null);
     const getCitiesList = async (regionId: number) => {
       const citiesList = (await getCities(regionId)).map(({id, name}) => {
         return {value: id, label: name};
@@ -58,15 +59,15 @@ export const useLocation = () => {
     } else {
       setCities([{label: '', value: 0}]);
     }
-
-    setSelectedCityId(null);
   }, [selectedRegionId]);
 
   return {
     regions,
+    setRegions,
     selectedRegionId,
     setSelectedRegionId,
     cities,
+    setCities,
     selectedCityId,
     setSelectedCityId,
     noticeOpacity,

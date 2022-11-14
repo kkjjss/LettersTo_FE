@@ -1,7 +1,8 @@
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {Text, View, Modal, StyleSheet, Platform} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {getCities, getRegions} from '../../APIs/geolocation';
 import {patchUserInfo} from '../../APIs/member';
 import {ModalHeader} from '../../Components/ModalHeader';
 import {UpdateButton} from '../../Components/UpdateButton';
@@ -16,9 +17,11 @@ type Props = {
 export function LocationModal({isModalVisible, setModalVisible}: Props) {
   const {
     regions,
+    setRegions,
     selectedRegionId,
     setSelectedRegionId,
     cities,
+    setCities,
     selectedCityId,
     setSelectedCityId,
     disable,
@@ -30,9 +33,14 @@ export function LocationModal({isModalVisible, setModalVisible}: Props) {
   const {userInfo} = useStore();
 
   const disableUpdate = useMemo(
-    () => disable && selectedCityId === userInfo?.geolocationId,
+    () =>
+      disable || !selectedCityId || selectedCityId === userInfo?.geolocationId,
     [disable, selectedCityId, userInfo],
   );
+
+  useEffect(() => {
+    console.log(disable);
+  }, [disable, selectedCityId, userInfo]);
 
   const {bottom: SAFE_AREA_BOTTOM} = useSafeAreaInsets();
 
@@ -54,6 +62,17 @@ export function LocationModal({isModalVisible, setModalVisible}: Props) {
       console.error(error.message);
     }
   };
+
+  useEffect(() => {
+    if (isModalVisible) {
+      if (userInfo) {
+        setSelectedRegionId(userInfo.parentGeolocationId);
+        setTimeout(() => {
+          setSelectedCityId(userInfo.geolocationId);
+        }, 0);
+      }
+    }
+  }, [isModalVisible, setSelectedCityId, setSelectedRegionId, userInfo]);
 
   return (
     <Modal

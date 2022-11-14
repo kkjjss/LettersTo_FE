@@ -1,9 +1,9 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import type {StackParamsList} from '../../types/stackParamList';
 import useStore from '../../Store/store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {
   View,
   Text,
@@ -19,7 +19,7 @@ import {getPublicLetters} from '../../APIs/publicLetter';
 import {PublicLetters} from '../../types/types';
 import {PublicLetterItem} from './PublicLetterItem';
 import {EnvelopeModal} from '../../Modals/EnvelopeModal';
-import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../Constants/screen';
+import {SCREEN_HEIGHT} from '../../Constants/screen';
 
 type Props = NativeStackScreenProps<StackParamsList, 'Home'>;
 
@@ -65,10 +65,10 @@ export function Home({navigation}: Props) {
     } catch (error: any) {
       console.error(error.message);
     }
-  }
+  };
   useEffect(() => {
     // console.log('Home');
-    
+
     getPublicLettersInit();
   }, []);
 
@@ -154,10 +154,23 @@ export function Home({navigation}: Props) {
   // cold case
   const Empty = () => (
     <View style={styles.emptyArea}>
-      <ImageBackground style={{width: 100, height: 100, backgroundColor: 'rgba(0, 0, 204, 0.05)'}} />
-      <Text style={styles.emptyText}>잘못된 접근/네트워크연결확인{"\n"}잠시 후 다시 시도해주세요.</Text>
-      <TouchableOpacity style={styles.emptyBtn} activeOpacity={0.7} onPress={handleRefresh}>
-        <LinearGradient colors={['#FF6ECE', '#FF3DBD']} style={styles.emptyBtnBg}>
+      <ImageBackground
+        style={{
+          width: 100,
+          height: 100,
+          backgroundColor: 'rgba(0, 0, 204, 0.05)',
+        }}
+      />
+      <Text style={styles.emptyText}>
+        잘못된 접근/네트워크연결확인{'\n'}잠시 후 다시 시도해주세요.
+      </Text>
+      <TouchableOpacity
+        style={styles.emptyBtn}
+        activeOpacity={0.7}
+        onPress={handleRefresh}>
+        <LinearGradient
+          colors={['#FF6ECE', '#FF3DBD']}
+          style={styles.emptyBtnBg}>
           <Text style={styles.emptyBtnText}>다시 시도</Text>
           <Image
             source={require('../../Assets/refresh.png')}
@@ -170,11 +183,14 @@ export function Home({navigation}: Props) {
 
   return (
     <LinearGradient
-      locations={[0, 0.1, 0.8, 1]}
-      colors={['#FFCCEE', 'white', 'white', '#FFFFCC']}
+      colors={['white', '#FFFFCC']}
+      locations={[0.8, 1]}
       style={styles.container}>
       {/* <SafeAreaView style={styles.container}> */}
-      <View style={[styles.header, {marginTop: SAFE_AREA_TOP}]}>
+      <LinearGradient
+        colors={['#FFCCEE', 'rgba(255, 255, 255, 0)']}
+        locations={[0.1, 1]}
+        style={[styles.header, {paddingVertical: SAFE_AREA_TOP}]}>
         <View style={styles.headerInner}>
           <View style={{flexDirection: 'row'}}>
             <TouchableOpacity activeOpacity={0.7}>
@@ -190,14 +206,14 @@ export function Home({navigation}: Props) {
               />
             </View>
           </View>
-          <TouchableOpacity activeOpacity={0.7}>
+          <TouchableOpacity activeOpacity={0.7} onPress={goToMyPage}>
             <Image
               source={require('../../Assets/menu.png')}
               style={styles.icon}
             />
           </TouchableOpacity>
         </View>
-      </View>
+      </LinearGradient>
       <FlatList
         ref={publicLetterListRef}
         ListEmptyComponent={Empty}
@@ -282,8 +298,7 @@ export function Home({navigation}: Props) {
           <TouchableOpacity
             activeOpacity={0.7}
             style={[styles.btn, styles.btnPrimary]}
-            onPress={scrollToTop}
-          >
+            onPress={scrollToTop}>
             <Image
               source={require('../../Assets/top.png')}
               style={styles.icon}
@@ -293,8 +308,7 @@ export function Home({navigation}: Props) {
           <TouchableOpacity
             activeOpacity={0.7}
             style={[styles.btn, styles.btnPrimary]}
-            onPress={handleRefresh}
-          >
+            onPress={handleRefresh}>
             <Image
               source={require('../../Assets/refresh.png')}
               style={styles.icon}
@@ -304,8 +318,7 @@ export function Home({navigation}: Props) {
         <TouchableOpacity
           activeOpacity={0.7}
           style={[styles.btn, styles.btnSecondary]}
-          onPress={() => setPublicLetters([])}
-        >
+          onPress={() => setPublicLetters([])}>
           <Image
             source={require('../../Assets/write.png')}
             style={styles.icon}
@@ -393,10 +406,39 @@ const styles = StyleSheet.create({
   },
   triangle: {position: 'absolute', bottom: 0, width: 4, height: 5},
   icon: {width: 28, height: 28},
-  emptyArea: {height: SCREEN_HEIGHT, alignItems: 'center', justifyContent: 'center'},
-  emptyText: {marginTop: 8, textAlign: 'center', fontFamily: 'Galmuri11', fontSize: 14, lineHeight: 25, color: '#0000CC'},
-  emptyBtn: {overflow: 'hidden', height: 28, marginTop: 24, borderWidth: 1, borderColor: '#FF44CC', borderRadius: 10},
-  emptyBtnBg: {flex: 1, flexDirection: 'row', alignItems: 'center', paddingRight: 6, paddingLeft: 12},
-  emptyBtnText: {fontFamily: 'Galmuri11', fontSize: 13, color: 'white', marginBottom: 2},
+  emptyArea: {
+    height: SCREEN_HEIGHT,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  emptyText: {
+    marginTop: 8,
+    textAlign: 'center',
+    fontFamily: 'Galmuri11',
+    fontSize: 14,
+    lineHeight: 25,
+    color: '#0000CC',
+  },
+  emptyBtn: {
+    overflow: 'hidden',
+    height: 28,
+    marginTop: 24,
+    borderWidth: 1,
+    borderColor: '#FF44CC',
+    borderRadius: 10,
+  },
+  emptyBtnBg: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingRight: 6,
+    paddingLeft: 12,
+  },
+  emptyBtnText: {
+    fontFamily: 'Galmuri11',
+    fontSize: 13,
+    color: 'white',
+    marginBottom: 2,
+  },
   emptyBtnIcon: {width: 20, height: 20, marginLeft: 2},
 });
