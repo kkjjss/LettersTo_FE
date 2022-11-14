@@ -39,7 +39,7 @@ import {PaperBackgroud} from '../../Components/Letter/PaperBackground/PaperBackg
 
 type Props = NativeStackScreenProps<StackParamsList, 'LetterEditor'>;
 
-export function LetterEditor({navigation}: Props) {
+export function LetterEditor({navigation, route}: Props) {
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
   const [align, setAlign] = useState<'left' | 'center' | 'right'>('left');
@@ -318,11 +318,11 @@ export function LetterEditor({navigation}: Props) {
 
   return (
     <PaperBackgroud paperColor={paperColor} paperStyle={paperStyle}>
-      <View style={{flex: 1, paddingTop: SAFE_AREA_TOP}}>
+      <View style={[styles.container, {paddingTop: SAFE_AREA_TOP}]}>
         <Header
           navigation={navigation}
           title={'편지 작성'}
-          next={'CoverTopicEditor'}
+          next={route.params?.reply ? 'CoverStampSelector' : 'CoverTopicEditor'}
           onPressNext={setLetterData}
           disableNext={disableNext}
         />

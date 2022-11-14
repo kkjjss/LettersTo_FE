@@ -57,7 +57,7 @@ export function MyPage({navigation}: Props) {
   };
 
   useEffect(() => {
-    const updateUserInfo = async () => {
+    const getNewestUserInfo = async () => {
       if (
         !isLocationModalVisible &&
         !isNicknameModalVisible &&
@@ -74,7 +74,7 @@ export function MyPage({navigation}: Props) {
         });
       }
     };
-    updateUserInfo();
+    getNewestUserInfo();
   }, [
     isLocationModalVisible,
     isNicknameModalVisible,

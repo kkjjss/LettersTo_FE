@@ -104,6 +104,20 @@ export interface PublicLetter {
   stampId?: number;
   createDate?: string;
   [key: string]: any;
-};
+}
 
 export type PublicLetters = PublicLetter[];
+
+export interface PublicLetterContent {
+  id: number;
+  title: string;
+  content: string;
+  fromAddress: string;
+  fromNickname: string;
+  paperColor: PaperColor;
+  paperType: PaperStyle | 'LINE';
+  stampId: number;
+  replied: boolean;
+  files: string[];
+  createdDate: Date;
+}

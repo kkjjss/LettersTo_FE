@@ -1,8 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import type {StackParamsList} from '../../types/stackParamList';
-import useStore from '../../Store/store';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {
   View,
@@ -24,8 +22,6 @@ import {SCREEN_HEIGHT} from '../../Constants/screen';
 type Props = NativeStackScreenProps<StackParamsList, 'Home'>;
 
 export function Home({navigation}: Props) {
-  const {setIsLoggedIn} = useStore();
-
   type ColorType = {
     [key: string]: string;
   };
@@ -54,13 +50,13 @@ export function Home({navigation}: Props) {
 
   // 공개 편지 목록
   const [publicLetters, setPublicLetters] = useState<PublicLetters | []>([]);
-  const [cursor, setCursor] = useState<number>();
+  const [currentCursor, setCurrentCursor] = useState<number>();
   const getPublicLettersInit = () => {
     try {
       getPublicLetters().then(publicLettersData => {
         const {content, cursor} = publicLettersData;
         setPublicLetters(content);
-        setCursor(cursor);
+        setCurrentCursor(cursor);
       });
     } catch (error: any) {
       console.error(error.message);
@@ -73,10 +69,10 @@ export function Home({navigation}: Props) {
   }, []);
 
   // 스크롤 시 y 위치 저장
-  const [positionY, setPositionY] = useState<Number>(0);
+  const [currentPositionY, setCurrentPositionY] = useState<Number>(0);
   const handleScroll = (event: any) => {
     const positionY = event.nativeEvent.contentOffset.y;
-    setPositionY(positionY);
+    setCurrentPositionY(positionY);
   };
 
   // 맨 상단으로 스크롤
@@ -87,13 +83,13 @@ export function Home({navigation}: Props) {
 
   // 무한 스크롤
   const handleEndReached = () => {
-    if (cursor) {
+    if (currentCursor) {
       try {
-        getPublicLetters(cursor).then(publicLettersData => {
+        getPublicLetters(currentCursor).then(publicLettersData => {
           const {content, cursor} = publicLettersData;
           const updatedArray = [...publicLetters].concat(content);
           setPublicLetters(updatedArray);
-          setCursor(cursor);
+          setCurrentCursor(cursor);
         });
       } catch (error: any) {
         console.error(error.message);
@@ -109,7 +105,7 @@ export function Home({navigation}: Props) {
       getPublicLetters().then(publicLettersData => {
         const {content, cursor} = publicLettersData;
         setPublicLetters(content);
-        setCursor(cursor);
+        setCurrentCursor(cursor);
         setRefreshing(false);
       });
     } catch (error: any) {
@@ -126,20 +122,14 @@ export function Home({navigation}: Props) {
   };
 
   // 편지 조회
-  const goToReadLetter = () => {
-    navigation.navigate('ReadLetter');
+  const goToReadLetter = (id: number) => {
+    navigation.navigate('ReadLetter', {id});
   };
 
   // 내 사서함
   const goToLetterBox = () => {
     navigation.navigate('LetterBox');
   };
-
-  function logout() {
-    AsyncStorage.removeItem('accessToken');
-    AsyncStorage.removeItem('refreshToken');
-    setIsLoggedIn(false);
-  }
 
   async function goToMyPage() {
     navigation.navigate('MyPage');
@@ -215,6 +205,7 @@ export function Home({navigation}: Props) {
         </View>
       </LinearGradient>
       <FlatList
+        style={{marginTop: 30}}
         ref={publicLetterListRef}
         ListEmptyComponent={Empty}
         onScroll={handleScroll}
@@ -223,7 +214,7 @@ export function Home({navigation}: Props) {
         refreshing={refreshing}
         onRefresh={handleRefresh}
         data={publicLetters}
-        keyExtractor={(item, index) => item.id}
+        keyExtractor={item => item.id}
         renderItem={({item, index}) => {
           const {
             id,
@@ -294,7 +285,7 @@ export function Home({navigation}: Props) {
         </View>
       </View>
       <View style={styles.floatArea}>
-        {positionY > 0 ? (
+        {currentPositionY > 0 ? (
           <TouchableOpacity
             activeOpacity={0.7}
             style={[styles.btn, styles.btnPrimary]}
@@ -318,7 +309,7 @@ export function Home({navigation}: Props) {
         <TouchableOpacity
           activeOpacity={0.7}
           style={[styles.btn, styles.btnSecondary]}
-          onPress={() => setPublicLetters([])}>
+          onPress={goToLetterEditor}>
           <Image
             source={require('../../Assets/write.png')}
             style={styles.icon}

@@ -6,7 +6,7 @@ export type StackParamsList = {
   Home: undefined;
 
   // 편지 관련 스택
-  ReadLetter: undefined;
+  ReadLetter: {id: number};
   LetterBox: undefined;
 
   // 인증 관련 스택
@@ -23,9 +23,9 @@ export type StackParamsList = {
   AccountDelete: undefined;
 
   // 편지 작성
-  LetterEditor: undefined;
-  CoverTopicEditor: undefined;
-  CoverPersonalityEditor: undefined;
-  CoverStampSelector: undefined;
-  LetterComplete: undefined;
+  LetterEditor: {reply: true} | undefined;
+  CoverTopicEditor: {reply: true} | undefined;
+  CoverPersonalityEditor: {reply: true} | undefined;
+  CoverStampSelector: {reply: true} | undefined;
+  LetterComplete: {reply: true} | undefined;
 };

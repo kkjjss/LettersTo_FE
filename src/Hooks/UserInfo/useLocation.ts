@@ -63,11 +63,9 @@ export const useLocation = () => {
 
   return {
     regions,
-    setRegions,
     selectedRegionId,
     setSelectedRegionId,
     cities,
-    setCities,
     selectedCityId,
     setSelectedCityId,
     noticeOpacity,
