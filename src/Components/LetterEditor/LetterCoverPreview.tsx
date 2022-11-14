@@ -104,7 +104,10 @@ export const LetterCoverPreview = React.memo(() => {
         </View>
       </View>
       <View>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <ScrollView
+          horizontal
+          alwaysBounceHorizontal={false}
+          showsHorizontalScrollIndicator={false}>
           {topics
             .filter(({id}) => cover.topicIds.includes(id))
             .map(topic => (
@@ -113,7 +116,10 @@ export const LetterCoverPreview = React.memo(() => {
         </ScrollView>
       </View>
       <View>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <ScrollView
+          horizontal
+          alwaysBounceHorizontal={false}
+          showsHorizontalScrollIndicator={false}>
           {personalities
             .filter(({id}) => cover.personalityIds.includes(id))
             .map(personality => (

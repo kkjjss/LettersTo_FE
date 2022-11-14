@@ -14,6 +14,7 @@ export const PaperStyleSelector = React.memo(
     return (
       <ScrollView
         horizontal
+        alwaysBounceHorizontal={false}
         showsHorizontalScrollIndicator={false}
         style={styles.paperStyleSelector}>
         {PAPER_STYLES.map((style, index) => {

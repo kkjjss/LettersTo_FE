@@ -14,6 +14,7 @@ export const PaperColorSelector = React.memo(
     return (
       <ScrollView
         horizontal
+        alwaysBounceHorizontal={false}
         showsHorizontalScrollIndicator={false}
         style={styles.paperColorSelector}>
         {(Object.keys(PAPER_COLORS) as PaperColor[]).map((color, index) => (

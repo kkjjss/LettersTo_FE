@@ -120,6 +120,7 @@ export const ImagePicker = React.memo(
         ) : (
           <ScrollView
             horizontal
+            alwaysBounceHorizontal={false}
             style={{
               paddingHorizontal: 16,
               backgroundColor: 'white',

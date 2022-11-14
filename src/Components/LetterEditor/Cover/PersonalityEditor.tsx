@@ -78,7 +78,7 @@ export function PersonalityEditor({
         </View>
       </View>
 
-      <ScrollView style={styles.personalityBox}>
+      <ScrollView alwaysBounceVertical={false} style={styles.personalityBox}>
         <View style={{paddingTop: 16, paddingBottom: bottom}}>
           <PersonalityList
             personalities={personalities}

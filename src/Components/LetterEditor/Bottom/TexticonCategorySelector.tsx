@@ -14,6 +14,7 @@ export const TexticonCategorySelector = React.memo(
     return (
       <ScrollView
         horizontal
+        alwaysBounceHorizontal={false}
         showsHorizontalScrollIndicator={false}
         style={styles.texticonCategorySelector}>
         {(Object.keys(TEXTICONS) as TexticonCategory[]).map(

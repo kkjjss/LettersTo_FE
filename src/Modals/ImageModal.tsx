@@ -41,6 +41,7 @@ export const ImageModal = React.memo(
           </View>
           <ScrollView
             horizontal
+            alwaysBounceHorizontal={false}
             pagingEnabled
             snapToInterval={SCREEN_WIDTH - 70}
             snapToAlignment="start"

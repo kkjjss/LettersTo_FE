@@ -47,7 +47,7 @@ export function NicknameForm({navigation}: Props) {
             ? styles.container_android
             : styles.container_ios
         }>
-        <ScrollView>
+        <ScrollView alwaysBounceVertical={false}>
           <Header navigation={navigation} title={''} />
           <View style={styles.textWrap}>
             <Text style={styles.text}>별명을</Text>
