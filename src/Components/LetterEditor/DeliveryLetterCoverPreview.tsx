@@ -4,6 +4,7 @@ import {LinearGradient} from 'expo-linear-gradient';
 import useStore, {useLetterEditorStore} from '../../Store/store';
 import {GRADIENT_COLORS} from '../../Constants/letter';
 import {getCities, getRegions} from '../../APIs/geolocation';
+import {SCREEN_WIDTH} from '../../Constants/screen';
 
 const SelectedStampImage = ({stampId}: {stampId: number | undefined}) => {
   const {stamps} = useStore();
@@ -68,7 +69,8 @@ export const DeliveryLetterCoverPreview = React.memo(() => {
   }, [userInfo]);
 
   const toText = useMemo(
-    () => [deliveryLetterTo?.toNickname, deliveryLetterTo?.toAddress].join(' '),
+    () =>
+      [deliveryLetterTo?.toNickname, deliveryLetterTo?.toAddress].join(', '),
     [deliveryLetterTo],
   );
 
@@ -80,7 +82,7 @@ export const DeliveryLetterCoverPreview = React.memo(() => {
     <LinearGradient
       colors={[GRADIENT_COLORS[deliveryLetter?.paperColor ?? 'PINK'], 'white']}
       style={{
-        width: '100%',
+        width: SCREEN_WIDTH - 80,
         height: undefined,
         aspectRatio: 295 / 212,
         borderColor: '#0000cc',
@@ -127,8 +129,8 @@ export const DeliveryLetterCoverPreview = React.memo(() => {
       </View>
       <View style={{flex: 1, justifyContent: 'flex-end'}}>
         <Image
-          source={require('../../Assets/From..png')}
-          style={{height: 22, width: 48, resizeMode: 'contain'}}
+          source={require('../../Assets/to.png')}
+          style={{height: 22, width: 25, resizeMode: 'contain'}}
         />
         <Text
           style={{

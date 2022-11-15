@@ -290,7 +290,7 @@ export function LetterEditor({navigation, route}: Props) {
       navigation.navigate('CoverTopicEditor');
     } else {
       setDeliveryLetterDataOnStore(route.params?.reply);
-      navigation.navigate('CoverExpressSelector', {reply: route.params?.reply});
+      navigation.navigate('CoverDeliverySelector', {reply: route.params?.reply});
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigation, setDeliveryLetterDataOnStore, setLetterData]);

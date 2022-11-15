@@ -57,6 +57,7 @@ export const LetterCoverPreview = React.memo(() => {
         borderWidth: 1,
         borderRadius: 10,
         padding: 16,
+        marginHorizontal: 40,
         justifyContent: 'space-between',
       }}>
       <View

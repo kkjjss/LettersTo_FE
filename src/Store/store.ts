@@ -5,6 +5,7 @@ import {
   Stamps,
   PaperColor,
   PaperStyle,
+  DeliveryLetterWriteRequest,
 } from '../types/types';
 
 interface Store {
@@ -174,20 +175,9 @@ const useStore = create<Store>(set => ({
 }));
 
 export default useStore;
-interface DeliveryLetter {
-  id?: number;
-  title?: string;
-  content?: string;
-  paperType?: PaperStyle;
-  paperColor?: PaperColor;
-  align?: 'left' | 'center' | 'right';
-  stampId?: number;
-  files?: string[];
-  deliveryType?: 'NONE' | 'NORMAL' | 'EXPRESS';
-}
 
 interface LetterEditorStore {
-  deliveryLetter: DeliveryLetter;
+  deliveryLetter: DeliveryLetterWriteRequest;
 
   deliveryLetterTo:
     | {
@@ -196,7 +186,7 @@ interface LetterEditorStore {
       }
     | undefined;
 
-  setDeliveryLetterData: (value: DeliveryLetter) => void;
+  setDeliveryLetterData: (value: DeliveryLetterWriteRequest) => void;
 
   setDeliverLetterTo: (value: {toNickname: string; toAddress: string}) => void;
 

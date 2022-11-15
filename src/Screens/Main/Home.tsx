@@ -13,7 +13,7 @@ import {
   ImageBackground,
 } from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
-import {getPublicLetters} from '../../APIs/publicLetter';
+import {getPublicLetters} from '../../APIs/letter';
 import {PublicLetters} from '../../types/types';
 import {PublicLetterItem} from './PublicLetterItem';
 import {EnvelopeModal} from '../../Modals/EnvelopeModal';

@@ -4,7 +4,7 @@ import type {StackParamsList} from '../../types/stackParamList';
 import {StyleSheet, Text, ScrollView, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useEffect, useState} from 'react';
-import {getPublicLetterContent} from '../../APIs/publicLetter';
+import {getPublicLetterContent} from '../../APIs/letter';
 import {PublicLetterContent} from '../../types/types';
 import {PaperBackgroud} from '../../Components/Letter/PaperBackground/PaperBackgroud';
 import {BottomButton} from '../../Components/BottomButton';

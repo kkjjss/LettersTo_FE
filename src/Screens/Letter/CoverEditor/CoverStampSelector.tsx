@@ -1,13 +1,13 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Header} from '../../../Components/Headers/Header';
 import {StackParamsList} from '../../../types/stackParamList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {StampSelector} from '../../../Components/LetterEditor/Cover/StampSelector';
 import {LetterCoverPreview} from '../../../Components/LetterEditor/LetterCoverPreview';
 import useStore, {useLetterEditorStore} from '../../../Store/store';
 import {DeliveryLetterCoverPreview} from '../../../Components/LetterEditor/DeliveryLetterCoverPreview';
+import {Header2} from '../../../Components/Headers/Header2';
 
 type Props = NativeStackScreenProps<StackParamsList, 'CoverStampSelector'>;
 
@@ -25,6 +25,20 @@ export function CoverStampSelector({navigation, route}: Props) {
   const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
 
   const disableNext = useMemo(() => !selectedStampId, [selectedStampId]);
+
+  const goBack = () => {
+    navigation.pop();
+  };
+
+  const goNext = () => {
+    if (route.params?.reply) {
+      setDeliveryLetterData({stampId: selectedStampId});
+
+      navigation.navigate('LetterComplete', {reply: route.params?.reply});
+    } else {
+      navigation.navigate('LetterComplete');
+    }
+  };
 
   useEffect(() => {
     const getStampList = () => {
@@ -61,11 +75,10 @@ export function CoverStampSelector({navigation, route}: Props) {
             paddingTop: SAFE_AREA_TOP,
           },
         ]}>
-        <Header
-          navigation={navigation}
-          title={'우표 선택'}
-          next={'LetterComplete'}
-          // onPressNext={onPressNext}
+        <Header2
+          title="우표 선택"
+          onPressBack={goBack}
+          onPressNext={goNext}
           disableNext={disableNext}
         />
         <View style={styles.cover}>

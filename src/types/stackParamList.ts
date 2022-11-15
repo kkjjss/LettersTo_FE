@@ -24,7 +24,7 @@ export type StackParamsList = {
 
   // 편지 작성
   LetterEditor: {reply: number} | undefined;
-  CoverExpressSelector: {reply: number};
+  CoverDeliverySelector: {reply: number};
   CoverTopicEditor: {reply: number} | undefined;
   CoverPersonalityEditor: {reply: number} | undefined;
   CoverStampSelector: {reply: number} | undefined;

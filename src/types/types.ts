@@ -121,3 +121,15 @@ export interface PublicLetterContent {
   files: string[];
   createdDate: Date;
 }
+
+export interface DeliveryLetterWriteRequest {
+  id?: number;
+  title?: string;
+  content?: string;
+  paperType?: PaperStyle;
+  paperColor?: PaperColor;
+  align?: 'left' | 'center' | 'right';
+  stampId?: number;
+  files?: string[];
+  deliveryType?: 'NONE' | 'NORMAL' | 'EXPRESS';
+}

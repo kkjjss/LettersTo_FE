@@ -1,26 +1,17 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import React, {useCallback, useMemo, useState} from 'react';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {StackParamsList} from '../../../types/stackParamList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {StampSelector} from '../../../Components/LetterEditor/Cover/StampSelector';
 import {LetterCoverPreview} from '../../../Components/LetterEditor/LetterCoverPreview';
-import useStore, {useLetterEditorStore} from '../../../Store/store';
+import {useLetterEditorStore} from '../../../Store/store';
 import {DeliveryLetterCoverPreview} from '../../../Components/LetterEditor/DeliveryLetterCoverPreview';
 import {Header2} from '../../../Components/Headers/Header2';
-import MaskedView from '@react-native-masked-view/masked-view';
 import {LinearGradient} from 'expo-linear-gradient';
 
-type Props = NativeStackScreenProps<StackParamsList, 'CoverExpressSelector'>;
+type Props = NativeStackScreenProps<StackParamsList, 'CoverDeliverySelector'>;
 
-export function CoverExpressSelector({navigation, route}: Props) {
+export function CoverDeliverySelector({navigation, route}: Props) {
   const [numberUserStamps, setNumberUserStamps] = useState<number>(5);
 
   const [deliveryType, setDeliveryType] = useState<
@@ -39,16 +30,16 @@ export function CoverExpressSelector({navigation, route}: Props) {
     } else {
       return false;
     }
-  }, []);
+  }, [deliveryType, numberUserStamps]);
 
-  const goBack = useCallback(() => {
+  const goBack = () => {
     navigation.pop();
-  }, [navigation]);
+  };
 
-  const goNext = useCallback(() => {
+  const goNext = () => {
+    setDeliveryLetterData({deliveryType: deliveryType});
     navigation.navigate('CoverStampSelector', {reply: route.params?.reply});
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navigation]);
+  };
 
   return (
     <View style={{flex: 1}}>
@@ -191,13 +182,21 @@ export function CoverExpressSelector({navigation, route}: Props) {
                     borderRadius: 10,
                   },
             ]}>
-            <View
-              style={[
-                {flex: 1, padding: 10},
-                deliveryType === 'EXPRESS' && {
-                  backgroundColor: 'rgb(239,239,251)',
-                },
-              ]}>
+            <LinearGradient
+              colors={
+                deliveryType === 'EXPRESS'
+                  ? [
+                      '#FF47C119',
+                      '#FFFF0019',
+                      '#89F50019',
+                      '#44EFFF19',
+                      '#FF47C119',
+                    ]
+                  : ['white', 'white']
+              }
+              style={[{flex: 1, padding: 10}]}
+              start={{x: 0, y: 0}}
+              end={{x: 1, y: 1}}>
               <View
                 style={{
                   flexDirection: 'row',
@@ -205,38 +204,10 @@ export function CoverExpressSelector({navigation, route}: Props) {
                   justifyContent: 'space-between',
                   marginBottom: 8,
                 }}>
-                <MaskedView
-                  maskElement={
-                    <Text
-                      style={{
-                        fontFamily: 'Galmuri11-Bold',
-                        fontSize: 15,
-                      }}>
-                      Express
-                    </Text>
-                  }>
-                  <LinearGradient
-                    colors={[
-                      'red',
-                      'orange',
-                      'yellow',
-                      'green',
-                      'blue',
-                      'purple',
-                    ]}
-                    start={{x: 0, y: 0}}
-                    end={{x: 1, y: 1}}>
-                    <Text
-                      style={{
-                        fontFamily: 'Galmuri11-Bold',
-                        fontSize: 15,
-                        color: '#0000cc',
-                        opacity: 0,
-                      }}>
-                      Express
-                    </Text>
-                  </LinearGradient>
-                </MaskedView>
+                <Image
+                  source={require('../../../Assets/Express.png')}
+                  style={{height: 28, width: 75, resizeMode: 'contain'}}
+                />
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                   <Image
                     source={require('../../../Assets/numberStamp.png')}
@@ -261,7 +232,7 @@ export function CoverExpressSelector({navigation, route}: Props) {
                 }}>
                 바로 도착해요!
               </Text>
-            </View>
+            </LinearGradient>
           </TouchableOpacity>
         </View>
       </View>

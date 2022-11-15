@@ -1,6 +1,5 @@
 import {
-  PaperColor,
-  PaperStyle,
+  DeliveryLetterWriteRequest,
   PublicLetterContent,
   PublicLetters,
   PublicLetterWriteRequest,
@@ -32,4 +31,10 @@ export async function postPublicLetter(
   publicLetterData: PublicLetterWriteRequest,
 ) {
   return await instanceWithAuth.post('/public-letters', publicLetterData);
+}
+
+export async function postDeliveryLetter(
+  deliveryLetterData: DeliveryLetterWriteRequest,
+) {
+  return await instanceWithAuth.post('/delivery-letters', deliveryLetterData);
 }
