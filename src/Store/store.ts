@@ -81,7 +81,7 @@ interface Store {
   };
   setCoverTopicIds: (topicIds: number[]) => void;
   setCoverPersonalityIds: (personalityIds: number[]) => void;
-  setCoverStampId: (stampId: number) => void;
+  setCoverStampId: (stampId: number | undefined) => void;
   setInitialCoverData: () => void;
 
   stamps: Stamps;
@@ -174,3 +174,76 @@ const useStore = create<Store>(set => ({
 }));
 
 export default useStore;
+interface DeliveryLetter {
+  id?: number;
+  title?: string;
+  content?: string;
+  paperType?: PaperStyle;
+  paperColor?: PaperColor;
+  align?: 'left' | 'center' | 'right';
+  stampId?: number;
+  files?: string[];
+  deliveryType?: 'NONE' | 'NORMAL' | 'EXPRESS';
+}
+
+interface LetterEditorStore {
+  deliveryLetter: DeliveryLetter;
+
+  deliveryLetterTo:
+    | {
+        toNickname: string;
+        toAddress: string;
+      }
+    | undefined;
+
+  setDeliveryLetterData: (value: DeliveryLetter) => void;
+
+  setDeliverLetterTo: (value: {toNickname: string; toAddress: string}) => void;
+
+  initializeDeliverLetter: () => void;
+
+  isDeliveryLetterSetComplete: () => boolean;
+}
+
+export const useLetterEditorStore = create<LetterEditorStore>((set, get) => ({
+  deliveryLetter: {
+    id: undefined,
+    title: undefined,
+    content: undefined,
+    paperType: undefined,
+    paperColor: undefined,
+    align: undefined,
+    stampId: undefined,
+    files: [],
+    deliveryType: undefined,
+  },
+
+  deliveryLetterTo: undefined,
+
+  setDeliverLetterTo: (value: {toNickname: string; toAddress: string}) =>
+    set(() => ({deliveryLetterTo: value})),
+
+  setDeliveryLetterData: (value: DeliveryLetter) =>
+    set(state => ({deliveryLetter: {...state.deliveryLetter, ...value}})),
+
+  initializeDeliverLetter: () =>
+    set(() => ({
+      deliveryLetter: {
+        id: undefined,
+        title: undefined,
+        content: undefined,
+        paperType: undefined,
+        paperColor: undefined,
+        align: undefined,
+        stampId: undefined,
+        files: [],
+        deliveryType: undefined,
+      },
+    })),
+
+  isDeliveryLetterSetComplete: () => {
+    const letter = get().deliveryLetter;
+
+    return !Object.values(letter).includes(undefined);
+  },
+}));

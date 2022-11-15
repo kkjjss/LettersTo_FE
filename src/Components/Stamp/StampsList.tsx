@@ -5,8 +5,8 @@ import type {Stamps} from '../../types/types';
 
 type Props = {
   stamps: Stamps;
-  selectedStampId: string;
-  onPressStamp: (id: string) => void;
+  selectedStampId: number | undefined;
+  onPressStamp: (id: number) => void;
 };
 
 export function StampsList({stamps, onPressStamp: selectStamp}: Props) {

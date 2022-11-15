@@ -6,18 +6,21 @@ import {StackParamsList} from '../../../types/stackParamList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {StampSelector} from '../../../Components/LetterEditor/Cover/StampSelector';
 import {LetterCoverPreview} from '../../../Components/LetterEditor/LetterCoverPreview';
-import useStore from '../../../Store/store';
+import useStore, {useLetterEditorStore} from '../../../Store/store';
+import {DeliveryLetterCoverPreview} from '../../../Components/LetterEditor/DeliveryLetterCoverPreview';
 
 type Props = NativeStackScreenProps<StackParamsList, 'CoverStampSelector'>;
 
-export function CoverStampSelector({navigation}: Props) {
-  const [selectedStampId, setSelectedStampId] = useState<string>('');
+export function CoverStampSelector({navigation, route}: Props) {
+  const [selectedStampId, setSelectedStampId] = useState<number>();
 
   const {
     setCoverStampId,
     setStamps,
     cover: {stamp},
   } = useStore();
+
+  const {setDeliveryLetterData} = useLetterEditorStore();
 
   const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
 
@@ -26,8 +29,8 @@ export function CoverStampSelector({navigation}: Props) {
   useEffect(() => {
     const getStampList = () => {
       setStamps([
-        {id: '1', image: require('../../../Assets/stamp_example.png')},
-        {id: '2', image: require('../../../Assets/stamp_example2.jpg')},
+        {id: 1, image: require('../../../Assets/stamp_example.png')},
+        {id: 2, image: require('../../../Assets/stamp_example2.jpg')},
       ]);
     };
 
@@ -40,8 +43,13 @@ export function CoverStampSelector({navigation}: Props) {
   }, [setStamps]);
 
   useEffect(() => {
-    setCoverStampId(selectedStampId);
-  }, [selectedStampId, setCoverStampId]);
+    if (!route.params?.reply) {
+      setCoverStampId(selectedStampId);
+    } else {
+      setDeliveryLetterData({stampId: selectedStampId});
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setDeliveryLetterData, selectedStampId, setCoverStampId]);
 
   return (
     <View style={{flex: 1}}>
@@ -61,7 +69,11 @@ export function CoverStampSelector({navigation}: Props) {
           disableNext={disableNext}
         />
         <View style={styles.cover}>
-          <LetterCoverPreview />
+          {!route.params?.reply ? (
+            <LetterCoverPreview />
+          ) : (
+            <DeliveryLetterCoverPreview />
+          )}
         </View>
       </View>
       <StampSelector

@@ -17,8 +17,7 @@ import {
 import * as imagePicker from 'expo-image-picker';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
-import {Header} from '../../Components/Headers/Header';
-import useStore from '../../Store/store';
+import useStore, {useLetterEditorStore} from '../../Store/store';
 import {useKeyboard} from '../../Hooks/Hardware/useKeyboard';
 import {BottomBar} from '../../Components/LetterEditor/Bottom/BottomBar';
 import {PaperSelector} from '../../Components/LetterEditor/Bottom/PaperSelector';
@@ -36,6 +35,7 @@ import {getImageUploadUrl} from '../../APIs/file';
 import {ImageModal} from '../../Modals/ImageModal';
 import {ModalBlur} from '../../Modals/ModalBlur';
 import {PaperBackgroud} from '../../Components/Letter/PaperBackground/PaperBackgroud';
+import {Header2} from '../../Components/Headers/Header2';
 
 type Props = NativeStackScreenProps<StackParamsList, 'LetterEditor'>;
 
@@ -49,13 +49,11 @@ export function LetterEditor({navigation, route}: Props) {
   const [paperStyle, setPaperStyle] = useState<_PaperStyle>('GRID');
   const [selectedCategory, setSelectedCategory] =
     useState<TexticonCategory>('happy');
-  const [selectedTexticon, setSelectedTexticon] = useState<string>('');
   const [images, setImages] = useState<string[]>([]);
   const [isLoadingImage, setLoadingImage] = useState(false);
   const [isImageModalVisible, setImageModalVisible] = useState(false);
 
   const selection = useRef<Selector>({start: 0, end: 0});
-  // const align = useRef<'left' | 'center' | 'right'>('left');
 
   const titleRef = useRef(null);
   const textRef = useRef(null);
@@ -66,6 +64,8 @@ export function LetterEditor({navigation, route}: Props) {
   }>({name: 'title', ref: titleRef});
 
   const {setLetter, setInitialCoverData} = useStore();
+
+  const {setDeliveryLetterData} = useLetterEditorStore();
 
   const disableNext = useMemo(() => title === '' || text === '', [title, text]);
 
@@ -93,6 +93,23 @@ export function LetterEditor({navigation, route}: Props) {
     images,
     setInitialCoverData,
   ]);
+
+  const setDeliveryLetterDataOnStore = useCallback(
+    (id: number) => {
+      const deliberyLetterData = {
+        id,
+        title: title.replace(/(⌜|⌟︎)/g, ''),
+        content: text,
+        paperType: paperStyle,
+        paperColor,
+        align,
+        files: images,
+      };
+
+      setDeliveryLetterData(deliberyLetterData);
+    },
+    [align, images, paperColor, paperStyle, setDeliveryLetterData, text, title],
+  );
 
   const onFocusTitle = () => {
     setLastestFocus({name: 'title', ref: titleRef});
@@ -182,13 +199,6 @@ export function LetterEditor({navigation, route}: Props) {
     texticonSelectorVisible,
   ]);
 
-  const onSelectTexticon = useCallback(
-    (texticon: string) => {
-      setSelectedTexticon(texticon);
-    },
-    [setSelectedTexticon],
-  );
-
   const paddingOn = useMemo(
     () => !keyboardVisible && !paperSelectorVisible && !texticonSelectorVisible,
     [keyboardVisible, paperSelectorVisible, texticonSelectorVisible],
@@ -270,6 +280,21 @@ export function LetterEditor({navigation, route}: Props) {
     setImageModalVisible(true);
   }, [setImageModalVisible]);
 
+  const goBack = useCallback(() => {
+    navigation.pop();
+  }, [navigation]);
+
+  const goNext = useCallback(() => {
+    if (!route.params?.reply) {
+      setLetterData();
+      navigation.navigate('CoverTopicEditor');
+    } else {
+      setDeliveryLetterDataOnStore(route.params?.reply);
+      navigation.navigate('CoverExpressSelector', {reply: route.params?.reply});
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigation, setDeliveryLetterDataOnStore, setLetterData]);
+
   useEffect(() => {
     if (Platform.OS === 'ios') {
       const tempText = text;
@@ -282,8 +307,8 @@ export function LetterEditor({navigation, route}: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [align]);
 
-  useEffect(() => {
-    if (selectedTexticon) {
+  const setTexticonIntoText = useCallback(
+    (selectedTexticon: string) => {
       if (lastestFocus.name === 'title') {
         const newTitle = [
           title.slice(0, selection.current.start),
@@ -305,25 +330,17 @@ export function LetterEditor({navigation, route}: Props) {
 
         setCurrentSelection(selectedTexticon.length);
       }
-    }
-    setSelectedTexticon('');
-  }, [
-    lastestFocus,
-    selectedTexticon,
-    selection,
-    setCurrentSelection,
-    text,
-    title,
-  ]);
+    },
+    [lastestFocus, selection, setCurrentSelection, text, title],
+  );
 
   return (
     <PaperBackgroud paperColor={paperColor} paperStyle={paperStyle}>
       <View style={[styles.container, {paddingTop: SAFE_AREA_TOP}]}>
-        <Header
-          navigation={navigation}
+        <Header2
           title={'편지 작성'}
-          next={route.params?.reply ? 'CoverStampSelector' : 'CoverTopicEditor'}
-          onPressNext={setLetterData}
+          onPressBack={goBack}
+          onPressNext={goNext}
           disableNext={disableNext}
         />
 
@@ -399,7 +416,7 @@ export function LetterEditor({navigation, route}: Props) {
               <TexticonSelector
                 setSelectedCategory={setSelectedCategory}
                 selectedCategory={selectedCategory}
-                onSelectTexticon={onSelectTexticon}
+                onSelectTexticon={setTexticonIntoText}
               />
             )}
           </View>

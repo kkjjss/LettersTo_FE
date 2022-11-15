@@ -7,18 +7,21 @@ import {useEffect, useState} from 'react';
 import {getPublicLetterContent} from '../../APIs/publicLetter';
 import {PublicLetterContent} from '../../types/types';
 import {PaperBackgroud} from '../../Components/Letter/PaperBackground/PaperBackgroud';
-import {Header} from '../../Components/Headers/Header';
 import {BottomButton} from '../../Components/BottomButton';
 import {dateFormatter} from '../../Utils/dateFormatter';
 import {ImagePicker} from '../../Components/LetterEditor/ImagePicker';
 import {ImageModal} from '../../Modals/ImageModal';
 import {ModalBlur} from '../../Modals/ModalBlur';
+import {Header2} from '../../Components/Headers/Header2';
+import {useLetterEditorStore} from '../../Store/store';
 
 type Props = NativeStackScreenProps<StackParamsList, 'ReadLetter'>;
 
 export function ReadLetter({route, navigation}: Props) {
   const [letterContent, setLetterContent] = useState<PublicLetterContent>();
   const [isImageModalVisible, setImageModalVisible] = useState(false);
+
+  const {setDeliverLetterTo} = useLetterEditorStore();
 
   const paperColor = useMemo(
     () => letterContent?.paperColor ?? 'PINK',
@@ -51,10 +54,6 @@ export function ReadLetter({route, navigation}: Props) {
 
   const attachedImages = letterContent?.files ?? [];
 
-  const goToLetterEditor = () => {
-    navigation.navigate('LetterEditor', {reply: true});
-  };
-
   useEffect(() => {
     const getLetterContent = async () => {
       const data = await getPublicLetterContent(route.params.id);
@@ -69,14 +68,37 @@ export function ReadLetter({route, navigation}: Props) {
     setImageModalVisible(true);
   }, [setImageModalVisible]);
 
+  const goBack = useCallback(() => navigation.navigate('Home'), [navigation]);
+
+  const onPressReply = useCallback(() => {
+    const goToLetterEditor = () => {
+      navigation.navigate('LetterEditor', {reply: route.params.id});
+    };
+
+    if (letterContent) {
+      setDeliverLetterTo({
+        toNickname: letterContent.fromNickname,
+        toAddress: letterContent.fromAddress,
+      });
+    }
+
+    goToLetterEditor();
+  }, [letterContent, navigation, route.params.id, setDeliverLetterTo]);
+
   return (
     <PaperBackgroud paperColor={paperColor} paperStyle={paperStyle}>
       <>
         <SafeAreaView style={styles.container}>
-          <Header navigation={navigation} title={headerTitle} />
+          <Header2 title={headerTitle} onPressBack={goBack} />
           <ScrollView
             alwaysBounceVertical={false}
-            style={{paddingHorizontal: 24, flex: 1}}>
+            style={{
+              paddingHorizontal: 24,
+            }}
+            contentContainerStyle={{
+              flexGrow: 1,
+              justifyContent: 'space-between',
+            }}>
             <Text
               style={{
                 lineHeight: 40,
@@ -89,6 +111,7 @@ export function ReadLetter({route, navigation}: Props) {
             </Text>
             <Text
               style={{
+                flex: 1,
                 lineHeight: 40,
                 fontSize: 14,
                 fontFamily: 'Galmuri11',
@@ -119,7 +142,7 @@ export function ReadLetter({route, navigation}: Props) {
           <BottomButton
             disable={false}
             buttonText={'답장하기'}
-            onPress={goToLetterEditor}
+            onPress={onPressReply}
           />
         </SafeAreaView>
         {isImageModalVisible && <ModalBlur />}

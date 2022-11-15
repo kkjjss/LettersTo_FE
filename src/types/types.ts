@@ -64,7 +64,7 @@ export type Texticons = {
 };
 
 export type Stamp = {
-  id: string;
+  id: number;
   image: any;
 };
 

@@ -6,23 +6,23 @@ import {StampsList} from '../../Stamp/StampsList';
 import useStore from '../../../Store/store';
 
 type Props = {
-  selectedStampId: string;
-  setSelectedStampId: React.Dispatch<React.SetStateAction<string>>;
+  selectedStampId: number | undefined;
+  setSelectedStampId: React.Dispatch<React.SetStateAction<number | undefined>>;
 };
 
 export function StampSelector({selectedStampId, setSelectedStampId}: Props) {
-  const [numberStamps, setNumberStamps] = useState<number>(5);
+  const [numberUserStamps, setNumberUserStamps] = useState<number>(5);
 
   const {stamps} = useStore();
 
   const {bottom} = useSafeAreaInsets();
 
   const selectStamp = useCallback(
-    (id: string) => {
+    (id: number) => {
       if (selectedStampId !== id) {
         setSelectedStampId(id);
       } else {
-        setSelectedStampId('');
+        setSelectedStampId(undefined);
       }
     },
     [setSelectedStampId, selectedStampId],
@@ -47,7 +47,7 @@ export function StampSelector({selectedStampId, setSelectedStampId}: Props) {
             source={require('../../../Assets/numberStamps.png')}
             style={{height: 24, width: 24}}
           />
-          <Text style={styles.counter}>X {numberStamps}</Text>
+          <Text style={styles.counter}>X {numberUserStamps}</Text>
         </View>
       </View>
 
