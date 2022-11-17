@@ -20,11 +20,30 @@ import {PublicLetters} from '../../types/types';
 import {PublicLetterItem} from './PublicLetterItem';
 import {EnvelopeModal} from '../../Modals/EnvelopeModal';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../Constants/screen';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+
+// const Tab = createBottomTabNavigator();
+
+function HomeScreen() {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Home!</Text>
+    </View>
+  );
+}
+
+function SettingsScreen() {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Settings!</Text>
+    </View>
+  );
+}
 
 type Props = NativeStackScreenProps<StackParamsList, 'Home'>;
 
 export function Home({navigation}: Props) {
-  const {setIsLoggedIn} = useStore();
+  const {setIsLoggedIn, userInfo} = useStore();
 
   type ColorType = {
     [key: string]: string;
@@ -66,11 +85,15 @@ export function Home({navigation}: Props) {
       console.error(error.message);
     }
   }
-  useEffect(() => {
-    // console.log('Home');
-    
+  useEffect(() => {    
     getPublicLettersInit();
   }, []);
+
+  // 우표 개수
+  const [stampQuantity, setStampQuantity] = useState<number>();
+  useEffect(() => {
+    setStampQuantity(userInfo?.stampQuantity);
+  }, [userInfo]);
 
   // 스크롤 시 y 위치 저장
   const [positionY, setPositionY] = useState<Number>(0);
@@ -175,20 +198,23 @@ export function Home({navigation}: Props) {
       style={styles.container}>
       {/* <SafeAreaView style={styles.container}> */}
       <View style={[styles.header, {marginTop: SAFE_AREA_TOP}]}>
-        <View style={styles.headerInner}>
+        <View style={[styles.headerInner]}>
           <View style={{flexDirection: 'row'}}>
-            <TouchableOpacity activeOpacity={0.7}>
+            <TouchableOpacity activeOpacity={0.7} style={[styles.headerButton]}>
               <Image
                 source={require('../../Assets/alert_off.png')}
-                style={styles.icon}
+                style={[styles.icon, {width: 28, height: 28}]}
               />
             </TouchableOpacity>
-            <View style={{marginLeft: 12}}>
+            <TouchableOpacity activeOpacity={0.7} style={[styles.headerButton, {marginLeft: 12}]}>
               <Image
-                source={require('../../Assets/alert_on.png')}
-                style={styles.icon}
+                source={require('../../Assets/numberStamps.png')}
+                style={[styles.icon, {width: 24, height: 24, marginLeft: -3}]}
               />
-            </View>
+              <View style={styles.stampArea}>
+                <Text style={styles.stampText} numberOfLines={1} ellipsizeMode="clip">{stampQuantity}</Text>
+              </View>
+            </TouchableOpacity>
           </View>
           <TouchableOpacity activeOpacity={0.7}>
             <Image
@@ -318,6 +344,10 @@ export function Home({navigation}: Props) {
         setModalVisible={setEnvelopeModalVisible}
         onOpenLetter={goToReadLetter}
       />
+      {/* <Tab.Navigator>
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Settings" component={SettingsScreen} />
+      </Tab.Navigator> */}
       {/* </SafeAreaView> */}
     </LinearGradient>
   );
@@ -334,6 +364,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 16,
   },
+  headerButton: {position: 'relative', width: 28, height: 28, justifyContent: 'center'},
+  stampArea: {position: 'absolute', left: 9, bottom: -2, height: 16, backgroundColor: '#0000CC', borderRadius: 8},
+  stampText: {fontWeight: '700', fontFamily: 'Galmuri11', fontSize: 10, lineHeight: 15, paddingHorizontal: 3},
   tabBottom: {
     position: 'absolute',
     left: 0,

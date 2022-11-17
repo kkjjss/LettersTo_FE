@@ -71,6 +71,7 @@ export function MyPage({navigation}: Props) {
           topicIds: userData.topicIds,
           geolocationId: userData.geolocationId,
           parentGeolocationId: userData.parentGeolocationId,
+          stampQuantity: userData.stampQuantity,
         });
       }
     };
