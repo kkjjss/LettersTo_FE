@@ -42,6 +42,7 @@ interface Store {
         topicIds: number[];
         geolocationId: number;
         parentGeolocationId: number;
+        stampQuantity: number;
       }
     | undefined;
   setUserInfo: (value: {
@@ -50,6 +51,7 @@ interface Store {
     topicIds: number[];
     geolocationId: number;
     parentGeolocationId: number;
+    stampQuantity: number;
   }) => void;
 
   signOut: () => void;
