@@ -93,6 +93,7 @@ export type PublicLetterWriteRequest = {
   personalities: number[];
   files?: string[];
 };
+
 export interface PublicLetter {
   id: number;
   title: string;
@@ -107,3 +108,11 @@ export interface PublicLetter {
 };
 
 export type PublicLetters = PublicLetter[];
+
+export interface LetterBox {
+  fromMemberId: number;
+  fromMemberNickname: string;
+  new: boolean;
+}
+
+export type LetterBoxes = LetterBox[];

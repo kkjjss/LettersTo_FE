@@ -43,21 +43,24 @@ function SettingsScreen() {
 type Props = NativeStackScreenProps<StackParamsList, 'Home'>;
 
 export function Home({navigation}: Props) {
+  
+  const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
+
   const {setIsLoggedIn, userInfo} = useStore();
 
   type ColorType = {
     [key: string]: string;
   };
   const COLORS: ColorType = {
-    PINK: 'rgba(255, 68, 204, 0.25)',
-    ORANGE: 'rgba(255, 130, 68, 0.25)',
-    YELLOW: 'rgba(255, 224, 68, 0.25)',
-    LIGHTGREEN: 'rgba(174, 248, 26, 0.25)',
-    TEAL: 'rgba(68, 255, 193, 0.25)',
-    LIGHTBLUE: 'rgba(68, 210, 255, 0.25)',
-    BLUE: 'rgba(68, 130, 255, 0.25)',
-    PURPLE: 'rgba(170, 117, 255, 0.25)',
-    LIGHTPURPLE: 'rgba(226, 168, 255, 0.25)',
+    PINK: 'rgba(255, 68, 204, 0.25)',       // #FFCCEE
+    ORANGE: 'rgba(255, 130, 68, 0.25)',     // #FFDDCC
+    YELLOW: 'rgba(255, 224, 68, 0.25)',     // #FFF7CC
+    LIGHTGREEN: 'rgba(174, 248, 26, 0.25)', // #EDFDCE
+    TEAL: 'rgba(68, 255, 193, 0.25)',       // #CCFFEE
+    LIGHTBLUE: 'rgba(68, 210, 255, 0.25)',  // #CCF3FF
+    BLUE: 'rgba(68, 130, 255, 0.25)',       // #CCDDFF
+    PURPLE: 'rgba(170, 117, 255, 0.25)',    // #E0CCFF
+    LIGHTPURPLE: 'rgba(226, 168, 255, 0.25)',// #EECCFF
   };
 
   type StampType = {
@@ -85,7 +88,9 @@ export function Home({navigation}: Props) {
       console.error(error.message);
     }
   }
-  useEffect(() => {    
+  useEffect(() => {
+    console.log('Home');
+
     getPublicLettersInit();
   }, []);
 
@@ -150,12 +155,12 @@ export function Home({navigation}: Props) {
 
   // 편지 조회
   const goToReadLetter = () => {
-    navigation.navigate('ReadLetter');
+    // navigation.navigate('ReadLetter');
   };
 
   // 내 사서함
   const goToLetterBox = () => {
-    navigation.navigate('LetterBox');
+    navigation.push('LetterBox');
   };
 
   function logout() {
@@ -172,14 +177,15 @@ export function Home({navigation}: Props) {
     navigation.navigate('LetterEditor');
   }
 
-  const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
-
   // cold case
   const Empty = () => (
     <View style={styles.emptyArea}>
-      <ImageBackground style={{width: 100, height: 100, backgroundColor: 'rgba(0, 0, 204, 0.05)'}} />
+      <Image
+        source={require('../../Assets/no_data.png')}
+        style={styles.emptyImage}
+      />
       <Text style={styles.emptyText}>잘못된 접근/네트워크연결확인{"\n"}잠시 후 다시 시도해주세요.</Text>
-      <TouchableOpacity style={styles.emptyBtn} activeOpacity={0.7} onPress={handleRefresh}>
+      <Pressable style={styles.emptyBtn} onPress={handleRefresh}>
         <LinearGradient colors={['#FF6ECE', '#FF3DBD']} style={styles.emptyBtnBg}>
           <Text style={styles.emptyBtnText}>다시 시도</Text>
           <Image
@@ -187,7 +193,7 @@ export function Home({navigation}: Props) {
             style={styles.emptyBtnIcon}
           />
         </LinearGradient>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 
@@ -206,7 +212,7 @@ export function Home({navigation}: Props) {
                 style={[styles.icon, {width: 28, height: 28}]}
               />
             </TouchableOpacity>
-            <TouchableOpacity activeOpacity={0.7} style={[styles.headerButton, {marginLeft: 12}]}>
+            <TouchableOpacity activeOpacity={1} style={[styles.headerButton, {marginLeft: 12}]}>
               <Image
                 source={require('../../Assets/numberStamps.png')}
                 style={[styles.icon, {width: 24, height: 24, marginLeft: -3}]}
@@ -216,7 +222,7 @@ export function Home({navigation}: Props) {
               </View>
             </TouchableOpacity>
           </View>
-          <TouchableOpacity activeOpacity={0.7}>
+          <TouchableOpacity activeOpacity={0.7} onPress={goToMyPage}>
             <Image
               source={require('../../Assets/menu.png')}
               style={styles.icon}
@@ -226,6 +232,7 @@ export function Home({navigation}: Props) {
       </View>
       <FlatList
         ref={publicLetterListRef}
+        style={styles.list}
         ListEmptyComponent={Empty}
         onScroll={handleScroll}
         onEndReached={handleEndReached}
@@ -330,7 +337,7 @@ export function Home({navigation}: Props) {
         <TouchableOpacity
           activeOpacity={0.7}
           style={[styles.btn, styles.btnSecondary]}
-          onPress={() => setPublicLetters([])}
+          onPress={goToLetterEditor}
         >
           <Image
             source={require('../../Assets/write.png')}
@@ -367,6 +374,7 @@ const styles = StyleSheet.create({
   headerButton: {position: 'relative', width: 28, height: 28, justifyContent: 'center'},
   stampArea: {position: 'absolute', left: 9, bottom: -2, height: 16, backgroundColor: '#0000CC', borderRadius: 8},
   stampText: {fontWeight: '700', fontFamily: 'Galmuri11', fontSize: 10, lineHeight: 15, paddingHorizontal: 3},
+  list: {},
   tabBottom: {
     position: 'absolute',
     left: 0,
@@ -427,6 +435,7 @@ const styles = StyleSheet.create({
   triangle: {position: 'absolute', bottom: 0, width: 4, height: 5},
   icon: {width: 28, height: 28},
   emptyArea: {height: SCREEN_HEIGHT, alignItems: 'center', justifyContent: 'center'},
+  emptyImage: {width: 100, height: 100},
   emptyText: {marginTop: 8, textAlign: 'center', fontFamily: 'Galmuri11', fontSize: 14, lineHeight: 25, color: '#0000CC'},
   emptyBtn: {overflow: 'hidden', height: 28, marginTop: 24, borderWidth: 1, borderColor: '#FF44CC', borderRadius: 10},
   emptyBtnBg: {flex: 1, flexDirection: 'row', alignItems: 'center', paddingRight: 6, paddingLeft: 12},
