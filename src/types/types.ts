@@ -116,3 +116,12 @@ export interface LetterBox {
 }
 
 export type LetterBoxes = LetterBox[];
+
+export interface LetterBoxInfo {
+  fromNickname: string;
+  fromAddress: string;
+  startDate: string;
+  topics: string[];
+  personalities: string[];
+  [key: string]: any;
+}

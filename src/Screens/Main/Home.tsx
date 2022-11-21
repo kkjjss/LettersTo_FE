@@ -160,7 +160,7 @@ export function Home({navigation}: Props) {
 
   // 내 사서함
   const goToLetterBox = () => {
-    navigation.push('LetterBox');
+    navigation.push('LetterBoxList');
   };
 
   function logout() {
@@ -218,7 +218,7 @@ export function Home({navigation}: Props) {
                 style={[styles.icon, {width: 24, height: 24, marginLeft: -3}]}
               />
               <View style={styles.stampArea}>
-                <Text style={styles.stampText} numberOfLines={1} ellipsizeMode="clip">{stampQuantity}</Text>
+                <Text style={styles.stampText} numberOfLines={1} ellipsizeMode="clip">22</Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -373,7 +373,7 @@ const styles = StyleSheet.create({
   },
   headerButton: {position: 'relative', width: 28, height: 28, justifyContent: 'center'},
   stampArea: {position: 'absolute', left: 9, bottom: -2, height: 16, backgroundColor: '#0000CC', borderRadius: 8},
-  stampText: {fontWeight: '700', fontFamily: 'Galmuri11', fontSize: 10, lineHeight: 15, paddingHorizontal: 3},
+  stampText: {fontFamily: 'Galmuri11-Bold', fontSize: 10, color: 'white', lineHeight: 15, paddingHorizontal: 4},
   list: {},
   tabBottom: {
     position: 'absolute',
