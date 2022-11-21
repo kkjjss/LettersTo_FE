@@ -42,6 +42,7 @@ interface Store {
         personalityIds: number[];
         topicIds: number[];
         geolocationId: number;
+        stampQuantity: number;
         parentGeolocationId: number;
       }
     | undefined;
@@ -50,6 +51,7 @@ interface Store {
     personalityIds: number[];
     topicIds: number[];
     geolocationId: number;
+    stampQuantity: number;
     parentGeolocationId: number;
   }) => void;
 

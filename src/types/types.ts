@@ -44,6 +44,7 @@ export interface UserInfo {
   nickname: string;
   topicIds: number[];
   personalityIds: number[];
+  stampQuantity: number;
   geolocationId: number;
 }
 

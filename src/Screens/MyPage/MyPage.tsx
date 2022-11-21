@@ -70,6 +70,7 @@ export function MyPage({navigation}: Props) {
           personalityIds: userData.personalityIds,
           topicIds: userData.topicIds,
           geolocationId: userData.geolocationId,
+          stampQuantity: userData.stampQuantity,
           parentGeolocationId: userData.parentGeolocationId,
         });
       }
