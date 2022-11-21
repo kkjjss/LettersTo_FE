@@ -1,9 +1,8 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {Image, ImageBackground, Text, View} from 'react-native';
+import React from 'react';
+import {Image, Text, View} from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
-import useStore, {useLetterEditorStore} from '../../Store/store';
+import {useLetterEditorStore} from '../../Store/store';
 import {GRADIENT_COLORS} from '../../Constants/letter';
-import {getCities, getRegions} from '../../APIs/geolocation';
 import {SCREEN_WIDTH} from '../../Constants/screen';
 
 export const DeliveryLetterCoverBackPreview = React.memo(() => {
@@ -24,7 +23,7 @@ export const DeliveryLetterCoverBackPreview = React.memo(() => {
         padding: 16,
       }}>
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        {deliveryLetter.deliveryType === 'NORMAL' ? (
+        {deliveryLetter.deliveryType === 'STANDARD' ? (
           <>
             <Image
               source={require('../../Assets/StandardBox.png')}

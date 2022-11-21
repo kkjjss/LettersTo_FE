@@ -73,13 +73,24 @@ export function LetterEditor({navigation, route}: Props) {
 
   const {keyboardVisible, dismissKeyboard} = useKeyboard();
 
+  const alignType: 'LEFT' | 'CENTER' | 'RIGHT' = useMemo(() => {
+    switch (align) {
+      case 'left':
+        return 'LEFT';
+      case 'right':
+        return 'RIGHT';
+      case 'center':
+        return 'CENTER';
+    }
+  }, [align]);
+
   const setLetterData = useCallback(() => {
     setLetter({
       title: title.replace(/(⌜|⌟︎)/g, ''),
       text,
       paperColor,
       paperStyle,
-      align,
+      alignType,
       images,
     });
     setInitialCoverData();
@@ -89,7 +100,7 @@ export function LetterEditor({navigation, route}: Props) {
     text,
     paperColor,
     paperStyle,
-    align,
+    alignType,
     images,
     setInitialCoverData,
   ]);
@@ -102,13 +113,21 @@ export function LetterEditor({navigation, route}: Props) {
         content: text,
         paperType: paperStyle,
         paperColor,
-        align,
+        alignType,
         files: images,
       };
 
       setDeliveryLetterData(deliberyLetterData);
     },
-    [align, images, paperColor, paperStyle, setDeliveryLetterData, text, title],
+    [
+      alignType,
+      images,
+      paperColor,
+      paperStyle,
+      setDeliveryLetterData,
+      text,
+      title,
+    ],
   );
 
   const onFocusTitle = () => {
@@ -290,7 +309,9 @@ export function LetterEditor({navigation, route}: Props) {
       navigation.navigate('CoverTopicEditor');
     } else {
       setDeliveryLetterDataOnStore(route.params?.reply);
-      navigation.navigate('CoverDeliverySelector', {reply: route.params?.reply});
+      navigation.navigate('CoverDeliverySelector', {
+        reply: route.params?.reply,
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigation, setDeliveryLetterDataOnStore, setLetterData]);
@@ -305,7 +326,7 @@ export function LetterEditor({navigation, route}: Props) {
       }, 1);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [align]);
+  }, [alignType]);
 
   const setTexticonIntoText = useCallback(
     (selectedTexticon: string) => {

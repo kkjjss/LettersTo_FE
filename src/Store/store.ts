@@ -61,7 +61,7 @@ interface Store {
         text: string;
         paperStyle: PaperStyle;
         paperColor: PaperColor;
-        align: 'left' | 'center' | 'right';
+        alignType: 'LEFT' | 'CENTER' | 'RIGHT';
         images?: string[];
       }
     | undefined;
@@ -71,7 +71,7 @@ interface Store {
     text: string;
     paperStyle: PaperStyle;
     paperColor: PaperColor;
-    align: 'left' | 'center' | 'right';
+    alignType: 'LEFT' | 'CENTER' | 'RIGHT';
     images?: string[];
   }) => void;
 
@@ -202,7 +202,7 @@ export const useLetterEditorStore = create<LetterEditorStore>((set, get) => ({
     content: undefined,
     paperType: undefined,
     paperColor: undefined,
-    align: undefined,
+    alignType: undefined,
     stampId: undefined,
     files: [],
     deliveryType: undefined,
@@ -213,7 +213,7 @@ export const useLetterEditorStore = create<LetterEditorStore>((set, get) => ({
   setDeliverLetterTo: (value: {toNickname: string; toAddress: string}) =>
     set(() => ({deliveryLetterTo: value})),
 
-  setDeliveryLetterData: (value: DeliveryLetter) =>
+  setDeliveryLetterData: (value: DeliveryLetterWriteRequest) =>
     set(state => ({deliveryLetter: {...state.deliveryLetter, ...value}})),
 
   initializeDeliverLetter: () =>
@@ -224,7 +224,7 @@ export const useLetterEditorStore = create<LetterEditorStore>((set, get) => ({
         content: undefined,
         paperType: undefined,
         paperColor: undefined,
-        align: undefined,
+        alignType: undefined,
         stampId: undefined,
         files: [],
         deliveryType: undefined,

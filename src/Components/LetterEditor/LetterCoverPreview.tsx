@@ -5,6 +5,7 @@ import useStore from '../../Store/store';
 import {TopicItem} from '../TopicItem';
 import {PersonalityItem} from '../PersonalityItem';
 import {GRADIENT_COLORS} from '../../Constants/letter';
+import { SCREEN_WIDTH } from '../../Constants/screen';
 
 const SelectedStampImage = () => {
   const {cover, stamps} = useStore();
@@ -50,14 +51,13 @@ export const LetterCoverPreview = React.memo(() => {
     <LinearGradient
       colors={[GRADIENT_COLORS[letter?.paperColor ?? 'PINK'], 'white']}
       style={{
-        width: '100%',
+        width: SCREEN_WIDTH - 80,
         height: undefined,
         aspectRatio: 295 / 212,
         borderColor: '#0000cc',
         borderWidth: 1,
         borderRadius: 10,
         padding: 16,
-        marginHorizontal: 40,
         justifyContent: 'space-between',
       }}>
       <View

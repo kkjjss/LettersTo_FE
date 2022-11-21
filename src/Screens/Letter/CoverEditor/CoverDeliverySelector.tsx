@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {StackParamsList} from '../../../types/stackParamList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -15,8 +15,8 @@ export function CoverDeliverySelector({navigation, route}: Props) {
   const [numberUserStamps, setNumberUserStamps] = useState<number>(5);
 
   const [deliveryType, setDeliveryType] = useState<
-    'NONE' | 'NORMAL' | 'EXPRESS'
-  >('NORMAL');
+    'NONE' | 'STANDARD' | 'EXPRESS'
+  >('STANDARD');
 
   const {setDeliveryLetterData} = useLetterEditorStore();
 
@@ -25,7 +25,7 @@ export function CoverDeliverySelector({navigation, route}: Props) {
   const disableNext = useMemo(() => {
     if (deliveryType === 'EXPRESS' && numberUserStamps < 5) {
       return true;
-    } else if (deliveryType === 'NORMAL' && numberUserStamps < 1) {
+    } else if (deliveryType === 'STANDARD' && numberUserStamps < 1) {
       return true;
     } else {
       return false;
@@ -89,7 +89,7 @@ export function CoverDeliverySelector({navigation, route}: Props) {
         <View style={{flex: 1, padding: 24}}>
           <TouchableOpacity
             onPress={() => {
-              setDeliveryType('NORMAL');
+              setDeliveryType('STANDARD');
             }}
             style={[
               {
@@ -99,7 +99,7 @@ export function CoverDeliverySelector({navigation, route}: Props) {
                 marginBottom: 20,
                 padding: 10,
               },
-              deliveryType === 'NORMAL'
+              deliveryType === 'STANDARD'
                 ? {
                     borderWidth: 1,
                     borderColor: '#0000cc',
@@ -114,7 +114,7 @@ export function CoverDeliverySelector({navigation, route}: Props) {
             <View
               style={[
                 {flex: 1, padding: 10},
-                deliveryType === 'NORMAL' && {
+                deliveryType === 'STANDARD' && {
                   backgroundColor: 'rgb(239,239,251)',
                 },
               ]}>

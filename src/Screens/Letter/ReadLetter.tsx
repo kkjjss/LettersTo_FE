@@ -56,8 +56,12 @@ export function ReadLetter({route, navigation}: Props) {
 
   useEffect(() => {
     const getLetterContent = async () => {
-      const data = await getPublicLetterContent(route.params.id);
-      setLetterContent(data);
+      try {
+        const data = await getPublicLetterContent(route.params.id);
+        setLetterContent(data);
+      } catch (error: any) {
+        console.error(error.message);
+      }
     };
 
     getLetterContent();

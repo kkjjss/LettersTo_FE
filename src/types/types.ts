@@ -89,6 +89,7 @@ export type PublicLetterWriteRequest = {
   paperType: PaperStyle;
   paperColor: PaperColor;
   stampId: number;
+  alignType: 'LEFT' | 'CENTER' | 'RIGHT';
   topics: number[];
   personalities: number[];
   files?: string[];
@@ -102,6 +103,7 @@ export interface PublicLetter {
   personalities: string[];
   paperColor: string;
   stampId?: number;
+  alignType: 'LEFT' | 'CENTER' | 'RIGHT';
   createDate?: string;
   [key: string]: any;
 }
@@ -116,6 +118,7 @@ export interface PublicLetterContent {
   fromNickname: string;
   paperColor: PaperColor;
   paperType: PaperStyle | 'LINE';
+  alignType: 'LEFT' | 'CENTER' | 'RIGHT';
   stampId: number;
   replied: boolean;
   files: string[];
@@ -128,8 +131,8 @@ export interface DeliveryLetterWriteRequest {
   content?: string;
   paperType?: PaperStyle;
   paperColor?: PaperColor;
-  align?: 'left' | 'center' | 'right';
+  alignType?: 'LEFT' | 'CENTER' | 'RIGHT';
   stampId?: number;
   files?: string[];
-  deliveryType?: 'NONE' | 'NORMAL' | 'EXPRESS';
+  deliveryType?: 'NONE' | 'STANDARD' | 'EXPRESS';
 }

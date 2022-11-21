@@ -30,6 +30,7 @@ export const LetterComplete = ({navigation, route}: Props) => {
           content: letter.text,
           paperType: letter.paperStyle,
           paperColor: letter.paperColor,
+          alignType: letter.alignType,
           stampId: cover.stamp,
           topics: cover.topicIds,
           personalities: cover.personalityIds,
@@ -50,8 +51,6 @@ export const LetterComplete = ({navigation, route}: Props) => {
       const letterData: DeliveryLetterWriteRequest = {
         ...deliveryLetter,
       };
-
-      letterData.align = undefined;
 
       await postDeliveryLetter(letterData);
 
