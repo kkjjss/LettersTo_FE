@@ -11,7 +11,8 @@ import {Home} from '../Screens/Main/Home';
 
 // 편지 관련 스크린
 import {ReadLetter} from '../Screens/Letter/ReadLetter';
-import {LetterBox} from '../Screens/LetterBox/LetterBox';
+import {LetterBoxList} from '../Screens/LetterBox/LetterBoxList';
+import {LetterBoxDetail} from '../Screens/LetterBox/LetterBoxDetail';
 
 // 인증 관련 스크린
 import {Auth} from '../Screens/Auth/Auth';
@@ -44,7 +45,8 @@ export default function StackNavigator() {
         <Stack.Group screenOptions={{headerShown: false}}>
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="ReadLetter" component={ReadLetter} />
-          <Stack.Screen name="LetterBox" component={LetterBox} />
+          <Stack.Screen name="LetterBoxList" component={LetterBoxList} />
+          <Stack.Screen name="LetterBoxDetail" component={LetterBoxDetail} />
 
           {/* 회원정보 수정 */}
           <Stack.Screen name="MyPage" component={MyPage} />

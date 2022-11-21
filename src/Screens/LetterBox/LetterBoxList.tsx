@@ -2,16 +2,16 @@ import React, {useRef, useState, useEffect} from 'react';
 // import {TabActions} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import type {StackParamsList} from '../../types/stackParamList';
-import {StyleSheet, View, Text, Image, Pressable, TouchableOpacity, FlatList} from 'react-native';
+import {StyleSheet, View, Text, Image, Pressable, TouchableOpacity, TouchableWithoutFeedback, FlatList} from 'react-native';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {LinearGradient} from 'expo-linear-gradient';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../Constants/screen';
 import {LetterBoxes} from '../../types/types';
 import {getLetterBoxes} from '../../APIs/letterBox';
 
-type Props = NativeStackScreenProps<StackParamsList, 'LetterBox'>;
+type Props = NativeStackScreenProps<StackParamsList, 'LetterBoxList'>;
 
-export function LetterBox({navigation}: Props) {
+export function LetterBoxList({navigation}: Props) {
 
   const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
 
@@ -35,8 +35,8 @@ export function LetterBox({navigation}: Props) {
   useEffect(() => {
     console.log('LetterBox');
 
-    getLetterBoxesInit();
-    // setLetterBoxes(letterBoxesData);
+    // getLetterBoxesInit();
+    setLetterBoxes(letterBoxesData);
   }, []);
 
   // const jumpToAction = TabActions.jumpTo('Home');
@@ -46,6 +46,15 @@ export function LetterBox({navigation}: Props) {
     navigation.push('Home');
     // navigation.dispatch(jumpToAction);
   };
+
+  // 내 사서함 상세
+  const goToDetail = (id: any) => {
+    navigation.navigate('LetterBoxDetail', {id});
+  };
+
+  async function goToMyPage() {
+    navigation.navigate('MyPage');
+  }
 
   // cold case
   const Empty = () => (
@@ -81,7 +90,7 @@ export function LetterBox({navigation}: Props) {
           </View>
           <Text style={styles.pageTitle}>내 사서함</Text>
           <View style={{position: 'absolute', right: 16, flexDirection: 'row'}}>
-            <TouchableOpacity activeOpacity={0.7}>
+            <TouchableOpacity activeOpacity={0.7} onPress={goToMyPage}>
               <Image
                 source={require('../../Assets/menu.png')}
                 style={styles.icon}
@@ -109,11 +118,15 @@ export function LetterBox({navigation}: Props) {
             '#EECCFF',
           ];
           return (
-            <View style={[
-              styles.listItem,
-              isFirst && {marginTop: 50},
-              isLast && {marginBottom: 100}
-            ]}>
+            <TouchableOpacity
+              activeOpacity={1}
+              style={[
+                styles.listItem,
+                isFirst && {marginTop: 50},
+                isLast && {marginBottom: 100}
+              ]}
+              onPress={() => goToDetail(item.fromMemberId)}
+            >
               <View style={[styles.listItemIcon, {backgroundColor: COLORS[index % 9]}]}>
                 <Text style={styles.listItemIconText}>{item.fromMemberNickname.substring(0, 2)}</Text>
               </View>
@@ -135,7 +148,7 @@ export function LetterBox({navigation}: Props) {
                   </>
                 }
               </View>
-            </View>
+            </TouchableOpacity>
           );
         }}
       />
@@ -198,11 +211,11 @@ const styles = StyleSheet.create({
     borderColor: '#0000CC',
     borderRadius: 18,
   },
-  listItemIconText: {fontWeight: '700', fontFamily: 'Galmuri11', fontSize: 13, color: '#0000CC'},
+  listItemIconText: {fontFamily: 'Galmuri11-Bold', fontSize: 13, color: '#0000CC'},
   listItemTitle: {fontFamily: 'Galmuri11', fontSize: 14, color: '#0000CC'},
   letterArea: {marginLeft: 'auto'},
   letterBlank: {width: 100, height: 10},
-  letterNew: {position: 'absolute', right: 8, width: 79, height: 16},
+  letterNew: {position: 'absolute', top: 1, right: 8, width: 79, height: 16},
   dot: {position: 'absolute', top: -8, right: 0, width: 4, height: 4, backgroundColor: '#FF44CC', borderRadius: 2},
   tabBottom: {
     position: 'absolute',
