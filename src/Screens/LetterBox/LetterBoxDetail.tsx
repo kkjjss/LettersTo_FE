@@ -1,56 +1,68 @@
-// import {TabActions} from '@react-navigation/native';
+import React, {useRef, useState, useEffect} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import type {StackParamsList} from '../../types/stackParamList';
-import {StyleSheet, View, Text, Image, Pressable, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Text, Image, Pressable, TouchableOpacity, FlatList} from 'react-native';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {LinearGradient} from 'expo-linear-gradient';
+import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../Constants/screen';
+import {LetterBoxInfo} from '../../types/types';
+import {getLetterBoxInfo} from '../../APIs/letterBox';
+import {Header} from '../../Components/Headers/Header';
 
-type Props = NativeStackScreenProps<StackParamsList, 'LetterBox'>;
+type Props = NativeStackScreenProps<StackParamsList, 'LetterBoxDetail'>;
 
-export function LetterBox({navigation}: Props) {
+export function LetterBoxDetail({route, navigation}: Props) {
+
+  const { id } = route.params;
 
   const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
 
-  // const jumpToAction = TabActions.jumpTo('Home');
-
   // 메인 (편지탐색)
   const goHome = () => {
-    navigation.navigate('Home');
+    navigation.push('Home');
     // navigation.dispatch(jumpToAction);
   };
 
+  const [info, setInfo] = useState<LetterBoxInfo>({
+    fromNickname: 'da99ydo99y',
+    fromAddress: '부산, 북구',
+    startDate: "2022-11-21T14:35:59.395Z",
+    topics: ['음악', '여행', '자기계발', '커리어', '독서'],
+    personalities: ['신중한', '세심한', '수줍은', '어쩌구한', '저쩌구한', '저절씨구한'],
+  });
+
+  useEffect(() => {
+    console.log('route');
+    try {
+      getLetterBoxInfo(id).then(info => {
+        setInfo(info);
+      })
+    } catch (error: any) {
+      console.error(error.message);
+    }
+  }, [route]);
+
+  useEffect(() => {
+    console.log('navigation');
+  }, [navigation]);
+
+  useEffect(() => {
+    // console.log('startDate', info.startDate, typeof info.startDate);
+    console.log('init');
+  }, []);
+
   return (
-    <LinearGradient
-      locations={[0, 0.1, 0.8, 1]}
-      colors={['#FFCCEE', 'white', 'white', '#FFFFCC']}
-      style={styles.container}>
-      {/* <SafeAreaView style={styles.container}> */}
-      <View style={[styles.header, {marginTop: SAFE_AREA_TOP}]}>
-        <View style={[styles.headerInner]}>
-          <View style={{position: 'absolute', left: 16, flexDirection: 'row'}}>
-            <TouchableOpacity activeOpacity={0.7}>
-              <Image
-                source={require('../../Assets/alert_off.png')}
-                style={styles.icon}
-              />
-            </TouchableOpacity>
-            <View style={{marginLeft: 12}}>
-              <Image
-                source={require('../../Assets/alert_on.png')}
-                style={styles.icon}
-              />
-            </View>
-          </View>
-          <Text style={styles.pageTitle}>내 사서함</Text>
-          <View style={{position: 'absolute', right: 16, flexDirection: 'row'}}>
-            <TouchableOpacity activeOpacity={0.7}>
-              <Image
-                source={require('../../Assets/menu.png')}
-                style={styles.icon}
-              />
-            </TouchableOpacity>
-          </View>
-        </View>
+    <SafeAreaView style={styles.container}>
+      <Header
+        navigation={navigation}
+        title={`${info.fromNickname}와의 사서함`}
+        color="white"
+        style={{backgroundColor: '#0000CC', paddingTop: 0}}
+      />
+      <View style={styles.infoArea}>
+        <Text style={styles.fromNickname}>{info.fromNickname}</Text>
+        <Text style={styles.fromAddress}>{info.fromAddress}</Text>
+        <Text style={styles.startDate}>{info.startDate}일째 인연</Text>
       </View>
       <View style={styles.tabBottom}>
         <View style={styles.tabArea}>
@@ -74,23 +86,16 @@ export function LetterBox({navigation}: Props) {
           </Pressable>
         </View>
       </View>
-      {/* </SafeAreaView> */}
-    </LinearGradient>
-  )
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {flex: 1},
-  header: {position: 'absolute', zIndex: 10, top: 0, left: 0, width: '100%'},
-  headerInner: {
-    position: 'relative',
-    height: 52,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-  },
-  pageTitle: {fontFamily: 'Galmuri11', fontSize: 15, color: '#0000CC'},
+  infoArea: {},
+  fromNickname: {fontFamily: 'Galmuri11-Bold', fontSize: 14, color: '#0000CC'},
+  fromAddress: {fontFamily: 'Galmuri11', fontSize: 12, color: '#0000CC'},
+  startDate: {fontFamily: 'Galmuri11', fontSize: 12, color: '#0000CC'},
   tabBottom: {
     position: 'absolute',
     left: 0,
@@ -134,5 +139,4 @@ const styles = StyleSheet.create({
   tabActiveText: {fontFamily: 'Galmuri11', fontSize: 15, color: 'white'},
   tabInactiveText: {fontFamily: 'Galmuri11', fontSize: 15, color: '#0000CC'},
   triangle: {position: 'absolute', bottom: 0, width: 4, height: 5},
-  icon: {width: 28, height: 28},
 });

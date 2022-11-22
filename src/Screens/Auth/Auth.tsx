@@ -51,6 +51,7 @@ export function Auth({navigation}: Props) {
         topicIds: userInfo.topicIds,
         geolocationId: userInfo.geolocationId,
         parentGeolocationId: userInfo.parentGeolocationId,
+        stampQuantity: userInfo.stampQuantity,
       });
       store.setIsLoggedIn(true);
     }

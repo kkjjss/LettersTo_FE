@@ -17,24 +17,48 @@ import {getPublicLetters} from '../../APIs/letter';
 import {PublicLetters} from '../../types/types';
 import {PublicLetterItem} from './PublicLetterItem';
 import {EnvelopeModal} from '../../Modals/EnvelopeModal';
-import {SCREEN_HEIGHT} from '../../Constants/screen';
+import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../Constants/screen';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+
+// const Tab = createBottomTabNavigator();
+
+function HomeScreen() {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Home!</Text>
+    </View>
+  );
+}
+
+function SettingsScreen() {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Settings!</Text>
+    </View>
+  );
+}
 
 type Props = NativeStackScreenProps<StackParamsList, 'Home'>;
 
 export function Home({navigation}: Props) {
+  
+  const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
+
+  const {setIsLoggedIn, userInfo} = useStore();
+
   type ColorType = {
     [key: string]: string;
   };
   const COLORS: ColorType = {
-    PINK: 'rgba(255, 68, 204, 0.25)',
-    ORANGE: 'rgba(255, 130, 68, 0.25)',
-    YELLOW: 'rgba(255, 224, 68, 0.25)',
-    LIGHTGREEN: 'rgba(174, 248, 26, 0.25)',
-    TEAL: 'rgba(68, 255, 193, 0.25)',
-    LIGHTBLUE: 'rgba(68, 210, 255, 0.25)',
-    BLUE: 'rgba(68, 130, 255, 0.25)',
-    PURPLE: 'rgba(170, 117, 255, 0.25)',
-    LIGHTPURPLE: 'rgba(226, 168, 255, 0.25)',
+    PINK: 'rgba(255, 68, 204, 0.25)',       // #FFCCEE
+    ORANGE: 'rgba(255, 130, 68, 0.25)',     // #FFDDCC
+    YELLOW: 'rgba(255, 224, 68, 0.25)',     // #FFF7CC
+    LIGHTGREEN: 'rgba(174, 248, 26, 0.25)', // #EDFDCE
+    TEAL: 'rgba(68, 255, 193, 0.25)',       // #CCFFEE
+    LIGHTBLUE: 'rgba(68, 210, 255, 0.25)',  // #CCF3FF
+    BLUE: 'rgba(68, 130, 255, 0.25)',       // #CCDDFF
+    PURPLE: 'rgba(170, 117, 255, 0.25)',    // #E0CCFF
+    LIGHTPURPLE: 'rgba(226, 168, 255, 0.25)',// #EECCFF
   };
 
   type StampType = {
@@ -63,10 +87,14 @@ export function Home({navigation}: Props) {
     }
   };
   useEffect(() => {
-    // console.log('Home');
-
     getPublicLettersInit();
   }, []);
+
+  // 우표 개수
+  const [stampQuantity, setStampQuantity] = useState<number>();
+  useEffect(() => {
+    setStampQuantity(userInfo?.stampQuantity);
+  }, [userInfo]);
 
   // 스크롤 시 y 위치 저장
   const [currentPositionY, setCurrentPositionY] = useState<Number>(0);
@@ -128,7 +156,7 @@ export function Home({navigation}: Props) {
 
   // 내 사서함
   const goToLetterBox = () => {
-    navigation.navigate('LetterBox');
+    navigation.push('LetterBoxList');
   };
 
   async function goToMyPage() {
@@ -139,35 +167,23 @@ export function Home({navigation}: Props) {
     navigation.navigate('LetterEditor');
   }
 
-  const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
-
   // cold case
   const Empty = () => (
     <View style={styles.emptyArea}>
-      <ImageBackground
-        style={{
-          width: 100,
-          height: 100,
-          backgroundColor: 'rgba(0, 0, 204, 0.05)',
-        }}
+      <Image
+        source={require('../../Assets/no_data.png')}
+        style={styles.emptyImage}
       />
-      <Text style={styles.emptyText}>
-        잘못된 접근/네트워크연결확인{'\n'}잠시 후 다시 시도해주세요.
-      </Text>
-      <TouchableOpacity
-        style={styles.emptyBtn}
-        activeOpacity={0.7}
-        onPress={handleRefresh}>
-        <LinearGradient
-          colors={['#FF6ECE', '#FF3DBD']}
-          style={styles.emptyBtnBg}>
+      <Text style={styles.emptyText}>잘못된 접근/네트워크연결확인{"\n"}잠시 후 다시 시도해주세요.</Text>
+      <Pressable style={styles.emptyBtn} onPress={handleRefresh}>
+        <LinearGradient colors={['#FF6ECE', '#FF3DBD']} style={styles.emptyBtnBg}>
           <Text style={styles.emptyBtnText}>다시 시도</Text>
           <Image
             source={require('../../Assets/refresh.png')}
             style={styles.emptyBtnIcon}
           />
         </LinearGradient>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 
@@ -183,18 +199,21 @@ export function Home({navigation}: Props) {
         style={[styles.header, {paddingVertical: SAFE_AREA_TOP}]}>
         <View style={styles.headerInner}>
           <View style={{flexDirection: 'row'}}>
-            <TouchableOpacity activeOpacity={0.7}>
+            <TouchableOpacity activeOpacity={0.7} style={[styles.headerButton]}>
               <Image
                 source={require('../../Assets/alert_off.png')}
-                style={styles.icon}
+                style={[styles.icon, {width: 28, height: 28}]}
               />
             </TouchableOpacity>
-            <View style={{marginLeft: 12}}>
+            <TouchableOpacity activeOpacity={1} style={[styles.headerButton, {marginLeft: 12}]}>
               <Image
-                source={require('../../Assets/alert_on.png')}
-                style={styles.icon}
+                source={require('../../Assets/numberStamps.png')}
+                style={[styles.icon, {width: 24, height: 24, marginLeft: -3}]}
               />
-            </View>
+              <View style={styles.stampArea}>
+                <Text style={styles.stampText} numberOfLines={1} ellipsizeMode="clip">22</Text>
+              </View>
+            </TouchableOpacity>
           </View>
           <TouchableOpacity activeOpacity={0.7} onPress={goToMyPage}>
             <Image
@@ -207,6 +226,7 @@ export function Home({navigation}: Props) {
       <FlatList
         style={{marginTop: 30}}
         ref={publicLetterListRef}
+        style={styles.list}
         ListEmptyComponent={Empty}
         onScroll={handleScroll}
         onEndReached={handleEndReached}
@@ -322,6 +342,10 @@ export function Home({navigation}: Props) {
         setModalVisible={setEnvelopeModalVisible}
         onOpenLetter={goToReadLetter}
       />
+      {/* <Tab.Navigator>
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Settings" component={SettingsScreen} />
+      </Tab.Navigator> */}
       {/* </SafeAreaView> */}
     </LinearGradient>
   );
@@ -338,6 +362,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 16,
   },
+  headerButton: {position: 'relative', width: 28, height: 28, justifyContent: 'center'},
+  stampArea: {position: 'absolute', left: 9, bottom: -2, height: 16, backgroundColor: '#0000CC', borderRadius: 8},
+  stampText: {fontFamily: 'Galmuri11-Bold', fontSize: 10, color: 'white', lineHeight: 15, paddingHorizontal: 4},
+  list: {},
   tabBottom: {
     position: 'absolute',
     left: 0,
@@ -397,39 +425,11 @@ const styles = StyleSheet.create({
   },
   triangle: {position: 'absolute', bottom: 0, width: 4, height: 5},
   icon: {width: 28, height: 28},
-  emptyArea: {
-    height: SCREEN_HEIGHT,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  emptyText: {
-    marginTop: 8,
-    textAlign: 'center',
-    fontFamily: 'Galmuri11',
-    fontSize: 14,
-    lineHeight: 25,
-    color: '#0000CC',
-  },
-  emptyBtn: {
-    overflow: 'hidden',
-    height: 28,
-    marginTop: 24,
-    borderWidth: 1,
-    borderColor: '#FF44CC',
-    borderRadius: 10,
-  },
-  emptyBtnBg: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingRight: 6,
-    paddingLeft: 12,
-  },
-  emptyBtnText: {
-    fontFamily: 'Galmuri11',
-    fontSize: 13,
-    color: 'white',
-    marginBottom: 2,
-  },
+  emptyArea: {height: SCREEN_HEIGHT, alignItems: 'center', justifyContent: 'center'},
+  emptyImage: {width: 100, height: 100},
+  emptyText: {marginTop: 8, textAlign: 'center', fontFamily: 'Galmuri11', fontSize: 14, lineHeight: 25, color: '#0000CC'},
+  emptyBtn: {overflow: 'hidden', height: 28, marginTop: 24, borderWidth: 1, borderColor: '#FF44CC', borderRadius: 10},
+  emptyBtnBg: {flex: 1, flexDirection: 'row', alignItems: 'center', paddingRight: 6, paddingLeft: 12},
+  emptyBtnText: {fontFamily: 'Galmuri11', fontSize: 13, color: 'white', marginBottom: 2},
   emptyBtnIcon: {width: 20, height: 20, marginLeft: 2},
 });

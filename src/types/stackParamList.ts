@@ -6,8 +6,9 @@ export type StackParamsList = {
   Home: undefined;
 
   // 편지 관련 스택
-  ReadLetter: {id: number};
-  LetterBox: undefined;
+  ReadLetter: undefined;
+  LetterBoxList: undefined;
+  LetterBoxDetail: {id: number};
 
   // 인증 관련 스택
   Auth: undefined;

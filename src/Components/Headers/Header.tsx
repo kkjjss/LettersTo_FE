@@ -14,6 +14,7 @@ type Props = {
   next?: keyof StackParamsList;
   onPressNext?: () => void;
   disableNext?: boolean;
+  style?: object;
 };
 
 export const Header = React.memo(
@@ -24,6 +25,7 @@ export const Header = React.memo(
     next,
     onPressNext: processBeforeNext,
     disableNext,
+    style,
   }: Props) => {
     function goBack() {
       navigation.pop();
@@ -43,7 +45,7 @@ export const Header = React.memo(
     }, [goNext, processBeforeNext]);
 
     return (
-      <View style={styles.headerWrap}>
+      <View style={[styles.headerWrap, style]}>
         <BackButton color={color} onPress={goBack} />
         <View style={styles.titleWrap}>
           <Text

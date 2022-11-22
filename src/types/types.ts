@@ -95,6 +95,7 @@ export type PublicLetterWriteRequest = {
   personalities: number[];
   files?: string[];
 };
+
 export interface PublicLetter {
   id: number;
   title: string;
@@ -136,4 +137,21 @@ export interface DeliveryLetterWriteRequest {
   stampId?: number;
   files?: string[];
   deliveryType?: 'NONE' | 'STANDARD' | 'EXPRESS';
+}
+
+export interface LetterBox {
+  fromMemberId: number;
+  fromMemberNickname: string;
+  new: boolean;
+}
+
+export type LetterBoxes = LetterBox[];
+
+export interface LetterBoxInfo {
+  fromNickname: string;
+  fromAddress: string;
+  startDate: string;
+  topics: string[];
+  personalities: string[];
+  [key: string]: any;
 }
