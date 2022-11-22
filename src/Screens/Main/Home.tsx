@@ -10,21 +10,20 @@ import {
   Pressable,
   TouchableOpacity,
   Image,
-  ImageBackground,
 } from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 import {getPublicLetters} from '../../APIs/letter';
 import {PublicLetters} from '../../types/types';
 import {PublicLetterItem} from './PublicLetterItem';
 import {EnvelopeModal} from '../../Modals/EnvelopeModal';
-import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../Constants/screen';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {SCREEN_HEIGHT} from '../../Constants/screen';
+import useStore from '../../Store/store';
 
 // const Tab = createBottomTabNavigator();
 
 function HomeScreen() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Text>Home!</Text>
     </View>
   );
@@ -32,7 +31,7 @@ function HomeScreen() {
 
 function SettingsScreen() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Text>Settings!</Text>
     </View>
   );
@@ -41,7 +40,6 @@ function SettingsScreen() {
 type Props = NativeStackScreenProps<StackParamsList, 'Home'>;
 
 export function Home({navigation}: Props) {
-  
   const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
 
   const {setIsLoggedIn, userInfo} = useStore();
@@ -50,15 +48,15 @@ export function Home({navigation}: Props) {
     [key: string]: string;
   };
   const COLORS: ColorType = {
-    PINK: 'rgba(255, 68, 204, 0.25)',       // #FFCCEE
-    ORANGE: 'rgba(255, 130, 68, 0.25)',     // #FFDDCC
-    YELLOW: 'rgba(255, 224, 68, 0.25)',     // #FFF7CC
+    PINK: 'rgba(255, 68, 204, 0.25)', // #FFCCEE
+    ORANGE: 'rgba(255, 130, 68, 0.25)', // #FFDDCC
+    YELLOW: 'rgba(255, 224, 68, 0.25)', // #FFF7CC
     LIGHTGREEN: 'rgba(174, 248, 26, 0.25)', // #EDFDCE
-    TEAL: 'rgba(68, 255, 193, 0.25)',       // #CCFFEE
-    LIGHTBLUE: 'rgba(68, 210, 255, 0.25)',  // #CCF3FF
-    BLUE: 'rgba(68, 130, 255, 0.25)',       // #CCDDFF
-    PURPLE: 'rgba(170, 117, 255, 0.25)',    // #E0CCFF
-    LIGHTPURPLE: 'rgba(226, 168, 255, 0.25)',// #EECCFF
+    TEAL: 'rgba(68, 255, 193, 0.25)', // #CCFFEE
+    LIGHTBLUE: 'rgba(68, 210, 255, 0.25)', // #CCF3FF
+    BLUE: 'rgba(68, 130, 255, 0.25)', // #CCDDFF
+    PURPLE: 'rgba(170, 117, 255, 0.25)', // #E0CCFF
+    LIGHTPURPLE: 'rgba(226, 168, 255, 0.25)', // #EECCFF
   };
 
   type StampType = {
@@ -174,9 +172,13 @@ export function Home({navigation}: Props) {
         source={require('../../Assets/no_data.png')}
         style={styles.emptyImage}
       />
-      <Text style={styles.emptyText}>잘못된 접근/네트워크연결확인{"\n"}잠시 후 다시 시도해주세요.</Text>
+      <Text style={styles.emptyText}>
+        잘못된 접근/네트워크연결확인{'\n'}잠시 후 다시 시도해주세요.
+      </Text>
       <Pressable style={styles.emptyBtn} onPress={handleRefresh}>
-        <LinearGradient colors={['#FF6ECE', '#FF3DBD']} style={styles.emptyBtnBg}>
+        <LinearGradient
+          colors={['#FF6ECE', '#FF3DBD']}
+          style={styles.emptyBtnBg}>
           <Text style={styles.emptyBtnText}>다시 시도</Text>
           <Image
             source={require('../../Assets/refresh.png')}
@@ -205,13 +207,20 @@ export function Home({navigation}: Props) {
                 style={[styles.icon, {width: 28, height: 28}]}
               />
             </TouchableOpacity>
-            <TouchableOpacity activeOpacity={1} style={[styles.headerButton, {marginLeft: 12}]}>
+            <TouchableOpacity
+              activeOpacity={1}
+              style={[styles.headerButton, {marginLeft: 12}]}>
               <Image
                 source={require('../../Assets/numberStamps.png')}
                 style={[styles.icon, {width: 24, height: 24, marginLeft: -3}]}
               />
               <View style={styles.stampArea}>
-                <Text style={styles.stampText} numberOfLines={1} ellipsizeMode="clip">22</Text>
+                <Text
+                  style={styles.stampText}
+                  numberOfLines={1}
+                  ellipsizeMode="clip">
+                  22
+                </Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -224,7 +233,6 @@ export function Home({navigation}: Props) {
         </View>
       </LinearGradient>
       <FlatList
-        style={{marginTop: 30}}
         ref={publicLetterListRef}
         style={styles.list}
         ListEmptyComponent={Empty}
@@ -277,6 +285,7 @@ export function Home({navigation}: Props) {
                     : {left: '-6.4%', marginTop: -152},
                   {transform: [{rotate: `${cardAngle[index % 6]}deg`}]},
                 ]}
+                alignType={'LEFT'}
               />
             </View>
           );
@@ -362,10 +371,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 16,
   },
-  headerButton: {position: 'relative', width: 28, height: 28, justifyContent: 'center'},
-  stampArea: {position: 'absolute', left: 9, bottom: -2, height: 16, backgroundColor: '#0000CC', borderRadius: 8},
-  stampText: {fontFamily: 'Galmuri11-Bold', fontSize: 10, color: 'white', lineHeight: 15, paddingHorizontal: 4},
-  list: {},
+  headerButton: {
+    position: 'relative',
+    width: 28,
+    height: 28,
+    justifyContent: 'center',
+  },
+  stampArea: {
+    position: 'absolute',
+    left: 9,
+    bottom: -2,
+    height: 16,
+    backgroundColor: '#0000CC',
+    borderRadius: 8,
+  },
+  stampText: {
+    fontFamily: 'Galmuri11-Bold',
+    fontSize: 10,
+    color: 'white',
+    lineHeight: 15,
+    paddingHorizontal: 4,
+  },
+  list: {marginTop: 30},
   tabBottom: {
     position: 'absolute',
     left: 0,
@@ -425,11 +452,40 @@ const styles = StyleSheet.create({
   },
   triangle: {position: 'absolute', bottom: 0, width: 4, height: 5},
   icon: {width: 28, height: 28},
-  emptyArea: {height: SCREEN_HEIGHT, alignItems: 'center', justifyContent: 'center'},
+  emptyArea: {
+    height: SCREEN_HEIGHT,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   emptyImage: {width: 100, height: 100},
-  emptyText: {marginTop: 8, textAlign: 'center', fontFamily: 'Galmuri11', fontSize: 14, lineHeight: 25, color: '#0000CC'},
-  emptyBtn: {overflow: 'hidden', height: 28, marginTop: 24, borderWidth: 1, borderColor: '#FF44CC', borderRadius: 10},
-  emptyBtnBg: {flex: 1, flexDirection: 'row', alignItems: 'center', paddingRight: 6, paddingLeft: 12},
-  emptyBtnText: {fontFamily: 'Galmuri11', fontSize: 13, color: 'white', marginBottom: 2},
+  emptyText: {
+    marginTop: 8,
+    textAlign: 'center',
+    fontFamily: 'Galmuri11',
+    fontSize: 14,
+    lineHeight: 25,
+    color: '#0000CC',
+  },
+  emptyBtn: {
+    overflow: 'hidden',
+    height: 28,
+    marginTop: 24,
+    borderWidth: 1,
+    borderColor: '#FF44CC',
+    borderRadius: 10,
+  },
+  emptyBtnBg: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingRight: 6,
+    paddingLeft: 12,
+  },
+  emptyBtnText: {
+    fontFamily: 'Galmuri11',
+    fontSize: 13,
+    color: 'white',
+    marginBottom: 2,
+  },
   emptyBtnIcon: {width: 20, height: 20, marginLeft: 2},
 });

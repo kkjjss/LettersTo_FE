@@ -10,7 +10,7 @@ PODS:
     - ExpoModulesCore
   - EXFileSystem (14.1.0):
     - ExpoModulesCore
-  - EXFont (10.2.1):
+  - EXFont (11.0.1):
     - ExpoModulesCore
   - EXImageLoader (3.2.0):
     - ExpoModulesCore
@@ -605,7 +605,7 @@ SPEC CHECKSUMS:
   EXConstants: 7c44785d41d8e959d527d23d29444277a4d1ee73
   EXErrorRecovery: 74d71ee59f6814315457b09d68e86aa95cc7d05d
   EXFileSystem: 927e0a8885aa9c49e50fc38eaba2c2389f2f1019
-  EXFont: 06df627203afcb8a3b3152ec06eb2f11f46f0cff
+  EXFont: 319606bfe48c33b5b5063fb0994afdc496befe80
   EXImageLoader: b88e053d760f85a82405b1db2de4abf11978fc9f
   Expo: 7e821e708a35d2720ef6baa658e224dd91c4821e
   ExpoImagePicker: ca4207f2952a78e6dac2d7852d7e170dd2eaf1d0
