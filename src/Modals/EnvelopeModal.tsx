@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {
   StyleSheet,
   Pressable,
@@ -19,7 +19,7 @@ interface EnvelopeModalProps {
   letter: any;
   isModalVisible: boolean;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  onOpenLetter: () => void;
+  onOpenLetter: (id: number) => void;
 }
 
 export const EnvelopeModal = ({
@@ -28,15 +28,8 @@ export const EnvelopeModal = ({
   setModalVisible,
   onOpenLetter,
 }: EnvelopeModalProps) => {
-  // const [gestureStartLocation, setGestureStartLocation] = useState<{
-  //   x: number;
-  //   timestamp: number;
-  // }>({
-  //   x: 0,
-  //   timestamp: 0,
-  // });
-
   const {
+    id,
     title,
     fromAddress,
     fromNickname,
@@ -60,7 +53,7 @@ export const EnvelopeModal = ({
   // 뜯어서 편지 열어보기
   const openLetter = () => {
     moveUp.start(() => {
-      onOpenLetter();
+      onOpenLetter(id);
       setTimeout(hideModal, 0);
     });
   };
@@ -75,6 +68,7 @@ export const EnvelopeModal = ({
 
   useEffect(() => {
     moveUp.reset();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -107,14 +101,12 @@ export const EnvelopeModal = ({
           </Pressable>
           <View style={styles.envelope}>
             <Animated.View
-              style={[
-                styles.cardTop,
-                {transform: [{translateY: moveAnim.y}]},
-              ]}>
+              style={[styles.cardTop, {transform: [{translateY: moveAnim.y}]}]}>
               <View style={{flex: 1, backgroundColor: paperColor}} />
-              <View style={styles.dash} />
+              <View style={styles.dash_bottom} />
             </Animated.View>
-            <View style={styles.cardItem}>
+            <View style={[styles.cardItem]}>
+              <View style={[styles.dash_top]} />
               <LinearGradient
                 onStartShouldSetResponder={() => true}
                 onResponderStart={event => {
@@ -152,14 +144,20 @@ export const EnvelopeModal = ({
                   <Image style={styles.stampImg} source={stampSource} />
                 </ImageBackground>
                 <View style={styles.tagArea}>
-                  <ScrollView horizontal style={styles.tagList}>
+                  <ScrollView
+                    horizontal
+                    alwaysBounceHorizontal={false}
+                    style={styles.tagList}>
                     {topics?.map((item: string, idx: number) => (
                       <Text key={idx} style={styles.tagItem}>
                         {item}
                       </Text>
                     ))}
                   </ScrollView>
-                  <ScrollView horizontal style={styles.tagList}>
+                  <ScrollView
+                    horizontal
+                    alwaysBounceHorizontal={false}
+                    style={styles.tagList}>
                     {personalities?.map((item: string, idx: number) => (
                       <Text key={idx} style={styles.tagItem}>
                         {item}
@@ -180,15 +178,23 @@ const styles = StyleSheet.create({
   modalBg: {flex: 1, alignItems: 'center', justifyContent: 'center'},
   closeButton: {position: 'absolute', top: 12, left: 16},
   closeIcon: {width: 28, height: 28},
-  openArea: {position: 'absolute', top: '30%', alignItems: 'center'},
-  openText: {fontFamily: 'Galmuri11', fontSize: 15},
+  openArea: {position: 'absolute', top: '35%', alignItems: 'center'},
+  openText: {fontFamily: 'Galmuri11', fontSize: 15, color: 'white'},
   openArrow: {width: 144, height: 10, marginTop: 16},
   envelope: {position: 'absolute', bottom: '30%', width: '78.7%'},
-  dash: {
+  dash_bottom: {
     position: 'absolute',
-    bottom: 0,
+    bottom: -1,
     width: '100%',
-    borderBottomWidth: 1,
+    borderWidth: 1,
+    borderStyle: 'dashed',
+    borderColor: '#0000CC',
+  },
+  dash_top: {
+    position: 'absolute',
+    top: -1,
+    width: '100%',
+    borderWidth: 1,
     borderStyle: 'dashed',
     borderColor: '#0000CC',
   },
@@ -205,6 +211,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 10,
   },
   cardItem: {
+    position: 'relative',
     overflow: 'hidden',
     height: 206,
     backgroundColor: 'white',

@@ -25,6 +25,7 @@ import {AccountDelete} from '../Screens/MyPage/AccountDelete';
 
 // 편지 작성
 import {LetterEditor} from '../Screens/Letter/LetterEditor';
+import {CoverDeliverySelector} from '../Screens/Letter/CoverEditor/CoverDeliverySelector';
 import {CoverTopicEditor} from '../Screens/Letter/CoverEditor/CoverTopicEditor';
 import {CoverPersonalityEditor} from '../Screens/Letter/CoverEditor/CoverPersonalityEditor';
 import {CoverStampSelector} from '../Screens/Letter/CoverEditor/CoverStampSelector';
@@ -54,6 +55,10 @@ export default function StackNavigator() {
 
           {/* 편지 작성 */}
           <Stack.Screen name="LetterEditor" component={LetterEditor} />
+          <Stack.Screen
+            name="CoverDeliverySelector"
+            component={CoverDeliverySelector}
+          />
           <Stack.Screen name="CoverTopicEditor" component={CoverTopicEditor} />
           <Stack.Screen
             name="CoverPersonalityEditor"

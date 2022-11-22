@@ -5,6 +5,7 @@ import {
   Stamps,
   PaperColor,
   PaperStyle,
+  DeliveryLetterWriteRequest,
 } from '../types/types';
 
 interface Store {
@@ -54,6 +55,8 @@ interface Store {
     stampQuantity: number;
   }) => void;
 
+  setStampQuantity: (value: number) => void;
+
   signOut: () => void;
 
   letter:
@@ -62,7 +65,7 @@ interface Store {
         text: string;
         paperStyle: PaperStyle;
         paperColor: PaperColor;
-        align: 'left' | 'center' | 'right';
+        alignType: 'LEFT' | 'CENTER' | 'RIGHT';
         images?: string[];
       }
     | undefined;
@@ -72,7 +75,7 @@ interface Store {
     text: string;
     paperStyle: PaperStyle;
     paperColor: PaperColor;
-    align: 'left' | 'center' | 'right';
+    alignType: 'LEFT' | 'CENTER' | 'RIGHT';
     images?: string[];
   }) => void;
 
@@ -83,7 +86,7 @@ interface Store {
   };
   setCoverTopicIds: (topicIds: number[]) => void;
   setCoverPersonalityIds: (personalityIds: number[]) => void;
-  setCoverStampId: (stampId: number) => void;
+  setCoverStampId: (stampId: number | undefined) => void;
   setInitialCoverData: () => void;
 
   stamps: Stamps;
@@ -139,6 +142,15 @@ const useStore = create<Store>(set => ({
 
   setUserInfo: value => set(() => ({userInfo: value})),
 
+  setStampQuantity: value =>
+    set(state => {
+      if (state.userInfo) {
+        return {userInfo: {...state.userInfo, stampQuantity: value}};
+      } else {
+        return {};
+      }
+    }),
+
   signOut: () =>
     set(() => ({userInfo: undefined, isLoggedIn: false, isLoading: true})),
 
@@ -176,3 +188,65 @@ const useStore = create<Store>(set => ({
 }));
 
 export default useStore;
+
+interface LetterEditorStore {
+  deliveryLetter: DeliveryLetterWriteRequest;
+
+  deliveryLetterTo:
+    | {
+        toNickname: string;
+        toAddress: string;
+      }
+    | undefined;
+
+  setDeliveryLetterData: (value: DeliveryLetterWriteRequest) => void;
+
+  setDeliverLetterTo: (value: {toNickname: string; toAddress: string}) => void;
+
+  initializeDeliverLetter: () => void;
+
+  isDeliveryLetterSetComplete: () => boolean;
+}
+
+export const useLetterEditorStore = create<LetterEditorStore>((set, get) => ({
+  deliveryLetter: {
+    id: undefined,
+    title: undefined,
+    content: undefined,
+    paperType: undefined,
+    paperColor: undefined,
+    alignType: undefined,
+    stampId: undefined,
+    files: [],
+    deliveryType: undefined,
+  },
+
+  deliveryLetterTo: undefined,
+
+  setDeliverLetterTo: (value: {toNickname: string; toAddress: string}) =>
+    set(() => ({deliveryLetterTo: value})),
+
+  setDeliveryLetterData: (value: DeliveryLetterWriteRequest) =>
+    set(state => ({deliveryLetter: {...state.deliveryLetter, ...value}})),
+
+  initializeDeliverLetter: () =>
+    set(() => ({
+      deliveryLetter: {
+        id: undefined,
+        title: undefined,
+        content: undefined,
+        paperType: undefined,
+        paperColor: undefined,
+        alignType: undefined,
+        stampId: undefined,
+        files: [],
+        deliveryType: undefined,
+      },
+    })),
+
+  isDeliveryLetterSetComplete: () => {
+    const letter = get().deliveryLetter;
+
+    return !Object.values(letter).includes(undefined);
+  },
+}));

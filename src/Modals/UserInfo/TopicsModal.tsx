@@ -91,6 +91,7 @@ export const TopicsModal = ({isModalVisible, setModalVisible}: Props) => {
             </View>
           </View>
           <ScrollView
+            alwaysBounceVertical={false}
             style={[
               styles.topicBox,
               {

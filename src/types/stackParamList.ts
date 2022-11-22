@@ -24,9 +24,10 @@ export type StackParamsList = {
   AccountDelete: undefined;
 
   // 편지 작성
-  LetterEditor: undefined;
-  CoverTopicEditor: undefined;
-  CoverPersonalityEditor: undefined;
-  CoverStampSelector: undefined;
-  LetterComplete: undefined;
+  LetterEditor: {reply: number} | undefined;
+  CoverDeliverySelector: {reply: number};
+  CoverTopicEditor: {reply: number} | undefined;
+  CoverPersonalityEditor: {reply: number} | undefined;
+  CoverStampSelector: {reply: number} | undefined;
+  LetterComplete: {reply: number} | undefined;
 };

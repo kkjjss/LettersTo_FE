@@ -81,6 +81,7 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
             <View style={styles.headerBlank} />
           </View>
           <ScrollView
+            alwaysBounceVertical={false}
             style={[
               styles.nickname,
               {paddingBottom: (keyboardVisible ? 30 : 100) + keyboardHeight},

@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback} from 'react';
 import {Text, View, StyleSheet, ScrollView, Image} from 'react-native';
 import {SCREEN_HEIGHT} from '../../../Constants/screen';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -6,26 +6,31 @@ import {StampsList} from '../../Stamp/StampsList';
 import useStore from '../../../Store/store';
 
 type Props = {
-  selectedStampId: string;
-  setSelectedStampId: React.Dispatch<React.SetStateAction<string>>;
+  stampQuantity: number;
+  selectedStampId: number | undefined;
+  setSelectedStampId: React.Dispatch<React.SetStateAction<number | undefined>>;
 };
 
-export function StampSelector({selectedStampId, setSelectedStampId}: Props) {
-  const [numberStamps, setNumberStamps] = useState<number>(5);
-
+export function StampSelector({
+  stampQuantity,
+  selectedStampId,
+  setSelectedStampId,
+}: Props) {
   const {stamps} = useStore();
 
   const {bottom} = useSafeAreaInsets();
 
   const selectStamp = useCallback(
-    (id: string) => {
+    (id: number) => {
       if (selectedStampId !== id) {
-        setSelectedStampId(id);
+        if (stampQuantity > 0) {
+          setSelectedStampId(id);
+        }
       } else {
-        setSelectedStampId('');
+        setSelectedStampId(undefined);
       }
     },
-    [setSelectedStampId, selectedStampId],
+    [selectedStampId, stampQuantity, setSelectedStampId],
   );
 
   return (
@@ -47,11 +52,11 @@ export function StampSelector({selectedStampId, setSelectedStampId}: Props) {
             source={require('../../../Assets/numberStamps.png')}
             style={{height: 24, width: 24}}
           />
-          <Text style={styles.counter}>X {numberStamps}</Text>
+          <Text style={styles.counter}>X {stampQuantity}</Text>
         </View>
       </View>
 
-      <ScrollView style={styles.personalityBox}>
+      <ScrollView alwaysBounceVertical={false} style={styles.personalityBox}>
         <View style={{paddingTop: 16, paddingBottom: bottom}}>
           <StampsList
             stamps={stamps}

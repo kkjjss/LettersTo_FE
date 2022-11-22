@@ -24,11 +24,11 @@ export const ImagePicker = React.memo(
   }: {
     images: string[];
     loading: boolean;
-    deleteImage: (id: string) => void;
+    deleteImage?: (id: string) => void;
     onShowImageModal: (id: string) => void;
   }) => {
     const [visible, setVisible] = useState(false);
-    const [borderColor, setBorderColor] = useState('#0000cc');
+    // const [borderColor, setBorderColor] = useState('white');
     const [loadingVisible, setLoadingVisible] = useState(false);
 
     const height = useRef(new Animated.Value(1)).current;
@@ -49,13 +49,13 @@ export const ImagePicker = React.memo(
       setLoadingVisible(false);
       foldHeight.start(() => {
         setVisible(false);
-        setBorderColor('#0000cc');
+        // setBorderColor('#0000cc');
       });
     };
 
     const unfold = useCallback(() => {
       setVisible(true);
-      setBorderColor('white');
+      // setBorderColor('white');
       unfoldHeight.start(() => {
         setLoadingVisible(true);
       });
@@ -93,7 +93,7 @@ export const ImagePicker = React.memo(
             left: 12,
             zIndex: 2,
             borderBottomWidth: 1,
-            borderBottomColor: borderColor,
+            borderBottomColor: 'white',
           }}>
           <Image
             source={visible ? foldButton : unfoldButton}
@@ -120,6 +120,7 @@ export const ImagePicker = React.memo(
         ) : (
           <ScrollView
             horizontal
+            alwaysBounceHorizontal={false}
             style={{
               paddingHorizontal: 16,
               backgroundColor: 'white',

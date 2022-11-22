@@ -2,7 +2,13 @@ import {LinearGradient} from 'expo-linear-gradient';
 import React from 'react';
 import {Text, TouchableOpacity} from 'react-native';
 
-export const SendLetterButton = ({onPress}: {onPress: () => Promise<void>}) => {
+export const SendLetterButton = ({
+  onPress,
+  reply,
+}: {
+  onPress: () => void;
+  reply?: boolean;
+}) => {
   return (
     <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
       <LinearGradient
@@ -15,7 +21,7 @@ export const SendLetterButton = ({onPress}: {onPress: () => Promise<void>}) => {
           alignItems: 'center',
         }}>
         <Text style={{fontFamily: 'Galmuri11', color: 'white'}}>
-          공개편지 올리기
+          {!reply ? '공개편지 올리기' : '편지 보내기'}
         </Text>
       </LinearGradient>
     </TouchableOpacity>

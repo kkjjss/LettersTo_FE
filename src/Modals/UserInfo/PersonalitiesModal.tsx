@@ -97,7 +97,7 @@ export function PersonalitiesModal({isModalVisible, setModalVisible}: Props) {
             </View>
           </View>
 
-          <ScrollView style={styles.topicBox}>
+          <ScrollView alwaysBounceVertical={false} style={styles.topicBox}>
             <PersonalityList
               personalities={personalities}
               selectPersonality={selectPersonality}

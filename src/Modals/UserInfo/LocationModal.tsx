@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {Text, View, Modal, StyleSheet, Platform} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -30,9 +30,14 @@ export function LocationModal({isModalVisible, setModalVisible}: Props) {
   const {userInfo} = useStore();
 
   const disableUpdate = useMemo(
-    () => disable && selectedCityId === userInfo?.geolocationId,
+    () =>
+      disable || !selectedCityId || selectedCityId === userInfo?.geolocationId,
     [disable, selectedCityId, userInfo],
   );
+
+  useEffect(() => {
+    console.log(disable);
+  }, [disable, selectedCityId, userInfo]);
 
   const {bottom: SAFE_AREA_BOTTOM} = useSafeAreaInsets();
 
@@ -54,6 +59,17 @@ export function LocationModal({isModalVisible, setModalVisible}: Props) {
       console.error(error.message);
     }
   };
+
+  useEffect(() => {
+    if (isModalVisible) {
+      if (userInfo) {
+        setSelectedRegionId(userInfo.parentGeolocationId);
+        setTimeout(() => {
+          setSelectedCityId(userInfo.geolocationId);
+        }, 0);
+      }
+    }
+  }, [isModalVisible, setSelectedCityId, setSelectedRegionId, userInfo]);
 
   return (
     <Modal
@@ -191,8 +207,9 @@ const styles = StyleSheet.create({
     color: '#0000cc',
   },
   locationWrap: {
-    height: SCREEN_HEIGHT * 0.65,
+    height: SCREEN_HEIGHT * 0.6,
     marginHorizontal: 24,
+    marginBottom: 24,
   },
   regionBox: {
     marginBottom: 12,

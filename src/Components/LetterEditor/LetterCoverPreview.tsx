@@ -5,6 +5,7 @@ import useStore from '../../Store/store';
 import {TopicItem} from '../TopicItem';
 import {PersonalityItem} from '../PersonalityItem';
 import {GRADIENT_COLORS} from '../../Constants/letter';
+import { SCREEN_WIDTH } from '../../Constants/screen';
 
 const SelectedStampImage = () => {
   const {cover, stamps} = useStore();
@@ -50,7 +51,7 @@ export const LetterCoverPreview = React.memo(() => {
     <LinearGradient
       colors={[GRADIENT_COLORS[letter?.paperColor ?? 'PINK'], 'white']}
       style={{
-        width: '100%',
+        width: SCREEN_WIDTH - 80,
         height: undefined,
         aspectRatio: 295 / 212,
         borderColor: '#0000cc',
@@ -104,7 +105,10 @@ export const LetterCoverPreview = React.memo(() => {
         </View>
       </View>
       <View>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <ScrollView
+          horizontal
+          alwaysBounceHorizontal={false}
+          showsHorizontalScrollIndicator={false}>
           {topics
             .filter(({id}) => cover.topicIds.includes(id))
             .map(topic => (
@@ -113,7 +117,10 @@ export const LetterCoverPreview = React.memo(() => {
         </ScrollView>
       </View>
       <View>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <ScrollView
+          horizontal
+          alwaysBounceHorizontal={false}
+          showsHorizontalScrollIndicator={false}>
           {personalities
             .filter(({id}) => cover.personalityIds.includes(id))
             .map(personality => (

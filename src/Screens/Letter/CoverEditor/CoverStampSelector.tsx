@@ -1,33 +1,53 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Header} from '../../../Components/Headers/Header';
 import {StackParamsList} from '../../../types/stackParamList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {StampSelector} from '../../../Components/LetterEditor/Cover/StampSelector';
 import {LetterCoverPreview} from '../../../Components/LetterEditor/LetterCoverPreview';
-import useStore from '../../../Store/store';
+import useStore, {useLetterEditorStore} from '../../../Store/store';
+import {DeliveryLetterCoverPreview} from '../../../Components/LetterEditor/DeliveryLetterCoverPreview';
+import {Header2} from '../../../Components/Headers/Header2';
 
 type Props = NativeStackScreenProps<StackParamsList, 'CoverStampSelector'>;
 
-export function CoverStampSelector({navigation}: Props) {
-  const [selectedStampId, setSelectedStampId] = useState<string>('');
+export function CoverStampSelector({navigation, route}: Props) {
+  const [selectedStampId, setSelectedStampId] = useState<number>();
 
   const {
     setCoverStampId,
     setStamps,
     cover: {stamp},
+    userInfo,
   } = useStore();
+
+  const stampQuantity = userInfo?.stampQuantity ?? 0;
+
+  const {setDeliveryLetterData} = useLetterEditorStore();
 
   const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
 
   const disableNext = useMemo(() => !selectedStampId, [selectedStampId]);
 
+  const goBack = () => {
+    navigation.pop();
+  };
+
+  const goNext = () => {
+    if (route.params?.reply) {
+      setDeliveryLetterData({stampId: selectedStampId});
+
+      navigation.navigate('LetterComplete', {reply: route.params?.reply});
+    } else {
+      navigation.navigate('LetterComplete');
+    }
+  };
+
   useEffect(() => {
     const getStampList = () => {
       setStamps([
-        {id: '1', image: require('../../../Assets/stamp_example.png')},
-        {id: '2', image: require('../../../Assets/stamp_example2.jpg')},
+        {id: 1, image: require('../../../Assets/stamp_example.png')},
+        {id: 2, image: require('../../../Assets/stamp_example2.jpg')},
       ]);
     };
 
@@ -40,8 +60,13 @@ export function CoverStampSelector({navigation}: Props) {
   }, [setStamps]);
 
   useEffect(() => {
-    setCoverStampId(selectedStampId);
-  }, [selectedStampId, setCoverStampId]);
+    if (!route.params?.reply) {
+      setCoverStampId(selectedStampId);
+    } else {
+      setDeliveryLetterData({stampId: selectedStampId});
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setDeliveryLetterData, selectedStampId, setCoverStampId]);
 
   return (
     <View style={{flex: 1}}>
@@ -53,18 +78,22 @@ export function CoverStampSelector({navigation}: Props) {
             paddingTop: SAFE_AREA_TOP,
           },
         ]}>
-        <Header
-          navigation={navigation}
-          title={'우표 선택'}
-          next={'LetterComplete'}
-          // onPressNext={onPressNext}
+        <Header2
+          title="우표 선택"
+          onPressBack={goBack}
+          onPressNext={goNext}
           disableNext={disableNext}
         />
         <View style={styles.cover}>
-          <LetterCoverPreview />
+          {!route.params?.reply ? (
+            <LetterCoverPreview />
+          ) : (
+            <DeliveryLetterCoverPreview />
+          )}
         </View>
       </View>
       <StampSelector
+        stampQuantity={stampQuantity}
         selectedStampId={selectedStampId}
         setSelectedStampId={setSelectedStampId}
       />

@@ -13,7 +13,7 @@ export const TexticonItemSelector = React.memo(
   ({selectedCategory, onSelectTexticon}: Props) => {
     console.log(selectedCategory);
     return (
-      <ScrollView>
+      <ScrollView alwaysBounceHorizontal={false}>
         <View style={styles.texticonItemSelector}>
           {TEXTICONS[selectedCategory].list.map((texticon, index) => {
             return (

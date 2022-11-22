@@ -44,6 +44,7 @@ export interface UserInfo {
   nickname: string;
   topicIds: number[];
   personalityIds: number[];
+  stampQuantity: number;
   geolocationId: number;
 }
 
@@ -64,7 +65,7 @@ export type Texticons = {
 };
 
 export type Stamp = {
-  id: string;
+  id: number;
   image: any;
 };
 
@@ -89,6 +90,7 @@ export type PublicLetterWriteRequest = {
   paperType: PaperStyle;
   paperColor: PaperColor;
   stampId: number;
+  alignType: 'LEFT' | 'CENTER' | 'RIGHT';
   topics: number[];
   personalities: number[];
   files?: string[];
@@ -103,11 +105,39 @@ export interface PublicLetter {
   personalities: string[];
   paperColor: string;
   stampId?: number;
+  alignType: 'LEFT' | 'CENTER' | 'RIGHT';
   createDate?: string;
   [key: string]: any;
-};
+}
 
 export type PublicLetters = PublicLetter[];
+
+export interface PublicLetterContent {
+  id: number;
+  title: string;
+  content: string;
+  fromAddress: string;
+  fromNickname: string;
+  paperColor: PaperColor;
+  paperType: PaperStyle | 'LINE';
+  alignType: 'LEFT' | 'CENTER' | 'RIGHT';
+  stampId: number;
+  replied: boolean;
+  files: string[];
+  createdDate: Date;
+}
+
+export interface DeliveryLetterWriteRequest {
+  id?: number;
+  title?: string;
+  content?: string;
+  paperType?: PaperStyle;
+  paperColor?: PaperColor;
+  alignType?: 'LEFT' | 'CENTER' | 'RIGHT';
+  stampId?: number;
+  files?: string[];
+  deliveryType?: 'NONE' | 'STANDARD' | 'EXPRESS';
+}
 
 export interface LetterBox {
   fromMemberId: number;

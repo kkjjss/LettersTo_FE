@@ -1,9 +1,7 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import type {StackParamsList} from '../../types/stackParamList';
-import useStore from '../../Store/store';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {
   View,
   Text,
@@ -15,7 +13,7 @@ import {
   ImageBackground,
 } from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
-import {getPublicLetters} from '../../APIs/publicLetter';
+import {getPublicLetters} from '../../APIs/letter';
 import {PublicLetters} from '../../types/types';
 import {PublicLetterItem} from './PublicLetterItem';
 import {EnvelopeModal} from '../../Modals/EnvelopeModal';
@@ -76,21 +74,19 @@ export function Home({navigation}: Props) {
 
   // 공개 편지 목록
   const [publicLetters, setPublicLetters] = useState<PublicLetters | []>([]);
-  const [cursor, setCursor] = useState<number>();
+  const [currentCursor, setCurrentCursor] = useState<number>();
   const getPublicLettersInit = () => {
     try {
       getPublicLetters().then(publicLettersData => {
         const {content, cursor} = publicLettersData;
         setPublicLetters(content);
-        setCursor(cursor);
+        setCurrentCursor(cursor);
       });
     } catch (error: any) {
       console.error(error.message);
     }
-  }
+  };
   useEffect(() => {
-    console.log('Home');
-
     getPublicLettersInit();
   }, []);
 
@@ -101,10 +97,10 @@ export function Home({navigation}: Props) {
   }, [userInfo]);
 
   // 스크롤 시 y 위치 저장
-  const [positionY, setPositionY] = useState<Number>(0);
+  const [currentPositionY, setCurrentPositionY] = useState<Number>(0);
   const handleScroll = (event: any) => {
     const positionY = event.nativeEvent.contentOffset.y;
-    setPositionY(positionY);
+    setCurrentPositionY(positionY);
   };
 
   // 맨 상단으로 스크롤
@@ -115,13 +111,13 @@ export function Home({navigation}: Props) {
 
   // 무한 스크롤
   const handleEndReached = () => {
-    if (cursor) {
+    if (currentCursor) {
       try {
-        getPublicLetters(cursor).then(publicLettersData => {
+        getPublicLetters(currentCursor).then(publicLettersData => {
           const {content, cursor} = publicLettersData;
           const updatedArray = [...publicLetters].concat(content);
           setPublicLetters(updatedArray);
-          setCursor(cursor);
+          setCurrentCursor(cursor);
         });
       } catch (error: any) {
         console.error(error.message);
@@ -137,7 +133,7 @@ export function Home({navigation}: Props) {
       getPublicLetters().then(publicLettersData => {
         const {content, cursor} = publicLettersData;
         setPublicLetters(content);
-        setCursor(cursor);
+        setCurrentCursor(cursor);
         setRefreshing(false);
       });
     } catch (error: any) {
@@ -154,20 +150,14 @@ export function Home({navigation}: Props) {
   };
 
   // 편지 조회
-  const goToReadLetter = () => {
-    // navigation.navigate('ReadLetter');
+  const goToReadLetter = (id: number) => {
+    navigation.navigate('ReadLetter', {id});
   };
 
   // 내 사서함
   const goToLetterBox = () => {
     navigation.push('LetterBoxList');
   };
-
-  function logout() {
-    AsyncStorage.removeItem('accessToken');
-    AsyncStorage.removeItem('refreshToken');
-    setIsLoggedIn(false);
-  }
 
   async function goToMyPage() {
     navigation.navigate('MyPage');
@@ -199,12 +189,15 @@ export function Home({navigation}: Props) {
 
   return (
     <LinearGradient
-      locations={[0, 0.1, 0.8, 1]}
-      colors={['#FFCCEE', 'white', 'white', '#FFFFCC']}
+      colors={['white', '#FFFFCC']}
+      locations={[0.8, 1]}
       style={styles.container}>
       {/* <SafeAreaView style={styles.container}> */}
-      <View style={[styles.header, {marginTop: SAFE_AREA_TOP}]}>
-        <View style={[styles.headerInner]}>
+      <LinearGradient
+        colors={['#FFCCEE', 'rgba(255, 255, 255, 0)']}
+        locations={[0.1, 1]}
+        style={[styles.header, {paddingVertical: SAFE_AREA_TOP}]}>
+        <View style={styles.headerInner}>
           <View style={{flexDirection: 'row'}}>
             <TouchableOpacity activeOpacity={0.7} style={[styles.headerButton]}>
               <Image
@@ -229,8 +222,9 @@ export function Home({navigation}: Props) {
             />
           </TouchableOpacity>
         </View>
-      </View>
+      </LinearGradient>
       <FlatList
+        style={{marginTop: 30}}
         ref={publicLetterListRef}
         style={styles.list}
         ListEmptyComponent={Empty}
@@ -240,7 +234,7 @@ export function Home({navigation}: Props) {
         refreshing={refreshing}
         onRefresh={handleRefresh}
         data={publicLetters}
-        keyExtractor={(item, index) => item.id}
+        keyExtractor={item => item.id}
         renderItem={({item, index}) => {
           const {
             id,
@@ -311,12 +305,11 @@ export function Home({navigation}: Props) {
         </View>
       </View>
       <View style={styles.floatArea}>
-        {positionY > 0 ? (
+        {currentPositionY > 0 ? (
           <TouchableOpacity
             activeOpacity={0.7}
             style={[styles.btn, styles.btnPrimary]}
-            onPress={scrollToTop}
-          >
+            onPress={scrollToTop}>
             <Image
               source={require('../../Assets/top.png')}
               style={styles.icon}
@@ -326,8 +319,7 @@ export function Home({navigation}: Props) {
           <TouchableOpacity
             activeOpacity={0.7}
             style={[styles.btn, styles.btnPrimary]}
-            onPress={handleRefresh}
-          >
+            onPress={handleRefresh}>
             <Image
               source={require('../../Assets/refresh.png')}
               style={styles.icon}
@@ -337,8 +329,7 @@ export function Home({navigation}: Props) {
         <TouchableOpacity
           activeOpacity={0.7}
           style={[styles.btn, styles.btnSecondary]}
-          onPress={goToLetterEditor}
-        >
+          onPress={goToLetterEditor}>
           <Image
             source={require('../../Assets/write.png')}
             style={styles.icon}

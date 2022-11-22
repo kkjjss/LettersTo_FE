@@ -56,7 +56,7 @@ export function TopicsForm({navigation}: Props) {
             <Text style={styles.counter}>{counter} / 7</Text>
           </View>
         </View>
-        <ScrollView style={styles.topicBox}>
+        <ScrollView alwaysBounceVertical={false} style={styles.topicBox}>
           <TopicList
             topics={topics}
             selectTopic={selectTopic}

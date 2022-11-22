@@ -57,7 +57,7 @@ export function MyPage({navigation}: Props) {
   };
 
   useEffect(() => {
-    const updateUserInfo = async () => {
+    const getNewestUserInfo = async () => {
       if (
         !isLocationModalVisible &&
         !isNicknameModalVisible &&
@@ -70,12 +70,13 @@ export function MyPage({navigation}: Props) {
           personalityIds: userData.personalityIds,
           topicIds: userData.topicIds,
           geolocationId: userData.geolocationId,
+          stampQuantity: userData.stampQuantity,
           parentGeolocationId: userData.parentGeolocationId,
           stampQuantity: userData.stampQuantity,
         });
       }
     };
-    updateUserInfo();
+    getNewestUserInfo();
   }, [
     isLocationModalVisible,
     isNicknameModalVisible,

@@ -65,7 +65,7 @@ export const TopicEditor = ({selectedTopicIds, setSelectedTopicIds}: Props) => {
           <Text style={styles.counter}>{counter} / 10</Text>
         </View>
       </View>
-      <ScrollView style={[styles.topicBox]}>
+      <ScrollView alwaysBounceVertical={false} style={[styles.topicBox]}>
         <View style={{paddingTop: 16, paddingBottom: bottom}}>
           <TopicList
             topics={topics}

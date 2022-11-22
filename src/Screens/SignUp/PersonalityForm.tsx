@@ -62,7 +62,7 @@ export function PersonalityForm({navigation}: Props) {
             <Text style={styles.counter}>{counter} / 9</Text>
           </View>
         </View>
-        <ScrollView style={styles.personalityBox}>
+        <ScrollView alwaysBounceVertical={false} style={styles.personalityBox}>
           <PersonalityList
             personalities={personalities}
             selectPersonality={selectPersonality}

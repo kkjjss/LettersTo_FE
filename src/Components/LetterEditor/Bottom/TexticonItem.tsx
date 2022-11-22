@@ -8,7 +8,6 @@ type Props = {
 
 export const TexticonItem = React.memo(
   ({texticon, onSelectTexticon}: Props) => {
-    console.log(texticon);
     return (
       <TouchableOpacity onPress={() => onSelectTexticon(texticon)}>
         <Text style={styles.texticonItem}>{texticon}</Text>
