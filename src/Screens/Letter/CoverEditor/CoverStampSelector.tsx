@@ -18,7 +18,10 @@ export function CoverStampSelector({navigation, route}: Props) {
     setCoverStampId,
     setStamps,
     cover: {stamp},
+    userInfo,
   } = useStore();
+
+  const stampQuantity = userInfo?.stampQuantity ?? 0;
 
   const {setDeliveryLetterData} = useLetterEditorStore();
 
@@ -90,6 +93,7 @@ export function CoverStampSelector({navigation, route}: Props) {
         </View>
       </View>
       <StampSelector
+        stampQuantity={stampQuantity}
         selectedStampId={selectedStampId}
         setSelectedStampId={setSelectedStampId}
       />

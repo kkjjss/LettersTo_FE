@@ -4,7 +4,7 @@ import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {StackParamsList} from '../../../types/stackParamList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {LetterCoverPreview} from '../../../Components/LetterEditor/LetterCoverPreview';
-import {useLetterEditorStore} from '../../../Store/store';
+import useStore, {useLetterEditorStore} from '../../../Store/store';
 import {DeliveryLetterCoverPreview} from '../../../Components/LetterEditor/DeliveryLetterCoverPreview';
 import {Header2} from '../../../Components/Headers/Header2';
 import {LinearGradient} from 'expo-linear-gradient';
@@ -12,7 +12,9 @@ import {LinearGradient} from 'expo-linear-gradient';
 type Props = NativeStackScreenProps<StackParamsList, 'CoverDeliverySelector'>;
 
 export function CoverDeliverySelector({navigation, route}: Props) {
-  const [numberUserStamps, setNumberUserStamps] = useState<number>(5);
+  const {userInfo} = useStore();
+
+  const stampQuantity = userInfo?.stampQuantity ?? 0;
 
   const [deliveryType, setDeliveryType] = useState<
     'NONE' | 'STANDARD' | 'EXPRESS'
@@ -23,14 +25,14 @@ export function CoverDeliverySelector({navigation, route}: Props) {
   const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
 
   const disableNext = useMemo(() => {
-    if (deliveryType === 'EXPRESS' && numberUserStamps < 5) {
+    if (deliveryType === 'EXPRESS' && stampQuantity < 5) {
       return true;
-    } else if (deliveryType === 'STANDARD' && numberUserStamps < 1) {
+    } else if (deliveryType === 'STANDARD' && stampQuantity < 1) {
       return true;
     } else {
       return false;
     }
-  }, [deliveryType, numberUserStamps]);
+  }, [deliveryType, stampQuantity]);
 
   const goBack = () => {
     navigation.pop();
@@ -83,13 +85,15 @@ export function CoverDeliverySelector({navigation, route}: Props) {
               source={require('../../../Assets/numberStamps.png')}
               style={{height: 24, width: 24}}
             />
-            <Text style={styles.counter}>X {numberUserStamps}</Text>
+            <Text style={styles.counter}>X {stampQuantity}</Text>
           </View>
         </View>
         <View style={{flex: 1, padding: 24}}>
           <TouchableOpacity
             onPress={() => {
-              setDeliveryType('STANDARD');
+              if (stampQuantity >= 1) {
+                setDeliveryType('STANDARD');
+              }
             }}
             style={[
               {
@@ -161,7 +165,9 @@ export function CoverDeliverySelector({navigation, route}: Props) {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              setDeliveryType('EXPRESS');
+              if (stampQuantity >= 5) {
+                setDeliveryType('EXPRESS');
+              }
             }}
             style={[
               {

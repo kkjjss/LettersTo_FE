@@ -36,6 +36,7 @@ import {ImageModal} from '../../Modals/ImageModal';
 import {ModalBlur} from '../../Modals/ModalBlur';
 import {PaperBackgroud} from '../../Components/Letter/PaperBackground/PaperBackgroud';
 import {Header2} from '../../Components/Headers/Header2';
+import {logIn as getUserInfo} from '../../APIs/member';
 
 type Props = NativeStackScreenProps<StackParamsList, 'LetterEditor'>;
 
@@ -63,11 +64,14 @@ export function LetterEditor({navigation, route}: Props) {
     name: 'title' | 'text';
   }>({name: 'title', ref: titleRef});
 
-  const {setLetter, setInitialCoverData} = useStore();
+  const {setLetter, setInitialCoverData, setStampQuantity} = useStore();
 
   const {setDeliveryLetterData} = useLetterEditorStore();
 
-  const disableNext = useMemo(() => title === '' || text === '', [title, text]);
+  const disableNext = useMemo(
+    () => String(title).trim() === '' || String(text).trim() === '',
+    [title, text],
+  );
 
   const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
 
@@ -115,6 +119,7 @@ export function LetterEditor({navigation, route}: Props) {
         paperColor,
         alignType,
         files: images,
+        stampId: undefined,
       };
 
       setDeliveryLetterData(deliberyLetterData);
@@ -303,7 +308,17 @@ export function LetterEditor({navigation, route}: Props) {
     navigation.pop();
   }, [navigation]);
 
+  const getStampQuantity = useCallback(async () => {
+    try {
+      const {stampQuantity} = await getUserInfo();
+      setStampQuantity(stampQuantity);
+    } catch (error: any) {
+      console.error(error.message);
+    }
+  }, [setStampQuantity]);
+
   const goNext = useCallback(() => {
+    getStampQuantity();
     if (!route.params?.reply) {
       setLetterData();
       navigation.navigate('CoverTopicEditor');

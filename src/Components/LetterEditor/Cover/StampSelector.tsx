@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback} from 'react';
 import {Text, View, StyleSheet, ScrollView, Image} from 'react-native';
 import {SCREEN_HEIGHT} from '../../../Constants/screen';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -6,13 +6,16 @@ import {StampsList} from '../../Stamp/StampsList';
 import useStore from '../../../Store/store';
 
 type Props = {
+  stampQuantity: number;
   selectedStampId: number | undefined;
   setSelectedStampId: React.Dispatch<React.SetStateAction<number | undefined>>;
 };
 
-export function StampSelector({selectedStampId, setSelectedStampId}: Props) {
-  const [numberUserStamps, setNumberUserStamps] = useState<number>(5);
-
+export function StampSelector({
+  stampQuantity,
+  selectedStampId,
+  setSelectedStampId,
+}: Props) {
   const {stamps} = useStore();
 
   const {bottom} = useSafeAreaInsets();
@@ -20,12 +23,14 @@ export function StampSelector({selectedStampId, setSelectedStampId}: Props) {
   const selectStamp = useCallback(
     (id: number) => {
       if (selectedStampId !== id) {
-        setSelectedStampId(id);
+        if (stampQuantity > 0) {
+          setSelectedStampId(id);
+        }
       } else {
         setSelectedStampId(undefined);
       }
     },
-    [setSelectedStampId, selectedStampId],
+    [selectedStampId, stampQuantity, setSelectedStampId],
   );
 
   return (
@@ -47,7 +52,7 @@ export function StampSelector({selectedStampId, setSelectedStampId}: Props) {
             source={require('../../../Assets/numberStamps.png')}
             style={{height: 24, width: 24}}
           />
-          <Text style={styles.counter}>X {numberUserStamps}</Text>
+          <Text style={styles.counter}>X {stampQuantity}</Text>
         </View>
       </View>
 

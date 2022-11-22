@@ -42,8 +42,8 @@ interface Store {
         personalityIds: number[];
         topicIds: number[];
         geolocationId: number;
-        stampQuantity: number;
         parentGeolocationId: number;
+        stampQuantity: number;
       }
     | undefined;
   setUserInfo: (value: {
@@ -51,9 +51,11 @@ interface Store {
     personalityIds: number[];
     topicIds: number[];
     geolocationId: number;
-    stampQuantity: number;
     parentGeolocationId: number;
+    stampQuantity: number;
   }) => void;
+
+  setStampQuantity: (value: number) => void;
 
   signOut: () => void;
 
@@ -139,6 +141,15 @@ const useStore = create<Store>(set => ({
   userInfo: undefined,
 
   setUserInfo: value => set(() => ({userInfo: value})),
+
+  setStampQuantity: value =>
+    set(state => {
+      if (state.userInfo) {
+        return {userInfo: {...state.userInfo, stampQuantity: value}};
+      } else {
+        return {};
+      }
+    }),
 
   signOut: () =>
     set(() => ({userInfo: undefined, isLoggedIn: false, isLoading: true})),
