@@ -6,7 +6,7 @@ export type StackParamsList = {
   Home: undefined;
 
   // 편지 관련 스택
-  ReadLetter: undefined;
+  ReadLetter: {id: number};
   LetterBoxList: undefined;
   LetterBoxDetail: {id: number};
 
