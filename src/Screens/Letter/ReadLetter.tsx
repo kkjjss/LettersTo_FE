@@ -14,12 +14,14 @@ import {ImageModal} from '../../Modals/ImageModal';
 import {ModalBlur} from '../../Modals/ModalBlur';
 import {Header2} from '../../Components/Headers/Header2';
 import {useLetterEditorStore} from '../../Store/store';
+import {ReportModal} from '../../Modals/ReportModal';
 
 type Props = NativeStackScreenProps<StackParamsList, 'ReadLetter'>;
 
 export function ReadLetter({route, navigation}: Props) {
   const [letterContent, setLetterContent] = useState<PublicLetterContent>();
   const [isImageModalVisible, setImageModalVisible] = useState(false);
+  const [isReportModalVisible, setReportModalVisible] = useState(false);
 
   const {setDeliverLetterTo} = useLetterEditorStore();
 
@@ -93,7 +95,13 @@ export function ReadLetter({route, navigation}: Props) {
     <PaperBackgroud paperColor={paperColor} paperStyle={paperStyle}>
       <>
         <SafeAreaView style={styles.container}>
-          <Header2 title={headerTitle} onPressBack={goBack} />
+          <Header2
+            title={headerTitle}
+            onPressBack={goBack}
+            onPressReport={() => {
+              setReportModalVisible(true);
+            }}
+          />
           <ScrollView
             alwaysBounceVertical={false}
             style={{
@@ -149,11 +157,15 @@ export function ReadLetter({route, navigation}: Props) {
             onPress={onPressReply}
           />
         </SafeAreaView>
-        {isImageModalVisible && <ModalBlur />}
+        {(isImageModalVisible || isReportModalVisible) && <ModalBlur />}
         <ImageModal
           isImageModalVisible={isImageModalVisible}
           setImageModalVisible={setImageModalVisible}
           images={attachedImages}
+        />
+        <ReportModal
+          isModalVisible={isReportModalVisible}
+          setModalVisible={setReportModalVisible}
         />
       </>
     </PaperBackgroud>

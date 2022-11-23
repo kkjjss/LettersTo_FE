@@ -50,21 +50,29 @@ export const DeliveryLetterCoverPreview = React.memo(() => {
   const [fromText, setFromText] = useState('');
 
   const getFromAddress = useCallback(async () => {
-    if (userInfo?.parentGeolocationId && userInfo.geolocationId) {
-      const userRegion = (await getRegions()).find(
-        region => region.id === userInfo.parentGeolocationId,
-      );
-      const userCity = (await getCities(userInfo.parentGeolocationId)).find(
-        city => city.id === userInfo.geolocationId,
-      );
+    try {
+      if (userInfo?.parentGeolocationId && userInfo.geolocationId) {
+        const userRegion = (await getRegions()).find(
+          region => region.id === userInfo.parentGeolocationId,
+        );
+        const userCity = (await getCities(userInfo.parentGeolocationId)).find(
+          city => city.id === userInfo.geolocationId,
+        );
 
-      setFromText(
-        [userInfo?.nickname, ', ', userRegion?.name, ' ', userCity?.name].join(
-          '',
-        ),
-      );
-    } else {
-      return '1';
+        setFromText(
+          [
+            userInfo?.nickname,
+            ', ',
+            userRegion?.name,
+            ' ',
+            userCity?.name,
+          ].join(''),
+        );
+      } else {
+        return '1';
+      }
+    } catch (error: any) {
+      console.error(error.message);
     }
   }, [userInfo]);
 

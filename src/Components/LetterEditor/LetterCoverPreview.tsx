@@ -5,7 +5,7 @@ import useStore from '../../Store/store';
 import {TopicItem} from '../TopicItem';
 import {PersonalityItem} from '../PersonalityItem';
 import {GRADIENT_COLORS} from '../../Constants/letter';
-import { SCREEN_WIDTH } from '../../Constants/screen';
+import {SCREEN_WIDTH} from '../../Constants/screen';
 
 const SelectedStampImage = () => {
   const {cover, stamps} = useStore();
