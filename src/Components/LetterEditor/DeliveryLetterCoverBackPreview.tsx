@@ -47,7 +47,7 @@ export const DeliveryLetterCoverBackPreview = React.memo(() => {
                   Seoul
                 </Text>
                 <Image
-                  source={require('../../Assets/>>>.png')}
+                  source={require('../../Assets/arrow.png')}
                   style={{
                     width: 31,
                     resizeMode: 'contain',
@@ -107,7 +107,7 @@ export const DeliveryLetterCoverBackPreview = React.memo(() => {
                   Seoul
                 </Text>
                 <Image
-                  source={require('../../Assets/>>>.png')}
+                  source={require('../../Assets/arrow.png')}
                   style={{
                     width: 31,
                     resizeMode: 'contain',
