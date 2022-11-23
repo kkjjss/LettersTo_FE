@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 import {BackButton} from './BackButton';
 import {NextButton} from './NextButton';
@@ -11,6 +11,7 @@ type Props = {
   onPressClose?: () => void;
   onPressNext?: () => void;
   disableNext?: boolean;
+  onPressReport?: () => void;
 };
 
 export const Header2 = React.memo(
@@ -21,6 +22,7 @@ export const Header2 = React.memo(
     onPressClose,
     onPressNext,
     disableNext = false,
+    onPressReport,
   }: Props) => {
     return (
       <View style={styles.headerWrap}>
@@ -42,8 +44,18 @@ export const Header2 = React.memo(
         </View>
         {onPressNext && disableNext !== undefined ? (
           <NextButton onPress={onPressNext} disable={disableNext} />
+        ) : onPressReport ? (
+          <TouchableOpacity
+            onPress={onPressReport}
+            activeOpacity={0.7}
+            style={styles.reportButton}>
+            <Image
+              style={styles.report}
+              source={require('../../Assets/report.png')}
+            />
+          </TouchableOpacity>
         ) : (
-          <View style={{width: 50}} />
+          <View style={{marginRight: 50}} />
         )}
       </View>
     );
@@ -65,4 +77,11 @@ const styles = StyleSheet.create({
   },
   titleWrap: {justifyContent: 'center'},
   title: {fontFamily: 'Galmuri11', fontSize: 15},
+  reportButton: {
+    marginLeft: 22,
+  },
+  report: {
+    width: 28,
+    height: 28,
+  },
 });

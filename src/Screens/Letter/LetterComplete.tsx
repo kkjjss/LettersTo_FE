@@ -52,6 +52,8 @@ export const LetterComplete = ({navigation, route}: Props) => {
         ...deliveryLetter,
       };
 
+      console.log(letterData);
+
       await postDeliveryLetter(letterData);
 
       navigation.navigate('Home');
