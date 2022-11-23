@@ -1,40 +1,49 @@
 import {
-  DeliveryLetterWriteRequest,
-  PublicLetterContent,
-  PublicLetters,
-  PublicLetterWriteRequest,
+    DeliveryLetterWriteRequest,
+    PublicLetterContent,
+    PublicLetters,
+    PublicLetterWriteRequest,
 } from '../types/types';
 import {instance, instanceWithAuth} from '../Utils/http';
 
 type PublicLetterData = {
-  content: PublicLetters | [];
-  cursor: number;
+    content: PublicLetters | [];
+    cursor: number;
 };
 
 export async function getPublicLetters(
-  cursor?: number,
+    cursor?: number,
 ): Promise<PublicLetterData> {
-  if (cursor) {
-    return await instance.get('/public-letters', {cursor});
-  } else {
-    return await instance.get('/public-letters');
-  }
+    if (cursor) {
+        return await instance.get('/public-letters', {cursor});
+    } else {
+        return await instance.get('/public-letters');
+    }
 }
 
 export async function getPublicLetterContent(
-  id: number,
+    id: number,
 ): Promise<PublicLetterContent> {
-  return await instance.get(`/public-letters/${id}`);
+    return await instance.get(`/public-letters/${id}`);
 }
 
 export async function postPublicLetter(
-  publicLetterData: PublicLetterWriteRequest,
+    publicLetterData: PublicLetterWriteRequest,
 ) {
-  return await instanceWithAuth.post('/public-letters', publicLetterData);
+    return await instanceWithAuth.post('/public-letters', publicLetterData);
+}
+
+export async function replyPublicLetter(
+    deliveryLetterData: DeliveryLetterWriteRequest,
+) {
+    return await instanceWithAuth.post(
+        '/public-letters/reply',
+        deliveryLetterData,
+    );
 }
 
 export async function postDeliveryLetter(
-  deliveryLetterData: DeliveryLetterWriteRequest,
+    deliveryLetterData: DeliveryLetterWriteRequest,
 ) {
-  return await instanceWithAuth.post('/delivery-letters', deliveryLetterData);
+    return await instanceWithAuth.post('/delivery-letters', deliveryLetterData);
 }
