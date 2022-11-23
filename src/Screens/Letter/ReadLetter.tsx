@@ -19,159 +19,165 @@ import {ReportModal} from '../../Modals/ReportModal';
 type Props = NativeStackScreenProps<StackParamsList, 'ReadLetter'>;
 
 export function ReadLetter({route, navigation}: Props) {
-  const [letterContent, setLetterContent] = useState<PublicLetterContent>();
-  const [isImageModalVisible, setImageModalVisible] = useState(false);
-  const [isReportModalVisible, setReportModalVisible] = useState(false);
+    const [letterContent, setLetterContent] = useState<PublicLetterContent>();
+    const [isImageModalVisible, setImageModalVisible] = useState(false);
+    const [isReportModalVisible, setReportModalVisible] = useState(false);
 
-  const {setDeliverLetterTo} = useLetterEditorStore();
+    const {setDeliverLetterTo} = useLetterEditorStore();
 
-  const paperColor = useMemo(
-    () => letterContent?.paperColor ?? 'PINK',
-    [letterContent],
-  );
+    const paperColor = useMemo(
+        () => letterContent?.paperColor ?? 'PINK',
+        [letterContent],
+    );
 
-  const paperStyle = useMemo(() => {
-    if (letterContent && letterContent.paperType !== 'LINE') {
-      return letterContent.paperType;
-    } else {
-      return 'PLAIN';
-    }
-  }, [letterContent]);
+    const paperStyle = useMemo(() => {
+        if (letterContent && letterContent.paperType !== 'LINE') {
+            return letterContent.paperType;
+        } else {
+            return 'PLAIN';
+        }
+    }, [letterContent]);
 
-  const headerTitle = useMemo(
-    () => letterContent && letterContent.fromNickname + '의 편지',
-    [letterContent],
-  );
+    const headerTitle = useMemo(
+        () => letterContent && letterContent.fromNickname + '의 편지',
+        [letterContent],
+    );
 
-  const fromText = useMemo(() => {
-    if (letterContent) {
-      const fromDate = dateFormatter('yyyy.mm.dd', letterContent.createdDate);
-      const fromNickname = letterContent.fromNickname;
+    const fromText = useMemo(() => {
+        if (letterContent) {
+            const fromDate = dateFormatter(
+                'yyyy.mm.dd',
+                letterContent.createdDate,
+            );
+            const fromNickname = letterContent.fromNickname;
 
-      return '\n' + fromDate + ' ' + fromNickname;
-    } else {
-      return null;
-    }
-  }, [letterContent]);
+            return '\n' + fromDate + ' ' + fromNickname;
+        } else {
+            return null;
+        }
+    }, [letterContent]);
 
-  const attachedImages = letterContent?.files ?? [];
+    const attachedImages = letterContent?.files ?? [];
 
-  useEffect(() => {
-    const getLetterContent = async () => {
-      try {
-        const data = await getPublicLetterContent(route.params.id);
-        setLetterContent(data);
-      } catch (error: any) {
-        console.error(error.message);
-      }
-    };
+    useEffect(() => {
+        const getLetterContent = async () => {
+            try {
+                const data = await getPublicLetterContent(route.params.id);
+                setLetterContent(data);
+            } catch (error: any) {
+                console.error(error.message);
+            }
+        };
 
-    getLetterContent();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+        getLetterContent();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-  const onShowImageModal = useCallback(() => {
-    setImageModalVisible(true);
-  }, [setImageModalVisible]);
+    const onShowImageModal = useCallback(() => {
+        setImageModalVisible(true);
+    }, [setImageModalVisible]);
 
-  const goBack = useCallback(() => navigation.navigate('Home'), [navigation]);
+    const goBack = useCallback(() => navigation.pop(), [navigation]);
 
-  const onPressReply = useCallback(() => {
-    const goToLetterEditor = () => {
-      navigation.navigate('LetterEditor', {reply: route.params.id});
-    };
+    const onPressReply = useCallback(() => {
+        const goToLetterEditor = () => {
+            navigation.navigate('LetterEditor', {
+                reply: route.params.id,
+                to: route.params.to,
+            });
+        };
 
-    if (letterContent) {
-      setDeliverLetterTo({
-        toNickname: letterContent.fromNickname,
-        toAddress: letterContent.fromAddress,
-      });
-    }
+        if (letterContent) {
+            setDeliverLetterTo({
+                toNickname: letterContent.fromNickname,
+                toAddress: letterContent.fromAddress,
+            });
+        }
 
-    goToLetterEditor();
-  }, [letterContent, navigation, route.params.id, setDeliverLetterTo]);
+        goToLetterEditor();
+    }, [letterContent, navigation, route.params, setDeliverLetterTo]);
 
-  return (
-    <PaperBackgroud paperColor={paperColor} paperStyle={paperStyle}>
-      <>
-        <SafeAreaView style={styles.container}>
-          <Header2
-            title={headerTitle}
-            onPressBack={goBack}
-            onPressReport={() => {
-              setReportModalVisible(true);
-            }}
-          />
-          <ScrollView
-            alwaysBounceVertical={false}
-            style={{
-              paddingHorizontal: 24,
-            }}
-            contentContainerStyle={{
-              flexGrow: 1,
-              justifyContent: 'space-between',
-            }}>
-            <Text
-              style={{
-                lineHeight: 40,
-                fontSize: 14,
-                fontFamily: 'Galmuri11',
-                color: '#0000cc',
-                paddingTop: 30,
-              }}>
-              ⌜{letterContent?.title}⌟︎
-            </Text>
-            <Text
-              style={{
-                flex: 1,
-                lineHeight: 40,
-                fontSize: 14,
-                fontFamily: 'Galmuri11',
-                color: '#0000cc',
-              }}>
-              {letterContent?.content}
-            </Text>
-            <Text
-              style={{
-                textAlign: 'right',
-                fontSize: 14,
-                fontFamily: 'Galmuri11',
-                color: '#0000cc',
-                marginBottom: 30,
-              }}>
-              {fromText}
-            </Text>
-          </ScrollView>
-          {attachedImages.length > 0 && (
-            <View style={{position: 'relative', paddingBottom: 10}}>
-              <ImagePicker
-                images={attachedImages}
-                loading={false}
-                onShowImageModal={onShowImageModal}
-              />
-            </View>
-          )}
-          <BottomButton
-            disable={false}
-            buttonText={'답장하기'}
-            onPress={onPressReply}
-          />
-        </SafeAreaView>
-        {(isImageModalVisible || isReportModalVisible) && <ModalBlur />}
-        <ImageModal
-          isImageModalVisible={isImageModalVisible}
-          setImageModalVisible={setImageModalVisible}
-          images={attachedImages}
-        />
-        <ReportModal
-          isModalVisible={isReportModalVisible}
-          setModalVisible={setReportModalVisible}
-        />
-      </>
-    </PaperBackgroud>
-  );
+    return (
+        <PaperBackgroud paperColor={paperColor} paperStyle={paperStyle}>
+            <>
+                <SafeAreaView style={styles.container}>
+                    <Header2
+                        title={headerTitle}
+                        onPressBack={goBack}
+                        onPressReport={() => {
+                            setReportModalVisible(true);
+                        }}
+                    />
+                    <ScrollView
+                        alwaysBounceVertical={false}
+                        style={{
+                            paddingHorizontal: 24,
+                        }}
+                        contentContainerStyle={{
+                            flexGrow: 1,
+                            justifyContent: 'space-between',
+                        }}>
+                        <Text
+                            style={{
+                                lineHeight: 40,
+                                fontSize: 14,
+                                fontFamily: 'Galmuri11',
+                                color: '#0000cc',
+                                paddingTop: 30,
+                            }}>
+                            ⌜{letterContent?.title}⌟︎
+                        </Text>
+                        <Text
+                            style={{
+                                flex: 1,
+                                lineHeight: 40,
+                                fontSize: 14,
+                                fontFamily: 'Galmuri11',
+                                color: '#0000cc',
+                            }}>
+                            {letterContent?.content}
+                        </Text>
+                        <Text
+                            style={{
+                                textAlign: 'right',
+                                fontSize: 14,
+                                fontFamily: 'Galmuri11',
+                                color: '#0000cc',
+                                marginBottom: 30,
+                            }}>
+                            {fromText}
+                        </Text>
+                    </ScrollView>
+                    {attachedImages.length > 0 && (
+                        <View style={{position: 'relative', paddingBottom: 10}}>
+                            <ImagePicker
+                                images={attachedImages}
+                                loading={false}
+                                onShowImageModal={onShowImageModal}
+                            />
+                        </View>
+                    )}
+                    <BottomButton
+                        disable={false}
+                        buttonText={'답장하기'}
+                        onPress={onPressReply}
+                    />
+                </SafeAreaView>
+                {(isImageModalVisible || isReportModalVisible) && <ModalBlur />}
+                <ImageModal
+                    isImageModalVisible={isImageModalVisible}
+                    setImageModalVisible={setImageModalVisible}
+                    images={attachedImages}
+                />
+                <ReportModal
+                    isModalVisible={isReportModalVisible}
+                    setModalVisible={setReportModalVisible}
+                />
+            </>
+        </PaperBackgroud>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {flex: 1},
+    container: {flex: 1},
 });
