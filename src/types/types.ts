@@ -103,10 +103,10 @@ export interface PublicLetter {
     fromNickname: string;
     topics: string[];
     personalities: string[];
-    paperColor: string;
+    paperColor: PaperColor;
     stampId?: number;
     alignType: 'LEFT' | 'CENTER' | 'RIGHT';
-    createDate?: string;
+    createDate?: Date;
     [key: string]: any;
 }
 
@@ -150,7 +150,7 @@ export type LetterBoxes = LetterBox[];
 export interface LetterBoxInfo {
     fromNickname: string;
     fromAddress: string;
-    startDate: string;
+    startDate: Date;
     topics: string[];
     personalities: string[];
     [key: string]: any;

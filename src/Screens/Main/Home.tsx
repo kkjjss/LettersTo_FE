@@ -18,6 +18,7 @@ import {PublicLetterItem} from './PublicLetterItem';
 import {EnvelopeModal} from '../../Modals/EnvelopeModal';
 import {SCREEN_HEIGHT} from '../../Constants/screen';
 import useStore from '../../Store/store';
+import {GRADIENT_COLORS} from '../../Constants/letter';
 
 // const Tab = createBottomTabNavigator();
 
@@ -43,21 +44,6 @@ export function Home({navigation}: Props) {
     const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
 
     const {setIsLoggedIn, userInfo} = useStore();
-
-    type ColorType = {
-        [key: string]: string;
-    };
-    const COLORS: ColorType = {
-        PINK: 'rgba(255, 68, 204, 0.25)', // #FFCCEE
-        ORANGE: 'rgba(255, 130, 68, 0.25)', // #FFDDCC
-        YELLOW: 'rgba(255, 224, 68, 0.25)', // #FFF7CC
-        LIGHTGREEN: 'rgba(174, 248, 26, 0.25)', // #EDFDCE
-        TEAL: 'rgba(68, 255, 193, 0.25)', // #CCFFEE
-        LIGHTBLUE: 'rgba(68, 210, 255, 0.25)', // #CCF3FF
-        BLUE: 'rgba(68, 130, 255, 0.25)', // #CCDDFF
-        PURPLE: 'rgba(170, 117, 255, 0.25)', // #E0CCFF
-        LIGHTPURPLE: 'rgba(226, 168, 255, 0.25)', // #EECCFF
-    };
 
     type StampType = {
         [key: number]: any;
@@ -198,7 +184,7 @@ export function Home({navigation}: Props) {
             {/* <SafeAreaView style={styles.container}> */}
             <LinearGradient
                 colors={['#FFCCEE', 'rgba(255, 255, 255, 0)']}
-                locations={[0.1, 1]}
+                locations={[0, 1]}
                 style={[styles.header, {paddingVertical: SAFE_AREA_TOP}]}>
                 <View style={styles.headerInner}>
                     <View style={{flexDirection: 'row'}}>
@@ -240,7 +226,6 @@ export function Home({navigation}: Props) {
             </LinearGradient>
             <FlatList
                 ref={publicLetterListRef}
-                style={styles.list}
                 ListEmptyComponent={Empty}
                 onScroll={handleScroll}
                 onEndReached={handleEndReached}
@@ -266,7 +251,7 @@ export function Home({navigation}: Props) {
                     return (
                         <View
                             style={[
-                                isFirst && {paddingTop: 116},
+                                isFirst && {paddingTop: 110},
                                 isLast && {paddingBottom: 60},
                             ]}>
                             <PublicLetterItem
@@ -276,12 +261,12 @@ export function Home({navigation}: Props) {
                                 fromAddress={fromAddress}
                                 topics={topics}
                                 personalities={personalities}
-                                paperColor={COLORS[paperColor]}
+                                paperColor={GRADIENT_COLORS[paperColor ?? 'PINK']}
                                 stampSource={STAMPS[stampId]}
                                 onOpenPublicLetter={() =>
                                     onOpenPublicLetter({
                                         ...item,
-                                        paperColor: COLORS[paperColor],
+                                        paperColor: GRADIENT_COLORS[paperColor ?? 'PINK'],
                                         stampSource: STAMPS[stampId],
                                     })
                                 }
@@ -381,7 +366,7 @@ export function Home({navigation}: Props) {
 
 const styles = StyleSheet.create({
     container: {flex: 1},
-    header: {position: 'absolute', zIndex: 10, top: 0, left: 0, width: '100%'},
+    header: {position: 'absolute', zIndex: 10, top: 0, left: 0, width: '100%', height: 80},
     headerInner: {
         position: 'relative',
         height: 52,
@@ -411,7 +396,6 @@ const styles = StyleSheet.create({
         lineHeight: 15,
         paddingHorizontal: 4,
     },
-    list: {marginTop: 30},
     tabBottom: {
         position: 'absolute',
         left: 0,
