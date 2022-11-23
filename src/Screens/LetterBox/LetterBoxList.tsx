@@ -34,9 +34,8 @@ export function LetterBoxList({navigation}: Props) {
   }
   useEffect(() => {
     console.log('LetterBox');
-
-    // getLetterBoxesInit();
-    setLetterBoxes(letterBoxesData);
+    // setLetterBoxes(letterBoxesData);
+    getLetterBoxesInit();
   }, []);
 
   // const jumpToAction = TabActions.jumpTo('Home');

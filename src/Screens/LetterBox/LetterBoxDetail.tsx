@@ -1,19 +1,18 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useRef, useState, useEffect, useMemo} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import type {StackParamsList} from '../../types/stackParamList';
-import {StyleSheet, View, Text, Image, Pressable, TouchableOpacity, FlatList} from 'react-native';
+import {StyleSheet, View, Text, Image, Pressable, ScrollView, TouchableWithoutFeedback} from 'react-native';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {LinearGradient} from 'expo-linear-gradient';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../Constants/screen';
 import {LetterBoxInfo} from '../../types/types';
 import {getLetterBoxInfo} from '../../APIs/letterBox';
 import {Header} from '../../Components/Headers/Header';
+import {dateFormatter} from '../../Utils/dateFormatter';
 
 type Props = NativeStackScreenProps<StackParamsList, 'LetterBoxDetail'>;
 
 export function LetterBoxDetail({route, navigation}: Props) {
-
-  const { id } = route.params;
 
   const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
 
@@ -23,16 +22,11 @@ export function LetterBoxDetail({route, navigation}: Props) {
     // navigation.dispatch(jumpToAction);
   };
 
-  const [info, setInfo] = useState<LetterBoxInfo>({
-    fromNickname: 'da99ydo99y',
-    fromAddress: '부산, 북구',
-    startDate: "2022-11-21T14:35:59.395Z",
-    topics: ['음악', '여행', '자기계발', '커리어', '독서'],
-    personalities: ['신중한', '세심한', '수줍은', '어쩌구한', '저쩌구한', '저절씨구한'],
-  });
+  // 사서함 정보
+  const [info, setInfo] = useState<LetterBoxInfo>();
 
   useEffect(() => {
-    console.log('route');
+    const { id } = route.params;
     try {
       getLetterBoxInfo(id).then(info => {
         setInfo(info);
@@ -42,27 +36,84 @@ export function LetterBoxDetail({route, navigation}: Props) {
     }
   }, [route]);
 
-  useEffect(() => {
-    console.log('navigation');
-  }, [navigation]);
+  const fromPeriod = useMemo(() => {
+    if (info) {
+      const startDate = new Date(info.startDate);
+      const todayTime = new Date();
+      const distance = todayTime.getTime() - startDate.getTime();
+      const days = Math.ceil(distance/(1000*60*60*24)) + 1;
+      return days;
+    }
+  }, [info]);
 
-  useEffect(() => {
-    // console.log('startDate', info.startDate, typeof info.startDate);
-    console.log('init');
-  }, []);
+  const fromDate = useMemo(() => {
+    if (info) {
+      const date = dateFormatter('yyyy.mm.dd', info.startDate);
+      return date;
+    }
+  }, [info]);
 
+  const [tooltipVisible, setTooltipVisible] = useState(false);
+  const toggleTooltip = () => setTooltipVisible(!tooltipVisible);
+
+  // useEffect(() => {
+  //   console.log('init');
+  // }, []);
   return (
     <SafeAreaView style={styles.container}>
       <Header
         navigation={navigation}
-        title={`${info.fromNickname}와의 사서함`}
+        title={`${info?.fromNickname}와의 사서함`}
         color="white"
         style={{backgroundColor: '#0000CC', paddingTop: 0}}
       />
       <View style={styles.infoArea}>
-        <Text style={styles.fromNickname}>{info.fromNickname}</Text>
-        <Text style={styles.fromAddress}>{info.fromAddress}</Text>
-        <Text style={styles.startDate}>{info.startDate}일째 인연</Text>
+        <View style={styles.infoHeader}>
+          <Text style={styles.infoNickname}>{info?.fromNickname}</Text>
+          <Text style={styles.infoAddress}>{info?.fromAddress}</Text>
+          {fromPeriod &&
+            <>
+              <TouchableWithoutFeedback onPress={toggleTooltip}>
+                <View style={styles.infoDate}>
+                  <Text style={styles.infoDateText}>{fromPeriod}일째 인연</Text>
+                  <Image
+                    style={styles.iconQuestion}
+                    source={require('../../Assets/question.png')}
+                  />
+                </View>
+              </TouchableWithoutFeedback>
+              {tooltipVisible && (
+                <View style={styles.tooltipArea}>
+                  <Text style={styles.tooltipText}>편지 시작일 {fromDate}</Text>
+                  <Image
+                    style={styles.tooltipTail}
+                    source={require('../../Assets/tooltip.png')}
+                  />
+                </View>
+              )}
+            </>
+          }
+        </View>
+        <View style={styles.tagArea}>
+          <Text style={styles.tagTitle}>관심사</Text>
+          <ScrollView horizontal alwaysBounceHorizontal={false}>
+            {info?.topics.map((item: string, idx: number) => (
+              <Text key={idx} style={styles.tagItem}>
+                {item}
+              </Text>
+            ))}
+          </ScrollView>
+        </View>
+        <View style={[styles.tagArea, {marginTop: 8}]}>
+          <Text style={styles.tagTitle}>성향</Text>
+          <ScrollView horizontal alwaysBounceHorizontal={false}>
+            {info?.personalities.map((item: string, idx: number) => (
+              <Text key={idx} style={styles.tagItem}>
+                {item}
+              </Text>
+            ))}
+          </ScrollView>
+        </View>
       </View>
       <View style={styles.tabBottom}>
         <View style={styles.tabArea}>
@@ -92,10 +143,31 @@ export function LetterBoxDetail({route, navigation}: Props) {
 
 const styles = StyleSheet.create({
   container: {flex: 1},
-  infoArea: {},
-  fromNickname: {fontFamily: 'Galmuri11-Bold', fontSize: 14, color: '#0000CC'},
-  fromAddress: {fontFamily: 'Galmuri11', fontSize: 12, color: '#0000CC'},
-  startDate: {fontFamily: 'Galmuri11', fontSize: 12, color: '#0000CC'},
+  infoArea: {paddingBottom: 24, backgroundColor: '#FFCCEE', borderBottomWidth: 1, borderBottomColor: '#0000CC'},
+  infoHeader: {zIndex: 10, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingTop: 16, marginBottom: 24},
+  infoNickname: {fontFamily: 'Galmuri11-Bold', fontSize: 14, color: '#0000CC'},
+  infoAddress: {fontFamily: 'Galmuri11', fontSize: 12, color: '#0000CC', marginLeft: 8},
+  infoDate: {flexDirection: 'row', alignItems: 'center', marginLeft: 'auto'},
+  infoDateText: {fontFamily: 'Galmuri11', fontSize: 12, color: '#0000CC'},
+  iconQuestion: {width: 20, height: 20, top: 1, marginLeft: 2},
+  tooltipArea: {position: 'absolute', top: 45, right: 12, height: 32, paddingHorizontal: 10, backgroundColor: '#FFFFCC', borderWidth: 1, borderColor: '#0000CC', borderRadius: 5},
+  tooltipText: {fontFamily: 'Galmuri11', fontSize: 12, color: '#0000CC', lineHeight: 28},
+  tooltipTail: {position: 'absolute', top: -3.5, right: 12, transform: [{scaleY: -1}], width: 5, height: 4},
+  tagArea: {flexDirection: 'row', alignItems: 'center'},
+  tagTitle: {width: 84, paddingLeft: 16, fontFamily: 'Galmuri11', fontSize: 14, color: '#0000CC'},
+  tagItem: {
+    height: 24,
+    lineHeight: 24,
+    paddingRight: 3,
+    paddingLeft: 6,
+    marginRight: 4,
+    fontFamily: 'Galmuri11',
+    fontSize: 12,
+    color: '#0000CC',
+    backgroundColor: 'rgba(0, 0, 204, 0.05)',
+    borderWidth: 1,
+    borderColor: '#0000CC',
+  },
   tabBottom: {
     position: 'absolute',
     left: 0,
