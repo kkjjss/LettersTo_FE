@@ -104,7 +104,7 @@ export interface PublicLetter {
     topics: string[];
     personalities: string[];
     paperColor: PaperColor;
-    stampId?: number;
+    stampId: number;
     alignType: 'LEFT' | 'CENTER' | 'RIGHT';
     createDate?: Date;
     [key: string]: any;
@@ -140,6 +140,7 @@ export interface DeliveryLetterWriteRequest {
 }
 
 export interface LetterBox {
+    id: number;
     fromMemberId: number;
     fromMemberNickname: string;
     new: boolean;
@@ -155,3 +156,20 @@ export interface LetterBoxInfo {
     personalities: string[];
     [key: string]: any;
 }
+
+export interface DeliveryLetter {
+    id: number;
+    title: string;
+    fromAddress: string;
+    fromNickname: string;
+    toAddress: string;
+    toNickname: string;
+    paperColor: PaperColor;
+    stampId: number;
+    read: boolean;
+    me: boolean;
+    deliveryType: 'NONE' | 'STANDARD' | 'EXPRESS';
+    deliveryDate: Date;
+}
+
+export type DeliveryLetters = DeliveryLetter[];

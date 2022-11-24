@@ -1,14 +1,15 @@
 import React, {useRef, useState, useEffect, useMemo} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import type {StackParamsList} from '../../types/stackParamList';
-import {StyleSheet, View, Text, Image, Pressable, ScrollView, TouchableWithoutFeedback} from 'react-native';
+import {StyleSheet, View, Text, Image, Pressable, ScrollView, TouchableWithoutFeedback, FlatList} from 'react-native';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {LinearGradient} from 'expo-linear-gradient';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../Constants/screen';
-import {LetterBoxInfo} from '../../types/types';
-import {getLetterBoxInfo} from '../../APIs/letterBox';
+import {LetterBoxInfo, DeliveryLetters} from '../../types/types';
+import {getLetterBoxInfo, getDeliveryLetters} from '../../APIs/letterBox';
 import {Header} from '../../Components/Headers/Header';
 import {dateFormatter} from '../../Utils/dateFormatter';
+import {LetterItem} from './LetterItem';
 
 type Props = NativeStackScreenProps<StackParamsList, 'LetterBoxDetail'>;
 
@@ -25,8 +26,24 @@ export function LetterBoxDetail({route, navigation}: Props) {
   // 사서함 정보
   const [info, setInfo] = useState<LetterBoxInfo>();
 
+  // 주고받은 편지 목록
+  const [deliveryLetters, setDeliveryLetters] = useState<DeliveryLetters | []>([]);
+  const [currentCursor, setCurrentCursor] = useState<number>();
+  const getPublicLettersInit = (fromMemberId: number) => {
+    try {
+      getDeliveryLetters({fromMemberId}).then(data => {
+            const {content, cursor} = data;
+            setDeliveryLetters(content);
+            setCurrentCursor(cursor);
+        });
+    } catch (error: any) {
+        console.error(error.message);
+    }
+};
+
   useEffect(() => {
-    const { id } = route.params;
+    const { id, fromMemberId } = route.params;
+    // 사서함 정보 조회
     try {
       getLetterBoxInfo(id).then(info => {
         setInfo(info);
@@ -34,6 +51,8 @@ export function LetterBoxDetail({route, navigation}: Props) {
     } catch (error: any) {
       console.error(error.message);
     }
+    // 주고받은 편지 목록 조회
+    getPublicLettersInit(fromMemberId);
   }, [route]);
 
   const fromPeriod = useMemo(() => {
@@ -41,7 +60,7 @@ export function LetterBoxDetail({route, navigation}: Props) {
       const startDate = new Date(info.startDate);
       const todayTime = new Date();
       const distance = todayTime.getTime() - startDate.getTime();
-      const days = Math.ceil(distance/(1000*60*60*24)) + 1;
+      const days = Math.floor(distance/(1000*60*60*24)) + 1;
       return days;
     }
   }, [info]);
@@ -115,6 +134,19 @@ export function LetterBoxDetail({route, navigation}: Props) {
           </ScrollView>
         </View>
       </View>
+      <FlatList
+        data={deliveryLetters}
+        // keyExtractor={item => item.id}
+        renderItem={({item, index}) => {
+          const isFirst: boolean = index === 0;
+          return (
+            <LetterItem
+              data={item}
+              style={{marginTop: isFirst ? 24 : 16}}
+            />
+          );
+        }}
+      />
       <View style={styles.tabBottom}>
         <View style={styles.tabArea}>
           <Pressable onPress={goHome}>

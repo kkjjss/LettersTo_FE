@@ -3,8 +3,8 @@ import {Texticons, PaperColor} from '../types/types';
 export const PAPER_COLORS: {
   [key in PaperColor]: string;
 } = {
-  PINK: '#ff44cc',
-  ORANGE: '#ff8244',
+  PINK: '#FF44CC',
+  ORANGE: '#FF8244',
   YELLOW: '#FFE044',
   GREEN: '#AEF81A',
   MINT: '#44FFC1',

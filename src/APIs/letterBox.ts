@@ -1,4 +1,4 @@
-import type {LetterBoxes, LetterBoxInfo} from '../types/types';
+import type {LetterBoxes, LetterBoxInfo, DeliveryLetters} from '../types/types';
 import {instance, instanceWithAuth} from '../Utils/http';
 
 export async function getLetterBoxes(): Promise<LetterBoxes> {
@@ -7,4 +7,16 @@ export async function getLetterBoxes(): Promise<LetterBoxes> {
 
 export async function getLetterBoxInfo(id: number): Promise<LetterBoxInfo> {
   return await instanceWithAuth.get(`/letter-boxes/${id}`);
+}
+
+type DeliveryLetterData = {
+  content: DeliveryLetters | [];
+  cursor: number;
+};
+
+export async function getDeliveryLetters(data: {
+  cursor?: number;
+  fromMemberId: number;
+}): Promise<DeliveryLetterData> {
+  return await instanceWithAuth.get('/delivery-letters', data);
 }
