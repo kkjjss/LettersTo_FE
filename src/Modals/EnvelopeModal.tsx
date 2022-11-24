@@ -14,16 +14,20 @@ import {
 import {LinearGradient} from 'expo-linear-gradient';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useGesture} from '../Hooks/Hardware/useGesture';
+import {GRADIENT_COLORS} from '../Constants/letter';
+import {PublicLetter, PaperColor} from '../types/types';
 
 interface EnvelopeModalProps {
-  letter: any;
+  data: PublicLetter;
+  stampSource: any;
   isModalVisible: boolean;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   onOpenLetter: (id: number) => void;
 }
 
 export const EnvelopeModal = ({
-  letter,
+  data,
+  stampSource,
   isModalVisible,
   setModalVisible,
   onOpenLetter,
@@ -35,9 +39,8 @@ export const EnvelopeModal = ({
     fromNickname,
     topics,
     personalities,
-    paperColor,
-    stampSource,
-  } = letter;
+    paperColor = 'PINK' as PaperColor,
+  } = data;
 
   const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
 
@@ -102,7 +105,7 @@ export const EnvelopeModal = ({
           <View style={styles.envelope}>
             <Animated.View
               style={[styles.cardTop, {transform: [{translateY: moveAnim.y}]}]}>
-              <View style={{flex: 1, backgroundColor: paperColor}} />
+              <View style={{flex: 1, backgroundColor: GRADIENT_COLORS[paperColor]}} />
               <View style={styles.dash_bottom} />
             </Animated.View>
             <View style={[styles.cardItem]}>
@@ -125,7 +128,7 @@ export const EnvelopeModal = ({
                   );
                 }}
                 locations={[0, 0.5]}
-                colors={[paperColor, 'white']}
+                colors={[GRADIENT_COLORS[paperColor], 'white']}
                 style={{flex: 1}}>
                 <Text style={styles.title}>⌜{title || '무제'}⌟︎︎</Text>
                 <View style={styles.fromArea}>

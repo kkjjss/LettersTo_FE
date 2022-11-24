@@ -8,7 +8,7 @@ export type StackParamsList = {
     // 편지 관련 스택
     ReadLetter: {id: number; to: 'PUBLIC' | 'DELIVERY'};
     LetterBoxList: undefined;
-    LetterBoxDetail: {id: number};
+    LetterBoxDetail: {id: number; fromMemberId: number};
 
     // 인증 관련 스택
     Auth: undefined;

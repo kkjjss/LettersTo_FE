@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {PublicLetter} from '../../types/types';
 import {LinearGradient} from 'expo-linear-gradient';
+import {GRADIENT_COLORS} from '../../Constants/letter';
 
 interface PublicLetterItemProps extends PublicLetter {
   stampSource: any;
@@ -35,8 +36,9 @@ export function PublicLetterItem(props: PublicLetterItemProps) {
       onPress={onOpenPublicLetter}>
       <LinearGradient
         locations={[0, 0.5]}
-        colors={[paperColor, 'white']}
-        style={styles.background}>
+        colors={[GRADIENT_COLORS[paperColor], 'white']}
+        style={styles.background}
+      >
         <Text style={styles.title}>⌜{title || '무제'}⌟︎︎</Text>
         <View style={styles.fromArea}>
           <Image
@@ -90,10 +92,17 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     width: '78.7%',
     height: 212,
-    backgroundColor: 'white',
     borderWidth: 1,
     borderColor: '#0000CC',
     borderRadius: 10,
+    shadowColor: '#FF6ECE',
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 50,
+    elevation: 5,
   },
   background: {flex: 1},
   title: {

@@ -13,12 +13,11 @@ import {
 } from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 import {getPublicLetters} from '../../APIs/letter';
-import {PublicLetters} from '../../types/types';
+import {PublicLetter, PublicLetters} from '../../types/types';
 import {PublicLetterItem} from './PublicLetterItem';
 import {EnvelopeModal} from '../../Modals/EnvelopeModal';
 import {SCREEN_HEIGHT} from '../../Constants/screen';
 import useStore from '../../Store/store';
-import {GRADIENT_COLORS} from '../../Constants/letter';
 
 // const Tab = createBottomTabNavigator();
 
@@ -127,10 +126,14 @@ export function Home({navigation}: Props) {
     };
 
     // 봉투 열기
-    const [selectedItem, setSelectedItem] = useState({});
+    type Stamp = {
+        item: PublicLetter;
+        stampSource: any;
+    };
+    const [selectedItem, setSelectedItem] = useState<Stamp>();
     const [isEnvelopeModalVisible, setEnvelopeModalVisible] = useState(false);
-    const onOpenPublicLetter = (item: any) => {
-        setSelectedItem(item);
+    const onOpenPublicLetter = (item: PublicLetter, stampSource: any) => {
+        setSelectedItem({item, stampSource});
         setEnvelopeModalVisible(true);
     };
 
@@ -261,14 +264,15 @@ export function Home({navigation}: Props) {
                                 fromAddress={fromAddress}
                                 topics={topics}
                                 personalities={personalities}
-                                paperColor={GRADIENT_COLORS[paperColor ?? 'PINK']}
+                                paperColor={paperColor}
+                                stampId={stampId}
                                 stampSource={STAMPS[stampId]}
+                                alignType={'LEFT'}
                                 onOpenPublicLetter={() =>
-                                    onOpenPublicLetter({
-                                        ...item,
-                                        paperColor: GRADIENT_COLORS[paperColor ?? 'PINK'],
-                                        stampSource: STAMPS[stampId],
-                                    })
+                                    onOpenPublicLetter(
+                                        item,
+                                        STAMPS[stampId],
+                                    )
                                 }
                                 style={[
                                     index % 2 === 0
@@ -284,7 +288,6 @@ export function Home({navigation}: Props) {
                                         ],
                                     },
                                 ]}
-                                alignType={'LEFT'}
                             />
                         </View>
                     );
@@ -349,12 +352,15 @@ export function Home({navigation}: Props) {
                     />
                 </TouchableOpacity>
             </View>
-            <EnvelopeModal
-                letter={selectedItem}
-                isModalVisible={isEnvelopeModalVisible}
-                setModalVisible={setEnvelopeModalVisible}
-                onOpenLetter={goToReadLetter}
-            />
+            {selectedItem &&
+                <EnvelopeModal
+                    data={selectedItem.item}
+                    stampSource={selectedItem.stampSource}
+                    isModalVisible={isEnvelopeModalVisible}
+                    setModalVisible={setEnvelopeModalVisible}
+                    onOpenLetter={goToReadLetter}
+                />
+            }
             {/* <Tab.Navigator>
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Settings" component={SettingsScreen} />

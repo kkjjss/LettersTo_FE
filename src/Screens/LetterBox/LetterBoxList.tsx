@@ -47,8 +47,8 @@ export function LetterBoxList({navigation}: Props) {
   };
 
   // 내 사서함 상세
-  const goToDetail = (id: any) => {
-    navigation.navigate('LetterBoxDetail', {id});
+  const goToDetail = (id: number, fromMemberId: number) => {
+    navigation.navigate('LetterBoxDetail', {id, fromMemberId});
   };
 
   async function goToMyPage() {
@@ -124,7 +124,7 @@ export function LetterBoxList({navigation}: Props) {
                 isFirst && {marginTop: 50},
                 isLast && {marginBottom: 100}
               ]}
-              onPress={() => goToDetail(item.fromMemberId)}
+              onPress={() => goToDetail(item.id, item.fromMemberId)}
             >
               <View style={[styles.listItemIcon, {backgroundColor: COLORS[index % 9]}]}>
                 <Text style={styles.listItemIconText}>{item.fromMemberNickname.substring(0, 2)}</Text>
