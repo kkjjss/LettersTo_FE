@@ -58,8 +58,8 @@ export function LetterBoxDetail({route, navigation}: Props) {
   const fromPeriod = useMemo(() => {
     if (info) {
       const startDate = new Date(info.startDate);
-      const todayTime = new Date();
-      const distance = todayTime.getTime() - startDate.getTime();
+      const today = new Date();
+      const distance = today.getTime() - startDate.getTime();
       const days = Math.floor(distance/(1000*60*60*24)) + 1;
       return days;
     }
