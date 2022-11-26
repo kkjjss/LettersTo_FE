@@ -72,7 +72,6 @@ export function MyPage({navigation}: Props) {
           geolocationId: userData.geolocationId,
           stampQuantity: userData.stampQuantity,
           parentGeolocationId: userData.parentGeolocationId,
-          stampQuantity: userData.stampQuantity,
         });
       }
     };
