@@ -2,7 +2,16 @@ import React, {useRef, useState, useEffect} from 'react';
 // import {TabActions} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import type {StackParamsList} from '../../types/stackParamList';
-import {StyleSheet, View, Text, Image, Pressable, TouchableOpacity, TouchableWithoutFeedback, FlatList} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  Pressable,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  FlatList,
+} from 'react-native';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {LinearGradient} from 'expo-linear-gradient';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../Constants/screen';
@@ -12,7 +21,6 @@ import {getLetterBoxes} from '../../APIs/letterBox';
 type Props = NativeStackScreenProps<StackParamsList, 'LetterBoxList'>;
 
 export function LetterBoxList({navigation}: Props) {
-
   const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
 
   const letterBoxesData = [
@@ -27,11 +35,11 @@ export function LetterBoxList({navigation}: Props) {
     try {
       getLetterBoxes().then(letterBoxesData => {
         setLetterBoxes(letterBoxesData);
-      })
+      });
     } catch (error: any) {
       console.error(error.message);
     }
-  }
+  };
   useEffect(() => {
     console.log('LetterBox');
     // setLetterBoxes(letterBoxesData);
@@ -62,9 +70,13 @@ export function LetterBoxList({navigation}: Props) {
         source={require('../../Assets/no_data.png')}
         style={styles.emptyImage}
       />
-      <Text style={styles.emptyText}>아직 주고받은 편지가 없어요!{"\n"}답장할 편지를 찾아볼까요?</Text>
+      <Text style={styles.emptyText}>
+        아직 주고받은 편지가 없어요!{'\n'}답장할 편지를 찾아볼까요?
+      </Text>
       <Pressable style={styles.emptyBtn} onPress={goHome}>
-        <LinearGradient colors={['#FF6ECE', '#FF3DBD']} style={styles.emptyBtnBg}>
+        <LinearGradient
+          colors={['#FF6ECE', '#FF3DBD']}
+          style={styles.emptyBtnBg}>
           <Text style={styles.emptyBtnText}>공개편지 보러가기</Text>
         </LinearGradient>
       </Pressable>
@@ -122,21 +134,28 @@ export function LetterBoxList({navigation}: Props) {
               style={[
                 styles.listItem,
                 isFirst && {marginTop: 50},
-                isLast && {marginBottom: 100}
+                isLast && {marginBottom: 100},
               ]}
-              onPress={() => goToDetail(item.id, item.fromMemberId)}
-            >
-              <View style={[styles.listItemIcon, {backgroundColor: COLORS[index % 9]}]}>
-                <Text style={styles.listItemIconText}>{item.fromMemberNickname.substring(0, 2)}</Text>
+              onPress={() => goToDetail(item.id, item.fromMemberId)}>
+              <View
+                style={[
+                  styles.listItemIcon,
+                  {backgroundColor: COLORS[index % 9]},
+                ]}>
+                <Text style={styles.listItemIconText}>
+                  {item.fromMemberNickname.substring(0, 2)}
+                </Text>
               </View>
-              <Text style={styles.listItemTitle}>{item.fromMemberNickname}와(과)의 사서함</Text>
+              <Text style={styles.listItemTitle}>
+                {item.fromMemberNickname}와(과)의 사서함
+              </Text>
               <View style={styles.letterArea}>
                 <Image
                   source={require('../../Assets/letter_blank.png')}
                   resizeMode="contain"
                   style={[styles.letterBlank]}
                 />
-                {item.new &&
+                {item.new && (
                   <>
                     <View style={styles.dot} />
                     <Image
@@ -145,7 +164,7 @@ export function LetterBoxList({navigation}: Props) {
                       style={[styles.letterNew]}
                     />
                   </>
-                }
+                )}
               </View>
             </TouchableOpacity>
           );
@@ -166,7 +185,10 @@ export function LetterBoxList({navigation}: Props) {
             <View style={styles.tabActive}>
               <Image
                 source={require('../../Assets/triangle.png')}
-                style={[styles.triangle, {left: '100%', transform: [{scaleX: -1}]}]}
+                style={[
+                  styles.triangle,
+                  {left: '100%', transform: [{scaleX: -1}]},
+                ]}
               />
               <Text style={styles.tabActiveText}>내 사서함</Text>
             </View>
@@ -175,7 +197,7 @@ export function LetterBoxList({navigation}: Props) {
       </View>
       {/* </SafeAreaView> */}
     </LinearGradient>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -210,19 +232,31 @@ const styles = StyleSheet.create({
     borderColor: '#0000CC',
     borderRadius: 18,
   },
-  listItemIconText: {fontFamily: 'Galmuri11-Bold', fontSize: 13, color: '#0000CC'},
+  listItemIconText: {
+    fontFamily: 'Galmuri11-Bold',
+    fontSize: 13,
+    color: '#0000CC',
+  },
   listItemTitle: {fontFamily: 'Galmuri11', fontSize: 14, color: '#0000CC'},
   letterArea: {marginLeft: 'auto'},
   letterBlank: {width: 100, height: 10},
   letterNew: {position: 'absolute', top: 1, right: 8, width: 79, height: 16},
-  dot: {position: 'absolute', top: -8, right: 0, width: 4, height: 4, backgroundColor: '#FF44CC', borderRadius: 2},
+  dot: {
+    position: 'absolute',
+    top: -8,
+    right: 0,
+    width: 4,
+    height: 4,
+    backgroundColor: '#FF44CC',
+    borderRadius: 2,
+  },
   tabBottom: {
     position: 'absolute',
     left: 0,
     bottom: 0,
     width: '100%',
     height: 37,
-    backgroundColor: '#0000CC'
+    backgroundColor: '#0000CC',
   },
   tabArea: {
     position: 'absolute',
@@ -260,11 +294,40 @@ const styles = StyleSheet.create({
   tabInactiveText: {fontFamily: 'Galmuri11', fontSize: 15, color: '#0000CC'},
   triangle: {position: 'absolute', bottom: 0, width: 4, height: 5},
   icon: {width: 28, height: 28},
-  emptyArea: {height: SCREEN_HEIGHT, alignItems: 'center', justifyContent: 'center'},
+  emptyArea: {
+    height: SCREEN_HEIGHT,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   emptyImage: {width: 100, height: 100},
-  emptyText: {marginTop: 8, textAlign: 'center', fontFamily: 'Galmuri11', fontSize: 14, lineHeight: 25, color: '#0000CC'},
-  emptyBtn: {overflow: 'hidden', height: 28, marginTop: 24, borderWidth: 1, borderColor: '#FF44CC', borderRadius: 10},
-  emptyBtnBg: {flex: 1, flexDirection: 'row', alignItems: 'center', paddingRight: 10, paddingLeft: 12},
-  emptyBtnText: {fontFamily: 'Galmuri11', fontSize: 13, color: 'white', marginBottom: 2},
+  emptyText: {
+    marginTop: 8,
+    textAlign: 'center',
+    fontFamily: 'Galmuri11',
+    fontSize: 14,
+    lineHeight: 25,
+    color: '#0000CC',
+  },
+  emptyBtn: {
+    overflow: 'hidden',
+    height: 28,
+    marginTop: 24,
+    borderWidth: 1,
+    borderColor: '#FF44CC',
+    borderRadius: 10,
+  },
+  emptyBtnBg: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingRight: 10,
+    paddingLeft: 12,
+  },
+  emptyBtnText: {
+    fontFamily: 'Galmuri11',
+    fontSize: 13,
+    color: 'white',
+    marginBottom: 2,
+  },
   emptyBtnIcon: {width: 20, height: 20, marginLeft: 2},
 });

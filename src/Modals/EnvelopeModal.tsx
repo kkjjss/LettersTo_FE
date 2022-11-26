@@ -105,7 +105,9 @@ export const EnvelopeModal = ({
           <View style={styles.envelope}>
             <Animated.View
               style={[styles.cardTop, {transform: [{translateY: moveAnim.y}]}]}>
-              <View style={{flex: 1, backgroundColor: GRADIENT_COLORS[paperColor]}} />
+              <View
+                style={{flex: 1, backgroundColor: GRADIENT_COLORS[paperColor]}}
+              />
               <View style={styles.dash_bottom} />
             </Animated.View>
             <View style={[styles.cardItem]}>

@@ -1,5 +1,5 @@
 import type {LetterBoxes, LetterBoxInfo, DeliveryLetters} from '../types/types';
-import {instance, instanceWithAuth} from '../Utils/http';
+import {instanceWithAuth} from '../Utils/http';
 
 export async function getLetterBoxes(): Promise<LetterBoxes> {
   return await instanceWithAuth.get('/letter-boxes');
