@@ -1,175 +1,181 @@
 export interface Selector {
-    start: number;
-    end: number;
+  start: number;
+  end: number;
 }
 
 export interface Token {
-    idToken: string;
+  idToken: string;
 }
 
 export interface RegisterToken {
-    registerToken: string;
-    accessToken: string;
-    refreshToken: string;
-    verified: boolean;
+  registerToken: string;
+  accessToken: string;
+  refreshToken: string;
+  verified: boolean;
 }
 
 export type Topic = {
-    group: 'ENTERTAINMENT' | 'LIFE_HOBBY' | 'KNOWLEDGE_ETC';
-    id: number;
-    name: string;
+  group: 'ENTERTAINMENT' | 'LIFE_HOBBY' | 'KNOWLEDGE_ETC';
+  id: number;
+  name: string;
 };
 
 export type Topics = Topic[];
 
 export type Personality = {
-    id: number;
-    name: string;
+  id: number;
+  name: string;
 };
 
 export type Personalities = Personality[];
 
 export type Regions = {
-    id: number;
-    name: string;
+  id: number;
+  name: string;
 }[];
 
 export type Cities = {
-    id: number;
-    name: string;
+  id: number;
+  name: string;
 }[];
 
 export interface UserInfo {
-    registerToken: string;
-    nickname: string;
-    topicIds: number[];
-    personalityIds: number[];
-    stampQuantity: number;
-    geolocationId: number;
+  registerToken: string;
+  nickname: string;
+  topicIds: number[];
+  personalityIds: number[];
+  stampQuantity: number;
+  geolocationId: number;
 }
 
 export type TexticonCategory =
-    | 'happy'
-    | 'worry'
-    | 'angry'
-    | 'upfeeling'
-    | 'wink'
-    | 'sad'
-    | 'love';
+  | 'happy'
+  | 'worry'
+  | 'angry'
+  | 'upfeeling'
+  | 'wink'
+  | 'sad'
+  | 'love';
 
 export type Texticons = {
-    [key in TexticonCategory]: {
-        key: string;
-        list: string[];
-    };
+  [key in TexticonCategory]: {
+    key: string;
+    list: string[];
+  };
 };
 
 export type Stamp = {
-    id: number;
-    image: any;
+  id: number;
+  image: any;
 };
 
 export type Stamps = Stamp[];
 
 export type PaperColor =
-    | 'PINK'
-    | 'ORANGE'
-    | 'YELLOW'
-    | 'GREEN'
-    | 'MINT'
-    | 'SKY_BLUE'
-    | 'BLUE'
-    | 'PURPLE'
-    | 'LAVENDER';
+  | 'PINK'
+  | 'ORANGE'
+  | 'YELLOW'
+  | 'GREEN'
+  | 'MINT'
+  | 'SKY_BLUE'
+  | 'BLUE'
+  | 'PURPLE'
+  | 'LAVENDER';
 
 export type PaperStyle = 'GRID' | 'DOT' | 'PLAIN';
 
 export type PublicLetterWriteRequest = {
-    title: string;
-    content: string;
-    paperType: PaperStyle;
-    paperColor: PaperColor;
-    stampId: number;
-    alignType: 'LEFT' | 'CENTER' | 'RIGHT';
-    topics: number[];
-    personalities: number[];
-    files?: string[];
+  title: string;
+  content: string;
+  paperType: PaperStyle;
+  paperColor: PaperColor;
+  stampId: number;
+  alignType: 'LEFT' | 'CENTER' | 'RIGHT';
+  topics: number[];
+  personalities: number[];
+  files?: string[];
 };
 
 export interface PublicLetter {
-    id: number;
-    title: string;
-    fromAddress: string;
-    fromNickname: string;
-    topics: string[];
-    personalities: string[];
-    paperColor: PaperColor;
-    stampId: number;
-    alignType: 'LEFT' | 'CENTER' | 'RIGHT';
-    createDate?: Date;
-    [key: string]: any;
+  id: number;
+  title: string;
+  fromAddress: string;
+  fromNickname: string;
+  topics: string[];
+  personalities: string[];
+  paperColor: PaperColor;
+  stampId: number;
+  alignType: 'LEFT' | 'CENTER' | 'RIGHT';
+  createDate?: Date;
+  [key: string]: any;
 }
 
 export type PublicLetters = PublicLetter[];
 
 export interface PublicLetterContent {
-    id: number;
-    title: string;
-    content: string;
-    fromAddress: string;
-    fromNickname: string;
-    paperColor: PaperColor;
-    paperType: PaperStyle | 'LINE';
-    alignType: 'LEFT' | 'CENTER' | 'RIGHT';
-    stampId: number;
-    replied: boolean;
-    files: string[];
-    createdDate: Date;
+  id: number;
+  title: string;
+  content: string;
+  fromAddress: string;
+  fromNickname: string;
+  paperColor: PaperColor;
+  paperType: PaperStyle | 'LINE';
+  alignType: 'LEFT' | 'CENTER' | 'RIGHT';
+  stampId: number;
+  replied: boolean;
+  files: string[];
+  createdDate: Date;
 }
 
 export interface DeliveryLetterWriteRequest {
-    id?: number;
-    title?: string;
-    content?: string;
-    paperType?: PaperStyle;
-    paperColor?: PaperColor;
-    alignType?: 'LEFT' | 'CENTER' | 'RIGHT';
-    stampId?: number;
-    files?: string[];
-    deliveryType?: 'NONE' | 'STANDARD' | 'EXPRESS';
+  id?: number;
+  title?: string;
+  content?: string;
+  paperType?: PaperStyle;
+  paperColor?: PaperColor;
+  alignType?: 'LEFT' | 'CENTER' | 'RIGHT';
+  stampId?: number;
+  files?: string[];
+  deliveryType?: 'NONE' | 'STANDARD' | 'EXPRESS';
 }
 
 export interface LetterBox {
-    id: number;
-    fromMemberId: number;
-    fromMemberNickname: string;
-    new: boolean;
+  id: number;
+  fromMemberId: number;
+  fromMemberNickname: string;
+  new: boolean;
 }
 
 export type LetterBoxes = LetterBox[];
 
 export interface LetterBoxInfo {
-    fromNickname: string;
-    fromAddress: string;
-    startDate: Date;
-    topics: string[];
-    personalities: string[];
-    [key: string]: any;
+  fromNickname: string;
+  fromAddress: string;
+  startDate: Date;
+  topics: string[];
+  personalities: string[];
+  [key: string]: any;
 }
 
 export interface DeliveryLetter {
-    id: number;
-    title: string;
-    fromAddress: string;
-    fromNickname: string;
-    toAddress: string;
-    toNickname: string;
-    paperColor: PaperColor;
-    stampId: number;
-    read: boolean;
-    me: boolean;
-    deliveryType: 'NONE' | 'STANDARD' | 'EXPRESS';
-    deliveryDate: Date;
+  id: number;
+  title: string;
+  fromAddress: string;
+  fromNickname: string;
+  toAddress: string;
+  toNickname: string;
+  paperColor: PaperColor;
+  stampId: number;
+  read: boolean;
+  me: boolean;
+  deliveryType: 'NONE' | 'STANDARD' | 'EXPRESS';
+  deliveryDate: Date;
 }
 
 export type DeliveryLetters = DeliveryLetter[];
+
+export interface ReportData {
+  letterId: number;
+  reportReasonId: number;
+  description: string;
+}
