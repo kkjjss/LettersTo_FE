@@ -1,7 +1,16 @@
 import React, {useRef, useState, useEffect, useMemo} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import type {StackParamsList} from '../../types/stackParamList';
-import {StyleSheet, View, Text, Image, Pressable, ScrollView, TouchableWithoutFeedback, FlatList} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  Pressable,
+  ScrollView,
+  TouchableWithoutFeedback,
+  FlatList,
+} from 'react-native';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {LinearGradient} from 'expo-linear-gradient';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../Constants/screen';
@@ -14,8 +23,7 @@ import {LetterItem} from './LetterItem';
 type Props = NativeStackScreenProps<StackParamsList, 'LetterBoxDetail'>;
 
 export function LetterBoxDetail({route, navigation}: Props) {
-
-  const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
+  const {bottom: SAFE_AREA_BOTTOM} = useSafeAreaInsets();
 
   // 메인 (편지탐색)
   const goHome = () => {
@@ -27,27 +35,29 @@ export function LetterBoxDetail({route, navigation}: Props) {
   const [info, setInfo] = useState<LetterBoxInfo>();
 
   // 주고받은 편지 목록
-  const [deliveryLetters, setDeliveryLetters] = useState<DeliveryLetters | []>([]);
+  const [deliveryLetters, setDeliveryLetters] = useState<DeliveryLetters | []>(
+    [],
+  );
   const [currentCursor, setCurrentCursor] = useState<number>();
   const getPublicLettersInit = (fromMemberId: number) => {
     try {
       getDeliveryLetters({fromMemberId}).then(data => {
-            const {content, cursor} = data;
-            setDeliveryLetters(content);
-            setCurrentCursor(cursor);
-        });
+        const {content, cursor} = data;
+        setDeliveryLetters(content);
+        setCurrentCursor(cursor);
+      });
     } catch (error: any) {
-        console.error(error.message);
+      console.error(error.message);
     }
-};
+  };
 
   useEffect(() => {
-    const { id, fromMemberId } = route.params;
+    const {id, fromMemberId} = route.params;
     // 사서함 정보 조회
     try {
       getLetterBoxInfo(id).then(info => {
         setInfo(info);
-      })
+      });
     } catch (error: any) {
       console.error(error.message);
     }
@@ -60,7 +70,7 @@ export function LetterBoxDetail({route, navigation}: Props) {
       const startDate = new Date(info.startDate);
       const today = new Date();
       const distance = today.getTime() - startDate.getTime();
-      const days = Math.floor(distance/(1000*60*60*24)) + 1;
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24)) + 1;
       return days;
     }
   }, [info]);
@@ -90,7 +100,7 @@ export function LetterBoxDetail({route, navigation}: Props) {
         <View style={styles.infoHeader}>
           <Text style={styles.infoNickname}>{info?.fromNickname}</Text>
           <Text style={styles.infoAddress}>{info?.fromAddress}</Text>
-          {fromPeriod &&
+          {fromPeriod && (
             <>
               <TouchableWithoutFeedback onPress={toggleTooltip}>
                 <View style={styles.infoDate}>
@@ -111,7 +121,7 @@ export function LetterBoxDetail({route, navigation}: Props) {
                 </View>
               )}
             </>
-          }
+          )}
         </View>
         <View style={styles.tagArea}>
           <Text style={styles.tagTitle}>관심사</Text>
@@ -140,14 +150,11 @@ export function LetterBoxDetail({route, navigation}: Props) {
         renderItem={({item, index}) => {
           const isFirst: boolean = index === 0;
           return (
-            <LetterItem
-              data={item}
-              style={{marginTop: isFirst ? 24 : 16}}
-            />
+            <LetterItem data={item} style={{marginTop: isFirst ? 24 : 16}} />
           );
         }}
       />
-      <View style={styles.tabBottom}>
+      <View style={[styles.tabBottom, {height: SAFE_AREA_BOTTOM || 12}]}>
         <View style={styles.tabArea}>
           <Pressable onPress={goHome}>
             <View style={styles.tabInactive}>
@@ -162,7 +169,10 @@ export function LetterBoxDetail({route, navigation}: Props) {
             <View style={styles.tabActive}>
               <Image
                 source={require('../../Assets/triangle.png')}
-                style={[styles.triangle, {left: '100%', transform: [{scaleX: -1}]}]}
+                style={[
+                  styles.triangle,
+                  {left: '100%', transform: [{scaleX: -1}]},
+                ]}
               />
               <Text style={styles.tabActiveText}>내 사서함</Text>
             </View>
@@ -175,18 +185,63 @@ export function LetterBoxDetail({route, navigation}: Props) {
 
 const styles = StyleSheet.create({
   container: {flex: 1},
-  infoArea: {paddingBottom: 24, backgroundColor: '#FFCCEE', borderBottomWidth: 1, borderBottomColor: '#0000CC'},
-  infoHeader: {zIndex: 10, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingTop: 16, marginBottom: 24},
+  infoArea: {
+    paddingBottom: 24,
+    backgroundColor: '#FFCCEE',
+    borderBottomWidth: 1,
+    borderBottomColor: '#0000CC',
+  },
+  infoHeader: {
+    zIndex: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    marginBottom: 24,
+  },
   infoNickname: {fontFamily: 'Galmuri11-Bold', fontSize: 14, color: '#0000CC'},
-  infoAddress: {fontFamily: 'Galmuri11', fontSize: 12, color: '#0000CC', marginLeft: 8},
+  infoAddress: {
+    fontFamily: 'Galmuri11',
+    fontSize: 12,
+    color: '#0000CC',
+    marginLeft: 8,
+  },
   infoDate: {flexDirection: 'row', alignItems: 'center', marginLeft: 'auto'},
   infoDateText: {fontFamily: 'Galmuri11', fontSize: 12, color: '#0000CC'},
   iconQuestion: {width: 20, height: 20, top: 1, marginLeft: 2},
-  tooltipArea: {position: 'absolute', top: 45, right: 12, height: 32, paddingHorizontal: 10, backgroundColor: '#FFFFCC', borderWidth: 1, borderColor: '#0000CC', borderRadius: 5},
-  tooltipText: {fontFamily: 'Galmuri11', fontSize: 12, color: '#0000CC', lineHeight: 28},
-  tooltipTail: {position: 'absolute', top: -3.5, right: 12, transform: [{scaleY: -1}], width: 5, height: 4},
+  tooltipArea: {
+    position: 'absolute',
+    top: 45,
+    right: 12,
+    height: 32,
+    paddingHorizontal: 10,
+    backgroundColor: '#FFFFCC',
+    borderWidth: 1,
+    borderColor: '#0000CC',
+    borderRadius: 5,
+  },
+  tooltipText: {
+    fontFamily: 'Galmuri11',
+    fontSize: 12,
+    color: '#0000CC',
+    lineHeight: 28,
+  },
+  tooltipTail: {
+    position: 'absolute',
+    top: -3.5,
+    right: 12,
+    transform: [{scaleY: -1}],
+    width: 5,
+    height: 4,
+  },
   tagArea: {flexDirection: 'row', alignItems: 'center'},
-  tagTitle: {width: 84, paddingLeft: 16, fontFamily: 'Galmuri11', fontSize: 14, color: '#0000CC'},
+  tagTitle: {
+    width: 84,
+    paddingLeft: 16,
+    fontFamily: 'Galmuri11',
+    fontSize: 14,
+    color: '#0000CC',
+  },
   tagItem: {
     height: 24,
     lineHeight: 24,
@@ -205,8 +260,7 @@ const styles = StyleSheet.create({
     left: 0,
     bottom: 0,
     width: '100%',
-    height: 37,
-    backgroundColor: '#0000CC'
+    backgroundColor: '#0000CC',
   },
   tabArea: {
     position: 'absolute',

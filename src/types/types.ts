@@ -179,3 +179,14 @@ export interface ReportData {
   reportReasonId: number;
   description: string;
 }
+
+export interface Notification {
+  id: number;
+  title: string;
+  content: string;
+  type: string;
+  intent: string;
+  read: boolean;
+}
+
+export type NotificationList = Notification[];

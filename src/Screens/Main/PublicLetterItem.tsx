@@ -37,8 +37,7 @@ export function PublicLetterItem(props: PublicLetterItemProps) {
       <LinearGradient
         locations={[0, 0.5]}
         colors={[GRADIENT_COLORS[paperColor], 'white']}
-        style={styles.background}
-      >
+        style={styles.background}>
         <Text style={styles.title}>⌜{title || '무제'}⌟︎︎</Text>
         <View style={styles.fromArea}>
           <Image

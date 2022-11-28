@@ -10,6 +10,7 @@ type Props = {
 };
 
 export function StampsList({stamps, onPressStamp: selectStamp}: Props) {
+  console.log(stamps);
   return (
     <View style={styles.personalityWrap}>
       {stamps.map(stamp => (
