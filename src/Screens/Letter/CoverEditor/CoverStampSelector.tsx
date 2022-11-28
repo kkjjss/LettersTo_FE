@@ -16,7 +16,6 @@ export function CoverStampSelector({navigation, route}: Props) {
 
   const {
     setCoverStampId,
-    setStamps,
     cover: {stamp},
     userInfo,
   } = useStore();
@@ -47,20 +46,10 @@ export function CoverStampSelector({navigation, route}: Props) {
   };
 
   useEffect(() => {
-    const getStampList = () => {
-      setStamps([
-        {id: 1, image: require('../../../Assets/stamp_example.png')},
-        {id: 2, image: require('../../../Assets/stamp_example2.jpg')},
-      ]);
-    };
-
-    getStampList();
-
     if (stamp) {
       setSelectedStampId(stamp);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setStamps]);
+  }, [stamp]);
 
   useEffect(() => {
     if (!route.params?.reply) {

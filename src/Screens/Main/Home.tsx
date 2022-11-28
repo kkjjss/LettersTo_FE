@@ -32,11 +32,12 @@ export function Home({navigation}: Props) {
     [key: number]: any;
   };
   const STAMPS: StampType = {
-    1: require('../../Assets/1062.jpg'),
-    237: require('../../Assets/237.jpg'),
-    1003: require('../../Assets/1003.jpg'),
-    1056: require('../../Assets/1056.jpg'),
-    1062: require('../../Assets/1062.jpg'),
+    1: require('../../Assets/stamp_sample/1.jpg'),
+    2: require('../../Assets/stamp_sample/2.jpg'),
+    3: require('../../Assets/stamp_sample/3.jpg'),
+    4: require('../../Assets/stamp_sample/4.jpg'),
+    5: require('../../Assets/stamp_sample/5.jpg'),
+    6: require('../../Assets/stamp_sample/6.jpg'),
   };
 
   // 공개 편지 목록

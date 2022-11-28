@@ -1,7 +1,6 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Header} from '../../../Components/Headers/Header';
 import {StackParamsList} from '../../../types/stackParamList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {PersonalityEditor} from '../../../Components/LetterEditor/Cover/PersonalityEditor';
@@ -24,13 +23,12 @@ export function CoverPersonalityEditor({navigation}: Props) {
 
   const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
 
-  const disableNext = useMemo(
-    () => selectedPersonalityIds.length === 0,
-    [selectedPersonalityIds],
-  );
-
   const goNext = () => {
     navigation.navigate('CoverStampSelector');
+  };
+
+  const goBack = () => {
+    navigation.pop();
   };
 
   useEffect(() => {
@@ -54,14 +52,11 @@ export function CoverPersonalityEditor({navigation}: Props) {
             paddingTop: SAFE_AREA_TOP,
           },
         ]}>
-        <Header
-          navigation={navigation}
+        <Header2
           title={'성향 선택'}
-          next={'CoverStampSelector'}
-          // onPressNext={onPressNext}
-          disableNext={disableNext}
+          onPressBack={goBack}
+          onPressNext={goNext}
         />
-        <Header2 title={'성향 선택'} onPressNext={goNext} />
         <View style={styles.cover}>
           <LetterCoverPreview />
         </View>
