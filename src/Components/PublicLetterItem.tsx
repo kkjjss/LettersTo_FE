@@ -7,9 +7,9 @@ import {
   Image,
   ImageBackground,
 } from 'react-native';
-import {PublicLetter} from '../../types/types';
+import {PublicLetter} from '../types/types';
 import {LinearGradient} from 'expo-linear-gradient';
-import {GRADIENT_COLORS} from '../../Constants/letter';
+import {GRADIENT_COLORS} from '../Constants/letter';
 
 interface PublicLetterItemProps extends PublicLetter {
   stampSource: any;
@@ -42,44 +42,16 @@ export function PublicLetterItem(props: PublicLetterItemProps) {
         <View style={styles.fromArea}>
           <Image
             style={styles.fromImg}
-            source={require('../../Assets/from.png')}
+            source={require('../Assets/from.png')}
           />
           <Text
             style={styles.fromText}>{`${fromNickname}, ${fromAddress}`}</Text>
         </View>
         <ImageBackground
-          source={require('../../Assets/bg_stamp.png')}
+          source={require('../Assets/bg_stamp.png')}
           style={styles.stampArea}>
           <Image style={styles.stampImg} source={stampSource} />
         </ImageBackground>
-        <View style={styles.tagArea}>
-          <View style={styles.tagList}>
-            {topics
-              ?.filter((el: string, idx: number) => idx < 4)
-              .map((item, idx) => (
-                <Text key={idx} style={styles.tagItem}>
-                  {item}
-                </Text>
-              ))}
-            {topics?.length > 4 && (
-              <Text style={styles.tagItem}>{`+${topics.length - 4}`}</Text>
-            )}
-          </View>
-          <View style={styles.tagList}>
-            {personalities
-              ?.filter((el: string, idx: number) => idx < 4)
-              .map((item, idx) => (
-                <Text key={idx} style={styles.tagItem}>
-                  {item}
-                </Text>
-              ))}
-            {personalities?.length > 4 && (
-              <Text style={styles.tagItem}>{`+${
-                personalities.length - 4
-              }`}</Text>
-            )}
-          </View>
-        </View>
       </LinearGradient>
     </Pressable>
   );
