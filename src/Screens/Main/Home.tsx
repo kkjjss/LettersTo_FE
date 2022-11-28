@@ -24,7 +24,7 @@ import useStore from '../../Store/store';
 type Props = NativeStackScreenProps<StackParamsList, 'Home'>;
 
 export function Home({navigation}: Props) {
-  const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
+  const {top: SAFE_AREA_TOP, bottom: SAFE_AREA_BOTTOM} = useSafeAreaInsets();
 
   const {userInfo} = useStore();
 
@@ -215,6 +215,7 @@ export function Home({navigation}: Props) {
         refreshing={refreshing}
         onRefresh={handleRefresh}
         data={publicLetters}
+        contentContainerStyle={{marginTop: SAFE_AREA_TOP}}
         keyExtractor={item => item.id}
         renderItem={({item, index}) => {
           const {
@@ -267,7 +268,7 @@ export function Home({navigation}: Props) {
           );
         }}
       />
-      <View style={styles.tabBottom}>
+      <View style={[styles.tabBottom, {height: SAFE_AREA_BOTTOM || 12}]}>
         <View style={styles.tabArea}>
           <Pressable disabled>
             <View style={styles.tabActive}>
@@ -383,7 +384,6 @@ const styles = StyleSheet.create({
     left: 0,
     bottom: 0,
     width: '100%',
-    height: 37,
     backgroundColor: '#0000CC',
   },
   tabArea: {

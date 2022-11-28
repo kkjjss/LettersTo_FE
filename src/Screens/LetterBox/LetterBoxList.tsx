@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 // import {TabActions} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import type {StackParamsList} from '../../types/stackParamList';
@@ -9,25 +9,18 @@ import {
   Image,
   Pressable,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   FlatList,
 } from 'react-native';
-import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {LinearGradient} from 'expo-linear-gradient';
-import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../Constants/screen';
+import {SCREEN_HEIGHT} from '../../Constants/screen';
 import {LetterBoxes} from '../../types/types';
 import {getLetterBoxes} from '../../APIs/letterBox';
 
 type Props = NativeStackScreenProps<StackParamsList, 'LetterBoxList'>;
 
 export function LetterBoxList({navigation}: Props) {
-  const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
-
-  const letterBoxesData = [
-    {fromMemberId: 0, fromMemberNickname: 'Minju', new: true},
-    {fromMemberId: 1, fromMemberNickname: 'Yuri', new: false},
-    {fromMemberId: 2, fromMemberNickname: 'Cherry', new: true},
-  ];
+  const {top: SAFE_AREA_TOP, bottom: SAFE_AREA_BOTTOM} = useSafeAreaInsets();
 
   // 내 사서함 목록
   const [letterBoxes, setLetterBoxes] = useState<LetterBoxes>([]);
@@ -113,6 +106,7 @@ export function LetterBoxList({navigation}: Props) {
       <FlatList
         style={styles.list}
         ListEmptyComponent={Empty}
+        contentContainerStyle={{marginTop: SAFE_AREA_TOP}}
         data={letterBoxes}
         renderItem={({item, index}) => {
           const isFirst: boolean = index === 0;
@@ -170,7 +164,7 @@ export function LetterBoxList({navigation}: Props) {
           );
         }}
       />
-      <View style={styles.tabBottom}>
+      <View style={[styles.tabBottom, {height: SAFE_AREA_BOTTOM || 12}]}>
         <View style={styles.tabArea}>
           <Pressable onPress={goHome}>
             <View style={styles.tabInactive}>
@@ -255,7 +249,6 @@ const styles = StyleSheet.create({
     left: 0,
     bottom: 0,
     width: '100%',
-    height: 37,
     backgroundColor: '#0000CC',
   },
   tabArea: {
