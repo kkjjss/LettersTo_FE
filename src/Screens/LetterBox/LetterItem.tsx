@@ -10,6 +10,7 @@ import {
 import {DeliveryLetter} from '../../types/types';
 import {LinearGradient} from 'expo-linear-gradient';
 import {GRADIENT_COLORS} from '../../Constants/letter';
+import {dateFormatter} from '../../Utils/dateFormatter';
 
 interface LetterItemProps {
   data: DeliveryLetter;
@@ -18,7 +19,7 @@ interface LetterItemProps {
 
 export function LetterItem(props: LetterItemProps) {
   const { data, style } = props;
-  const { paperColor, stampId, read, me, title, deliveryType, deliveryDate, toAddress, fromAddress } = data;
+  const { paperColor, stampId, read, me, title, deliveryType, deliveryDate, toNickname, toAddress, fromNickname, fromAddress } = data;
 
   type StampType = {
       [key: number]: any;
@@ -41,6 +42,7 @@ export function LetterItem(props: LetterItemProps) {
     const result: boolean = today.getTime() > arrivalDate.getTime();
     return result;
   }, [deliveryDate]);
+
   const DdayText = useMemo(() => {
     const arrivalDate = new Date(deliveryDate);
     const today = new Date();
@@ -62,24 +64,84 @@ export function LetterItem(props: LetterItemProps) {
         colors={[GRADIENT_COLORS[paperColor], 'white']}
         style={[styles.background]}
       >
-        <ImageBackground
-          source={require('../../Assets/bg_stamp.png')}
-          style={styles.stampArea}>
-          <Image style={styles.stampImg} source={STAMPS[stampId]} />
-          {deliveryType === 'STANDARD' ? (
-            <Image
-              source={require('../../Assets/StandardBox.png')}
-              style={{width: 46, height: 17, position: 'absolute', top: 7, left: 7}}
-            />
-          ) : deliveryType === 'EXPRESS' ? (
-            <Image
-              source={require('../../Assets/ExpressBox.png')}
-              style={{width: 46, height: 17, position: 'absolute', top: 7, left: 7}}
-            />
-          ) : null
-          }
-        </ImageBackground>
+        {/* 우표 */}
+        {deliveryType === 'STANDARD' ? (
+          <View style={styles.stampArea}>
+            <ImageBackground
+              source={require('../../Assets/bg_stamp.png')}
+              style={styles.stampBg}
+            >
+              <Image style={styles.stampImg} source={STAMPS[stampId]} />
+              <Image
+                source={require('../../Assets/stamp_standard.png')}
+                style={{width: 46, height: 17, position: 'absolute', top: 7, left: 7}}
+              />
+            </ImageBackground>
+          </View>
+        ) : deliveryType === 'EXPRESS' ? (
+          <View style={styles.stampArea}>
+            <ImageBackground
+              source={require('../../Assets/bg_stamp.png')}
+              style={[styles.stampBg, {position: 'absolute', transform: [{rotate: '10deg'}]}]} />
+            <ImageBackground
+              source={require('../../Assets/bg_stamp.png')}
+              style={[styles.stampBg, {position: 'absolute', transform: [{rotate: '-5deg'}]}]} />
+            <ImageBackground
+              source={require('../../Assets/bg_stamp.png')}
+              style={styles.stampBg}
+            >
+              <Image style={styles.stampImg} source={STAMPS[stampId]} />
+              <Image
+                source={require('../../Assets/stamp_express.png')}
+                style={{width: 46, height: 17, position: 'absolute', top: 7, left: 7}}
+              />
+            </ImageBackground>
+          </View>
+        ) : (
+          <View style={styles.stampArea}>
+            <ImageBackground
+              source={require('../../Assets/bg_stamp.png')}
+              style={styles.stampBg}
+            >
+              <Image style={styles.stampImg} source={STAMPS[stampId]} />
+            </ImageBackground>
+          </View>
+        )
+        }
         <Text style={styles.title}>⌜{title || '무제'}⌟︎︎</Text>
+        <View style={styles.fromArea}>
+          {
+            me ? (
+              <>
+                <Image
+                  style={[styles.fromImg, {width: 25}]}
+                  source={require('../../Assets/to.png')}
+                />
+                <Text style={styles.fromText}>{`${toNickname}, ${toAddress}`}</Text>
+              </>
+            ) : (
+              <>
+                <Image
+                  style={[styles.fromImg, {width: 48}]}
+                  source={require('../../Assets/from.png')}
+                />
+                <Text style={styles.fromText}>{`${fromNickname}, ${fromAddress}`}</Text>
+              </>
+            )
+          }
+        </View>
+        <View style={{position: 'absolute', right: 16, bottom: 16, left: 16, height: 70, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 204, 0.05)'}}>
+          <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+            <Text style={{fontFamily: 'Galmuri11', fontSize: 12, color: '#0000CC'}}>{fromAddress}</Text>
+            <Image
+              style={{width: 31, height: 7, marginHorizontal: 8, marginTop: 2}}
+              resizeMode="contain"
+              source={require('../../Assets/arrow.png')}
+            />
+            <Text style={{fontFamily: 'Galmuri11', fontSize: 12, color: '#0000CC'}}>{toAddress}</Text>
+          </View>
+          <Text style={{fontFamily: 'Galmuri11', fontSize: 11, color: '#0000CC', marginTop: 3}}>{dateFormatter('yyyy.mm.dd', deliveryDate)}</Text>
+        </View>
       </LinearGradient>
     </Pressable>
   );
@@ -91,7 +153,7 @@ export function LetterItem(props: LetterItemProps) {
         style={[styles.background, {alignItems: 'center'}]}
       >
         <View style={styles.tooltipArea}>
-          <Text style={styles.tooltipText}>{me ? `${toAddress}으로 편지가 가고 있어요!` : `${fromAddress}에서 편지가 오고 있어요!`}</Text>
+          <Text style={styles.tooltipText}>{me ? `${toAddress}(으)로 편지가 가고 있어요!` : `${fromAddress}에서 편지가 오고 있어요!`}</Text>
           <Image
             style={styles.tooltipTail}
             source={require('../../Assets/tooltip.png')}
@@ -117,7 +179,7 @@ export function LetterItem(props: LetterItemProps) {
         me ? {marginLeft: 12} : {marginRight: 12},
       ]}>
         <Text style={[
-          {width: 36, height: 36, borderWidth: 1, borderColor: '#0000CC', borderRadius: 18, textAlign: 'center', lineHeight: 36, fontFamily: 'Galmuri11-Bold', fontSize: 13, color: '#0000CC', backgroundColor: me ? '#CCCCFF' : '#FFFFCC'},
+          {overflow: 'hidden', width: 36, height: 36, borderWidth: 1, borderColor: '#0000CC', borderRadius: 18, textAlign: 'center', lineHeight: 36, fontFamily: 'Galmuri11-Bold', fontSize: 13, color: '#0000CC', backgroundColor: me ? '#CCCCFF' : '#FFFFCC'},
         ]}>{me ? 'ME' : 'YOU'}</Text>
         <View>
           <Text style={{fontFamily: 'Galmuri11', fontSize: 11, color: '#0000CC'}}>{read ? '읽음' : '안읽음'}</Text>
@@ -157,9 +219,18 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     color: '#0000CC',
   },
-  stampArea: {position: 'absolute', top: 16, right: 16, padding: 7},
+  stampArea: {position: 'absolute', top: 16, right: 16},
+  stampBg: {width: 74, height: 90, padding: 7},
   stampImg: {width: 60, height: 76},
   tooltipArea: {height: 32, marginTop: 47, paddingHorizontal: 10, backgroundColor: '#FFFFCC', borderWidth: 1, borderColor: '#0000CC', borderRadius: 5},
   tooltipText: {fontFamily: 'Galmuri11', fontSize: 12, color: '#0000CC', lineHeight: 28},
   tooltipTail: {position: 'absolute', top: '100%', left: '50%', width: 5, height: 4, marginLeft: -25},
+  fromArea: {position: 'absolute', bottom: 106, left: 16},
+  fromImg: {height: 22},
+  fromText: {
+    marginLeft: 16,
+    fontFamily: 'Galmuri11',
+    fontSize: 12,
+    color: '#0000CC',
+  },
 });

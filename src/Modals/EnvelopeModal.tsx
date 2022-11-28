@@ -136,10 +136,7 @@ export const EnvelopeModal = ({
                     style={styles.fromImg}
                     source={require('../Assets/from.png')}
                   />
-                  <Text
-                    style={
-                      styles.fromText
-                    }>{`${fromNickname}, ${fromAddress}`}</Text>
+                  <Text style={styles.fromText}>{`${fromNickname}, ${fromAddress}`}</Text>
                 </View>
                 <ImageBackground
                   source={require('../Assets/bg_stamp.png')}
