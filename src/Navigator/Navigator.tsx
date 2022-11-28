@@ -31,81 +31,60 @@ import {CoverPersonalityEditor} from '../Screens/Letter/CoverEditor/CoverPersona
 import {CoverStampSelector} from '../Screens/Letter/CoverEditor/CoverStampSelector';
 import {LetterComplete} from '../Screens/Letter/LetterComplete';
 
+// 알림
+import {Notifications} from '../Screens/Notifications/Notifications';
+
 const Stack = createNativeStackNavigator<StackParamsList>();
 
 export default function StackNavigator() {
-    const {isLoggedIn, isLoading} = useStore();
+  const {isLoggedIn, isLoading} = useStore();
 
-    return (
-        <Stack.Navigator
-            screenOptions={{headerShown: false}}
-            initialRouteName="Splash">
-            {isLoading ? (
-                <Stack.Screen name="Splash" component={Splash} />
-            ) : isLoggedIn ? (
-                <Stack.Group screenOptions={{headerShown: false}}>
-                    <Stack.Screen name="Home" component={Home} />
-                    <Stack.Screen name="ReadLetter" component={ReadLetter} />
-                    <Stack.Screen
-                        name="LetterBoxList"
-                        component={LetterBoxList}
-                    />
-                    <Stack.Screen
-                        name="LetterBoxDetail"
-                        component={LetterBoxDetail}
-                    />
+  return (
+    <Stack.Navigator
+      screenOptions={{headerShown: false}}
+      initialRouteName="Splash">
+      {isLoading ? (
+        <Stack.Screen name="Splash" component={Splash} />
+      ) : isLoggedIn ? (
+        <Stack.Group screenOptions={{headerShown: false}}>
+          <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="ReadLetter" component={ReadLetter} />
+          <Stack.Screen name="LetterBoxList" component={LetterBoxList} />
+          <Stack.Screen name="LetterBoxDetail" component={LetterBoxDetail} />
 
-                    {/* 회원정보 수정 */}
-                    <Stack.Screen name="MyPage" component={MyPage} />
-                    <Stack.Screen
-                        name="AccountDelete"
-                        component={AccountDelete}
-                    />
+          {/* 회원정보 수정 */}
+          <Stack.Screen name="MyPage" component={MyPage} />
+          <Stack.Screen name="AccountDelete" component={AccountDelete} />
 
-                    {/* 편지 작성 */}
-                    <Stack.Screen
-                        name="LetterEditor"
-                        component={LetterEditor}
-                    />
-                    <Stack.Screen
-                        name="CoverDeliverySelector"
-                        component={CoverDeliverySelector}
-                    />
-                    <Stack.Screen
-                        name="CoverTopicEditor"
-                        component={CoverTopicEditor}
-                    />
-                    <Stack.Screen
-                        name="CoverPersonalityEditor"
-                        component={CoverPersonalityEditor}
-                    />
-                    <Stack.Screen
-                        name="CoverStampSelector"
-                        component={CoverStampSelector}
-                    />
-                    <Stack.Screen
-                        name="LetterComplete"
-                        component={LetterComplete}
-                    />
-                </Stack.Group>
-            ) : (
-                <Stack.Group>
-                    <Stack.Screen name="Auth" component={Auth} />
-                    <Stack.Screen
-                        name="NicknameForm"
-                        component={NicknameForm}
-                    />
-                    <Stack.Screen name="TopicsForm" component={TopicsForm} />
-                    <Stack.Screen
-                        name="PersonalityForm"
-                        component={PersonalityForm}
-                    />
-                    <Stack.Screen
-                        name="LocationForm"
-                        component={LocationForm}
-                    />
-                </Stack.Group>
-            )}
-        </Stack.Navigator>
-    );
+          {/* 편지 작성 */}
+          <Stack.Screen name="LetterEditor" component={LetterEditor} />
+          <Stack.Screen
+            name="CoverDeliverySelector"
+            component={CoverDeliverySelector}
+          />
+          <Stack.Screen name="CoverTopicEditor" component={CoverTopicEditor} />
+          <Stack.Screen
+            name="CoverPersonalityEditor"
+            component={CoverPersonalityEditor}
+          />
+          <Stack.Screen
+            name="CoverStampSelector"
+            component={CoverStampSelector}
+          />
+          <Stack.Screen name="LetterComplete" component={LetterComplete} />
+
+          {/* 알림 */}
+          <Stack.Screen name="Notifications" component={Notifications} />
+        </Stack.Group>
+      ) : (
+        <Stack.Group>
+          <Stack.Screen name="Auth" component={Auth} />
+          <Stack.Screen name="NicknameForm" component={NicknameForm} />
+          <Stack.Screen name="TopicsForm" component={TopicsForm} />
+          <Stack.Screen name="PersonalityForm" component={PersonalityForm} />
+          <Stack.Screen name="LocationForm" component={LocationForm} />
+        </Stack.Group>
+      )}
+    </Stack.Navigator>
+  );
 }
