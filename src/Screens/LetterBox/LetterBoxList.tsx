@@ -42,8 +42,6 @@ export function LetterBoxList({navigation, onPressHome}: Props) {
     getLetterBoxesInit();
   }, []);
 
-  // const jumpToAction = TabActions.jumpTo('Home');
-
   // 내 사서함 상세
   const goToDetail = (id: number, fromMemberId: number) => {
     navigation.navigate('LetterBoxDetail', {id, fromMemberId});
