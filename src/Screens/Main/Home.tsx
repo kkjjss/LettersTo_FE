@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import type {StackParamsList} from '../../types/stackParamList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {
@@ -14,17 +14,17 @@ import {
 import {LinearGradient} from 'expo-linear-gradient';
 import {getPublicLetters} from '../../APIs/letter';
 import {PublicLetter, PublicLetters} from '../../types/types';
-import {PublicLetterItem} from './PublicLetterItem';
+import {PublicLetterItem} from '../../Components/PublicLetterItem';
 import {EnvelopeModal} from '../../Modals/EnvelopeModal';
 import {SCREEN_HEIGHT} from '../../Constants/screen';
 import useStore from '../../Store/store';
 
-// const Tab = createBottomTabNavigator();
-
-type Props = NativeStackScreenProps<StackParamsList, 'Home'>;
+type Props = {
+  navigation: NativeStackNavigationProp<StackParamsList, 'Main', undefined>;
+};
 
 export function Home({navigation}: Props) {
-  const {top: SAFE_AREA_TOP, bottom: SAFE_AREA_BOTTOM} = useSafeAreaInsets();
+  const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
 
   const {userInfo} = useStore();
 
@@ -118,11 +118,6 @@ export function Home({navigation}: Props) {
   // 편지 조회
   const goToReadLetter = (id: number) => {
     navigation.navigate('ReadLetter', {id, to: 'PUBLIC'});
-  };
-
-  // 내 사서함
-  const goToLetterBox = () => {
-    navigation.push('LetterBoxList');
   };
 
   const goToMyPage = () => {
@@ -269,28 +264,6 @@ export function Home({navigation}: Props) {
           );
         }}
       />
-      <View style={[styles.tabBottom, {height: SAFE_AREA_BOTTOM || 12}]}>
-        <View style={styles.tabArea}>
-          <Pressable disabled>
-            <View style={styles.tabActive}>
-              <Image
-                source={require('../../Assets/triangle.png')}
-                style={[styles.triangle, {right: '100%'}]}
-              />
-              <Text style={styles.tabActiveText}>편지탐색</Text>
-            </View>
-          </Pressable>
-          <Pressable onPress={goToLetterBox}>
-            <View style={styles.tabInactive}>
-              <Image
-                source={require('../../Assets/triangle.png')}
-                style={[styles.triangle, {left: 0, transform: [{scaleX: -1}]}]}
-              />
-              <Text style={styles.tabInactiveText}>내 사서함</Text>
-            </View>
-          </Pressable>
-        </View>
-      </View>
       <View style={styles.floatArea}>
         {currentPositionY > 0 ? (
           <TouchableOpacity
@@ -332,11 +305,6 @@ export function Home({navigation}: Props) {
           onOpenLetter={goToReadLetter}
         />
       )}
-      {/* <Tab.Navigator>
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Settings" component={SettingsScreen} />
-      </Tab.Navigator> */}
-      {/* </SafeAreaView> */}
     </LinearGradient>
   );
 }

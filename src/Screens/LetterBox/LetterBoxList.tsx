@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 // import {TabActions} from '@react-navigation/native';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import type {StackParamsList} from '../../types/stackParamList';
 import {
   StyleSheet,
@@ -17,10 +17,13 @@ import {SCREEN_HEIGHT} from '../../Constants/screen';
 import {LetterBoxes} from '../../types/types';
 import {getLetterBoxes} from '../../APIs/letterBox';
 
-type Props = NativeStackScreenProps<StackParamsList, 'LetterBoxList'>;
+type Props = {
+  navigation: NativeStackNavigationProp<StackParamsList, 'Main', undefined>;
+  onPressHome: () => void;
+};
 
-export function LetterBoxList({navigation}: Props) {
-  const {top: SAFE_AREA_TOP, bottom: SAFE_AREA_BOTTOM} = useSafeAreaInsets();
+export function LetterBoxList({navigation, onPressHome}: Props) {
+  const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
 
   // 내 사서함 목록
   const [letterBoxes, setLetterBoxes] = useState<LetterBoxes>([]);
@@ -38,14 +41,6 @@ export function LetterBoxList({navigation}: Props) {
     // setLetterBoxes(letterBoxesData);
     getLetterBoxesInit();
   }, []);
-
-  // const jumpToAction = TabActions.jumpTo('Home');
-
-  // 메인 (편지탐색)
-  const goHome = () => {
-    navigation.push('Home');
-    // navigation.dispatch(jumpToAction);
-  };
 
   // 내 사서함 상세
   const goToDetail = (id: number, fromMemberId: number) => {
@@ -66,7 +61,7 @@ export function LetterBoxList({navigation}: Props) {
       <Text style={styles.emptyText}>
         아직 주고받은 편지가 없어요!{'\n'}답장할 편지를 찾아볼까요?
       </Text>
-      <Pressable style={styles.emptyBtn} onPress={goHome}>
+      <Pressable style={styles.emptyBtn} onPress={onPressHome}>
         <LinearGradient
           colors={['#FF6ECE', '#FF3DBD']}
           style={styles.emptyBtnBg}>
@@ -164,32 +159,6 @@ export function LetterBoxList({navigation}: Props) {
           );
         }}
       />
-      <View style={[styles.tabBottom, {height: SAFE_AREA_BOTTOM || 12}]}>
-        <View style={styles.tabArea}>
-          <Pressable onPress={goHome}>
-            <View style={styles.tabInactive}>
-              <Text style={styles.tabInactiveText}>편지탐색</Text>
-              <Image
-                source={require('../../Assets/triangle.png')}
-                style={[styles.triangle, {right: 0}]}
-              />
-            </View>
-          </Pressable>
-          <Pressable disabled>
-            <View style={styles.tabActive}>
-              <Image
-                source={require('../../Assets/triangle.png')}
-                style={[
-                  styles.triangle,
-                  {left: '100%', transform: [{scaleX: -1}]},
-                ]}
-              />
-              <Text style={styles.tabActiveText}>내 사서함</Text>
-            </View>
-          </Pressable>
-        </View>
-      </View>
-      {/* </SafeAreaView> */}
     </LinearGradient>
   );
 }

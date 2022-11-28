@@ -7,7 +7,7 @@ import useStore from '../Store/store';
 import {Splash} from '../Screens/Splash';
 
 // 메인 서비스 스크린
-import {Home} from '../Screens/Main/Home';
+import {Main} from '../Screens/Main/Main';
 
 // 편지 관련 스크린
 import {ReadLetter} from '../Screens/Letter/ReadLetter';
@@ -47,7 +47,7 @@ export default function StackNavigator() {
         <Stack.Screen name="Splash" component={Splash} />
       ) : isLoggedIn ? (
         <Stack.Group screenOptions={{headerShown: false}}>
-          <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="Main" component={Main} />
           <Stack.Screen name="ReadLetter" component={ReadLetter} />
           <Stack.Screen name="LetterBoxList" component={LetterBoxList} />
           <Stack.Screen name="LetterBoxDetail" component={LetterBoxDetail} />

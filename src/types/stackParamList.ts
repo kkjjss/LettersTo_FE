@@ -3,7 +3,7 @@ export type StackParamsList = {
   Splash: undefined;
 
   // 메인 서비스 스택
-  Home: undefined;
+  Main: undefined;
 
   // 편지 관련 스택
   ReadLetter: {id: number; to: 'PUBLIC' | 'DELIVERY'};

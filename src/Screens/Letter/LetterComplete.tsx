@@ -45,7 +45,7 @@ export const LetterComplete = ({navigation, route}: Props) => {
 
         await postPublicLetter(letterData);
 
-        navigation.navigate('Home');
+        navigation.navigate('Main');
       } catch (error: any) {
         console.error(error.message);
       }
@@ -63,7 +63,7 @@ export const LetterComplete = ({navigation, route}: Props) => {
       } else if (route.params?.to === 'DELIVERY') {
         await postDeliveryLetter(letterData);
       }
-      navigation.navigate('Home');
+      navigation.navigate('Main');
     } catch (error: any) {
       console.error(error.message);
     }

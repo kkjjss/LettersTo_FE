@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect, useMemo} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {
   StyleSheet,
   Text,
@@ -60,10 +60,13 @@ export function LetterItem(props: LetterItemProps) {
       (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
     );
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    let result = ``;
-    if (days) result += `${days}일 `;
-    if (days > 0 || hours > 0)
+    let result = '';
+    if (days) {
+      result += `${days}일 `;
+    }
+    if (days > 0 || hours > 0) {
       result += `${hours < 10 ? `0${hours}` : hours}시간 `;
+    }
     result += `${minutes < 10 ? `0${minutes}` : minutes}분 후 도착`;
     return result;
   }, [deliveryDate]);

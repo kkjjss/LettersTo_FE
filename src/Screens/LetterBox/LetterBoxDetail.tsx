@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect, useMemo} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import type {StackParamsList} from '../../types/stackParamList';
 import {
@@ -12,8 +12,6 @@ import {
   FlatList,
 } from 'react-native';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
-import {LinearGradient} from 'expo-linear-gradient';
-import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../Constants/screen';
 import {LetterBoxInfo, DeliveryLetters} from '../../types/types';
 import {getLetterBoxInfo, getDeliveryLetters} from '../../APIs/letterBox';
 import {Header} from '../../Components/Headers/Header';
@@ -27,7 +25,7 @@ export function LetterBoxDetail({route, navigation}: Props) {
 
   // 메인 (편지탐색)
   const goHome = () => {
-    navigation.push('Home');
+    navigation.push('Main');
     // navigation.dispatch(jumpToAction);
   };
 
