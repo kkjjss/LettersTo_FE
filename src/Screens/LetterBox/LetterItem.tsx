@@ -37,11 +37,12 @@ export function LetterItem(props: LetterItemProps) {
     [key: number]: any;
   };
   const STAMPS: StampType = {
-    1: require('../../Assets/1062.jpg'),
-    237: require('../../Assets/237.jpg'),
-    1003: require('../../Assets/1003.jpg'),
-    1056: require('../../Assets/1056.jpg'),
-    1062: require('../../Assets/1062.jpg'),
+    1: require('../../Assets/stamp_sample/1.jpg'),
+    2: require('../../Assets/stamp_sample/2.jpg'),
+    3: require('../../Assets/stamp_sample/3.jpg'),
+    4: require('../../Assets/stamp_sample/4.jpg'),
+    5: require('../../Assets/stamp_sample/5.jpg'),
+    6: require('../../Assets/stamp_sample/6.jpg'),
   };
 
   useEffect(() => {
@@ -80,7 +81,7 @@ export function LetterItem(props: LetterItemProps) {
       <LinearGradient
         locations={[0, 0.5]}
         colors={[GRADIENT_COLORS[paperColor], 'white']}
-        style={[styles.background]}>
+        style={[styles.background, read && {borderTopRightRadius: 0, borderTopLeftRadius: 0}]}>
         {/* 우표 */}
         {deliveryType === 'STANDARD' ? (
           <View style={styles.stampArea}>
@@ -160,6 +161,7 @@ export function LetterItem(props: LetterItemProps) {
           <Text style={{fontFamily: 'Galmuri11', fontSize: 11, color: '#0000CC', marginTop: 3}}>{dateFormatter('yyyy.mm.dd', deliveryDate)}</Text>
         </View>
       </LinearGradient>
+      {read && <Image source={require('../../Assets/read.png')} style={styles.read} />}
     </Pressable>
   );
   const PendingLetter = () => (
@@ -205,7 +207,9 @@ export function LetterItem(props: LetterItemProps) {
       ]}>
         <Text style={[
           {overflow: 'hidden', width: 36, height: 36, borderWidth: 1, borderColor: '#0000CC', borderRadius: 18, textAlign: 'center', lineHeight: 36, fontFamily: 'Galmuri11-Bold', fontSize: 13, color: '#0000CC', backgroundColor: me ? '#CCCCFF' : '#FFFFCC'},
-        ]}>{me ? 'ME' : 'YOU'}</Text>
+        ]}>
+          {me ? 'ME' : 'YOU'}
+        </Text>
         <View>
           <Text
             style={{fontFamily: 'Galmuri11', fontSize: 11, color: '#0000CC'}}>
@@ -232,10 +236,13 @@ export function LetterItem(props: LetterItemProps) {
 
 const styles = StyleSheet.create({
   letterItem: {
-    position: 'relative',
-    overflow: 'hidden',
     flex: 1,
     height: 212,
+  },
+  read: {position: 'absolute', top: 0, left: 0, width: '100%', height: 7},
+  background: {
+    overflow: 'hidden',
+    flex: 1,
     borderWidth: 1,
     borderColor: '#0000CC',
     borderRadius: 10,
@@ -248,7 +255,6 @@ const styles = StyleSheet.create({
     shadowRadius: 50,
     elevation: 5,
   },
-  background: {flex: 1},
   title: {
     width: '60%',
     marginTop: 16,
