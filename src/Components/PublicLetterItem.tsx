@@ -51,6 +51,34 @@ export function PublicLetterItem(props: PublicLetterItemProps) {
           style={styles.stampArea}>
           <Image style={styles.stampImg} source={stampSource} />
         </ImageBackground>
+        <View style={styles.tagArea}>
+          <View style={styles.tagList}>
+            {topics
+              ?.filter((el: string, idx: number) => idx < 4)
+              .map((item, idx) => (
+                <Text key={idx} style={styles.tagItem}>
+                  {item}
+                </Text>
+              ))}
+            {topics?.length > 4 && (
+              <Text style={styles.tagItem}>{`+${topics.length - 4}`}</Text>
+            )}
+          </View>
+          <View style={styles.tagList}>
+            {personalities
+              ?.filter((el: string, idx: number) => idx < 4)
+              .map((item, idx) => (
+                <Text key={idx} style={styles.tagItem}>
+                  {item}
+                </Text>
+              ))}
+            {personalities?.length > 4 && (
+              <Text style={styles.tagItem}>{`+${
+                personalities.length - 4
+              }`}</Text>
+            )}
+          </View>
+        </View>
       </LinearGradient>
     </Pressable>
   );
