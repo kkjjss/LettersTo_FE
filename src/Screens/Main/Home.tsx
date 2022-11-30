@@ -10,6 +10,7 @@ import {
   Pressable,
   TouchableOpacity,
   Image,
+  Alert,
 } from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 import {getPublicLetters} from '../../APIs/letter';
@@ -52,6 +53,7 @@ export function Home({navigation}: Props) {
       });
     } catch (error: any) {
       console.error(error.message);
+      Alert.alert('error', error.message);
     }
   };
   useEffect(() => {
@@ -83,6 +85,7 @@ export function Home({navigation}: Props) {
         });
       } catch (error: any) {
         console.error(error.message);
+        Alert.alert('error', error.message);
       }
     }
   };
@@ -100,6 +103,7 @@ export function Home({navigation}: Props) {
       });
     } catch (error: any) {
       console.error(error.message);
+      Alert.alert('error', error.message);
     }
   };
 

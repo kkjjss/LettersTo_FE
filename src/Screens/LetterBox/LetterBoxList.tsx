@@ -10,6 +10,7 @@ import {
   Pressable,
   TouchableOpacity,
   FlatList,
+  Alert,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {LinearGradient} from 'expo-linear-gradient';
@@ -34,6 +35,7 @@ export function LetterBoxList({navigation, onPressHome}: Props) {
       });
     } catch (error: any) {
       console.error(error.message);
+      Alert.alert('error', error.message);
     }
   };
   useEffect(() => {

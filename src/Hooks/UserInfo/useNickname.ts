@@ -1,5 +1,5 @@
 import {useEffect, useRef, useState} from 'react';
-import {Animated} from 'react-native';
+import {Alert, Animated} from 'react-native';
 import {existsNickname} from '../../APIs/member';
 
 export const useNickname = (curruntNickname?: string) => {
@@ -68,6 +68,7 @@ export const useNickname = (curruntNickname?: string) => {
           alert.start();
         } catch (error: any) {
           console.error(error.message);
+          Alert.alert('error', error.message);
         }
       }
     };

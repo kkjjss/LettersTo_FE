@@ -1,5 +1,5 @@
 import {useEffect, useMemo, useRef, useState} from 'react';
-import {Animated} from 'react-native';
+import {Alert, Animated} from 'react-native';
 import {getTopics} from '../../APIs/topic';
 import {Topics} from '../../types/types';
 
@@ -50,6 +50,7 @@ export const useTopic = () => {
       });
     } catch (error: any) {
       console.error(error.message);
+      Alert.alert('error', error.message);
     }
   }, []);
 

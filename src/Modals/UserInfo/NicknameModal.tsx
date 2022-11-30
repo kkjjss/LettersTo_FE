@@ -9,6 +9,7 @@ import {
   Image,
   Animated,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {patchUserInfo} from '../../APIs/member';
@@ -58,6 +59,7 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
       hideModal();
     } catch (error: any) {
       console.error(error.message);
+      Alert.alert('error', error.message);
     }
   };
 

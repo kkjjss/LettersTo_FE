@@ -1,6 +1,6 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Alert, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {
   postDeliveryLetter,
@@ -48,6 +48,7 @@ export const LetterComplete = ({navigation, route}: Props) => {
         navigation.navigate('Main');
       } catch (error: any) {
         console.error(error.message);
+        Alert.alert('error', error.message);
       }
     }
   };
@@ -66,6 +67,7 @@ export const LetterComplete = ({navigation, route}: Props) => {
       navigation.navigate('Main');
     } catch (error: any) {
       console.error(error.message);
+      Alert.alert('error', error.message);
     }
   };
 

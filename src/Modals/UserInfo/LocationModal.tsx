@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {Text, View, Modal, StyleSheet, Platform} from 'react-native';
+import {Text, View, Modal, StyleSheet, Platform, Alert} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {patchUserInfo} from '../../APIs/member';
@@ -57,6 +57,7 @@ export function LocationModal({isModalVisible, setModalVisible}: Props) {
       hideModal();
     } catch (error: any) {
       console.error(error.message);
+      Alert.alert('error', error.message);
     }
   };
 

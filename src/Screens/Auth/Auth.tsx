@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   SafeAreaView,
+  Alert,
 } from 'react-native';
 import type {StackParamsList} from '../../types/stackParamList';
 import {LinearGradient} from 'expo-linear-gradient';
@@ -32,6 +33,8 @@ export function Auth({navigation}: Props) {
       await loginWithToken(userTokens);
     } catch (error: any) {
       console.error(error.message);
+      Alert.alert('error', error.message);
+      Alert.alert('error', error.message);
     } finally {
       setDisableSignUp(false);
     }

@@ -1,6 +1,6 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useMemo, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Alert, StyleSheet, View} from 'react-native';
 import {Header} from '../../../Components/Headers/Header';
 import {StackParamsList} from '../../../types/stackParamList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -32,6 +32,7 @@ export function CoverTopicEditor({navigation}: Props) {
         });
       } catch (error: any) {
         console.error(error.message);
+        Alert.alert('error', error.message);
       }
     };
 
@@ -42,6 +43,7 @@ export function CoverTopicEditor({navigation}: Props) {
         });
       } catch (error: any) {
         console.error(error.message);
+        Alert.alert('error', error.message);
       }
     };
 
