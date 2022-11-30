@@ -46,7 +46,7 @@ export function LetterBoxList({navigation, onPressHome}: Props) {
 
   // 내 사서함 상세
   const goToDetail = (id: number, fromMemberId: number) => {
-    navigation.navigate('LetterBoxDetail', {id, fromMemberId});
+    navigation.push('LetterBoxDetail', {id, fromMemberId});
   };
 
   async function goToMyPage() {

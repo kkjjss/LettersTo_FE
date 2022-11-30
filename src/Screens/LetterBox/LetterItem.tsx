@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo} from 'react';
+import React, {useEffect, useMemo, useRef} from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,6 +6,8 @@ import {
   View,
   Image,
   ImageBackground,
+  Animated,
+  Easing,
 } from 'react-native';
 import {DeliveryLetter} from '../../types/types';
 import {LinearGradient} from 'expo-linear-gradient';
@@ -45,8 +47,18 @@ export function LetterItem(props: LetterItemProps) {
     6: require('../../Assets/stamp_sample/6.jpg'),
   };
 
+  // 애니메이션
+  const moveAnim = useRef(new Animated.ValueXY()).current;
+  const moveUp = Animated.timing(moveAnim, {
+    toValue: {x: 0, y: 0},
+    duration: 1000,
+    useNativeDriver: true,
+    easing: Easing.elastic(2),
+  });
+
   useEffect(() => {
-    console.log('data', data);
+    // console.log('data', data);
+    // moveUp.start();
   }, [data]);
 
   const IsArrived = useMemo(() => {
@@ -77,7 +89,7 @@ export function LetterItem(props: LetterItemProps) {
   }, [deliveryDate]);
 
   const ArrivedLetter = () => (
-    <Pressable style={[styles.letterItem]}>
+    <Pressable style={[styles.letterItem]} onPress={() => {}}>
       <LinearGradient
         locations={[0, 0.5]}
         colors={[GRADIENT_COLORS[paperColor], 'white']}
@@ -165,7 +177,7 @@ export function LetterItem(props: LetterItemProps) {
     </Pressable>
   );
   const PendingLetter = () => (
-    <Pressable style={[styles.letterItem]}>
+    <View style={[styles.letterItem]}>
       <LinearGradient
         locations={[0, 0.5]}
         colors={[GRADIENT_COLORS[paperColor], 'white']}
@@ -191,15 +203,17 @@ export function LetterItem(props: LetterItemProps) {
           {DdayText}
         </Text>
       </LinearGradient>
-    </Pressable>
+    </View>
   );
 
   return (
-    <View
+    <Animated.View
       style={[
         me ? {flexDirection: 'row-reverse'} : {flexDirection: 'row'},
         {marginHorizontal: 16, justifyContent: 'space-between'},
         style,
+        // !read && {transform: [{translateX: -40}]},
+        !read && {transform: [{translateX: moveAnim.x}]},
       ]}>
       <View style={[
         {justifyContent: 'space-between', alignItems: 'center'},
@@ -230,7 +244,7 @@ export function LetterItem(props: LetterItemProps) {
         </View>
       </View>
       {IsArrived ? <ArrivedLetter /> : <PendingLetter />}
-    </View>
+    </Animated.View>
   );
 }
 

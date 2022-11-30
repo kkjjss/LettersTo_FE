@@ -34,10 +34,9 @@ export function LetterBoxDetail({route, navigation}: Props) {
   const [info, setInfo] = useState<LetterBoxInfo>();
 
   // 주고받은 편지 목록
-  const [deliveryLetters, setDeliveryLetters] = useState<DeliveryLetters | []>(
-    [],
-  );
+  const [deliveryLetters, setDeliveryLetters] = useState<DeliveryLetters | []>([]);
   const [currentCursor, setCurrentCursor] = useState<number>();
+  const [fromMemberId, setFromMemberId] = useState<number>();
   const getPublicLettersInit = (fromMemberId: number) => {
     try {
       getDeliveryLetters({fromMemberId}).then(data => {
@@ -53,6 +52,8 @@ export function LetterBoxDetail({route, navigation}: Props) {
 
   useEffect(() => {
     const {id, fromMemberId} = route.params;
+    setFromMemberId(fromMemberId);
+
     // 사서함 정보 조회
     try {
       getLetterBoxInfo(id).then(info => {
@@ -62,9 +63,27 @@ export function LetterBoxDetail({route, navigation}: Props) {
       console.error(error.message);
       Alert.alert('error', error.message);
     }
+
     // 주고받은 편지 목록 조회
     getPublicLettersInit(fromMemberId);
   }, [route]);
+
+  // 무한 스크롤
+  const handleEndReached = () => {
+    if (currentCursor && fromMemberId) {
+      try {
+        getDeliveryLetters({cursor: currentCursor, fromMemberId}).then(data => {
+          const {content, cursor} = data;
+          const updatedArray = [...deliveryLetters].concat(content);
+          setDeliveryLetters(updatedArray);
+          setCurrentCursor(cursor);
+        });
+      } catch (error: any) {
+        console.error(error.message);
+        Alert.alert('error', error.message);
+      }
+    }
+  };
 
   const fromPeriod = useMemo(() => {
     if (info) {
@@ -86,8 +105,16 @@ export function LetterBoxDetail({route, navigation}: Props) {
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const toggleTooltip = () => setTooltipVisible(!tooltipVisible);
 
+  // const testData: DeliveryLetters = [
+  //   {deliveryDate: new Date("2022-11-23T13:44:31.951886"), "deliveryType": "STANDARD", "fromAddress": "경기도 의정부시", "fromNickname": "Asap", id: 18, "me": true, "paperColor": "PINK", "read": false, "stampId": 2, "title": "답장", "toAddress": "서울특별시 종ddd로구", "toNickname": "aaa"},
+  //   {deliveryDate: new Date("2022-11-23T13:44:31.951886"), "deliveryType": "NONE", "fromAddress": "서울특별시 종로구", "fromNickname": "aaa", id: 17, "me": false, "paperColor": "PINK", "read": true, "stampId": 1, "title": "ㅁ", "toAddress": "경기도 의정dd부시", "toNickname": "Asap"},
+  //   {deliveryDate: new Date("2022-11-23T13:44:31.951886"), "deliveryType": "NONE", "fromAddress": "서울특별시 종로구", "fromNickname": "aaa", id: 16, "me": false, "paperColor": "PINK", "read": true, "stampId": 1, "title": "ㅁ", "toAddress": "경기도 의정dd부시", "toNickname": "Asap"},
+  //   {deliveryDate: new Date("2022-11-23T13:44:31.951886"), "deliveryType": "NONE", "fromAddress": "서울특별시 종로구", "fromNickname": "aaa", id: 15, "me": false, "paperColor": "PINK", "read": true, "stampId": 1, "title": "ㅁ", "toAddress": "경기도 의정dd부시", "toNickname": "Asap"},
+  //   {deliveryDate: new Date("2022-11-23T13:44:31.951886"), "deliveryType": "NONE", "fromAddress": "서울특별시 종로구", "fromNickname": "aaa", id: 14, "me": false, "paperColor": "PINK", "read": true, "stampId": 1, "title": "ㅁ", "toAddress": "경기도 의정dd부시", "toNickname": "Asap"},
+  // ];
   // useEffect(() => {
   //   console.log('init');
+  //   setDeliveryLetters(testData);
   // }, []);
   return (
     <SafeAreaView style={styles.container}>
@@ -147,11 +174,20 @@ export function LetterBoxDetail({route, navigation}: Props) {
       </View>
       <FlatList
         data={deliveryLetters}
-        // keyExtractor={item => item.id}
+        onEndReached={handleEndReached}
+        onEndReachedThreshold={0.2}
+        keyExtractor={(item) => String(item.id)}
         renderItem={({item, index}) => {
           const isFirst: boolean = index === 0;
+          const isLast: boolean = index === deliveryLetters.length - 1;
           return (
-            <LetterItem data={item} style={{marginTop: isFirst ? 24 : 16}} />
+            <LetterItem
+              data={item}
+              style={[
+                {marginTop: isFirst ? 24 : 16},
+                isLast && {marginBottom: 80},
+              ]}
+            />
           );
         }}
       />
