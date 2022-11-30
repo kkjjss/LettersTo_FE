@@ -8,6 +8,7 @@ import React, {
   useState,
 } from 'react';
 import {
+  Alert,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
@@ -314,6 +315,7 @@ export function LetterEditor({navigation, route}: Props) {
       setStampQuantity(stampQuantity);
     } catch (error: any) {
       console.error(error.message);
+      Alert.alert('error', error.message);
     }
   }, [setStampQuantity]);
 

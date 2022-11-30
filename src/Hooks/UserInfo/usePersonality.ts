@@ -1,5 +1,5 @@
 import {useEffect, useMemo, useRef, useState} from 'react';
-import {Animated} from 'react-native';
+import {Alert, Animated} from 'react-native';
 import {getPersonalities} from '../../APIs/personality';
 import {Personalities} from '../../types/types';
 
@@ -60,6 +60,7 @@ export const usePersonality = () => {
       });
     } catch (error: any) {
       console.error(error.message);
+      Alert.alert('error', error.message);
     }
   }, []);
 

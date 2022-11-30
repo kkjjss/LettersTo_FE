@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Animated,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {ResetButton} from '../../Components/ResetButton';
 import useStore from '../../Store/store';
@@ -60,6 +61,7 @@ export const TopicsModal = ({isModalVisible, setModalVisible}: Props) => {
       hideModal();
     } catch (error: any) {
       console.error(error.message);
+      Alert.alert('error', error.message);
     }
   };
 

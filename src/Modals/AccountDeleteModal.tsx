@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
-import {Modal, Pressable, Text, View} from 'react-native';
+import {Alert, Modal, Pressable, Text, View} from 'react-native';
 import useStore from '../Store/store';
 import {deleteAccount} from '../APIs/member';
 
@@ -20,6 +20,7 @@ export function AccountDeleteModal({hideModal, isModalVisible}: Props) {
       signOut();
     } catch (error: any) {
       console.error(error.message);
+      Alert.alert('error', error.message);
     }
   };
   return (

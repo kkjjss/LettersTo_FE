@@ -10,6 +10,7 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   FlatList,
+  Alert,
 } from 'react-native';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {LetterBoxInfo, DeliveryLetters} from '../../types/types';
@@ -46,6 +47,7 @@ export function LetterBoxDetail({route, navigation}: Props) {
       });
     } catch (error: any) {
       console.error(error.message);
+      Alert.alert('error', error.message);
     }
   };
 
@@ -58,6 +60,7 @@ export function LetterBoxDetail({route, navigation}: Props) {
       });
     } catch (error: any) {
       console.error(error.message);
+      Alert.alert('error', error.message);
     }
     // 주고받은 편지 목록 조회
     getPublicLettersInit(fromMemberId);

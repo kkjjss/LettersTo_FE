@@ -1,5 +1,11 @@
 import * as React from 'react';
-import {StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
+import {
+  Alert,
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import {useState} from 'react';
 import useStore from '../Store/store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -49,6 +55,7 @@ export function SignUpButton({disableSignUp, onPress: onPressSignUp}: Props) {
       }
     } catch (error: any) {
       console.error(error.message);
+      Alert.alert('error', error.message);
     } finally {
       setDisable(false);
     }
