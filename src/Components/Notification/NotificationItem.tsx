@@ -15,7 +15,7 @@ export const NotificationItem = ({notification, onPress}: Props) => {
           minHeight: 100,
           borderBottomColor: '#0000cc40',
           borderBottomWidth: 1,
-          backgroundColor: notification.read ? 'white' : '#0000cc14',
+          backgroundColor: notification.read ? 'white' : '#0000cc13',
           paddingHorizontal: 24,
           paddingVertical: 16,
           position: 'relative',

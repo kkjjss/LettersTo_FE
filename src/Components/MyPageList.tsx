@@ -29,9 +29,9 @@ const styles = StyleSheet.create({
   nameText: {
     fontFamily: 'Galmuri11',
     fontSize: 12,
-    color: '#ffffff7f',
+    color: '#0000cc',
     marginBottom: 14,
   },
   itemWrap: {height: 35, justifyContent: 'center'},
-  itemText: {fontFamily: 'Galmuri11', fontSize: 15, color: 'white'},
+  itemText: {fontFamily: 'Galmuri11', fontSize: 15, color: '#0000cc'},
 });

@@ -3,8 +3,8 @@ import {Text, View, Modal, StyleSheet, Platform, Alert} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {patchUserInfo} from '../../APIs/member';
+import {BottomButton} from '../../Components/BottomButton';
 import {ModalHeader} from '../../Components/ModalHeader';
-import {UpdateButton} from '../../Components/UpdateButton';
 import {SCREEN_HEIGHT} from '../../Constants/screen';
 import {useLocation} from '../../Hooks/UserInfo/useLocation';
 import useStore from '../../Store/store';
@@ -136,8 +136,9 @@ export function LocationModal({isModalVisible, setModalVisible}: Props) {
             )}
           </View>
 
-          <UpdateButton
-            activateUpdate={!disableUpdate}
+          <BottomButton
+            disable={disableUpdate}
+            buttonText="변경하기"
             onPress={updateLocation}
           />
         </View>

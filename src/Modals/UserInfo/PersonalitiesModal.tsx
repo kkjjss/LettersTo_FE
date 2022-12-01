@@ -12,11 +12,11 @@ import {ResetButton} from '../../Components/ResetButton';
 import useStore from '../../Store/store';
 import {ModalHeader} from '../../Components/ModalHeader';
 import {SCREEN_HEIGHT} from '../../Constants/screen';
-import {UpdateButton} from '../../Components/UpdateButton';
 import {PersonalityList} from '../../Components/PersonalityList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {patchUserInfo} from '../../APIs/member';
 import {usePersonality} from '../../Hooks/UserInfo/usePersonality';
+import {BottomButton} from '../../Components/BottomButton';
 
 type Props = {
   isModalVisible: boolean;
@@ -110,8 +110,9 @@ export function PersonalitiesModal({isModalVisible, setModalVisible}: Props) {
             <Text style={styles.alertText}>최대 9개까지만 선택 가능해요!</Text>
           </Animated.View>
 
-          <UpdateButton
-            activateUpdate={!disableUpdate}
+          <BottomButton
+            disable={disableUpdate}
+            buttonText="변경하기"
             onPress={updatePersonalites}
           />
         </View>
