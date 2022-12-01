@@ -13,10 +13,10 @@ import useStore from '../../Store/store';
 import {ModalHeader} from '../../Components/ModalHeader';
 import {SCREEN_HEIGHT} from '../../Constants/screen';
 import {TopicList} from '../../Components/TopicList';
-import {UpdateButton} from '../../Components/UpdateButton';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {patchUserInfo} from '../../APIs/member';
 import {useTopic} from '../../Hooks/UserInfo/useTopic';
+import {BottomButton} from '../../Components/BottomButton';
 
 type Props = {
   isModalVisible: boolean;
@@ -110,8 +110,9 @@ export const TopicsModal = ({isModalVisible, setModalVisible}: Props) => {
             <Text style={styles.alertText}>최대 7개까지만 선택 가능해요!</Text>
           </Animated.View>
 
-          <UpdateButton
-            activateUpdate={!disableUpdate}
+          <BottomButton
+            disable={disableUpdate}
+            buttonText="변경하기"
             onPress={updateTopics}
           />
         </View>

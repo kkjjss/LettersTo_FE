@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {patchUserInfo} from '../../APIs/member';
-import {UpdateButton} from '../../Components/UpdateButton';
+import {BottomButton} from '../../Components/BottomButton';
 import {useKeyboard} from '../../Hooks/Hardware/useKeyboard';
 import {useNickname} from '../../Hooks/UserInfo/useNickname';
 import useStore from '../../Store/store';
@@ -118,7 +118,11 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
             </Animated.View>
           </ScrollView>
 
-          <UpdateButton activateUpdate={!disable} onPress={updateNickname} />
+          <BottomButton
+            disable={disable}
+            buttonText="변경하기"
+            onPress={updateNickname}
+          />
         </View>
       </View>
     </Modal>

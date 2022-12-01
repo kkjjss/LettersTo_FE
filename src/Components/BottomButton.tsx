@@ -6,12 +6,13 @@ type Props = {
   disable?: boolean;
   buttonText: string;
   onPress: () => any | Promise<any>;
+  white?: true;
 };
 
-export function BottomButton({disable, buttonText, onPress}: Props) {
+export function BottomButton({buttonText, onPress, disable, white}: Props) {
   const [pressed, setPressed] = useState(false);
 
-  return (
+  const GradientButton = () => (
     <TouchableOpacity
       activeOpacity={0.7}
       disabled={disable || pressed}
@@ -20,29 +21,37 @@ export function BottomButton({disable, buttonText, onPress}: Props) {
         await onPress();
         setPressed(false);
       }}>
-      {disable === undefined ? (
-        <LinearGradient
-          colors={['#FF6ECE', '#FF3DBD']}
-          style={[styles.updateButton]}>
-          <Text style={styles.updateButtonText}>{buttonText}</Text>
-        </LinearGradient>
-      ) : !disable ? (
-        <LinearGradient
-          colors={['#FF6ECE', '#FF3DBD']}
-          style={[styles.updateButton]}>
-          <Text style={styles.updateButtonText}>{buttonText}</Text>
-        </LinearGradient>
-      ) : (
-        <View style={[styles.updateButton]}>
-          <Text style={styles.updateButtonText}>{buttonText}</Text>
+      {disable === true ? (
+        <View style={[styles.button]}>
+          <Text style={styles.buttonText}>{buttonText}</Text>
         </View>
+      ) : (
+        <LinearGradient colors={['#FF6ECE', '#FF3DBD']} style={[styles.button]}>
+          <Text style={styles.buttonText}>{buttonText}</Text>
+        </LinearGradient>
       )}
     </TouchableOpacity>
   );
+
+  const WhiteButton = () => (
+    <TouchableOpacity
+      activeOpacity={0.5}
+      onPress={async () => {
+        setPressed(true);
+        await onPress();
+        setPressed(false);
+      }}>
+      <View style={[styles.whiteButton]}>
+        <Text style={styles.whiteButtonText}>{buttonText}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+
+  return white ? <WhiteButton /> : <GradientButton />;
 }
 
 const styles = StyleSheet.create({
-  updateButton: {
+  button: {
     marginHorizontal: 16,
     borderRadius: 10,
     height: 52,
@@ -50,5 +59,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#FFC7F0',
   },
-  updateButtonText: {fontFamily: 'Galmuri11', color: 'white'},
+  buttonText: {fontFamily: 'Galmuri11', color: 'white'},
+  whiteButton: {
+    marginHorizontal: 16,
+    borderRadius: 10,
+    height: 52,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderColor: '#0000cc',
+    borderWidth: 1,
+  },
+  whiteButtonText: {fontFamily: 'Galmuri11', color: '#0000cc'},
 });
