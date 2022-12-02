@@ -7,15 +7,20 @@ import {
   TouchableWithoutFeedback,
   SafeAreaView,
   Alert,
+  Image,
+  Platform,
 } from 'react-native';
 import type {StackParamsList} from '../../types/stackParamList';
 import {LinearGradient} from 'expo-linear-gradient';
 import useStore from '../../Store/store';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {logIn} from '../../APIs/member';
 import {RegisterToken} from '../../types/types';
 import {useKakaoLogin} from '../../Hooks/Auth/useKaKaoLogin';
+
+import appleAuth from '@invertase/react-native-apple-authentication';
+import jwtDecode from 'jwt-decode';
 
 type Props = NativeStackScreenProps<StackParamsList, 'Auth'>;
 
@@ -44,21 +49,54 @@ export function Auth({navigation}: Props) {
     if (userTokens.verified === false) {
       store.setRegisterToken(userTokens.registerToken);
       navigation.navigate('NicknameForm');
-    } else {
-      AsyncStorage.setItem('accessToken', userTokens.accessToken);
-      AsyncStorage.setItem('refreshToken', userTokens.refreshToken);
-      const userInfo = await logIn();
-      store.setUserInfo({
-        nickname: userInfo.nickname,
-        personalityIds: userInfo.personalityIds,
-        topicIds: userInfo.topicIds,
-        geolocationId: userInfo.geolocationId,
-        parentGeolocationId: userInfo.parentGeolocationId,
-        stampQuantity: userInfo.stampQuantity,
-      });
-      store.setIsLoggedIn(true);
     }
+    AsyncStorage.setItem('accessToken', userTokens.accessToken);
+    AsyncStorage.setItem('refreshToken', userTokens.refreshToken);
+    const userInfo = await logIn();
+    store.setUserInfo({
+      nickname: userInfo.nickname,
+      personalityIds: userInfo.personalityIds,
+      topicIds: userInfo.topicIds,
+      geolocationId: userInfo.geolocationId,
+      parentGeolocationId: userInfo.parentGeolocationId,
+      stampQuantity: userInfo.stampQuantity,
+    });
+    store.setIsLoggedIn(true);
   };
+
+  async function onPressSignUpWithApple() {
+    try {
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        requestedOperation: appleAuth.Operation.LOGIN,
+      });
+
+      console.log('appleAuthRequestResponse: ', appleAuthRequestResponse);
+
+      appleAuthRequestResponse.identityToken &&
+        console.log(
+          'IDENTITY_TOKEN JWT DECODE RESULT : ',
+          jwtDecode(appleAuthRequestResponse.identityToken),
+        );
+
+      const credentialState = await appleAuth.getCredentialStateForUser(
+        appleAuthRequestResponse.user,
+      );
+
+      if (credentialState === appleAuth.State.AUTHORIZED) {
+        Alert.alert('애플 로그인 성공', '아직 개발중입니다');
+      }
+    } catch (error: any) {
+      console.error(error.message);
+    }
+  }
+
+  useEffect(() => {
+    return appleAuth.onCredentialRevoked(async () => {
+      console.warn(
+        'If this function executes, User Credentials have been Revoked',
+      );
+    });
+  }, []);
 
   return (
     <LinearGradient
@@ -74,26 +112,40 @@ export function Auth({navigation}: Props) {
           <TouchableWithoutFeedback
             disabled={disableSignUp}
             onPress={onPressSignUpWithKaKao}>
-            <View style={[styles.loginButton, {backgroundColor: '#F9E54C'}]}>
-              <Text style={[styles.loginText]}>카카오로 시작하기</Text>
+            <View style={[styles.loginButton, styles.kakaoLoginButton]}>
+              <Image
+                source={require('../../Assets/social/kakao.png')}
+                style={styles.authIcon}
+              />
+              <Text style={[styles.loginText, styles.kakaoLoginText]}>
+                카카오로 시작하기
+              </Text>
             </View>
           </TouchableWithoutFeedback>
+          {Platform.OS === 'ios' && (
+            <TouchableWithoutFeedback
+              disabled={disableSignUp}
+              onPress={onPressSignUpWithApple}>
+              <View style={[styles.loginButton, styles.appleLoginButton]}>
+                <Image
+                  source={require('../../Assets/social/apple.png')}
+                  style={styles.authIcon}
+                />
+                <Text style={[styles.loginText, styles.appleLoginText]}>
+                  Apple로 시작하기
+                </Text>
+              </View>
+            </TouchableWithoutFeedback>
+          )}
           <TouchableWithoutFeedback>
-            <View style={[styles.loginButton, {backgroundColor: '#03C75A'}]}>
-              <Text style={[styles.loginText]}>네이버로 시작하기</Text>
-            </View>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback>
-            <View
-              style={[
-                styles.loginButton,
-                {
-                  backgroundColor: '#ffffff',
-                  borderWidth: 1,
-                  borderColor: '#0000cc',
-                },
-              ]}>
-              <Text style={[styles.loginText]}>이메일로 시작하기</Text>
+            <View style={[styles.loginButton, styles.emailLoginButton]}>
+              <Image
+                source={require('../../Assets/social/email.png')}
+                style={styles.authIcon}
+              />
+              <Text style={[styles.loginText, styles.emailLoginText]}>
+                이메일로 시작하기
+              </Text>
             </View>
           </TouchableWithoutFeedback>
         </View>
@@ -129,11 +181,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 12,
+    flexDirection: 'row',
+    borderRadius: 10,
+  },
+  kakaoLoginButton: {backgroundColor: '#F9E54C'},
+  appleLoginButton: {backgroundColor: 'black'},
+  emailLoginButton: {
+    backgroundColor: '#ffffff',
+    borderWidth: 1,
+    borderColor: '#0000cc',
   },
   loginText: {
     fontFamily: 'Galmuri11',
     fontSize: 15,
   },
+  kakaoLoginText: {color: 'black'},
+  appleLoginText: {color: 'white'},
+  emailLoginText: {color: '#0000cc'},
   bottomWrap: {flex: 1, alignItems: 'center', justifyContent: 'center'},
   bottomText: {fontFamily: 'Galmuri11', fontSize: 12, color: '#0000cc'},
+  authIcon: {height: 20, width: 20, marginRight: 8},
 });

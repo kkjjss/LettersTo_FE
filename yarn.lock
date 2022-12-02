@@ -1504,6 +1504,11 @@
   "resolved" "https://registry.npmjs.org/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz"
   "version" "1.2.1"
 
+"@invertase/react-native-apple-authentication@^2.1.0":
+  "integrity" "sha512-9F4aZVS2wpwZS81zi6I4R3OEctrpDUjDfJaJRHaedQ9d3DQjsbFNpKN2eKUMLnJoY2hweE2dRdgwXrJaNaEZ+g=="
+  "resolved" "https://registry.npmjs.org/@invertase/react-native-apple-authentication/-/react-native-apple-authentication-2.1.0.tgz"
+  "version" "2.1.0"
+
 "@isaacs/string-locale-compare@^1.1.0":
   "integrity" "sha512-SQ7Kzhh9+D+ZW9MA0zkYv3VXhIDNx+LzM6EJ+/65I3QY+enU6Itte7E5XX7EWrqLW2FN4n06GWzBnPoC3th2aQ=="
   "resolved" "https://registry.npmjs.org/@isaacs/string-locale-compare/-/string-locale-compare-1.1.0.tgz"
@@ -4714,6 +4719,14 @@
     "find-up" "^5.0.0"
     "fs-extra" "^9.1.0"
 
+"expo-modules-core@~0.11.9":
+  "integrity" "sha512-6AlOE4KHN3/WWbY8hH7W6ceuIFj0qbk1N+UhmMhiCEUas3NvXA6wcH3xjO+8JZ+BRcIB9M4QEeX72j6vDDuExg=="
+  "resolved" "https://registry.npmjs.org/expo-modules-core/-/expo-modules-core-0.11.9.tgz"
+  "version" "0.11.9"
+  dependencies:
+    "compare-versions" "^3.4.0"
+    "invariant" "^2.2.4"
+
 "expo-modules-core@0.11.7":
   "integrity" "sha512-lTH6MYULX99JK3zN4bhjRD3I9Y1CGx0RAhpZ6gCTO8GQ/DNw4xZRUwburKL9dJeZM5G1xJOcGoBkTfeMjUVe+g=="
   "resolved" "https://registry.npmjs.org/expo-modules-core/-/expo-modules-core-0.11.7.tgz"
@@ -6707,6 +6720,11 @@
   "integrity" "sha512-u8HXJ3HlNrTzY7zrYYKjNEfBlyjqhdBkoyTVdjtn7p02RJD5NvR8rIClzeGA7t+UYP1/7eAkWNLU0+P3QrEqKQ=="
   "resolved" "https://registry.npmjs.org/just-diff/-/just-diff-5.1.1.tgz"
   "version" "5.1.1"
+
+"jwt-decode@^3.1.2":
+  "integrity" "sha512-UfpWE/VZn0iP50d8cz9NrZLM9lSWhcJ+0Gt/nm4by88UL+J1SiKN8/5dkjMmbEzwL2CAe+67GsegCbIKtbp75A=="
+  "resolved" "https://registry.npmjs.org/jwt-decode/-/jwt-decode-3.1.2.tgz"
+  "version" "3.1.2"
 
 "kind-of@^3.0.2":
   "integrity" "sha512-NOW9QQXMoZGg/oqnVNoNTTIFEIid1627WCffUBJEdMxYApq7mNE7CpzucIPc+ZQg25Phej7IJSmX3hO+oblOtQ=="

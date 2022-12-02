@@ -10,6 +10,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "@invertase/react-native-apple-authentication": "^2.1.0",
     "@react-native-async-storage/async-storage": "^1.17.10",
     "@react-native-firebase/app": "^16.2.0",
     "@react-native-firebase/app-distribution": "^16.2.0",
@@ -23,7 +24,9 @@
     "expo-font": "^11.0.1",
     "expo-image-picker": "^13.3.1",
     "expo-linear-gradient": "~11.4.0",
+    "expo-modules-core": "~0.11.9",
     "install": "^0.13.0",
+    "jwt-decode": "^3.1.2",
     "npm": "^8.19.2",
     "react": "18.1.0",
     "react-native": "0.70.1",
