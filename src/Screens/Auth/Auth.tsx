@@ -21,6 +21,11 @@ import {useKakaoLogin} from '../../Hooks/Auth/useKaKaoLogin';
 
 import appleAuth from '@invertase/react-native-apple-authentication';
 import jwtDecode from 'jwt-decode';
+import {HyperLink} from '../../Components/HyperLink/HyperLinkText';
+import {
+  onPressPrivacyPolicy,
+  onPressTermsOfService,
+} from '../../Utils/hyperlink';
 
 type Props = NativeStackScreenProps<StackParamsList, 'Auth'>;
 
@@ -153,10 +158,17 @@ export function Auth({navigation}: Props) {
         </View>
         <View style={styles.bottomWrap}>
           <Text style={styles.bottomText}>
-            회원가입 시 개인정보처리방침을 읽었으며
+            회원가입 시{' '}
+            <HyperLink onPress={onPressPrivacyPolicy}>
+              개인정보처리방침
+            </HyperLink>
+            을 읽었으며
           </Text>
           <Text style={styles.bottomText}>
-            이용약관에 동의하신 것으로 간주합니다
+            <HyperLink onPress={onPressTermsOfService}>
+              서비스이용약관
+            </HyperLink>
+            에 동의하신 것으로 간주합니다
           </Text>
         </View>
       </SafeAreaView>
@@ -201,6 +213,11 @@ const styles = StyleSheet.create({
   appleLoginText: {color: 'white'},
   emailLoginText: {color: '#0000cc'},
   bottomWrap: {flex: 1, alignItems: 'center', justifyContent: 'center'},
-  bottomText: {fontFamily: 'Galmuri11', fontSize: 12, color: '#0000cc'},
+  bottomText: {
+    fontFamily: 'Galmuri11',
+    fontSize: 12,
+    color: '#0000cc',
+    lineHeight: 17,
+  },
   authIcon: {height: 20, width: 20, marginRight: 8},
 });

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {View, Text, StyleSheet, Pressable, Image, Button} from 'react-native';
+import {View, Text, StyleSheet, Pressable, Image} from 'react-native';
 import type {StackParamsList} from '../../types/stackParamList';
 import {ListItem, ListName} from '../../Components/MyPageList';
 
@@ -18,6 +18,10 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Header2} from '../../Components/Headers/Header2';
 import {BottomButton} from '../../Components/BottomButton';
 import {AlertModal} from '../../Modals/AlertModal';
+import {
+  onPressPrivacyPolicy,
+  onPressTermsOfService,
+} from '../../Utils/hyperlink';
 
 type Props = NativeStackScreenProps<StackParamsList, 'MyPage'>;
 
@@ -156,16 +160,12 @@ export function MyPage({navigation}: Props) {
           <View style={{marginBottom: 34}}>
             <ListName name="이용 정보" />
             <ListItem
-              itmeName="이용 약관"
-              openModal={() => {
-                return;
-              }}
+              itmeName="서비스이용약관"
+              onPress={onPressTermsOfService}
             />
             <ListItem
               itmeName="개인정보처리방침"
-              openModal={() => {
-                return;
-              }}
+              onPress={onPressPrivacyPolicy}
             />
           </View>
 
@@ -173,7 +173,7 @@ export function MyPage({navigation}: Props) {
             <ListName name="계정 관리" />
             <ListItem
               itmeName="회원 탈퇴"
-              openModal={() => {
+              onPress={() => {
                 navigation.navigate('AccountDelete');
               }}
             />
