@@ -35,4 +35,7 @@ export type StackParamsList = {
 
   // 알림
   Notifications: undefined;
+
+  // 우표
+  StampHistory: undefined;
 };

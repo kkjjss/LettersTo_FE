@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import useStore from '../../Store/store';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import type {StackParamsList} from '../../types/stackParamList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -18,7 +19,6 @@ import {PublicLetter, PublicLetters} from '../../types/types';
 import {PublicLetterItem} from '../../Components/PublicLetterItem';
 import {EnvelopeModal} from '../../Modals/EnvelopeModal';
 import {SCREEN_HEIGHT} from '../../Constants/screen';
-import useStore from '../../Store/store';
 
 type Props = {
   navigation: NativeStackNavigationProp<StackParamsList, 'Main', undefined>;
@@ -26,7 +26,6 @@ type Props = {
 
 export function Home({navigation}: Props) {
   const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
-
   const {userInfo} = useStore();
 
   type StampType = {
@@ -134,6 +133,10 @@ export function Home({navigation}: Props) {
     navigation.navigate('Notifications');
   };
 
+  const goToStampHistory = () => {
+    navigation.navigate('StampHistory');
+  };
+
   // cold case
   const Empty = () => (
     <View style={styles.emptyArea}>
@@ -170,21 +173,19 @@ export function Home({navigation}: Props) {
         style={[styles.header, {paddingVertical: SAFE_AREA_TOP}]}>
         <View style={styles.headerInner}>
           <View style={{flexDirection: 'row'}}>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={[styles.headerButton]}
-              onPress={goToNotification}>
+            <TouchableOpacity activeOpacity={0.7} onPress={goToNotification}>
               <Image
                 source={require('../../Assets/alert_off.png')}
-                style={[styles.icon, {width: 28, height: 28}]}
+                style={styles.icon}
               />
             </TouchableOpacity>
             <TouchableOpacity
-              activeOpacity={1}
+              activeOpacity={0.7}
+              onPress={goToStampHistory}
               style={[styles.headerButton, {marginLeft: 12}]}>
               <Image
                 source={require('../../Assets/numberStamps.png')}
-                style={[styles.icon, {width: 24, height: 24, marginLeft: -3}]}
+                style={{width: 24, height: 24, marginLeft: -3}}
               />
               <View style={styles.stampArea}>
                 <Text
