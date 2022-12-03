@@ -170,6 +170,7 @@ export interface DeliveryLetter {
   me: boolean;
   deliveryType: 'NONE' | 'STANDARD' | 'EXPRESS';
   deliveryDate: Date;
+  [key: string]: any;
 }
 
 export type DeliveryLetters = DeliveryLetter[];

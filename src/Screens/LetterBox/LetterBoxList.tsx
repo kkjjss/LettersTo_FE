@@ -15,8 +15,9 @@ import {
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {LinearGradient} from 'expo-linear-gradient';
 import {SCREEN_HEIGHT} from '../../Constants/screen';
-import {LetterBoxes} from '../../types/types';
+import {LetterBoxes, PaperColor} from '../../types/types';
 import {getLetterBoxes} from '../../APIs/letterBox';
+import {GRADIENT_COLORS} from '../../Constants/letter';
 
 type Props = {
   navigation: NativeStackNavigationProp<StackParamsList, 'Main', undefined>;
@@ -30,8 +31,8 @@ export function LetterBoxList({navigation, onPressHome}: Props) {
   const [letterBoxes, setLetterBoxes] = useState<LetterBoxes>([]);
   const getLetterBoxesInit = () => {
     try {
-      getLetterBoxes().then(letterBoxesData => {
-        setLetterBoxes(letterBoxesData);
+      getLetterBoxes().then(data => {
+        setLetterBoxes(data);
       });
     } catch (error: any) {
       console.error(error.message);
@@ -39,14 +40,12 @@ export function LetterBoxList({navigation, onPressHome}: Props) {
     }
   };
   useEffect(() => {
-    console.log('LetterBox');
-    // setLetterBoxes(letterBoxesData);
     getLetterBoxesInit();
   }, []);
 
   // 내 사서함 상세
-  const goToDetail = (id: number, fromMemberId: number) => {
-    navigation.navigate('LetterBoxDetail', {id, fromMemberId});
+  const goToDetail = (id: number, fromMemberId: number, color: PaperColor) => {
+    navigation.push('LetterBoxDetail', {id, fromMemberId, color});
   };
 
   async function goToMyPage() {
@@ -108,17 +107,7 @@ export function LetterBoxList({navigation, onPressHome}: Props) {
         renderItem={({item, index}) => {
           const isFirst: boolean = index === 0;
           const isLast: boolean = index === letterBoxes.length - 1;
-          const COLORS = [
-            '#FFCCEE',
-            '#FFDDCC',
-            '#FFF7CC',
-            '#EDFDCE',
-            '#CCFFEE',
-            '#CCF3FF',
-            '#CCDDFF',
-            '#E0CCFF',
-            '#EECCFF',
-          ];
+          const color = ['PINK', 'ORANGE', 'YELLOW', 'GREEN', 'MINT', 'SKY_BLUE', 'BLUE', 'PURPLE', 'LAVENDER'] as const;
           return (
             <TouchableOpacity
               activeOpacity={1}
@@ -127,14 +116,14 @@ export function LetterBoxList({navigation, onPressHome}: Props) {
                 isFirst && {marginTop: 50},
                 isLast && {marginBottom: 100},
               ]}
-              onPress={() => goToDetail(item.id, item.fromMemberId)}>
+              onPress={() => goToDetail(item.id, item.fromMemberId, color[index % 9])}>
               <View
                 style={[
                   styles.listItemIcon,
-                  {backgroundColor: COLORS[index % 9]},
+                  {backgroundColor: GRADIENT_COLORS[color[index % 9]]},
                 ]}>
                 <Text style={styles.listItemIconText}>
-                  {item.fromMemberNickname.substring(0, 2)}
+                  {item.fromMemberNickname[0]}
                 </Text>
               </View>
               <Text style={styles.listItemTitle}>
