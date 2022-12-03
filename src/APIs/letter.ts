@@ -24,7 +24,7 @@ export async function getPublicLetters(
 export async function getPublicLetterContent(
   id: number,
 ): Promise<PublicLetterContent> {
-  return await instance.get(`/public-letters/${id}`);
+  return await instanceWithAuth.get(`/public-letters/${id}`);
 }
 
 export async function postPublicLetter(

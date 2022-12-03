@@ -45,11 +45,18 @@ export const ReportModal = ({
 
   const onPressReportLetter = async () => {
     try {
+      let description: string;
+      if (selectedReportItemId === 3) {
+        description = reportText;
+      } else {
+        description = REPORT_ITEMS[selectedReportItemId].text;
+      }
+
       const reportData: ReportData = {
         letterId,
-        reportReasonId: selectedReportItemId,
-        description: reportText,
+        description,
       };
+
       await reportLetter(reportData);
     } catch (error: any) {
       console.error(error);
