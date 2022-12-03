@@ -105,10 +105,7 @@ export function LetterItem(props: LetterItemProps) {
               style={styles.stampBg}
             >
               <Image style={styles.stampImg} source={STAMPS[stampId]} />
-              <Image
-                source={require('../../Assets/stamp_standard.png')}
-                style={{width: 46, height: 17, position: 'absolute', top: 7, left: 7}}
-              />
+              <Image style={styles.stampType} source={require('../../Assets/stamp_standard.png')} />
             </ImageBackground>
           </View>
         ) : deliveryType === 'EXPRESS' ? (
@@ -124,10 +121,7 @@ export function LetterItem(props: LetterItemProps) {
               style={styles.stampBg}
             >
               <Image style={styles.stampImg} source={STAMPS[stampId]} />
-              <Image
-                source={require('../../Assets/stamp_express.png')}
-                style={{width: 46, height: 17, position: 'absolute', top: 7, left: 7}}
-              />
+              <Image style={styles.stampType} source={require('../../Assets/stamp_express.png')} />
             </ImageBackground>
           </View>
         ) : (
@@ -146,34 +140,24 @@ export function LetterItem(props: LetterItemProps) {
           {
             me ? (
               <>
-                <Image
-                  style={[styles.fromImg, {width: 25}]}
-                  source={require('../../Assets/to.png')}
-                />
-                <Text style={styles.fromText}>{`${toNickname}, ${toAddress}`}</Text>
+                <Image style={[styles.fromImg, {width: 25}]} source={require('../../Assets/to.png')} />
+                <Text style={styles.fromText} numberOfLines={1} ellipsizeMode="clip">{`${toNickname}, ${toAddress}`}</Text>
               </>
             ) : (
               <>
-                <Image
-                  style={[styles.fromImg, {width: 48}]}
-                  source={require('../../Assets/from.png')}
-                />
-                <Text style={styles.fromText}>{`${fromNickname}, ${fromAddress}`}</Text>
+                <Image style={[styles.fromImg, {width: 48}]} source={require('../../Assets/from.png')} />
+                <Text style={styles.fromText} numberOfLines={1} ellipsizeMode="clip">{`${fromNickname}, ${fromAddress}`}</Text>
               </>
             )
           }
         </View>
-        <View style={{position: 'absolute', right: 16, bottom: 16, left: 16, height: 70, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 204, 0.05)'}}>
-          <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-            <Text style={{fontFamily: 'Galmuri11', fontSize: 12, color: '#0000CC'}}>{fromAddress}</Text>
-            <Image
-              style={{width: 31, height: 7, marginHorizontal: 8, marginTop: 2}}
-              resizeMode="contain"
-              source={require('../../Assets/arrow.png')}
-            />
-            <Text style={{fontFamily: 'Galmuri11', fontSize: 12, color: '#0000CC'}}>{toAddress}</Text>
+        <View style={styles.deliveryInfo}>
+          <View style={styles.deliveryAddress}>
+            <Text style={styles.deliveryAddressText}>{fromAddress}</Text>
+            <Image style={styles.arrow} resizeMode="contain" source={require('../../Assets/arrow.png')} />
+            <Text style={styles.deliveryAddressText}>{toAddress}</Text>
           </View>
-          <Text style={{fontFamily: 'Galmuri11', fontSize: 11, color: '#0000CC', marginTop: 3}}>{dateFormatter('yyyy.mm.dd', deliveryDate)}</Text>
+          <Text style={styles.deliveryDate}>{dateFormatter('yyyy.mm.dd', deliveryDate)}</Text>
         </View>
       </LinearGradient>
       {read && <Image source={require('../../Assets/read.png')} style={styles.read} />}
@@ -187,24 +171,10 @@ export function LetterItem(props: LetterItemProps) {
         style={[styles.background, {alignItems: 'center'}]}>
         <View style={styles.tooltipArea}>
           <Text style={styles.tooltipText}>{me ? `${toAddress}(으)로 편지가 가고 있어요!` : `${fromAddress}에서 편지가 오고 있어요!`}</Text>
-          <Image
-            style={styles.tooltipTail}
-            source={require('../../Assets/tooltip.png')}
-          />
+          <Image style={styles.tooltipTail} source={require('../../Assets/tooltip.png')} />
         </View>
-        <Image
-          style={{width: 118, height: 24, marginTop: 16}}
-          source={require('../../Assets/pending.png')}
-        />
-        <Text
-          style={{
-            marginTop: 8,
-            fontFamily: 'Galmuri11',
-            fontSize: 11,
-            color: '#0000CC',
-          }}>
-          {DdayText}
-        </Text>
+        <Image style={styles.pendingImg} source={require('../../Assets/pending.png')} />
+        <Text style={styles.pendingText}>{DdayText}</Text>
       </LinearGradient>
     </View>
   );
@@ -222,27 +192,14 @@ export function LetterItem(props: LetterItemProps) {
         me ? {marginLeft: 12} : {marginRight: 12},
       ]}>
         <Text style={[
-          {overflow: 'hidden', width: 36, height: 36, borderWidth: 1, borderColor: '#0000CC', borderRadius: 18, textAlign: 'center', lineHeight: 36, fontFamily: 'Galmuri11-Bold', fontSize: 13, color: '#0000CC', backgroundColor: me ? '#CCCCFF' : GRADIENT_COLORS[color || 'PINK']},
+          styles.avatar,
+          {backgroundColor: me ? '#CCCCFF' : GRADIENT_COLORS[color || 'PINK']},
         ]}>
-          {me ? 'ME' : fromNickname[0]}
+          {me ? '나' : fromNickname[0]}
         </Text>
         <View>
-          <Text
-            style={{fontFamily: 'Galmuri11', fontSize: 11, color: '#0000CC'}}>
-            {read ? '읽음' : '안읽음'}
-          </Text>
-          {!read && (
-            <View
-              style={{
-                position: 'absolute',
-                top: 3,
-                right: -2,
-                width: 2,
-                height: 2,
-                backgroundColor: '#FF44CC',
-              }}
-            />
-          )}
+          <Text style={styles.readText}>{read ? '읽음' : '안읽음'}</Text>
+          {!read && <View style={styles.dot} />}
         </View>
       </View>
       {IsArrived ? <ArrivedLetter /> : <PendingLetter />}
@@ -251,10 +208,7 @@ export function LetterItem(props: LetterItemProps) {
 }
 
 const styles = StyleSheet.create({
-  letterItem: {
-    flex: 1,
-    height: 212,
-  },
+  letterItem: {flex: 1, height: 212},
   read: {position: 'absolute', top: 0, left: 0, width: '100%', height: 7},
   background: {
     overflow: 'hidden',
@@ -280,18 +234,42 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     color: '#0000CC',
   },
-  stampArea: {position: 'absolute', top: 16, right: 16},
+  stampArea: {position: 'absolute', bottom: 106, right: 16},
   stampBg: {width: 74, height: 90, padding: 7},
   stampImg: {width: 60, height: 76},
+  stampType: {width: 46, height: 17, position: 'absolute', top: 7, left: 7},
   tooltipArea: {height: 32, marginTop: 47, paddingHorizontal: 10, backgroundColor: '#FFFFCC', borderWidth: 1, borderColor: '#0000CC', borderRadius: 5},
   tooltipText: {fontFamily: 'Galmuri11', fontSize: 12, color: '#0000CC', lineHeight: 28},
   tooltipTail: {position: 'absolute', top: '100%', left: '50%', width: 5, height: 4, marginLeft: -25},
   fromArea: {position: 'absolute', bottom: 106, left: 16},
   fromImg: {height: 22},
   fromText: {
+    height: 20,
     marginLeft: 16,
     fontFamily: 'Galmuri11',
     fontSize: 12,
     color: '#0000CC',
   },
+  deliveryInfo: {position: 'absolute', right: 16, bottom: 16, left: 16, height: 70, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 204, 0.05)'},
+  deliveryAddress: {flexDirection: 'row', justifyContent: 'center', alignItems: 'center'},
+  deliveryAddressText: {fontFamily: 'Galmuri11', fontSize: 12, color: '#0000CC'},
+  arrow: {width: 31, height: 7, marginHorizontal: 8, marginTop: 2},
+  deliveryDate: {fontFamily: 'Galmuri11', fontSize: 11, color: '#0000CC', marginTop: 3},
+  pendingImg: {width: 118, height: 24, marginTop: 16},
+  pendingText: {marginTop: 8, fontFamily: 'Galmuri11', fontSize: 11, color: '#0000CC'},
+  avatar: {
+    overflow: 'hidden',
+    width: 36,
+    height: 36,
+    textAlign: 'center',
+    lineHeight: 36,
+    fontFamily: 'Galmuri11-Bold',
+    fontSize: 13,
+    color: '#0000CC',
+    borderWidth: 1,
+    borderColor: '#0000CC',
+    borderRadius: 18,
+  },
+  readText: {fontFamily: 'Galmuri11', fontSize: 11, color: '#0000CC'},
+  dot: {position: 'absolute', top: 3, right: -2, width: 2, height: 2, backgroundColor: '#FF44CC'},
 });

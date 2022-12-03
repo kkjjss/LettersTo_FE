@@ -12,9 +12,8 @@ import {LinearGradient} from 'expo-linear-gradient';
 import {GRADIENT_COLORS} from '../Constants/letter';
 
 interface PublicLetterItemProps extends PublicLetter {
-  stampSource: any;
   style?: object;
-  onOpenPublicLetter: () => void;
+  onOpenLetter: () => void;
 }
 
 export function PublicLetterItem(props: PublicLetterItemProps) {
@@ -24,16 +23,28 @@ export function PublicLetterItem(props: PublicLetterItemProps) {
     fromAddress,
     topics,
     personalities,
-    stampSource,
     paperColor,
+    stampId,
     style,
-    onOpenPublicLetter,
+    onOpenLetter,
   } = props;
+
+  type StampType = {
+    [key: number]: any;
+  };
+  const STAMPS: StampType = {
+    1: require('../Assets/stamp_sample/1.jpg'),
+    2: require('../Assets/stamp_sample/2.jpg'),
+    3: require('../Assets/stamp_sample/3.jpg'),
+    4: require('../Assets/stamp_sample/4.jpg'),
+    5: require('../Assets/stamp_sample/5.jpg'),
+    6: require('../Assets/stamp_sample/6.jpg'),
+  };
 
   return (
     <Pressable
       style={[styles.publicLetterItem, style]}
-      onPress={onOpenPublicLetter}>
+      onPress={onOpenLetter}>
       <LinearGradient
         locations={[0, 0.5]}
         colors={[GRADIENT_COLORS[paperColor], 'white']}
@@ -49,7 +60,7 @@ export function PublicLetterItem(props: PublicLetterItemProps) {
         <ImageBackground
           source={require('../Assets/bg_stamp.png')}
           style={styles.stampArea}>
-          <Image style={styles.stampImg} source={stampSource} />
+          <Image style={styles.stampImg} source={STAMPS[stampId]} />
         </ImageBackground>
         <View style={styles.tagArea}>
           <View style={styles.tagList}>
@@ -104,7 +115,7 @@ const styles = StyleSheet.create({
   },
   background: {flex: 1},
   title: {
-    width: 173,
+    width: '60%',
     marginTop: 16,
     marginLeft: 16,
     fontFamily: 'Galmuri11',

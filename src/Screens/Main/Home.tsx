@@ -110,14 +110,10 @@ export function Home({navigation}: Props) {
   };
 
   // 봉투 열기
-  type Stamp = {
-    item: PublicLetter;
-    stampSource: any;
-  };
-  const [selectedItem, setSelectedItem] = useState<Stamp>();
+  const [selectedItem, setSelectedItem] = useState<PublicLetter>();
   const [isEnvelopeModalVisible, setEnvelopeModalVisible] = useState(false);
-  const onOpenPublicLetter = (item: PublicLetter, stampSource: any) => {
-    setSelectedItem({item, stampSource});
+  const onOpenEnvelopeModal = (item: PublicLetter) => {
+    setSelectedItem(item);
     setEnvelopeModalVisible(true);
   };
 
@@ -240,18 +236,15 @@ export function Home({navigation}: Props) {
               ]}>
               <PublicLetterItem
                 id={id}
-                title={title}
+                title={`${title}`}
                 fromNickname={fromNickname}
                 fromAddress={fromAddress}
                 topics={topics}
                 personalities={personalities}
                 paperColor={paperColor}
                 stampId={stampId}
-                stampSource={STAMPS[stampId]}
                 alignType={'LEFT'}
-                onOpenPublicLetter={() =>
-                  onOpenPublicLetter(item, STAMPS[stampId])
-                }
+                onOpenLetter={() => onOpenEnvelopeModal(item)}
                 style={[
                   index % 2 === 0
                     ? {left: '27.7%', marginTop: -36}
@@ -303,11 +296,11 @@ export function Home({navigation}: Props) {
       </View>
       {selectedItem && (
         <EnvelopeModal
-          data={selectedItem.item}
-          stampSource={selectedItem.stampSource}
+          type="PUBLIC"
+          data={selectedItem}
           isModalVisible={isEnvelopeModalVisible}
           setModalVisible={setEnvelopeModalVisible}
-          onOpenLetter={goToReadLetter}
+          onOpenLetter={() => goToReadLetter(selectedItem.id)}
         />
       )}
     </LinearGradient>
