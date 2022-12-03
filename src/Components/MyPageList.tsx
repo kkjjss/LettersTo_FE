@@ -11,13 +11,13 @@ export function ListName({name}: {name: string}) {
 
 export function ListItem({
   itmeName,
-  openModal,
+  onPress,
 }: {
   itmeName: string;
-  openModal: () => void;
+  onPress: () => void;
 }) {
   return (
-    <TouchableWithoutFeedback onPress={openModal}>
+    <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.itemWrap}>
         <Text style={styles.itemText}>{itmeName}</Text>
       </View>
