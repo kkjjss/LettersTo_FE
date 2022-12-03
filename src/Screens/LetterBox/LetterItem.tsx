@@ -2,25 +2,28 @@ import React, {useEffect, useMemo, useRef} from 'react';
 import {
   StyleSheet,
   Text,
-  Pressable,
   View,
   Image,
   ImageBackground,
   Animated,
   Easing,
+  TouchableOpacity,
 } from 'react-native';
-import {DeliveryLetter} from '../../types/types';
+import {DeliveryLetter, PaperColor} from '../../types/types';
 import {LinearGradient} from 'expo-linear-gradient';
 import {GRADIENT_COLORS} from '../../Constants/letter';
 import {dateFormatter} from '../../Utils/dateFormatter';
+import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../Constants/screen';
 
 interface LetterItemProps {
   data: DeliveryLetter;
+  color?: PaperColor;
   style?: object;
+  onOpenLetter?: () => void;
 }
 
 export function LetterItem(props: LetterItemProps) {
-  const {data, style} = props;
+  const {data, color, style, onOpenLetter} = props;
   const {
     paperColor,
     stampId,
@@ -48,18 +51,18 @@ export function LetterItem(props: LetterItemProps) {
   };
 
   // 애니메이션
-  const moveAnim = useRef(new Animated.ValueXY()).current;
-  const moveUp = Animated.timing(moveAnim, {
+  const moveAnim = useRef(new Animated.ValueXY({x: SCREEN_WIDTH, y: 0})).current;  
+  const moveX = Animated.timing(moveAnim, {
     toValue: {x: 0, y: 0},
     duration: 1000,
     useNativeDriver: true,
-    easing: Easing.elastic(2),
+    easing: Easing.elastic(1),
   });
 
   useEffect(() => {
-    // console.log('data', data);
-    // moveUp.start();
-  }, [data]);
+    moveX.reset();
+    moveX.start();
+  }, []);
 
   const IsArrived = useMemo(() => {
     const arrivalDate = new Date(deliveryDate);
@@ -89,7 +92,7 @@ export function LetterItem(props: LetterItemProps) {
   }, [deliveryDate]);
 
   const ArrivedLetter = () => (
-    <Pressable style={[styles.letterItem]} onPress={() => {}}>
+    <TouchableOpacity activeOpacity={0.9} style={[styles.letterItem]} onPress={onOpenLetter}>
       <LinearGradient
         locations={[0, 0.5]}
         colors={[GRADIENT_COLORS[paperColor], 'white']}
@@ -174,7 +177,7 @@ export function LetterItem(props: LetterItemProps) {
         </View>
       </LinearGradient>
       {read && <Image source={require('../../Assets/read.png')} style={styles.read} />}
-    </Pressable>
+    </TouchableOpacity>
   );
   const PendingLetter = () => (
     <View style={[styles.letterItem]}>
@@ -212,17 +215,16 @@ export function LetterItem(props: LetterItemProps) {
         me ? {flexDirection: 'row-reverse'} : {flexDirection: 'row'},
         {marginHorizontal: 16, justifyContent: 'space-between'},
         style,
-        // !read && {transform: [{translateX: -40}]},
-        !read && {transform: [{translateX: moveAnim.x}]},
+        !read && {transform: [{translateX: moveAnim.getLayout().left}]}
       ]}>
       <View style={[
         {justifyContent: 'space-between', alignItems: 'center'},
         me ? {marginLeft: 12} : {marginRight: 12},
       ]}>
         <Text style={[
-          {overflow: 'hidden', width: 36, height: 36, borderWidth: 1, borderColor: '#0000CC', borderRadius: 18, textAlign: 'center', lineHeight: 36, fontFamily: 'Galmuri11-Bold', fontSize: 13, color: '#0000CC', backgroundColor: me ? '#CCCCFF' : '#FFFFCC'},
+          {overflow: 'hidden', width: 36, height: 36, borderWidth: 1, borderColor: '#0000CC', borderRadius: 18, textAlign: 'center', lineHeight: 36, fontFamily: 'Galmuri11-Bold', fontSize: 13, color: '#0000CC', backgroundColor: me ? '#CCCCFF' : GRADIENT_COLORS[color || 'PINK']},
         ]}>
-          {me ? 'ME' : 'YOU'}
+          {me ? 'ME' : fromNickname[0]}
         </Text>
         <View>
           <Text

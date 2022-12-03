@@ -45,11 +45,13 @@ export function Home({navigation}: Props) {
   const [publicLetters, setPublicLetters] = useState<PublicLetters | []>([]);
   const [currentCursor, setCurrentCursor] = useState<number>();
   const getPublicLettersInit = () => {
+    setRefreshing(true);
     try {
-      getPublicLetters().then(publicLettersData => {
-        const {content, cursor} = publicLettersData;
+      getPublicLetters().then(data => {
+        const {content, cursor} = data;
         setPublicLetters(content);
         setCurrentCursor(cursor);
+        setRefreshing(false);
       });
     } catch (error: any) {
       console.error(error.message);
@@ -77,8 +79,8 @@ export function Home({navigation}: Props) {
   const handleEndReached = () => {
     if (currentCursor) {
       try {
-        getPublicLetters(currentCursor).then(publicLettersData => {
-          const {content, cursor} = publicLettersData;
+        getPublicLetters(currentCursor).then(data => {
+          const {content, cursor} = data;
           const updatedArray = [...publicLetters].concat(content);
           setPublicLetters(updatedArray);
           setCurrentCursor(cursor);
@@ -95,8 +97,8 @@ export function Home({navigation}: Props) {
   const handleRefresh = () => {
     setRefreshing(true);
     try {
-      getPublicLetters().then(publicLettersData => {
-        const {content, cursor} = publicLettersData;
+      getPublicLetters().then(data => {
+        const {content, cursor} = data;
         setPublicLetters(content);
         setCurrentCursor(cursor);
         setRefreshing(false);
@@ -211,7 +213,6 @@ export function Home({navigation}: Props) {
         ListEmptyComponent={Empty}
         onScroll={handleScroll}
         onEndReached={handleEndReached}
-        onEndReachedThreshold={0.2}
         refreshing={refreshing}
         onRefresh={handleRefresh}
         data={publicLetters}

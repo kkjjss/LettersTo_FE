@@ -13,7 +13,7 @@ import {
   Alert,
 } from 'react-native';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
-import {LetterBoxInfo, DeliveryLetters} from '../../types/types';
+import {LetterBoxInfo, DeliveryLetters, PaperColor} from '../../types/types';
 import {getLetterBoxInfo, getDeliveryLetters} from '../../APIs/letterBox';
 import {Header} from '../../Components/Headers/Header';
 import {dateFormatter} from '../../Utils/dateFormatter';
@@ -37,6 +37,8 @@ export function LetterBoxDetail({route, navigation}: Props) {
   const [deliveryLetters, setDeliveryLetters] = useState<DeliveryLetters | []>([]);
   const [currentCursor, setCurrentCursor] = useState<number>();
   const [fromMemberId, setFromMemberId] = useState<number>();
+  const [avatarColor, setAvatarColor] = useState<PaperColor>();
+
   const getPublicLettersInit = (fromMemberId: number) => {
     try {
       getDeliveryLetters({fromMemberId}).then(data => {
@@ -51,8 +53,9 @@ export function LetterBoxDetail({route, navigation}: Props) {
   };
 
   useEffect(() => {
-    const {id, fromMemberId} = route.params;
+    const {id, fromMemberId, color} = route.params;
     setFromMemberId(fromMemberId);
+    setAvatarColor(color as PaperColor);
 
     // 사서함 정보 조회
     try {
@@ -105,17 +108,10 @@ export function LetterBoxDetail({route, navigation}: Props) {
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const toggleTooltip = () => setTooltipVisible(!tooltipVisible);
 
-  // const testData: DeliveryLetters = [
-  //   {deliveryDate: new Date("2022-11-23T13:44:31.951886"), "deliveryType": "STANDARD", "fromAddress": "경기도 의정부시", "fromNickname": "Asap", id: 18, "me": true, "paperColor": "PINK", "read": false, "stampId": 2, "title": "답장", "toAddress": "서울특별시 종ddd로구", "toNickname": "aaa"},
-  //   {deliveryDate: new Date("2022-11-23T13:44:31.951886"), "deliveryType": "NONE", "fromAddress": "서울특별시 종로구", "fromNickname": "aaa", id: 17, "me": false, "paperColor": "PINK", "read": true, "stampId": 1, "title": "ㅁ", "toAddress": "경기도 의정dd부시", "toNickname": "Asap"},
-  //   {deliveryDate: new Date("2022-11-23T13:44:31.951886"), "deliveryType": "NONE", "fromAddress": "서울특별시 종로구", "fromNickname": "aaa", id: 16, "me": false, "paperColor": "PINK", "read": true, "stampId": 1, "title": "ㅁ", "toAddress": "경기도 의정dd부시", "toNickname": "Asap"},
-  //   {deliveryDate: new Date("2022-11-23T13:44:31.951886"), "deliveryType": "NONE", "fromAddress": "서울특별시 종로구", "fromNickname": "aaa", id: 15, "me": false, "paperColor": "PINK", "read": true, "stampId": 1, "title": "ㅁ", "toAddress": "경기도 의정dd부시", "toNickname": "Asap"},
-  //   {deliveryDate: new Date("2022-11-23T13:44:31.951886"), "deliveryType": "NONE", "fromAddress": "서울특별시 종로구", "fromNickname": "aaa", id: 14, "me": false, "paperColor": "PINK", "read": true, "stampId": 1, "title": "ㅁ", "toAddress": "경기도 의정dd부시", "toNickname": "Asap"},
-  // ];
-  // useEffect(() => {
-  //   console.log('init');
-  //   setDeliveryLetters(testData);
-  // }, []);
+  const onOpenLetter = () => {
+    console.log('openLetter');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Header
@@ -175,7 +171,6 @@ export function LetterBoxDetail({route, navigation}: Props) {
       <FlatList
         data={deliveryLetters}
         onEndReached={handleEndReached}
-        onEndReachedThreshold={0.2}
         keyExtractor={(item) => String(item.id)}
         renderItem={({item, index}) => {
           const isFirst: boolean = index === 0;
@@ -183,6 +178,8 @@ export function LetterBoxDetail({route, navigation}: Props) {
           return (
             <LetterItem
               data={item}
+              color={avatarColor}
+              onOpenLetter={() => onOpenLetter()}
               style={[
                 {marginTop: isFirst ? 24 : 16},
                 isLast && {marginBottom: 80},
