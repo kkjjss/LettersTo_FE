@@ -66,24 +66,26 @@ export function Auth({navigation}: Props) {
 
   async function onPressSignUpWithApple() {
     try {
-      const appleAuthRequestResponse = await appleAuth.performRequest({
-        requestedOperation: appleAuth.Operation.LOGIN,
-      });
+      if (appleAuth.isSupported) {
+        const appleAuthRequestResponse = await appleAuth.performRequest({
+          requestedOperation: appleAuth.Operation.LOGIN,
+        });
 
-      console.log('appleAuthRequestResponse: ', appleAuthRequestResponse);
+        console.log('appleAuthRequestResponse: ', appleAuthRequestResponse);
 
-      appleAuthRequestResponse.identityToken &&
-        console.log(
-          'IDENTITY_TOKEN JWT DECODE RESULT : ',
-          jwtDecode(appleAuthRequestResponse.identityToken),
+        appleAuthRequestResponse.identityToken &&
+          console.log(
+            'IDENTITY_TOKEN JWT DECODE RESULT : ',
+            jwtDecode(appleAuthRequestResponse.identityToken),
+          );
+
+        const credentialState = await appleAuth.getCredentialStateForUser(
+          appleAuthRequestResponse.user,
         );
 
-      const credentialState = await appleAuth.getCredentialStateForUser(
-        appleAuthRequestResponse.user,
-      );
-
-      if (credentialState === appleAuth.State.AUTHORIZED) {
-        Alert.alert('애플 로그인 성공', '아직 개발중입니다');
+        if (credentialState === appleAuth.State.AUTHORIZED) {
+          Alert.alert('애플 로그인 성공', '아직 개발중입니다');
+        }
       }
     } catch (error: any) {
       console.error(error.message);

@@ -177,7 +177,6 @@ export type DeliveryLetters = DeliveryLetter[];
 
 export interface ReportData {
   letterId: number;
-  reportReasonId: number;
   description: string;
 }
 
