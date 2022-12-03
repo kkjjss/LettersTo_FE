@@ -15,11 +15,12 @@ import {LinearGradient} from 'expo-linear-gradient';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useGesture} from '../Hooks/Hardware/useGesture';
 import {GRADIENT_COLORS} from '../Constants/letter';
-import {PublicLetter, PaperColor} from '../types/types';
+import {PublicLetter, DeliveryLetter, PaperColor} from '../types/types';
+import {dateFormatter} from '../Utils/dateFormatter';
 
 interface EnvelopeModalProps {
-  data: PublicLetter;
-  stampSource: any;
+  type: 'PUBLIC' | 'DELIVERY';
+  data: PublicLetter | DeliveryLetter;
   isModalVisible: boolean;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   onOpenLetter: (id: number) => void;
@@ -27,7 +28,6 @@ interface EnvelopeModalProps {
 
 export const EnvelopeModal = ({
   data,
-  stampSource,
   isModalVisible,
   setModalVisible,
   onOpenLetter,
@@ -35,14 +35,32 @@ export const EnvelopeModal = ({
   const {
     id,
     title,
+    me,
+    deliveryType,
+    deliveryDate,
+    toNickname,
+    toAddress,
     fromAddress,
     fromNickname,
     topics,
     personalities,
     paperColor = 'PINK' as PaperColor,
+    stampId,
   } = data;
 
   const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
+
+  type StampType = {
+    [key: number]: any;
+  };
+  const STAMPS: StampType = {
+    1: require('../Assets/stamp_sample/1.jpg'),
+    2: require('../Assets/stamp_sample/2.jpg'),
+    3: require('../Assets/stamp_sample/3.jpg'),
+    4: require('../Assets/stamp_sample/4.jpg'),
+    5: require('../Assets/stamp_sample/5.jpg'),
+    6: require('../Assets/stamp_sample/6.jpg'),
+  };
 
   // 애니메이션
   const moveAnim = useRef(new Animated.ValueXY()).current;
@@ -108,50 +126,78 @@ export const EnvelopeModal = ({
               <View
                 style={{flex: 1, backgroundColor: GRADIENT_COLORS[paperColor]}}
               />
-              <View style={styles.dash_bottom} />
+              <View style={styles.dashBot} />
             </Animated.View>
             <View style={[styles.cardItem]}>
-              <View style={[styles.dash_top]} />
+              <View style={[styles.dashTop]} />
               <LinearGradient
-                onStartShouldSetResponder={() => true}
-                onResponderStart={event => {
-                  onSwipeXStart(
-                    event.nativeEvent.locationX,
-                    event.nativeEvent.timestamp,
-                  );
-                }}
-                onResponderEnd={event => {
-                  onSwipteXEnd(
-                    event.nativeEvent.locationX,
-                    event.nativeEvent.timestamp,
-                    150,
-                    1000,
-                    openLetter,
-                  );
-                }}
                 locations={[0, 0.5]}
                 colors={[GRADIENT_COLORS[paperColor], 'white']}
-                style={{flex: 1}}>
-                <Text style={styles.title}>⌜{title || '무제'}⌟︎︎</Text>
+                style={{flex: 1}}
+              >
+                {/* 우표 */}
+                {deliveryType === 'STANDARD' ? (
+                  <View style={styles.stampArea}>
+                    <ImageBackground
+                      source={require('../Assets/bg_stamp.png')}
+                      style={styles.stampBg}
+                    >
+                      <Image style={styles.stampImg} source={STAMPS[stampId]} />
+                      <Image style={styles.stampType} source={require('../Assets/stamp_standard.png')} />
+                    </ImageBackground>
+                  </View>
+                ) : deliveryType === 'EXPRESS' ? (
+                  <View style={styles.stampArea}>
+                    <ImageBackground
+                      source={require('../Assets/bg_stamp.png')}
+                      style={[styles.stampBg, {position: 'absolute', transform: [{rotate: '10deg'}]}]} />
+                    <ImageBackground
+                      source={require('../Assets/bg_stamp.png')}
+                      style={[styles.stampBg, {position: 'absolute', transform: [{rotate: '-5deg'}]}]} />
+                    <ImageBackground
+                      source={require('../Assets/bg_stamp.png')}
+                      style={styles.stampBg}
+                    >
+                      <Image style={styles.stampImg} source={STAMPS[stampId]} />
+                      <Image style={styles.stampType} source={require('../Assets/stamp_express.png')} />
+                    </ImageBackground>
+                  </View>
+                ) : (
+                  <View style={styles.stampArea}>
+                    <ImageBackground
+                      source={require('../Assets/bg_stamp.png')}
+                      style={styles.stampBg}
+                    >
+                      <Image style={styles.stampImg} source={STAMPS[stampId]} />
+                    </ImageBackground>
+                  </View>
+                )}
+                <Text
+                  style={styles.title}
+                  numberOfLines={2}
+                >
+                  ⌜{`${title}` || '무제'}⌟︎︎
+                </Text>
                 <View style={styles.fromArea}>
-                  <Image
-                    style={styles.fromImg}
-                    source={require('../Assets/from.png')}
-                  />
-                  <Text
-                    style={
-                      styles.fromText
-                    }>{`${fromNickname}, ${fromAddress}`}</Text>
+                  {
+                    me ? (
+                      <>
+                        <Image style={[styles.fromImg, {width: 25}]} source={require('../Assets/to.png')} />
+                        <Text style={styles.fromText} numberOfLines={1} ellipsizeMode="clip">{`${toNickname}, ${toAddress}`}</Text>
+                      </>
+                    ) : (
+                      <>
+                        <Image style={[styles.fromImg, {width: 48}]} source={require('../Assets/from.png')} />
+                        <Text style={styles.fromText} numberOfLines={1} ellipsizeMode="clip">{`${fromNickname}, ${fromAddress}`}</Text>
+                      </>
+                    )
+                  }
                 </View>
-                <ImageBackground
-                  source={require('../Assets/bg_stamp.png')}
-                  style={styles.stampArea}>
-                  <Image style={styles.stampImg} source={stampSource} />
-                </ImageBackground>
                 <View style={styles.tagArea}>
                   <ScrollView
                     horizontal
                     alwaysBounceHorizontal={false}
+                    showsHorizontalScrollIndicator={false}
                     style={styles.tagList}>
                     {topics?.map((item: string, idx: number) => (
                       <Text key={idx} style={styles.tagItem}>
@@ -162,6 +208,7 @@ export const EnvelopeModal = ({
                   <ScrollView
                     horizontal
                     alwaysBounceHorizontal={false}
+                    showsHorizontalScrollIndicator={false}
                     style={styles.tagList}>
                     {personalities?.map((item: string, idx: number) => (
                       <Text key={idx} style={styles.tagItem}>
@@ -170,8 +217,35 @@ export const EnvelopeModal = ({
                     ))}
                   </ScrollView>
                 </View>
+                <View style={styles.deliveryInfo}>
+                  <View style={styles.deliveryAddress}>
+                    <Text style={styles.deliveryAddressText}>{fromAddress}</Text>
+                    <Image style={styles.arrow} resizeMode="contain" source={require('../Assets/arrow.png')} />
+                    <Text style={styles.deliveryAddressText}>{toAddress}</Text>
+                  </View>
+                  <Text style={styles.deliveryDate}>{dateFormatter('yyyy.mm.dd', deliveryDate)}</Text>
+                </View>
               </LinearGradient>
             </View>
+            <View
+              style={styles.swipe}
+              onStartShouldSetResponder={() => true}
+              onResponderStart={event => {
+                onSwipeXStart(
+                  event.nativeEvent.locationX,
+                  event.nativeEvent.timestamp,
+                );
+              }}
+              onResponderEnd={event => {
+                onSwipteXEnd(
+                  event.nativeEvent.locationX,
+                  event.nativeEvent.timestamp,
+                  150,
+                  1000,
+                  openLetter,
+                );
+              }}
+            />
           </View>
         </LinearGradient>
       </View>
@@ -187,7 +261,8 @@ const styles = StyleSheet.create({
   openText: {fontFamily: 'Galmuri11', fontSize: 15, color: 'white'},
   openArrow: {width: 144, height: 10, marginTop: 16},
   envelope: {position: 'absolute', bottom: '30%', width: '78.7%'},
-  dash_bottom: {
+  swipe: {position: 'absolute', top:0, left:0, width: '100%', height: '60%'},
+  dashBot: {
     position: 'absolute',
     bottom: -1,
     width: '100%',
@@ -195,7 +270,7 @@ const styles = StyleSheet.create({
     borderStyle: 'dashed',
     borderColor: '#0000CC',
   },
-  dash_top: {
+  dashTop: {
     position: 'absolute',
     top: -1,
     width: '100%',
@@ -227,24 +302,30 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 10,
   },
   title: {
-    width: 173,
+    position: 'absolute',
+    bottom: 150,
+    left: 16,
+    width: '60%',
+    height: 44,
     marginTop: 10,
-    marginLeft: 16,
     fontFamily: 'Galmuri11',
     fontSize: 13,
-    lineHeight: 23,
+    lineHeight: 22,
     color: '#0000CC',
   },
   fromArea: {position: 'absolute', bottom: 106, left: 16},
-  fromImg: {width: 48, height: 22},
+  fromImg: {height: 22},
   fromText: {
+    height: 20,
     marginLeft: 16,
     fontFamily: 'Galmuri11',
     fontSize: 12,
     color: '#0000CC',
   },
-  stampArea: {position: 'absolute', top: 16, right: 16, padding: 7},
+  stampArea: {position: 'absolute', bottom: 106, right: 16},
+  stampBg: {width: 74, height: 90, padding: 7},
   stampImg: {width: 60, height: 76},
+  stampType: {width: 46, height: 17, position: 'absolute', top: 7, left: 7},
   tagArea: {position: 'absolute', bottom: 16, right: 16, left: 16},
   tagList: {flexDirection: 'row', marginTop: 8},
   tagItem: {
@@ -260,4 +341,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#0000CC',
   },
+  deliveryInfo: {position: 'absolute', right: 16, bottom: 16, left: 16, height: 70, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 204, 0.05)'},
+  deliveryAddress: {flexDirection: 'row', justifyContent: 'center', alignItems: 'center'},
+  deliveryAddressText: {fontFamily: 'Galmuri11', fontSize: 12, color: '#0000CC'},
+  arrow: {width: 31, height: 7, marginHorizontal: 8, marginTop: 2},
+  deliveryDate: {fontFamily: 'Galmuri11', fontSize: 11, color: '#0000CC', marginTop: 3},
 });

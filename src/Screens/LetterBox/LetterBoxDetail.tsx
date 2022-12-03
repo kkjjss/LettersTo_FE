@@ -13,11 +13,12 @@ import {
   Alert,
 } from 'react-native';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
-import {LetterBoxInfo, DeliveryLetters, PaperColor} from '../../types/types';
+import {LetterBoxInfo, DeliveryLetter, DeliveryLetters, PaperColor} from '../../types/types';
 import {getLetterBoxInfo, getDeliveryLetters} from '../../APIs/letterBox';
 import {Header} from '../../Components/Headers/Header';
 import {dateFormatter} from '../../Utils/dateFormatter';
 import {LetterItem} from './LetterItem';
+import {EnvelopeModal} from '../../Modals/EnvelopeModal';
 
 type Props = NativeStackScreenProps<StackParamsList, 'LetterBoxDetail'>;
 
@@ -108,8 +109,17 @@ export function LetterBoxDetail({route, navigation}: Props) {
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const toggleTooltip = () => setTooltipVisible(!tooltipVisible);
 
-  const onOpenLetter = () => {
-    console.log('openLetter');
+  // 봉투 열기
+  const [selectedItem, setSelectedItem] = useState<DeliveryLetter>();
+  const [isEnvelopeModalVisible, setEnvelopeModalVisible] = useState(false);
+  const onOpenEnvelopeModal = (item: DeliveryLetter) => {
+    setSelectedItem(item);
+    setEnvelopeModalVisible(true);
+  };
+
+  // 편지 조회
+  const goToReadLetter = (id: number) => {
+    navigation.navigate('ReadLetter', {id, to: 'DELIVERY'});
   };
 
   return (
@@ -149,22 +159,28 @@ export function LetterBoxDetail({route, navigation}: Props) {
         </View>
         <View style={styles.tagArea}>
           <Text style={styles.tagTitle}>관심사</Text>
-          <ScrollView horizontal alwaysBounceHorizontal={false}>
-            {info?.topics.map((item: string, idx: number) => (
-              <Text key={idx} style={styles.tagItem}>
-                {item}
-              </Text>
-            ))}
+          <ScrollView horizontal alwaysBounceHorizontal={false} showsHorizontalScrollIndicator={false}>
+            {info?.topics.map((item: string, idx: number) => {
+              const isLast: boolean = idx === info.topics.length - 1;
+              return (
+                <Text key={idx} style={[styles.tagItem, isLast && {marginRight: 16}]}>
+                  {item}
+                </Text>
+              );
+            })}
           </ScrollView>
         </View>
         <View style={[styles.tagArea, {marginTop: 8}]}>
           <Text style={styles.tagTitle}>성향</Text>
-          <ScrollView horizontal alwaysBounceHorizontal={false}>
-            {info?.personalities.map((item: string, idx: number) => (
-              <Text key={idx} style={styles.tagItem}>
-                {item}
-              </Text>
-            ))}
+          <ScrollView horizontal alwaysBounceHorizontal={false} showsHorizontalScrollIndicator={false}>
+            {info?.personalities.map((item: string, idx: number) => {
+              const isLast: boolean = idx === info.personalities.length - 1;
+              return (
+                <Text key={idx} style={[styles.tagItem, isLast && {marginRight: 16}]}>
+                  {item}
+                </Text>
+              );
+            })}
           </ScrollView>
         </View>
       </View>
@@ -179,7 +195,7 @@ export function LetterBoxDetail({route, navigation}: Props) {
             <LetterItem
               data={item}
               color={avatarColor}
-              onOpenLetter={() => onOpenLetter()}
+              onOpenLetter={() => onOpenEnvelopeModal(item)}
               style={[
                 {marginTop: isFirst ? 24 : 16},
                 isLast && {marginBottom: 80},
@@ -213,6 +229,15 @@ export function LetterBoxDetail({route, navigation}: Props) {
           </Pressable>
         </View>
       </View>
+      {selectedItem && (
+        <EnvelopeModal
+          type="DELIVERY"
+          data={selectedItem}
+          isModalVisible={isEnvelopeModalVisible}
+          setModalVisible={setEnvelopeModalVisible}
+          onOpenLetter={() => goToReadLetter(selectedItem.id)}
+        />
+      )}
     </SafeAreaView>
   );
 }
