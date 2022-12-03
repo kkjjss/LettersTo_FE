@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import useStore from '../../Store/store';
 // import {TabActions} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import type {StackParamsList} from '../../types/stackParamList';
@@ -26,6 +27,7 @@ type Props = {
 
 export function LetterBoxList({navigation, onPressHome}: Props) {
   const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
+  const {userInfo} = useStore();
 
   // 내 사서함 목록
   const [letterBoxes, setLetterBoxes] = useState<LetterBoxes>([]);
@@ -48,9 +50,17 @@ export function LetterBoxList({navigation, onPressHome}: Props) {
     navigation.push('LetterBoxDetail', {id, fromMemberId, color});
   };
 
-  async function goToMyPage() {
+  const goToNotification = () => {
+    navigation.navigate('Notifications');
+  };
+
+  const goToStampHistory = () => {
+    navigation.navigate('StampHistory');
+  };
+
+  const goToMyPage = () => {
     navigation.navigate('MyPage');
-  }
+  };
 
   // cold case
   const Empty = () => (
@@ -81,11 +91,28 @@ export function LetterBoxList({navigation, onPressHome}: Props) {
       <View style={[styles.header, {marginTop: SAFE_AREA_TOP}]}>
         <View style={[styles.headerInner]}>
           <View style={{position: 'absolute', left: 16, flexDirection: 'row'}}>
-            <TouchableOpacity activeOpacity={0.7}>
+            <TouchableOpacity activeOpacity={0.7} onPress={goToNotification}>
               <Image
                 source={require('../../Assets/alert_off.png')}
                 style={styles.icon}
               />
+            </TouchableOpacity>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={goToStampHistory}
+              style={[styles.headerButton, {marginLeft: 12}]}>
+              <Image
+                source={require('../../Assets/numberStamps.png')}
+                style={{width: 24, height: 24, marginLeft: -3}}
+              />
+              <View style={styles.stampArea}>
+                <Text
+                  style={styles.stampText}
+                  numberOfLines={1}
+                  ellipsizeMode="clip">
+                  {userInfo?.stampQuantity}
+                </Text>
+              </View>
             </TouchableOpacity>
           </View>
           <Text style={styles.pageTitle}>내 사서함</Text>
@@ -100,7 +127,6 @@ export function LetterBoxList({navigation, onPressHome}: Props) {
         </View>
       </View>
       <FlatList
-        style={styles.list}
         ListEmptyComponent={Empty}
         contentContainerStyle={{marginTop: SAFE_AREA_TOP}}
         data={letterBoxes}
@@ -165,8 +191,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 16,
   },
+  headerButton: {
+    position: 'relative',
+    width: 28,
+    height: 28,
+    justifyContent: 'center',
+  },
+  stampArea: {
+    position: 'absolute',
+    left: 9,
+    bottom: -2,
+    height: 16,
+    backgroundColor: '#0000CC',
+    borderRadius: 8,
+  },
+  stampText: {
+    fontFamily: 'Galmuri11-Bold',
+    fontSize: 10,
+    color: 'white',
+    lineHeight: 15,
+    paddingHorizontal: 4,
+  },
   pageTitle: {fontFamily: 'Galmuri11', fontSize: 15, color: '#0000CC'},
-  list: {},
   listItem: {
     flexDirection: 'row',
     alignItems: 'center',

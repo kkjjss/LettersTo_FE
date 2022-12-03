@@ -33,6 +33,9 @@ import {LetterComplete} from '../Screens/Letter/LetterComplete';
 // 알림
 import {Notifications} from '../Screens/Notifications/Notifications';
 
+// 우표
+import {StampHistory} from '../Screens/Stamp/StampHistory';
+
 const Stack = createNativeStackNavigator<StackParamsList>();
 
 export default function StackNavigator() {
@@ -73,6 +76,9 @@ export default function StackNavigator() {
 
           {/* 알림 */}
           <Stack.Screen name="Notifications" component={Notifications} />
+
+          {/* 우표 */}
+          <Stack.Screen name="StampHistory" component={StampHistory} />
         </Stack.Group>
       ) : (
         <Stack.Group>
