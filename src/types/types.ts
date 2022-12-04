@@ -190,3 +190,13 @@ export interface Notification {
 }
 
 export type NotificationList = Notification[];
+
+export interface StampHistory {
+  id: number,
+  type: 'REGISTRATION' | 'DAILY' | 'REVIEW';
+  description: string;
+  quantity: number;
+  createdDate: Date;
+}
+
+export type StampHistories = StampHistory[];

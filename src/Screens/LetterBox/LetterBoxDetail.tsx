@@ -89,6 +89,7 @@ export function LetterBoxDetail({route, navigation}: Props) {
     }
   };
 
+  // n일째 인연
   const fromPeriod = useMemo(() => {
     if (info) {
       const startDate = new Date(info.startDate);
@@ -98,7 +99,8 @@ export function LetterBoxDetail({route, navigation}: Props) {
       return days;
     }
   }, [info]);
-
+  
+  // 편지 시작일
   const fromDate = useMemo(() => {
     if (info) {
       const date = dateFormatter('yyyy.mm.dd', info.startDate);
