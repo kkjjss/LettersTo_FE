@@ -213,7 +213,7 @@ export function Home({navigation}: Props) {
         refreshing={refreshing}
         onRefresh={handleRefresh}
         data={publicLetters}
-        contentContainerStyle={{marginTop: SAFE_AREA_TOP}}
+        contentContainerStyle={{paddingVertical: SAFE_AREA_TOP}}
         keyExtractor={item => item.id}
         renderItem={({item, index}) => {
           const {
@@ -316,7 +316,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     width: '100%',
-    height: 80,
+    height: 160,
   },
   headerInner: {
     position: 'relative',
