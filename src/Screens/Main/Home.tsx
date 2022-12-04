@@ -182,7 +182,7 @@ export function Home({navigation}: Props) {
             <TouchableOpacity
               activeOpacity={0.7}
               onPress={goToStampHistory}
-              style={[styles.headerButton, {marginLeft: 12}]}>
+              style={[styles.headerButton, {marginLeft: 12, width: 40}]}>
               <Image
                 source={require('../../Assets/numberStamps.png')}
                 style={{width: 24, height: 24, marginLeft: -3}}
@@ -192,7 +192,7 @@ export function Home({navigation}: Props) {
                   style={styles.stampText}
                   numberOfLines={1}
                   ellipsizeMode="clip">
-                  {userInfo?.stampQuantity}
+                  {userInfo && userInfo.stampQuantity > 999 ? `999+` : userInfo?.stampQuantity}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -337,6 +337,7 @@ const styles = StyleSheet.create({
     left: 9,
     bottom: -2,
     height: 16,
+    paddingHorizontal: 4,
     backgroundColor: '#0000CC',
     borderRadius: 8,
   },
@@ -345,7 +346,6 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: 'white',
     lineHeight: 15,
-    paddingHorizontal: 4,
   },
   floatArea: {position: 'absolute', right: 24, bottom: 100},
   btn: {

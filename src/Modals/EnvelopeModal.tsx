@@ -27,6 +27,7 @@ interface EnvelopeModalProps {
 }
 
 export const EnvelopeModal = ({
+  type,
   data,
   isModalVisible,
   setModalVisible,
@@ -193,38 +194,38 @@ export const EnvelopeModal = ({
                     )
                   }
                 </View>
-                <View style={styles.tagArea}>
-                  <ScrollView
-                    horizontal
-                    alwaysBounceHorizontal={false}
-                    showsHorizontalScrollIndicator={false}
-                    style={styles.tagList}>
-                    {topics?.map((item: string, idx: number) => (
-                      <Text key={idx} style={styles.tagItem}>
-                        {item}
-                      </Text>
-                    ))}
-                  </ScrollView>
-                  <ScrollView
-                    horizontal
-                    alwaysBounceHorizontal={false}
-                    showsHorizontalScrollIndicator={false}
-                    style={styles.tagList}>
-                    {personalities?.map((item: string, idx: number) => (
-                      <Text key={idx} style={styles.tagItem}>
-                        {item}
-                      </Text>
-                    ))}
-                  </ScrollView>
-                </View>
-                <View style={styles.deliveryInfo}>
-                  <View style={styles.deliveryAddress}>
-                    <Text style={styles.deliveryAddressText}>{fromAddress}</Text>
-                    <Image style={styles.arrow} resizeMode="contain" source={require('../Assets/arrow.png')} />
-                    <Text style={styles.deliveryAddressText}>{toAddress}</Text>
+                {type === 'PUBLIC' && (
+                  <View style={styles.tagArea}>
+                    <ScrollView
+                      horizontal
+                      alwaysBounceHorizontal={false}
+                      showsHorizontalScrollIndicator={false}
+                      style={styles.tagList}>
+                      {topics?.map((item: string, idx: number) => (
+                        <Text key={idx} style={styles.tagItem}>{item}</Text>
+                      ))}
+                    </ScrollView>
+                    <ScrollView
+                      horizontal
+                      alwaysBounceHorizontal={false}
+                      showsHorizontalScrollIndicator={false}
+                      style={styles.tagList}>
+                      {personalities?.map((item: string, idx: number) => (
+                        <Text key={idx} style={styles.tagItem}>{item}</Text>
+                      ))}
+                    </ScrollView>
                   </View>
-                  <Text style={styles.deliveryDate}>{dateFormatter('yyyy.mm.dd', deliveryDate)}</Text>
-                </View>
+                )}
+                {type === 'DELIVERY' && (
+                  <View style={styles.deliveryInfo}>
+                    <View style={styles.deliveryAddress}>
+                      <Text style={styles.deliveryAddressText}>{fromAddress}</Text>
+                      <Image style={styles.arrow} resizeMode="contain" source={require('../Assets/arrow.png')} />
+                      <Text style={styles.deliveryAddressText}>{toAddress}</Text>
+                    </View>
+                    <Text style={styles.deliveryDate}>{dateFormatter('yyyy.mm.dd', deliveryDate)}</Text>
+                  </View>
+                )}
               </LinearGradient>
             </View>
             <View
