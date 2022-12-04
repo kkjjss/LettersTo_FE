@@ -14,7 +14,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2F30CF3EA6A63EB0DDD43761 /* Pods_LettersTo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 759581686173F751CFE53FA3 /* Pods_LettersTo.framework */; };
-		EE0CF412293CA28B00B67905 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EE0CF411293CA28B00B67905 /* LaunchScreen.storyboard */; };
+		EE0CF416293CA7DF00B67905 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EE0CF415293CA7DF00B67905 /* LaunchScreen.storyboard */; };
 		EE0EC79028EF183900F700DF /* font in Resources */ = {isa = PBXBuildFile; fileRef = EE0EC78F28EF183900F700DF /* font */; };
 		EE683A1929240BCB0053A12A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EE683A1829240BCB0053A12A /* GoogleService-Info.plist */; };
 		F0DEC80EB9DA56BCA16F7339 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0419D5229857C0CCF6E99EC7 /* ExpoModulesProvider.swift */; };
@@ -57,7 +57,7 @@
 		89C6BE57DB24E9ADA2F236DE /* Pods-LettersTo-LettersToTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LettersTo-LettersToTests.release.xcconfig"; path = "Target Support Files/Pods-LettersTo-LettersToTests/Pods-LettersTo-LettersToTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		EE0CF3FD293C95B300B67905 /* SplashScreen.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SplashScreen.xcodeproj; path = "../node_modules/react-native-splash-screen/ios/SplashScreen.xcodeproj"; sourceTree = "<group>"; };
-		EE0CF411293CA28B00B67905 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ../../../../Desktop/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		EE0CF415293CA7DF00B67905 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EE0EC78B28EC825D00F700DF /* LettersTo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LettersTo-Bridging-Header.h"; sourceTree = "<group>"; };
 		EE0EC78F28EF183900F700DF /* font */ = {isa = PBXFileReference; lastKnownFileType = folder; path = font; sourceTree = "<group>"; };
 		EE683A1829240BCB0053A12A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -120,7 +120,7 @@
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
-				EE0CF411293CA28B00B67905 /* LaunchScreen.storyboard */,
+				EE0CF415293CA7DF00B67905 /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
 			name = LettersTo;
@@ -320,7 +320,7 @@
 			files = (
 				EE0EC79028EF183900F700DF /* font in Resources */,
 				EE683A1929240BCB0053A12A /* GoogleService-Info.plist in Resources */,
-				EE0CF412293CA28B00B67905 /* LaunchScreen.storyboard in Resources */,
+				EE0CF416293CA7DF00B67905 /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
