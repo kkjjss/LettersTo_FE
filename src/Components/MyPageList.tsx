@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Galmuri11',
     fontSize: 12,
     color: '#0000cc',
+    opacity: 0.5,
     marginBottom: 14,
   },
   itemWrap: {height: 35, justifyContent: 'center'},
