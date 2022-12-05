@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {View, Text, StyleSheet, Pressable, Image} from 'react-native';
+import {View, Text, StyleSheet, Pressable, Image, TouchableOpacity} from 'react-native';
 import type {StackParamsList} from '../../types/stackParamList';
 import {ListItem, ListName} from '../../Components/MyPageList';
 
@@ -68,6 +68,10 @@ export function MyPage({navigation}: Props) {
     navigation.pop();
   };
 
+  const goToStampHistory = () => {
+    navigation.navigate('StampHistory');
+  };
+
   useEffect(() => {
     const getNewestUserInfo = async () => {
       if (
@@ -101,27 +105,34 @@ export function MyPage({navigation}: Props) {
       <Header2 title="MY" color="white" onPressBack={goBack} />
       <View style={styles.nickname}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Image
-            source={require('../../Assets/userIcon.png')}
-            style={{height: 20, width: 20, marginRight: 4}}
-          />
+          <View style={styles.avatar}>
+            <Text style={styles.avatarText}>
+              {userInfo?.nickname[0]}
+            </Text>
+          </View>
           <Text style={styles.nicknameText}>{userInfo?.nickname}</Text>
         </View>
         <Pressable onPress={openNicknameModal}>
-          <View style={styles.nicknameButton}>
-            <Text style={styles.nicknameButtonText}>별명 바꾸기</Text>
-          </View>
+          <Image
+            source={require('../../Assets/write_white.png')}
+            style={{height: 24, width: 24, marginLeft: 4}}
+          />
         </Pressable>
       </View>
 
-      <View
-        style={{
-          alignSelf: 'center',
-          width: '85%',
-          borderColor: '#ffffff40',
-          borderTopWidth: 1,
-        }}
-      />
+      <TouchableOpacity activeOpacity={0.9} style={styles.btnStamp} onPress={goToStampHistory}>
+        <Image
+          source={require('../../Assets/numberStamps.png')}
+          style={{height: 24, width: 24, marginRight: 8}}
+        />
+        <Text style={{fontFamily: 'Galmuri11', fontSize: 14, color: '#0000CC'}}>나의 보유 우표</Text>
+        <Image
+          source={require('../../Assets/next_blue.png')}
+          style={{height: 20, width: 20, marginLeft: 2}}
+        />
+        <Text style={{fontFamily: 'Galmuri11', fontSize: 14, color: '#0000CC', marginLeft: 'auto'}}>{userInfo?.stampQuantity.toLocaleString()}</Text>
+        <Text style={{fontFamily: 'Galmuri11', fontSize: 14, color: '#0000CC', marginLeft: 2}}>개</Text>
+      </TouchableOpacity>
 
       <View style={{height: 54, flexDirection: 'row'}}>
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -158,7 +169,7 @@ export function MyPage({navigation}: Props) {
         }}>
         <View style={{flex: 1, paddingTop: 24, paddingHorizontal: 24}}>
           <View style={{marginBottom: 34}}>
-            <ListName name="이용 정보" />
+            <ListName name="약관 정보" />
             <ListItem
               itmeName="서비스이용약관"
               onPress={onPressTermsOfService}
@@ -219,9 +230,8 @@ const styles = StyleSheet.create({
   nickname: {
     height: 80,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: 24,
   },
   nicknameText: {fontFamily: 'Galmuri11', fontSize: 16, color: 'white'},
   nicknameButton: {
@@ -256,4 +266,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: '100%',
   },
+  avatar: {overflow: 'hidden', width: 36, height: 36, marginRight: 8, alignItems: 'center', justifyContent: 'center', backgroundColor: '#FFFFCC', borderRadius: 18},
+  avatarText: {fontFamily: 'Galmuri11-Bold', fontSize: 13, color: '#0000CC'},
+  btnStamp: {flexDirection: 'row', alignItems: 'center', height: 42, marginHorizontal: 24, marginBottom: 16, paddingHorizontal: 12, backgroundColor: 'white', borderRadius: 5},
 });
