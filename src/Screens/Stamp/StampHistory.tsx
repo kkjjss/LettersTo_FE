@@ -56,7 +56,7 @@ export const StampHistory = ({navigation}: Props) => {
         />
         <Text style={[styles.totalText, {marginLeft: 2}]}>나의 보유 우표</Text>
         <Text style={[styles.totalText, {marginLeft: 'auto'}]}>{userInfo?.stampQuantity.toLocaleString()}개</Text>
-        <View style={styles.tooltipArea}>
+        <View style={[styles.tooltipArea, {display: 'none'}]}>
           <Text style={styles.tooltipText}>매일 앱에 접속하고 우표 받아가세요!</Text>
           <Image style={styles.tooltipTail} source={require('../../Assets/tooltip.png')} />
         </View>
@@ -64,7 +64,7 @@ export const StampHistory = ({navigation}: Props) => {
 
       <View style={styles.contentContainer}>
           <ScrollView contentContainerStyle={{paddingBottom: SAFE_AREA_BOTTOM}}>
-            <TouchableOpacity activeOpacity={0.7} style={[styles.item, {backgroundColor: '#F2F2FC'}]}>
+            <TouchableOpacity activeOpacity={0.7} style={[styles.item, {backgroundColor: '#F2F2FC', display: 'none'}]}>
               <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
                 <Text style={styles.event}>EVENT</Text>
                 <Text style={styles.eventText}>앱 리뷰 남기고 추가 우표 받기</Text>
