@@ -83,33 +83,9 @@ export const LetterComplete = ({navigation, route}: Props) => {
     <View style={{backgroundColor: '#ffccee', flex: 1}}>
       <SafeAreaView style={styles.container}>
         <Header navigation={navigation} title={'작성완료'} />
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingBottom: 100,
-          }}>
-          <Text
-            style={{
-              fontFamily: 'Galmuri11-Bold',
-              color: '#0000cc',
-              fontSize: 18,
-              marginBottom: 8,
-            }}>
-            Complete!
-          </Text>
-          <Text
-            style={{
-              fontFamily: 'Galmuri11',
-              color: '#0000cc',
-              fontSize: 15,
-              height: 25,
-              marginBottom: 8,
-            }}>
-            편지 작성을 완료했어요!
-          </Text>
-
+        <View style={styles.contentContainer}>
+          <Text style={styles.completeText}>Complete!</Text>
+          <Text style={styles.descText}>편지 작성을 완료했어요!</Text>
           {!route.params?.reply ? (
             <View style={styles.cover}>
               <LetterCoverPreview />
@@ -145,8 +121,24 @@ export const LetterComplete = ({navigation, route}: Props) => {
 
 const styles = StyleSheet.create({
   container: {flex: 1},
-  coverContainer: {
-    backgroundColor: '#ffccee',
+  contentContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingBottom: 100,
+  },
+  completeText: {
+    fontFamily: 'Galmuri11-Bold',
+    color: '#0000cc',
+    fontSize: 18,
+    marginBottom: 8,
+  },
+  descText: {
+    fontFamily: 'Galmuri11',
+    color: '#0000cc',
+    fontSize: 15,
+    height: 25,
+    marginBottom: 8,
   },
   cover: {paddingTop: 12},
 });
