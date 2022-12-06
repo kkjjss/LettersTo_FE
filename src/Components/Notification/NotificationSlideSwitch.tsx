@@ -9,10 +9,10 @@ import {
 import {useRef} from 'react';
 
 export const NotificationSlideSwitch = ({
-  currentNotificationType,
+  excludeReadNotifications,
   toggleNotificationType,
 }: {
-  currentNotificationType: 'all' | 'notRead';
+  excludeReadNotifications: boolean;
   toggleNotificationType: () => void;
 }) => {
   const [disableSwith, setDisableSwitch] = useState(false);
@@ -33,7 +33,7 @@ export const NotificationSlideSwitch = ({
   const onPressToggleSwitch = () => {
     toggleNotificationType();
     setDisableSwitch(true);
-    if (currentNotificationType === 'all') {
+    if (excludeReadNotifications === false) {
       slideRight.start(() => setDisableSwitch(false));
     } else {
       slideLeft.start(() => setDisableSwitch(false));
@@ -52,7 +52,8 @@ export const NotificationSlideSwitch = ({
               style={[
                 styles.notificationTypeText,
                 {
-                  color: currentNotificationType === 'all' ? '#fff' : '#0000cc',
+                  color:
+                    excludeReadNotifications === false ? '#fff' : '#0000cc',
                 },
               ]}>
               전체
@@ -63,8 +64,7 @@ export const NotificationSlideSwitch = ({
               style={[
                 styles.notificationTypeText,
                 {
-                  color:
-                    currentNotificationType === 'notRead' ? '#fff' : '#0000cc',
+                  color: excludeReadNotifications === true ? '#fff' : '#0000cc',
                 },
               ]}>
               안읽음
