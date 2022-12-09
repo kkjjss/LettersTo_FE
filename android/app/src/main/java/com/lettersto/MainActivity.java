@@ -1,17 +1,14 @@
 package com.lettersto;
-import android.os.Bundle;
-import org.devio.rn.splashscreen.SplashScreen;
+import expo.modules.ReactActivityDelegateWrapper;
+
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
 
-public class MainActivity extends ReactActivity {
+import android.os.Bundle;
+import org.devio.rn.splashscreen.SplashScreen;
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-      SplashScreen.show(this);
-      super.onCreate(savedInstanceState);
-  }
+public class MainActivity extends ReactActivity {
 
   /**
    * Returns the name of the main component registered from JavaScript. This is used to schedule
