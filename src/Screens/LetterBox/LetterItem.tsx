@@ -13,7 +13,7 @@ import {DeliveryLetter, PaperColor} from '../../types/types';
 import {LinearGradient} from 'expo-linear-gradient';
 import {GRADIENT_COLORS} from '../../Constants/letter';
 import {dateFormatter} from '../../Utils/dateFormatter';
-import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../Constants/screen';
+import {SCREEN_WIDTH} from '../../Constants/screen';
 
 interface LetterItemProps {
   data: DeliveryLetter;
@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
   tooltipText: {fontFamily: 'Galmuri11', fontSize: 12, color: '#0000CC', lineHeight: 28},
   tooltipTail: {position: 'absolute', top: '100%', left: '50%', width: 5, height: 4, marginLeft: -25},
   fromArea: {position: 'absolute', bottom: 106, left: 16},
-  fromImg: {height: 22},
+  fromImg: {height: 22, resizeMode: 'contain'},
   fromText: {
     height: 20,
     marginLeft: 16,

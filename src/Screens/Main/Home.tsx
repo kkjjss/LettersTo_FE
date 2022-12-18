@@ -248,8 +248,8 @@ export function Home({navigation}: Props) {
                 onOpenLetter={() => onOpenEnvelopeModal(item)}
                 style={[
                   index % 2 === 0
-                    ? {left: '27.7%', marginTop: -36}
-                    : {left: '-6.4%', marginTop: -152},
+                    ? {left: '26%', marginTop: -36}
+                    : {left: '-6%', marginTop: -152},
                   {
                     transform: [
                       {

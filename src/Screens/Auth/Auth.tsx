@@ -98,11 +98,13 @@ export function Auth({navigation}: Props) {
   }
 
   useEffect(() => {
-    return appleAuth.onCredentialRevoked(async () => {
-      console.warn(
-        'If this function executes, User Credentials have been Revoked',
-      );
-    });
+    if (appleAuth.isSupported) {
+      return appleAuth.onCredentialRevoked(async () => {
+        console.warn(
+          'If this function executes, User Credentials have been Revoked',
+        );
+      });
+    }
   }, []);
 
   return (
