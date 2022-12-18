@@ -51,10 +51,7 @@ export function PublicLetterItem(props: PublicLetterItemProps) {
         style={styles.background}>
         <Text style={styles.title}>⌜{title || '무제'}⌟︎︎</Text>
         <View style={styles.fromArea}>
-          <Image
-            style={styles.fromImg}
-            source={require('../Assets/from.png')}
-          />
+          <Image style={styles.fromImg} source={require('../Assets/from.png')} />
           <Text style={styles.fromText}>{`${fromNickname}, ${fromAddress}`}</Text>
         </View>
         <ImageBackground
@@ -99,7 +96,7 @@ const styles = StyleSheet.create({
   publicLetterItem: {
     position: 'relative',
     overflow: 'hidden',
-    width: '78.7%',
+    width: '80%',
     height: 212,
     borderWidth: 1,
     borderColor: '#0000CC',
@@ -124,7 +121,7 @@ const styles = StyleSheet.create({
     color: '#0000CC',
   },
   fromArea: {position: 'absolute', bottom: 106, left: 16},
-  fromImg: {width: 48, height: 22},
+  fromImg: {width: 48, height: 22, resizeMode: 'contain'},
   fromText: {
     marginLeft: 16,
     fontFamily: 'Galmuri11',

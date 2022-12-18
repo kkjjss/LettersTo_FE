@@ -4,7 +4,7 @@ import type {StackParamsList} from '../../types/stackParamList';
 import {StyleSheet, Text, ScrollView, View, Alert} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useEffect, useState} from 'react';
-import {getPublicLetterContent} from '../../APIs/letter';
+import {getPublicLetterContent, getDeliveryLetterContent} from '../../APIs/letter';
 import {PublicLetterContent} from '../../types/types';
 import {PaperBackgroud} from '../../Components/Letter/PaperBackground/PaperBackgroud';
 import {BottomButton} from '../../Components/BottomButton';
@@ -57,9 +57,10 @@ export function ReadLetter({route, navigation}: Props) {
   const attachedImages = letterContent?.files ?? [];
 
   useEffect(() => {
+    const isDeliveryLetter: boolean = route.params.to === 'DELIVERY';
     const getLetterContent = async () => {
       try {
-        const data = await getPublicLetterContent(route.params.id);
+        const data = isDeliveryLetter ? await getDeliveryLetterContent(route.params.id) : await getPublicLetterContent(route.params.id);
         setLetterContent(data);
       } catch (error: any) {
         console.error(error.message);

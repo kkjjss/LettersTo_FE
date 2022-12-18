@@ -127,6 +127,21 @@ export interface PublicLetterContent {
   createdDate: Date;
 }
 
+export interface DeliveryLetterContent {
+  id: number;
+  title: string;
+  content: string;
+  fromAddress: string;
+  fromNickname: string;
+  paperColor: PaperColor;
+  paperType: PaperStyle | 'LINE';
+  alignType: 'LEFT' | 'CENTER' | 'RIGHT';
+  stampId: number;
+  replied: boolean;
+  files: string[];
+  createdDate: Date;
+}
+
 export interface DeliveryLetterWriteRequest {
   id?: number;
   title?: string;
