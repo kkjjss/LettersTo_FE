@@ -3,14 +3,16 @@ export interface Selector {
   end: number;
 }
 
+export type ProviderType = 'KAKAO' | 'APPLE';
 export interface Token {
   idToken: string;
+  providerType: ProviderType;
 }
 
 export interface RegisterToken {
   registerToken: string;
-  accessToken: string;
-  refreshToken: string;
+  accessToken: string | undefined;
+  refreshToken: string | undefined;
   verified: boolean;
 }
 
