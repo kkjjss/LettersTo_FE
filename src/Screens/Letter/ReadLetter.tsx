@@ -4,7 +4,10 @@ import type {StackParamsList} from '../../types/stackParamList';
 import {StyleSheet, Text, ScrollView, View, Alert} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useEffect, useState} from 'react';
-import {getPublicLetterContent} from '../../APIs/letter';
+import {
+  getDeliveryLetterContent,
+  getPublicLetterContent,
+} from '../../APIs/letter';
 import {PublicLetterContent} from '../../types/types';
 import {PaperBackgroud} from '../../Components/Letter/PaperBackground/PaperBackgroud';
 import {BottomButton} from '../../Components/BottomButton';
@@ -57,9 +60,9 @@ export function ReadLetter({route, navigation}: Props) {
   const attachedImages = letterContent?.files ?? [];
 
   useEffect(() => {
-    const getLetterContent = async () => {
+    const getPublicLetter = async (id: number) => {
       try {
-        const data = await getPublicLetterContent(route.params.id);
+        const data = await getPublicLetterContent(id);
         setLetterContent(data);
       } catch (error: any) {
         console.error(error.message);
@@ -67,7 +70,21 @@ export function ReadLetter({route, navigation}: Props) {
       }
     };
 
-    getLetterContent();
+    const getDeliveryLetter = async (id: number) => {
+      try {
+        const data = await getDeliveryLetterContent(id);
+        setLetterContent(data);
+      } catch (error: any) {
+        console.error(error.message);
+        Alert.alert('error', error.message);
+      }
+    };
+
+    if (route.params.to === 'PUBLIC') {
+      getPublicLetter(route.params.id);
+    } else if (route.params.to === 'DELIVERY') {
+      getDeliveryLetter(route.params.id);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
