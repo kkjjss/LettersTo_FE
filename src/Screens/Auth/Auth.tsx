@@ -16,11 +16,11 @@ import useStore from '../../Store/store';
 import {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {logIn} from '../../APIs/member';
+import {postToken} from '../../APIs/token';
 import {RegisterToken} from '../../types/types';
 import {useKakaoLogin} from '../../Hooks/Auth/useKaKaoLogin';
 
 import appleAuth from '@invertase/react-native-apple-authentication';
-import jwtDecode from 'jwt-decode';
 import {HyperLink} from '../../Components/HyperLink/HyperLinkText';
 import {
   onPressPrivacyPolicy,
@@ -44,7 +44,6 @@ export function Auth({navigation}: Props) {
     } catch (error: any) {
       console.error(error.message);
       Alert.alert('error', error.message);
-      Alert.alert('error', error.message);
     } finally {
       setDisableSignUp(false);
     }
@@ -52,21 +51,24 @@ export function Auth({navigation}: Props) {
 
   const loginWithToken = async (userTokens: RegisterToken) => {
     if (userTokens.verified === false) {
+      // 회원가입 폼으로 이동
       store.setRegisterToken(userTokens.registerToken);
       navigation.navigate('NicknameForm');
+    } else if (userTokens.accessToken && userTokens.refreshToken) {
+      // 토큰을 사용하여 로그인
+      AsyncStorage.setItem('accessToken', userTokens.accessToken);
+      AsyncStorage.setItem('refreshToken', userTokens.refreshToken);
+      const userInfo = await logIn();
+      store.setUserInfo({
+        nickname: userInfo.nickname,
+        personalityIds: userInfo.personalityIds,
+        topicIds: userInfo.topicIds,
+        geolocationId: userInfo.geolocationId,
+        parentGeolocationId: userInfo.parentGeolocationId,
+        stampQuantity: userInfo.stampQuantity,
+      });
+      store.setIsLoggedIn(true);
     }
-    AsyncStorage.setItem('accessToken', userTokens.accessToken);
-    AsyncStorage.setItem('refreshToken', userTokens.refreshToken);
-    const userInfo = await logIn();
-    store.setUserInfo({
-      nickname: userInfo.nickname,
-      personalityIds: userInfo.personalityIds,
-      topicIds: userInfo.topicIds,
-      geolocationId: userInfo.geolocationId,
-      parentGeolocationId: userInfo.parentGeolocationId,
-      stampQuantity: userInfo.stampQuantity,
-    });
-    store.setIsLoggedIn(true);
   };
 
   async function onPressSignUpWithApple() {
@@ -76,24 +78,22 @@ export function Auth({navigation}: Props) {
           requestedOperation: appleAuth.Operation.LOGIN,
         });
 
-        console.log('appleAuthRequestResponse: ', appleAuthRequestResponse);
-
-        appleAuthRequestResponse.identityToken &&
-          console.log(
-            'IDENTITY_TOKEN JWT DECODE RESULT : ',
-            jwtDecode(appleAuthRequestResponse.identityToken),
-          );
-
-        const credentialState = await appleAuth.getCredentialStateForUser(
-          appleAuthRequestResponse.user,
-        );
-
-        if (credentialState === appleAuth.State.AUTHORIZED) {
-          Alert.alert('애플 로그인 성공', '아직 개발중입니다');
+        if (!appleAuthRequestResponse.identityToken) {
+          throw new Error('애플 로그인 연동에 실패했습니다.');
         }
+
+        const userTokens = await postToken({
+          idToken: appleAuthRequestResponse.identityToken,
+          providerType: 'APPLE',
+        });
+
+        await loginWithToken(userTokens);
       }
     } catch (error: any) {
       console.error(error.message);
+      Alert.alert('error', error.message);
+    } finally {
+      setDisableSignUp(false);
     }
   }
 
