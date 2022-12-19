@@ -110,7 +110,9 @@ export function LetterBoxList({navigation, onPressHome}: Props) {
                   style={styles.stampText}
                   numberOfLines={1}
                   ellipsizeMode="clip">
-                  {userInfo && userInfo.stampQuantity > 999 ? `999+` : userInfo?.stampQuantity}
+                  {userInfo && userInfo.stampQuantity > 999
+                    ? `999+`
+                    : userInfo?.stampQuantity}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -133,7 +135,17 @@ export function LetterBoxList({navigation, onPressHome}: Props) {
         renderItem={({item, index}) => {
           const isFirst: boolean = index === 0;
           const isLast: boolean = index === letterBoxes.length - 1;
-          const color = ['PINK', 'ORANGE', 'YELLOW', 'GREEN', 'MINT', 'SKY_BLUE', 'BLUE', 'PURPLE', 'LAVENDER'] as const;
+          const color = [
+            'PINK',
+            'ORANGE',
+            'YELLOW',
+            'GREEN',
+            'MINT',
+            'SKY_BLUE',
+            'BLUE',
+            'PURPLE',
+            'LAVENDER',
+          ] as const;
           return (
             <TouchableOpacity
               activeOpacity={1}
@@ -142,7 +154,9 @@ export function LetterBoxList({navigation, onPressHome}: Props) {
                 isFirst && {marginTop: 50},
                 isLast && {marginBottom: 100},
               ]}
-              onPress={() => goToDetail(item.id, item.fromMemberId, color[index % 9])}>
+              onPress={() =>
+                goToDetail(item.id, item.fromMemberId, color[index % 9])
+              }>
               <View
                 style={[
                   styles.listItemIcon,

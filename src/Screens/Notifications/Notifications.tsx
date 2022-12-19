@@ -1,6 +1,6 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useMemo, useState} from 'react';
-import {Alert, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Alert, FlatList, StyleSheet, Text, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {getNotifications, setNotificationRead} from '../../APIs/notification';
 import {Header2} from '../../Components/Headers/Header2';
@@ -29,79 +29,7 @@ export const Notifications = ({navigation}: Props) => {
 
   const {top: SAFE_AREA_TOP, bottom: SAFE_AREA_BOTTOM} = useSafeAreaInsets();
 
-  // const data = [
-  //   {
-  //     id: 0,
-  //     title: '【$닉네임$】님에게 두근두근 첫 답장이 왔어요!',
-  //     content:
-  //       'Sub Message : Line 1 Sub Message : Line 1 Sub Message : Line 1 Sub Message : Line...',
-  //     type: 'STAMP',
-  //     intent: 'string',
-  //     read: true,
-  //   },
-  //   {
-  //     id: 1,
-  //     title: '앱스토어 리뷰 우표 5개 지급!',
-  //     content: 'Sub Message : Line 1',
-  //     type: 'STAMP',
-  //     intent: 'string',
-  //     read: false,
-  //   },
-  //   {
-  //     id: 2,
-  //     title: '【$닉네임$】님에게 두근두근 첫 답장이 왔어요!',
-  //     content:
-  //       'Sub Message : Line 1 Sub Message : Line 1 Sub Message : Line 1 Sub Message : Line...',
-  //     type: 'STAMP',
-  //     intent: 'string',
-  //     read: true,
-  //   },
-  //   {
-  //     id: 3,
-  //     title: '앱스토어 리뷰 우표 5개 지급!',
-  //     content: 'Sub Message : Line 1',
-  //     type: 'STAMP',
-  //     intent: 'string',
-  //     read: true,
-  //   },
-  //   {
-  //     id: 4,
-  //     title: '【$닉네임$】님에게 두근두근 첫 답장이 왔어요!',
-  //     content:
-  //       'Sub Message : Line 1 Sub Message : Line 1 Sub Message : Line 1 Sub Message : Line...',
-  //     type: 'STAMP',
-  //     intent: 'string',
-  //     read: true,
-  //   },
-  //   {
-  //     id: 5,
-  //     title: '앱스토어 리뷰 우표 5개 지급!',
-  //     content: 'Sub Message : Line 1',
-  //     type: 'STAMP',
-  //     intent: 'string',
-  //     read: true,
-  //   },
-  //   {
-  //     id: 6,
-  //     title: '【$닉네임$】님에게 두근두근 첫 답장이 왔어요!',
-  //     content:
-  //       'Sub Message : Line 1 Sub Message : Line 1 Sub Message : Line 1 Sub Message : Line...',
-  //     type: 'STAMP',
-  //     intent: 'string',
-  //     read: true,
-  //   },
-  //   {
-  //     id: 7,
-  //     title: '앱스토어 리뷰 우표 5개 지급!',
-  //     content: 'Sub Message : Line 1',
-  //     type: 'STAMP',
-  //     intent: 'string',
-  //     read: true,
-  //   },
-  // ];
-
   const onPressNotification = (notification: Notification) => async () => {
-    console.log(notification.read);
     if (notification.read) {
       return;
     }
@@ -121,14 +49,27 @@ export const Notifications = ({navigation}: Props) => {
     }
   }, [excludeReadNotifications, notifications]);
 
+  const handleEndReached = () => {
+    getNotificationsWithParams(!excludeReadNotifications, currentCursor);
+  };
+
   const getNotificationsWithParams = async (
     read?: boolean,
     cursor?: number,
   ) => {
     try {
+      const notificationRequestData: {read?: boolean; cursor?: number} = {};
+
+      if (!read) {
+        notificationRequestData.read = false;
+      }
+
+      if (cursor) {
+        notificationRequestData.cursor = cursor;
+      }
+
       const {content, cursor: nextCursor} = await getNotifications(
-        read,
-        cursor,
+        notificationRequestData,
       );
 
       setNotifications([...notifications, ...content]);
@@ -139,7 +80,8 @@ export const Notifications = ({navigation}: Props) => {
   };
 
   useEffect(() => {
-    getNotificationsWithParams(excludeReadNotifications, currentCursor);
+    getNotificationsWithParams(!excludeReadNotifications, currentCursor);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [excludeReadNotifications]);
 
   return (
@@ -152,16 +94,28 @@ export const Notifications = ({navigation}: Props) => {
         />
         {(excludeReadNotifications === true && notificationList.length > 0) ||
         (excludeReadNotifications === false && notificationList.length > 0) ? (
-          <ScrollView contentContainerStyle={{paddingBottom: SAFE_AREA_BOTTOM}}>
-            <View style={styles.hr} />
-            {notificationList.map(notification => (
+          // <ScrollView contentContainerStyle={{paddingBottom: SAFE_AREA_BOTTOM}}>
+          //   <View style={styles.hr} />
+          //   {notificationList.map(notification => (
+          //     <NotificationItem
+          //       key={notification.id}
+          //       notification={notification}
+          //       onPress={onPressNotification}
+          //     />
+          //   ))}
+          // </ScrollView>
+          <FlatList
+            data={notifications}
+            contentContainerStyle={{paddingBottom: SAFE_AREA_BOTTOM}}
+            onEndReached={handleEndReached}
+            renderItem={({item}) => (
               <NotificationItem
-                key={notification.id}
-                notification={notification}
+                key={item.id}
+                notification={item}
                 onPress={onPressNotification}
               />
-            ))}
-          </ScrollView>
+            )}
+          />
         ) : (
           <View style={styles.noUnreadNotification}>
             <Text style={styles.noUnreadNotificationText}>

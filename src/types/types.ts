@@ -184,7 +184,7 @@ export interface Notification {
   id: number;
   title: string;
   content: string;
-  type: string;
+  type: 'STAMP' | 'LETTER';
   intent: string;
   read: boolean;
 }
@@ -192,7 +192,7 @@ export interface Notification {
 export type NotificationList = Notification[];
 
 export interface StampHistory {
-  id: number,
+  id: number;
   type: 'REGISTRATION' | 'DAILY' | 'REVIEW';
   description: string;
   quantity: number;
