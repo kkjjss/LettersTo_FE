@@ -51,7 +51,9 @@ export function LetterItem(props: LetterItemProps) {
   };
 
   // 애니메이션
-  const moveAnim = useRef(new Animated.ValueXY({x: SCREEN_WIDTH, y: 0})).current;  
+  const moveAnim = useRef(
+    new Animated.ValueXY({x: SCREEN_WIDTH, y: 0}),
+  ).current;
   const moveX = Animated.timing(moveAnim, {
     toValue: {x: 0, y: 0},
     duration: 1000,
@@ -92,75 +94,109 @@ export function LetterItem(props: LetterItemProps) {
   }, [deliveryDate]);
 
   const ArrivedLetter = () => (
-    <TouchableOpacity activeOpacity={0.9} style={[styles.letterItem]} onPress={onOpenLetter}>
+    <TouchableOpacity
+      activeOpacity={0.9}
+      style={[styles.letterItem]}
+      onPress={onOpenLetter}>
       <LinearGradient
         locations={[0, 0.5]}
         colors={[GRADIENT_COLORS[paperColor], 'white']}
-        style={[styles.background, read && {borderTopRightRadius: 0, borderTopLeftRadius: 0}]}>
+        style={[
+          styles.background,
+          read && {borderTopRightRadius: 0, borderTopLeftRadius: 0},
+        ]}>
         {/* 우표 */}
         {deliveryType === 'STANDARD' ? (
           <View style={styles.stampArea}>
             <ImageBackground
               source={require('../../Assets/bg_stamp.png')}
-              style={styles.stampBg}
-            >
+              style={styles.stampBg}>
               <Image style={styles.stampImg} source={STAMPS[stampId]} />
-              <Image style={styles.stampType} source={require('../../Assets/stamp_standard.png')} />
+              <Image
+                style={styles.stampType}
+                source={require('../../Assets/stamp_standard.png')}
+              />
             </ImageBackground>
           </View>
         ) : deliveryType === 'EXPRESS' ? (
           <View style={styles.stampArea}>
             <ImageBackground
               source={require('../../Assets/bg_stamp.png')}
-              style={[styles.stampBg, {position: 'absolute', transform: [{rotate: '10deg'}]}]} />
+              style={[
+                styles.stampBg,
+                {position: 'absolute', transform: [{rotate: '10deg'}]},
+              ]}
+            />
             <ImageBackground
               source={require('../../Assets/bg_stamp.png')}
-              style={[styles.stampBg, {position: 'absolute', transform: [{rotate: '-5deg'}]}]} />
+              style={[
+                styles.stampBg,
+                {position: 'absolute', transform: [{rotate: '-5deg'}]},
+              ]}
+            />
             <ImageBackground
               source={require('../../Assets/bg_stamp.png')}
-              style={styles.stampBg}
-            >
+              style={styles.stampBg}>
               <Image style={styles.stampImg} source={STAMPS[stampId]} />
-              <Image style={styles.stampType} source={require('../../Assets/stamp_express.png')} />
+              <Image
+                style={styles.stampType}
+                source={require('../../Assets/stamp_express.png')}
+              />
             </ImageBackground>
           </View>
         ) : (
           <View style={styles.stampArea}>
             <ImageBackground
               source={require('../../Assets/bg_stamp.png')}
-              style={styles.stampBg}
-            >
+              style={styles.stampBg}>
               <Image style={styles.stampImg} source={STAMPS[stampId]} />
             </ImageBackground>
           </View>
-        )
-        }
+        )}
         <Text style={styles.title}>⌜{title || '무제'}⌟︎︎</Text>
         <View style={styles.fromArea}>
-          {
-            me ? (
-              <>
-                <Image style={[styles.fromImg, {width: 25}]} source={require('../../Assets/to.png')} />
-                <Text style={styles.fromText} numberOfLines={1} ellipsizeMode="clip">{`${toNickname}, ${toAddress}`}</Text>
-              </>
-            ) : (
-              <>
-                <Image style={[styles.fromImg, {width: 48}]} source={require('../../Assets/from.png')} />
-                <Text style={styles.fromText} numberOfLines={1} ellipsizeMode="clip">{`${fromNickname}, ${fromAddress}`}</Text>
-              </>
-            )
-          }
+          {me ? (
+            <>
+              <Image
+                style={[styles.fromImg, {width: 25}]}
+                source={require('../../Assets/to.png')}
+              />
+              <Text
+                style={styles.fromText}
+                numberOfLines={1}
+                ellipsizeMode="clip">{`${toNickname}, ${toAddress}`}</Text>
+            </>
+          ) : (
+            <>
+              <Image
+                style={[styles.fromImg, {width: 48}]}
+                source={require('../../Assets/from.png')}
+              />
+              <Text
+                style={styles.fromText}
+                numberOfLines={1}
+                ellipsizeMode="clip">{`${fromNickname}, ${fromAddress}`}</Text>
+            </>
+          )}
         </View>
         <View style={styles.deliveryInfo}>
           <View style={styles.deliveryAddress}>
             <Text style={styles.deliveryAddressText}>{fromAddress}</Text>
-            <Image style={styles.arrow} resizeMode="contain" source={require('../../Assets/arrow.png')} />
+            <Image
+              style={styles.arrow}
+              resizeMode="contain"
+              source={require('../../Assets/arrow.png')}
+            />
             <Text style={styles.deliveryAddressText}>{toAddress}</Text>
           </View>
-          <Text style={styles.deliveryDate}>{dateFormatter('yyyy.mm.dd', deliveryDate)}</Text>
+          <Text style={styles.deliveryDate}>
+            {dateFormatter('yyyy.mm.dd', deliveryDate)}
+          </Text>
         </View>
       </LinearGradient>
-      {read && <Image source={require('../../Assets/read.png')} style={styles.read} />}
+      {read && (
+        <Image source={require('../../Assets/read.png')} style={styles.read} />
+      )}
     </TouchableOpacity>
   );
   const PendingLetter = () => (
@@ -170,10 +206,20 @@ export function LetterItem(props: LetterItemProps) {
         colors={[GRADIENT_COLORS[paperColor], 'white']}
         style={[styles.background, {alignItems: 'center'}]}>
         <View style={styles.tooltipArea}>
-          <Text style={styles.tooltipText}>{me ? `${toAddress}(으)로 편지가 가고 있어요!` : `${fromAddress}에서 편지가 오고 있어요!`}</Text>
-          <Image style={styles.tooltipTail} source={require('../../Assets/tooltip.png')} />
+          <Text style={styles.tooltipText}>
+            {me
+              ? `${toAddress}(으)로 편지가 가고 있어요!`
+              : `${fromAddress}에서 편지가 오고 있어요!`}
+          </Text>
+          <Image
+            style={styles.tooltipTail}
+            source={require('../../Assets/tooltip.png')}
+          />
         </View>
-        <Image style={styles.pendingImg} source={require('../../Assets/pending.png')} />
+        <Image
+          style={styles.pendingImg}
+          source={require('../../Assets/pending.png')}
+        />
         <Text style={styles.pendingText}>{DdayText}</Text>
       </LinearGradient>
     </View>
@@ -185,16 +231,22 @@ export function LetterItem(props: LetterItemProps) {
         me ? {flexDirection: 'row-reverse'} : {flexDirection: 'row'},
         {marginHorizontal: 16, justifyContent: 'space-between'},
         style,
-        !read && {transform: [{translateX: moveAnim.getLayout().left}]}
+        !read && {transform: [{translateX: moveAnim.getLayout().left}]},
       ]}>
-      <View style={[
-        {justifyContent: 'space-between', alignItems: 'center'},
-        me ? {marginLeft: 12} : {marginRight: 12},
-      ]}>
-        <Text style={[
-          styles.avatar,
-          {backgroundColor: me ? '#CCCCFF' : GRADIENT_COLORS[color || 'PINK']},
+      <View
+        style={[
+          {justifyContent: 'space-between', alignItems: 'center'},
+          me ? {marginLeft: 12} : {marginRight: 12},
         ]}>
+        <Text
+          style={[
+            styles.avatar,
+            {
+              backgroundColor: me
+                ? '#CCCCFF'
+                : GRADIENT_COLORS[color || 'PINK'],
+            },
+          ]}>
           {me ? '나' : fromNickname[0]}
         </Text>
         <View>
@@ -238,9 +290,29 @@ const styles = StyleSheet.create({
   stampBg: {width: 74, height: 90, padding: 7},
   stampImg: {width: 60, height: 76},
   stampType: {width: 46, height: 17, position: 'absolute', top: 7, left: 7},
-  tooltipArea: {height: 32, marginTop: 47, paddingHorizontal: 10, backgroundColor: '#FFFFCC', borderWidth: 1, borderColor: '#0000CC', borderRadius: 5},
-  tooltipText: {fontFamily: 'Galmuri11', fontSize: 12, color: '#0000CC', lineHeight: 28},
-  tooltipTail: {position: 'absolute', top: '100%', left: '50%', width: 5, height: 4, marginLeft: -25},
+  tooltipArea: {
+    height: 32,
+    marginTop: 47,
+    paddingHorizontal: 10,
+    backgroundColor: '#FFFFCC',
+    borderWidth: 1,
+    borderColor: '#0000CC',
+    borderRadius: 5,
+  },
+  tooltipText: {
+    fontFamily: 'Galmuri11',
+    fontSize: 12,
+    color: '#0000CC',
+    lineHeight: 28,
+  },
+  tooltipTail: {
+    position: 'absolute',
+    top: '100%',
+    left: '50%',
+    width: 5,
+    height: 4,
+    marginLeft: -25,
+  },
   fromArea: {position: 'absolute', bottom: 106, left: 16},
   fromImg: {height: 22, resizeMode: 'contain'},
   fromText: {
@@ -250,13 +322,40 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#0000CC',
   },
-  deliveryInfo: {position: 'absolute', right: 16, bottom: 16, left: 16, height: 70, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 204, 0.05)'},
-  deliveryAddress: {flexDirection: 'row', justifyContent: 'center', alignItems: 'center'},
-  deliveryAddressText: {fontFamily: 'Galmuri11', fontSize: 12, color: '#0000CC'},
+  deliveryInfo: {
+    position: 'absolute',
+    right: 16,
+    bottom: 16,
+    left: 16,
+    height: 70,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 204, 0.05)',
+  },
+  deliveryAddress: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  deliveryAddressText: {
+    fontFamily: 'Galmuri11',
+    fontSize: 12,
+    color: '#0000CC',
+  },
   arrow: {width: 31, height: 7, marginHorizontal: 8, marginTop: 2},
-  deliveryDate: {fontFamily: 'Galmuri11', fontSize: 11, color: '#0000CC', marginTop: 3},
+  deliveryDate: {
+    fontFamily: 'Galmuri11',
+    fontSize: 11,
+    color: '#0000CC',
+    marginTop: 3,
+  },
   pendingImg: {width: 118, height: 24, marginTop: 16},
-  pendingText: {marginTop: 8, fontFamily: 'Galmuri11', fontSize: 11, color: '#0000CC'},
+  pendingText: {
+    marginTop: 8,
+    fontFamily: 'Galmuri11',
+    fontSize: 11,
+    color: '#0000CC',
+  },
   avatar: {
     overflow: 'hidden',
     width: 36,
@@ -271,5 +370,12 @@ const styles = StyleSheet.create({
     borderRadius: 18,
   },
   readText: {fontFamily: 'Galmuri11', fontSize: 11, color: '#0000CC'},
-  dot: {position: 'absolute', top: 3, right: -2, width: 2, height: 2, backgroundColor: '#FF44CC'},
+  dot: {
+    position: 'absolute',
+    top: 3,
+    right: -2,
+    width: 2,
+    height: 2,
+    backgroundColor: '#FF44CC',
+  },
 });

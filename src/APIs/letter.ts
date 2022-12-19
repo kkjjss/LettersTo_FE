@@ -54,3 +54,7 @@ export async function postDeliveryLetter(
 ) {
   return await instanceWithAuth.post('/delivery-letters', deliveryLetterData);
 }
+
+export async function getDeliveryLetterContent(id: number) {
+  return await instanceWithAuth.post(`/delivery-letters/${id}/open`);
+}

@@ -1,6 +1,7 @@
 import React from 'react';
 import {TouchableWithoutFeedback, View, Text} from 'react-native';
 import {Notification} from '../../types/types';
+import {Avatar} from '../Avatar/Avatar';
 
 type Props = {
   notification: Notification;
@@ -32,7 +33,7 @@ export const NotificationItem = ({notification, onPress}: Props) => {
           }}>
           방금
         </Text>
-        <View style={{height: 36, width: 36, backgroundColor: 'gray'}} />
+        <Avatar notificationType={notification.type} />
         <View style={{marginLeft: 12, marginRight: 24}}>
           <View style={{height: 36, justifyContent: 'center'}}>
             <Text

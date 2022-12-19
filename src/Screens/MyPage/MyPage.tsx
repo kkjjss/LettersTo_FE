@@ -1,6 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {View, Text, StyleSheet, Pressable, Image, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import type {StackParamsList} from '../../types/stackParamList';
 import {ListItem, ListName} from '../../Components/MyPageList';
 
@@ -22,6 +29,7 @@ import {
   onPressPrivacyPolicy,
   onPressTermsOfService,
 } from '../../Utils/hyperlink';
+import {Avatar} from '../../Components/Avatar/Avatar';
 
 type Props = NativeStackScreenProps<StackParamsList, 'MyPage'>;
 
@@ -105,11 +113,7 @@ export function MyPage({navigation}: Props) {
       <Header2 title="MY" color="white" onPressBack={goBack} />
       <View style={styles.nickname}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <View style={styles.avatar}>
-            <Text style={styles.avatarText}>
-              {userInfo?.nickname[0]}
-            </Text>
-          </View>
+          <Avatar nickname={userInfo?.nickname} />
           <Text style={styles.nicknameText}>{userInfo?.nickname}</Text>
         </View>
         <Pressable onPress={openNicknameModal}>
@@ -120,18 +124,39 @@ export function MyPage({navigation}: Props) {
         </Pressable>
       </View>
 
-      <TouchableOpacity activeOpacity={0.9} style={styles.btnStamp} onPress={goToStampHistory}>
+      <TouchableOpacity
+        activeOpacity={0.9}
+        style={styles.btnStamp}
+        onPress={goToStampHistory}>
         <Image
           source={require('../../Assets/numberStamps.png')}
           style={{height: 24, width: 24, marginRight: 8}}
         />
-        <Text style={{fontFamily: 'Galmuri11', fontSize: 14, color: '#0000CC'}}>나의 보유 우표</Text>
+        <Text style={{fontFamily: 'Galmuri11', fontSize: 14, color: '#0000CC'}}>
+          나의 보유 우표
+        </Text>
         <Image
           source={require('../../Assets/next_blue.png')}
           style={{height: 20, width: 20, marginLeft: 2}}
         />
-        <Text style={{fontFamily: 'Galmuri11', fontSize: 14, color: '#0000CC', marginLeft: 'auto'}}>{userInfo?.stampQuantity.toLocaleString()}</Text>
-        <Text style={{fontFamily: 'Galmuri11', fontSize: 14, color: '#0000CC', marginLeft: 2}}>개</Text>
+        <Text
+          style={{
+            fontFamily: 'Galmuri11',
+            fontSize: 14,
+            color: '#0000CC',
+            marginLeft: 'auto',
+          }}>
+          {userInfo?.stampQuantity.toLocaleString()}
+        </Text>
+        <Text
+          style={{
+            fontFamily: 'Galmuri11',
+            fontSize: 14,
+            color: '#0000CC',
+            marginLeft: 2,
+          }}>
+          개
+        </Text>
       </TouchableOpacity>
 
       <View style={{height: 54, flexDirection: 'row'}}>
@@ -266,7 +291,25 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: '100%',
   },
-  avatar: {overflow: 'hidden', width: 36, height: 36, marginRight: 8, alignItems: 'center', justifyContent: 'center', backgroundColor: '#FFFFCC', borderRadius: 18},
+  avatar: {
+    overflow: 'hidden',
+    width: 36,
+    height: 36,
+    marginRight: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FFFFCC',
+    borderRadius: 18,
+  },
   avatarText: {fontFamily: 'Galmuri11-Bold', fontSize: 13, color: '#0000CC'},
-  btnStamp: {flexDirection: 'row', alignItems: 'center', height: 42, marginHorizontal: 24, marginBottom: 16, paddingHorizontal: 12, backgroundColor: 'white', borderRadius: 5},
+  btnStamp: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: 42,
+    marginHorizontal: 24,
+    marginBottom: 16,
+    paddingHorizontal: 12,
+    backgroundColor: 'white',
+    borderRadius: 5,
+  },
 });

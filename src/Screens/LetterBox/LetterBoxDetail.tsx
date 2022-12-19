@@ -13,7 +13,12 @@ import {
   Alert,
 } from 'react-native';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
-import {LetterBoxInfo, DeliveryLetter, DeliveryLetters, PaperColor} from '../../types/types';
+import {
+  LetterBoxInfo,
+  DeliveryLetter,
+  DeliveryLetters,
+  PaperColor,
+} from '../../types/types';
 import {getLetterBoxInfo, getDeliveryLetters} from '../../APIs/letterBox';
 import {Header} from '../../Components/Headers/Header';
 import {dateFormatter} from '../../Utils/dateFormatter';
@@ -35,7 +40,9 @@ export function LetterBoxDetail({route, navigation}: Props) {
   const [info, setInfo] = useState<LetterBoxInfo>();
 
   // 주고받은 편지 목록
-  const [deliveryLetters, setDeliveryLetters] = useState<DeliveryLetters | []>([]);
+  const [deliveryLetters, setDeliveryLetters] = useState<DeliveryLetters | []>(
+    [],
+  );
   const [currentCursor, setCurrentCursor] = useState<number>();
   const [fromMemberId, setFromMemberId] = useState<number>();
   const [avatarColor, setAvatarColor] = useState<PaperColor>();
@@ -99,7 +106,7 @@ export function LetterBoxDetail({route, navigation}: Props) {
       return days;
     }
   }, [info]);
-  
+
   // 편지 시작일
   const fromDate = useMemo(() => {
     if (info) {
@@ -161,11 +168,16 @@ export function LetterBoxDetail({route, navigation}: Props) {
         </View>
         <View style={styles.tagArea}>
           <Text style={styles.tagTitle}>관심사</Text>
-          <ScrollView horizontal alwaysBounceHorizontal={false} showsHorizontalScrollIndicator={false}>
+          <ScrollView
+            horizontal
+            alwaysBounceHorizontal={false}
+            showsHorizontalScrollIndicator={false}>
             {info?.topics.map((item: string, idx: number) => {
               const isLast: boolean = idx === info.topics.length - 1;
               return (
-                <Text key={idx} style={[styles.tagItem, isLast && {marginRight: 16}]}>
+                <Text
+                  key={idx}
+                  style={[styles.tagItem, isLast && {marginRight: 16}]}>
                   {item}
                 </Text>
               );
@@ -174,11 +186,16 @@ export function LetterBoxDetail({route, navigation}: Props) {
         </View>
         <View style={[styles.tagArea, {marginTop: 8}]}>
           <Text style={styles.tagTitle}>성향</Text>
-          <ScrollView horizontal alwaysBounceHorizontal={false} showsHorizontalScrollIndicator={false}>
+          <ScrollView
+            horizontal
+            alwaysBounceHorizontal={false}
+            showsHorizontalScrollIndicator={false}>
             {info?.personalities.map((item: string, idx: number) => {
               const isLast: boolean = idx === info.personalities.length - 1;
               return (
-                <Text key={idx} style={[styles.tagItem, isLast && {marginRight: 16}]}>
+                <Text
+                  key={idx}
+                  style={[styles.tagItem, isLast && {marginRight: 16}]}>
                   {item}
                 </Text>
               );
@@ -189,7 +206,7 @@ export function LetterBoxDetail({route, navigation}: Props) {
       <FlatList
         data={deliveryLetters}
         onEndReached={handleEndReached}
-        keyExtractor={(item) => String(item.id)}
+        keyExtractor={item => String(item.id)}
         renderItem={({item, index}) => {
           const isFirst: boolean = index === 0;
           const isLast: boolean = index === deliveryLetters.length - 1;

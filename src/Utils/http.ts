@@ -43,7 +43,9 @@ class Instance {
     let query = '';
     if (params) {
       Object.keys(params).map((key, index) => {
-        query += `${index === 0 ? '?' : '&'}${key}=${params[key]}`;
+        if (params[key] !== undefined) {
+          query += `${index === 0 ? '?' : '&'}${key}=${params[key]}`;
+        }
       });
     }
     const url = this.baseUrl + path + query;
@@ -82,18 +84,22 @@ class InstanceWithAuth {
     return await AsyncStorage.getItem('refreshToken');
   }
 
-  async post(path: string, body: {}, headers?: {}): Promise<any> {
+  async post(path: string, body?: {}, headers?: {}): Promise<any> {
     const url = this.baseUrl + path;
 
-    const options = {
+    const options: {method: 'POST'; headers: any; body?: string} = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${await this.getAccessToken()}`,
         ...headers,
       },
-      body: JSON.stringify(body),
     };
+
+    if (body) {
+      options.body = JSON.stringify(body);
+    }
+
     const res = await fetch(url, options);
     let data;
     const contentType = res.headers.get('content-type');
@@ -127,7 +133,11 @@ class InstanceWithAuth {
     let query = '';
     if (params) {
       Object.keys(params).map((key, index) => {
-        query += `${index === 0 ? '?' : '&'}${key}=${params[key]}`;
+        if (params[key] !== undefined) {
+          if (params[key] !== undefined) {
+            query += `${index === 0 ? '?' : '&'}${key}=${params[key]}`;
+          }
+        }
       });
     }
     const url = this.baseUrl + path + query;
@@ -170,7 +180,9 @@ class InstanceWithAuth {
     let query = '';
     if (params) {
       Object.keys(params).map((key, index) => {
-        query += `${index === 0 ? '?' : '&'}${key}=${params[key]}`;
+        if (params[key] !== undefined) {
+          query += `${index === 0 ? '?' : '&'}${key}=${params[key]}`;
+        }
       });
     }
     const url = this.baseUrl + path + query;

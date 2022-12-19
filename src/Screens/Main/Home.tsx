@@ -192,7 +192,9 @@ export function Home({navigation}: Props) {
                   style={styles.stampText}
                   numberOfLines={1}
                   ellipsizeMode="clip">
-                  {userInfo && userInfo.stampQuantity > 999 ? `999+` : userInfo?.stampQuantity}
+                  {userInfo && userInfo.stampQuantity > 999
+                    ? '999+'
+                    : userInfo?.stampQuantity}
                 </Text>
               </View>
             </TouchableOpacity>
