@@ -258,10 +258,10 @@ const styles = StyleSheet.create({
   modalBg: {flex: 1, alignItems: 'center', justifyContent: 'center'},
   closeButton: {position: 'absolute', top: 12, left: 16},
   closeIcon: {width: 28, height: 28},
-  openArea: {position: 'absolute', top: '35%', alignItems: 'center'},
+  openArea: {position: 'absolute', bottom: '64%', alignItems: 'center'},
   openText: {fontFamily: 'Galmuri11', fontSize: 15, color: 'white'},
   openArrow: {width: 144, height: 10, marginTop: 16},
-  envelope: {position: 'absolute', bottom: '30%', width: '78.7%'},
+  envelope: {position: 'absolute', top: '40%', width: '80%'},
   swipe: {position: 'absolute', top:0, left:0, width: '100%', height: '60%'},
   dashBot: {
     position: 'absolute',
@@ -315,7 +315,7 @@ const styles = StyleSheet.create({
     color: '#0000CC',
   },
   fromArea: {position: 'absolute', bottom: 106, left: 16},
-  fromImg: {height: 22},
+  fromImg: {height: 22, resizeMode: 'contain'},
   fromText: {
     height: 20,
     marginLeft: 16,

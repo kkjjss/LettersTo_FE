@@ -314,7 +314,7 @@ const styles = StyleSheet.create({
     marginLeft: -25,
   },
   fromArea: {position: 'absolute', bottom: 106, left: 16},
-  fromImg: {height: 22},
+  fromImg: {height: 22, resizeMode: 'contain'},
   fromText: {
     height: 20,
     marginLeft: 16,

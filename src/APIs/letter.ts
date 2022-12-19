@@ -1,4 +1,5 @@
 import {
+  DeliveryLetterContent,
   DeliveryLetterWriteRequest,
   PublicLetterContent,
   PublicLetters,
@@ -40,6 +41,12 @@ export async function replyPublicLetter(
     '/public-letters/reply',
     deliveryLetterData,
   );
+}
+
+export async function getDeliveryLetterContent(
+  id: number,
+): Promise<DeliveryLetterContent> {
+  return await instanceWithAuth.post(`/delivery-letters/${id}/open`, null);
 }
 
 export async function postDeliveryLetter(
