@@ -9,6 +9,8 @@ import {LetterCoverPreview} from '../../../Components/LetterEditor/LetterCoverPr
 import useStore from '../../../Store/store';
 import {getTopics} from '../../../APIs/topic';
 import {getPersonalities} from '../../../APIs/personality';
+import {StepIndicator} from '../../../Components/StepIndicator';
+import {PUBLIC_COVER_EDIT_STEPS} from '../../../Constants/constants';
 
 type Props = NativeStackScreenProps<StackParamsList, 'CoverTopicEditor'>;
 
@@ -76,6 +78,10 @@ export function CoverTopicEditor({navigation}: Props) {
         <View style={styles.cover}>
           <LetterCoverPreview />
         </View>
+        <StepIndicator
+          current={PUBLIC_COVER_EDIT_STEPS.TOPIC}
+          of={PUBLIC_COVER_EDIT_STEPS.total}
+        />
       </View>
       <TopicEditor
         selectedTopicIds={selectedTopicIds}
