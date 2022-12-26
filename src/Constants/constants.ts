@@ -12,3 +12,19 @@ export const TOPIC_CATEGORY = [
     key: 'KNOWLEDGE_ETC',
   },
 ];
+
+export const MAX_PERSONALITY_COUNT = 12;
+export const MAX_TOPIC_COUNT = 10;
+
+export const PUBLIC_COVER_EDIT_STEPS = {
+  total: 3,
+  TOPIC: 1,
+  PERSONALITY: 2,
+  STAMP: 3,
+};
+
+export const PRIVATE_COVER_EDIT_STEPS = {
+  total: 2,
+  DELIVERY: 1,
+  STAMP: 2,
+};

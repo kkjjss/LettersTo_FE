@@ -1,5 +1,12 @@
 import React from 'react';
-import {Image, ImageBackground, ScrollView, Text, View} from 'react-native';
+import {
+  Image,
+  ImageBackground,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 import useStore from '../../Store/store';
 import {TopicItem} from '../TopicItem';
@@ -50,56 +57,25 @@ export const LetterCoverPreview = React.memo(() => {
   return (
     <LinearGradient
       colors={[GRADIENT_COLORS[letter?.paperColor ?? 'PINK'], 'white']}
-      style={{
-        width: SCREEN_WIDTH - 80,
-        height: undefined,
-        aspectRatio: 295 / 212,
-        borderColor: '#0000cc',
-        borderWidth: 1,
-        borderRadius: 10,
-        padding: 16,
-        justifyContent: 'space-between',
-      }}>
-      <View
-        style={{
-          flexDirection: 'row',
-        }}>
-        <View style={{flex: 173, flexWrap: 'wrap', marginRight: 16}}>
-          <Text
-            style={{
-              width: '100%',
-              fontSize: 15,
-              fontFamily: 'Galmuri11',
-              color: '#0000CC',
-              lineHeight: 30,
-            }}>
-            ⌜{letter?.title}⌟︎︎
-          </Text>
+      style={[
+        {
+          width: SCREEN_WIDTH - 80,
+        },
+        styles.container,
+      ]}>
+      <View style={styles.topArea}>
+        <View style={styles.title}>
+          <Text style={styles.titleText}>⌜{letter?.title}⌟︎︎</Text>
           <Image
             source={require('../../Assets/From..png')}
-            style={{height: 22, width: 48, resizeMode: 'contain'}}
+            style={styles.From}
           />
-          <Text
-            style={{
-              marginLeft: 30,
-              fontSize: 15,
-              fontFamily: 'Galmuri11',
-              color: '#0000CC',
-              lineHeight: 30,
-            }}>
-            {userInfo?.nickname}
-          </Text>
+          <Text style={styles.fromText}>{userInfo?.nickname}</Text>
         </View>
         <View style={{flex: 74}}>
           <ImageBackground
             source={require('../../Assets/stamp.png')}
-            style={{
-              width: 74,
-              height: undefined,
-              aspectRatio: 94 / 116,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
+            style={styles.stampBg}>
             <SelectedStampImage />
           </ImageBackground>
         </View>
@@ -108,15 +84,14 @@ export const LetterCoverPreview = React.memo(() => {
         <ScrollView
           horizontal
           alwaysBounceHorizontal={false}
-          showsHorizontalScrollIndicator={false}>
+          showsHorizontalScrollIndicator={false}
+          style={styles.topics}>
           {topics
             .filter(({id}) => cover.topicIds.includes(id))
             .map(topic => (
               <TopicItem key={topic.id} topic={topic} parent="preview" />
             ))}
         </ScrollView>
-      </View>
-      <View>
         <ScrollView
           horizontal
           alwaysBounceHorizontal={false}
@@ -134,4 +109,44 @@ export const LetterCoverPreview = React.memo(() => {
       </View>
     </LinearGradient>
   );
+});
+
+const styles = StyleSheet.create({
+  container: {
+    height: undefined,
+    aspectRatio: 295 / 212,
+    borderColor: '#0000cc',
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 16,
+    justifyContent: 'space-between',
+  },
+  topArea: {
+    flexDirection: 'row',
+  },
+  title: {flex: 173, flexWrap: 'wrap', marginRight: 16},
+  titleText: {
+    width: '100%',
+    fontSize: 15,
+    fontFamily: 'Galmuri11',
+    color: '#0000CC',
+    lineHeight: 30,
+  },
+  From: {height: 22, width: 48, resizeMode: 'contain'},
+  fromText: {
+    marginLeft: 30,
+    fontSize: 15,
+    fontFamily: 'Galmuri11',
+    color: '#0000CC',
+    lineHeight: 30,
+  },
+  tagList: {flexDirection: 'row', marginTop: 8},
+  stampBg: {
+    width: 74,
+    height: undefined,
+    aspectRatio: 94 / 116,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  topics: {marginBottom: 8},
 });

@@ -134,65 +134,82 @@ export const EnvelopeModal = ({
               <LinearGradient
                 locations={[0, 0.5]}
                 colors={[GRADIENT_COLORS[paperColor], 'white']}
-                style={{flex: 1}}
-              >
+                style={{flex: 1}}>
                 {/* 우표 */}
                 {deliveryType === 'STANDARD' ? (
                   <View style={styles.stampArea}>
                     <ImageBackground
                       source={require('../Assets/bg_stamp.png')}
-                      style={styles.stampBg}
-                    >
+                      style={styles.stampBg}>
                       <Image style={styles.stampImg} source={STAMPS[stampId]} />
-                      <Image style={styles.stampType} source={require('../Assets/stamp_standard.png')} />
+                      <Image
+                        style={styles.stampType}
+                        source={require('../Assets/stamp_standard.png')}
+                      />
                     </ImageBackground>
                   </View>
                 ) : deliveryType === 'EXPRESS' ? (
                   <View style={styles.stampArea}>
                     <ImageBackground
                       source={require('../Assets/bg_stamp.png')}
-                      style={[styles.stampBg, {position: 'absolute', transform: [{rotate: '10deg'}]}]} />
+                      style={[
+                        styles.stampBg,
+                        {position: 'absolute', transform: [{rotate: '10deg'}]},
+                      ]}
+                    />
                     <ImageBackground
                       source={require('../Assets/bg_stamp.png')}
-                      style={[styles.stampBg, {position: 'absolute', transform: [{rotate: '-5deg'}]}]} />
+                      style={[
+                        styles.stampBg,
+                        {position: 'absolute', transform: [{rotate: '-5deg'}]},
+                      ]}
+                    />
                     <ImageBackground
                       source={require('../Assets/bg_stamp.png')}
-                      style={styles.stampBg}
-                    >
+                      style={styles.stampBg}>
                       <Image style={styles.stampImg} source={STAMPS[stampId]} />
-                      <Image style={styles.stampType} source={require('../Assets/stamp_express.png')} />
+                      <Image
+                        style={styles.stampType}
+                        source={require('../Assets/stamp_express.png')}
+                      />
                     </ImageBackground>
                   </View>
                 ) : (
                   <View style={styles.stampArea}>
                     <ImageBackground
                       source={require('../Assets/bg_stamp.png')}
-                      style={styles.stampBg}
-                    >
+                      style={styles.stampBg}>
                       <Image style={styles.stampImg} source={STAMPS[stampId]} />
                     </ImageBackground>
                   </View>
                 )}
-                <Text
-                  style={styles.title}
-                  numberOfLines={2}
-                >
+                <Text style={styles.title} numberOfLines={2}>
                   ⌜{`${title}` || '무제'}⌟︎︎
                 </Text>
                 <View style={styles.fromArea}>
-                  {
-                    me ? (
-                      <>
-                        <Image style={[styles.fromImg, {width: 25}]} source={require('../Assets/to.png')} />
-                        <Text style={styles.fromText} numberOfLines={1} ellipsizeMode="clip">{`${toNickname}, ${toAddress}`}</Text>
-                      </>
-                    ) : (
-                      <>
-                        <Image style={[styles.fromImg, {width: 48}]} source={require('../Assets/from.png')} />
-                        <Text style={styles.fromText} numberOfLines={1} ellipsizeMode="clip">{`${fromNickname}, ${fromAddress}`}</Text>
-                      </>
-                    )
-                  }
+                  {me ? (
+                    <>
+                      <Image
+                        style={[styles.fromImg, {width: 25}]}
+                        source={require('../Assets/to.png')}
+                      />
+                      <Text
+                        style={styles.fromText}
+                        numberOfLines={1}
+                        ellipsizeMode="clip">{`${toNickname}, ${toAddress}`}</Text>
+                    </>
+                  ) : (
+                    <>
+                      <Image
+                        style={[styles.fromImg, {width: 48}]}
+                        source={require('../Assets/from.png')}
+                      />
+                      <Text
+                        style={styles.fromText}
+                        numberOfLines={1}
+                        ellipsizeMode="clip">{`${fromNickname}, ${fromAddress}`}</Text>
+                    </>
+                  )}
                 </View>
                 {type === 'PUBLIC' && (
                   <View style={styles.tagArea}>
@@ -202,7 +219,9 @@ export const EnvelopeModal = ({
                       showsHorizontalScrollIndicator={false}
                       style={styles.tagList}>
                       {topics?.map((item: string, idx: number) => (
-                        <Text key={idx} style={styles.tagItem}>{item}</Text>
+                        <Text key={idx} style={styles.tagItem}>
+                          {item}
+                        </Text>
                       ))}
                     </ScrollView>
                     <ScrollView
@@ -211,7 +230,9 @@ export const EnvelopeModal = ({
                       showsHorizontalScrollIndicator={false}
                       style={styles.tagList}>
                       {personalities?.map((item: string, idx: number) => (
-                        <Text key={idx} style={styles.tagItem}>{item}</Text>
+                        <Text key={idx} style={styles.tagItem}>
+                          {item}
+                        </Text>
                       ))}
                     </ScrollView>
                   </View>
@@ -219,11 +240,21 @@ export const EnvelopeModal = ({
                 {type === 'DELIVERY' && (
                   <View style={styles.deliveryInfo}>
                     <View style={styles.deliveryAddress}>
-                      <Text style={styles.deliveryAddressText}>{fromAddress}</Text>
-                      <Image style={styles.arrow} resizeMode="contain" source={require('../Assets/arrow.png')} />
-                      <Text style={styles.deliveryAddressText}>{toAddress}</Text>
+                      <Text style={styles.deliveryAddressText}>
+                        {fromAddress}
+                      </Text>
+                      <Image
+                        style={styles.arrow}
+                        resizeMode="contain"
+                        source={require('../Assets/arrow.png')}
+                      />
+                      <Text style={styles.deliveryAddressText}>
+                        {toAddress}
+                      </Text>
                     </View>
-                    <Text style={styles.deliveryDate}>{dateFormatter('yyyy.mm.dd', deliveryDate)}</Text>
+                    <Text style={styles.deliveryDate}>
+                      {dateFormatter('yyyy.mm.dd', deliveryDate)}
+                    </Text>
                   </View>
                 )}
               </LinearGradient>
@@ -262,7 +293,7 @@ const styles = StyleSheet.create({
   openText: {fontFamily: 'Galmuri11', fontSize: 15, color: 'white'},
   openArrow: {width: 144, height: 10, marginTop: 16},
   envelope: {position: 'absolute', top: '40%', width: '80%'},
-  swipe: {position: 'absolute', top:0, left:0, width: '100%', height: '60%'},
+  swipe: {position: 'absolute', top: 0, left: 0, width: '100%', height: '60%'},
   dashBot: {
     position: 'absolute',
     bottom: -1,
@@ -342,9 +373,31 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#0000CC',
   },
-  deliveryInfo: {position: 'absolute', right: 16, bottom: 16, left: 16, height: 70, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 204, 0.05)'},
-  deliveryAddress: {flexDirection: 'row', justifyContent: 'center', alignItems: 'center'},
-  deliveryAddressText: {fontFamily: 'Galmuri11', fontSize: 12, color: '#0000CC'},
+  deliveryInfo: {
+    position: 'absolute',
+    right: 16,
+    bottom: 16,
+    left: 16,
+    height: 70,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 204, 0.05)',
+  },
+  deliveryAddress: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  deliveryAddressText: {
+    fontFamily: 'Galmuri11',
+    fontSize: 12,
+    color: '#0000CC',
+  },
   arrow: {width: 31, height: 7, marginHorizontal: 8, marginTop: 2},
-  deliveryDate: {fontFamily: 'Galmuri11', fontSize: 11, color: '#0000CC', marginTop: 3},
+  deliveryDate: {
+    fontFamily: 'Galmuri11',
+    fontSize: 11,
+    color: '#0000CC',
+    marginTop: 3,
+  },
 });

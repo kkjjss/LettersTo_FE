@@ -31,6 +31,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: 4,
     borderRadius: 11,
+    borderColor: '#0000cc',
+    borderWidth: 1,
   },
   resetButtonText: {
     fontFamily: 'Galmuri11',

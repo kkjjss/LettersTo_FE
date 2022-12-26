@@ -8,6 +8,8 @@ import useStore, {useLetterEditorStore} from '../../../Store/store';
 import {DeliveryLetterCoverPreview} from '../../../Components/LetterEditor/DeliveryLetterCoverPreview';
 import {Header2} from '../../../Components/Headers/Header2';
 import {LinearGradient} from 'expo-linear-gradient';
+import {StepIndicator} from '../../../Components/StepIndicator';
+import {PRIVATE_COVER_EDIT_STEPS} from '../../../Constants/constants';
 
 type Props = NativeStackScreenProps<StackParamsList, 'CoverDeliverySelector'>;
 
@@ -69,6 +71,10 @@ export function CoverDeliverySelector({navigation, route}: Props) {
             <DeliveryLetterCoverPreview />
           )}
         </View>
+        <StepIndicator
+          current={PRIVATE_COVER_EDIT_STEPS.DELIVERY}
+          of={PRIVATE_COVER_EDIT_STEPS.total}
+        />
       </View>
       <View
         style={{

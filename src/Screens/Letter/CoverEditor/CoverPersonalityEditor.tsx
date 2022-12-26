@@ -7,6 +7,8 @@ import {PersonalityEditor} from '../../../Components/LetterEditor/Cover/Personal
 import {LetterCoverPreview} from '../../../Components/LetterEditor/LetterCoverPreview';
 import useStore from '../../../Store/store';
 import {Header2} from '../../../Components/Headers/Header2';
+import {StepIndicator} from '../../../Components/StepIndicator';
+import {PUBLIC_COVER_EDIT_STEPS} from '../../../Constants/constants';
 
 type Props = NativeStackScreenProps<StackParamsList, 'CoverPersonalityEditor'>;
 
@@ -60,6 +62,10 @@ export function CoverPersonalityEditor({navigation}: Props) {
         <View style={styles.cover}>
           <LetterCoverPreview />
         </View>
+        <StepIndicator
+          current={PUBLIC_COVER_EDIT_STEPS.PERSONALITY}
+          of={PUBLIC_COVER_EDIT_STEPS.total}
+        />
       </View>
       <PersonalityEditor
         selectedPersonalityIds={selectedPersonalityIds}

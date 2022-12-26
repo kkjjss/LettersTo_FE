@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {MAX_TOPIC_COUNT} from '../../../Constants/constants';
 import useStore from '../../../Store/store';
 import {ResetButton} from '../../ResetButton';
 import {TopicList} from '../../TopicList';
@@ -20,7 +21,10 @@ export const TopicEditor = ({selectedTopicIds, setSelectedTopicIds}: Props) => {
   const selectTopic = useCallback(
     (topicId: number) => {
       // alert.reset();
-      if (counter < 10 && selectedTopicIds.includes(topicId) === false) {
+      if (
+        counter < MAX_TOPIC_COUNT &&
+        selectedTopicIds.includes(topicId) === false
+      ) {
         setSelectedTopicIds([...selectedTopicIds, topicId]);
       } else if (selectedTopicIds.includes(topicId) === true) {
         setSelectedTopicIds([...selectedTopicIds].filter(e => e !== topicId));
@@ -48,13 +52,7 @@ export const TopicEditor = ({selectedTopicIds, setSelectedTopicIds}: Props) => {
   }, [setSelectedTopicIds, userInfo]);
 
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: 'white',
-        borderTopColor: '#0000cc',
-        borderTopWidth: 1,
-      }}>
+    <View style={styles.container}>
       <View style={styles.titleBox}>
         <View style={styles.titleWrap}>
           <Text style={styles.titleText}>나의 관심사를</Text>
@@ -62,7 +60,9 @@ export const TopicEditor = ({selectedTopicIds, setSelectedTopicIds}: Props) => {
         </View>
         <View style={styles.counterWrap}>
           <ResetButton reset={reset} />
-          <Text style={styles.counter}>{counter} / 10</Text>
+          <Text style={styles.counter}>
+            {counter} / {MAX_TOPIC_COUNT}
+          </Text>
         </View>
       </View>
       <ScrollView alwaysBounceVertical={false} style={[styles.topicBox]}>
@@ -79,6 +79,12 @@ export const TopicEditor = ({selectedTopicIds, setSelectedTopicIds}: Props) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+    borderTopColor: '#0000cc',
+    borderTopWidth: 1,
+  },
   titleBox: {
     marginVertical: 16,
     flexDirection: 'row',

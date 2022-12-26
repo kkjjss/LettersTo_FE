@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   Image,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 import {getPublicLetters} from '../../APIs/letter';
@@ -28,35 +29,25 @@ export function Home({navigation}: Props) {
   const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
   const {userInfo} = useStore();
 
-  type StampType = {
-    [key: number]: any;
-  };
-  const STAMPS: StampType = {
-    1: require('../../Assets/stamp_sample/1.jpg'),
-    2: require('../../Assets/stamp_sample/2.jpg'),
-    3: require('../../Assets/stamp_sample/3.jpg'),
-    4: require('../../Assets/stamp_sample/4.jpg'),
-    5: require('../../Assets/stamp_sample/5.jpg'),
-    6: require('../../Assets/stamp_sample/6.jpg'),
-  };
-
   // 공개 편지 목록
   const [publicLetters, setPublicLetters] = useState<PublicLetters | []>([]);
   const [currentCursor, setCurrentCursor] = useState<number>();
+  const [loading, setLoading] = useState<boolean>(true);
+
   const getPublicLettersInit = () => {
-    setRefreshing(true);
     try {
       getPublicLetters().then(data => {
         const {content, cursor} = data;
         setPublicLetters(content);
         setCurrentCursor(cursor);
-        setRefreshing(false);
+        setLoading(false);
       });
     } catch (error: any) {
       console.error(error.message);
       Alert.alert('error', error.message);
     }
   };
+
   useEffect(() => {
     getPublicLettersInit();
   }, []);
@@ -161,6 +152,17 @@ export function Home({navigation}: Props) {
     </View>
   );
 
+  const Loading = () => (
+    <View
+      style={{
+        height: SCREEN_HEIGHT,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+      <ActivityIndicator size={'large'} />
+    </View>
+  );
+
   return (
     <LinearGradient
       colors={['white', '#FFFFCC']}
@@ -209,7 +211,7 @@ export function Home({navigation}: Props) {
       </LinearGradient>
       <FlatList
         ref={publicLetterListRef}
-        ListEmptyComponent={Empty}
+        ListEmptyComponent={loading ? Loading : Empty}
         onScroll={handleScroll}
         onEndReached={handleEndReached}
         refreshing={refreshing}

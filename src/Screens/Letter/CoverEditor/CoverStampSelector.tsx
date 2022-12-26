@@ -8,6 +8,7 @@ import {LetterCoverPreview} from '../../../Components/LetterEditor/LetterCoverPr
 import useStore, {useLetterEditorStore} from '../../../Store/store';
 import {DeliveryLetterCoverPreview} from '../../../Components/LetterEditor/DeliveryLetterCoverPreview';
 import {Header2} from '../../../Components/Headers/Header2';
+import {StepIndicator} from '../../../Components/StepIndicator';
 
 type Props = NativeStackScreenProps<StackParamsList, 'CoverStampSelector'>;
 
@@ -60,6 +61,13 @@ export function CoverStampSelector({navigation, route}: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setDeliveryLetterData, selectedStampId, setCoverStampId]);
 
+  const step = useMemo(() => {
+    if (!route.params?.reply) {
+      return 3;
+    }
+    return 2;
+  }, [route.params?.reply]);
+
   return (
     <View style={{flex: 1}}>
       <View
@@ -83,6 +91,7 @@ export function CoverStampSelector({navigation, route}: Props) {
             <DeliveryLetterCoverPreview />
           )}
         </View>
+        <StepIndicator current={step} of={step} />
       </View>
       <StampSelector
         stampQuantity={stampQuantity}
