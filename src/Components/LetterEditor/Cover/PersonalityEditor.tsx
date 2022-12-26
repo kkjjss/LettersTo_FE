@@ -5,6 +5,7 @@ import useStore from '../../../Store/store';
 import {SCREEN_HEIGHT} from '../../../Constants/screen';
 import {PersonalityList} from '../../PersonalityList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {MAX_PERSONALITY_COUNT} from '../../../Constants/constants';
 
 type Props = {
   selectedPersonalityIds: number[];
@@ -28,7 +29,7 @@ export function PersonalityEditor({
     (personalityId: number) => {
       // alert.reset();
       if (
-        counter < 10 &&
+        counter < MAX_PERSONALITY_COUNT &&
         selectedPersonalityIds.includes(personalityId) === false
       ) {
         setSelectedPersonalityIds([...selectedPersonalityIds, personalityId]);
@@ -74,7 +75,9 @@ export function PersonalityEditor({
         </View>
         <View style={styles.counterWrap}>
           <ResetButton reset={reset} />
-          <Text style={styles.counter}>{counter} / 10</Text>
+          <Text style={styles.counter}>
+            {counter} / {MAX_PERSONALITY_COUNT}
+          </Text>
         </View>
       </View>
 
