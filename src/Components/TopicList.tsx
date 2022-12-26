@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
   topicWrap: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    marginBottom: 12,
   },
   category: {
     fontFamily: 'Galmuri11',
