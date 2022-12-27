@@ -92,7 +92,12 @@ const styles = StyleSheet.create({
     height: 100,
     justifyContent: 'center',
   },
-  titleText: {fontSize: 18, fontFamily: 'Galmuri11', color: '#0000cc'},
+  titleText: {
+    fontSize: 18,
+    fontFamily: 'Galmuri11',
+    color: '#0000cc',
+    marginTop: 8,
+  },
   counterWrap: {alignItems: 'center', flexDirection: 'row'},
   counter: {
     width: 35,
