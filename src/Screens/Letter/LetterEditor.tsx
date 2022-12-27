@@ -429,12 +429,14 @@ export function LetterEditor({navigation, route}: Props) {
           </View>
 
           <View style={styles.bottom}>
-            <ImagePicker
-              images={images}
-              loading={isLoadingImage}
-              deleteImage={deleteImage}
-              onShowImageModal={onShowImageModal}
-            />
+            {images.length > 0 && (
+              <ImagePicker
+                images={images}
+                loading={isLoadingImage}
+                deleteImage={deleteImage}
+                onShowImageModal={onShowImageModal}
+              />
+            )}
             <BottomBar
               paddingOn={paddingOn}
               align={align}
