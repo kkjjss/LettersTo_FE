@@ -13,6 +13,7 @@ import {
   Image,
   Alert,
   ActivityIndicator,
+  StatusBar,
 } from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 import {getPublicLetters} from '../../APIs/letter';
@@ -169,6 +170,7 @@ export function Home({navigation}: Props) {
       locations={[0.8, 1]}
       style={styles.container}>
       {/* <SafeAreaView style={styles.container}> */}
+      <StatusBar barStyle={'dark-content'} />
       <LinearGradient
         colors={['#FFCCEE', 'rgba(255, 255, 255, 0)']}
         locations={[0, 1]}

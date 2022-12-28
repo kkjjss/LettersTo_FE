@@ -1,7 +1,14 @@
 import React, {useCallback, useMemo} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import type {StackParamsList} from '../../types/stackParamList';
-import {StyleSheet, Text, ScrollView, View, Alert} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  ScrollView,
+  View,
+  Alert,
+  StatusBar,
+} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useEffect, useState} from 'react';
 import {
@@ -115,6 +122,7 @@ export function ReadLetter({route, navigation}: Props) {
   return (
     <PaperBackgroud paperColor={paperColor} paperStyle={paperStyle}>
       <>
+        <StatusBar barStyle={'dark-content'} />
         <SafeAreaView style={styles.container}>
           <Header2
             title={headerTitle}

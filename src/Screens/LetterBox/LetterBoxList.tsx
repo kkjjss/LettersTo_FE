@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   FlatList,
   Alert,
+  StatusBar,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {LinearGradient} from 'expo-linear-gradient';
@@ -87,7 +88,7 @@ export function LetterBoxList({navigation, onPressHome}: Props) {
       locations={[0, 0.1, 0.8, 1]}
       colors={['#FFCCEE', 'white', 'white', '#FFFFCC']}
       style={styles.container}>
-      {/* <SafeAreaView style={styles.container}> */}
+      <StatusBar barStyle={'dark-content'} />
       <View style={[styles.header, {marginTop: SAFE_AREA_TOP}]}>
         <View style={[styles.headerInner]}>
           <View style={{position: 'absolute', left: 16, flexDirection: 'row'}}>

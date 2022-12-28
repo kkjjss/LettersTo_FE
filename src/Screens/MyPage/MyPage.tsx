@@ -7,6 +7,7 @@ import {
   Pressable,
   Image,
   TouchableOpacity,
+  StatusBar,
 } from 'react-native';
 import type {StackParamsList} from '../../types/stackParamList';
 import {ListItem, ListName} from '../../Components/MyPageList';
@@ -110,6 +111,7 @@ export function MyPage({navigation}: Props) {
 
   return (
     <View style={[styles.container, {paddingTop: SAFE_AREA_TOP}]}>
+      <StatusBar barStyle={'light-content'} />
       <Header2 title="MY" color="white" onPressBack={goBack} />
       <View style={styles.nickname}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>

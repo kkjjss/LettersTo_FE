@@ -9,6 +9,7 @@ import {
   Alert,
   Image,
   Platform,
+  StatusBar,
 } from 'react-native';
 import type {StackParamsList} from '../../types/stackParamList';
 import {LinearGradient} from 'expo-linear-gradient';
@@ -111,6 +112,7 @@ export function Auth({navigation}: Props) {
     <LinearGradient
       colors={['#ffccee', 'white', 'white', 'white', '#ffffcc']}
       style={styles.container}>
+      <StatusBar barStyle={'dark-content'} />
       <SafeAreaView style={styles.container}>
         <View style={styles.titleWrap}>
           <Text style={styles.titleText}>
