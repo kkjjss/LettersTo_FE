@@ -92,6 +92,7 @@ const styles = StyleSheet.create({
     borderColor: '#fff',
   },
   paperStyleName: {
+    marginTop: 16,
     textAlign: 'center',
     fontFamily: 'Galmuri11',
     fontSize: 14,

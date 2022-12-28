@@ -1,5 +1,5 @@
 import React from 'react';
-import {ScrollView, StyleSheet} from 'react-native';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import {PAPER_COLORS} from '../../../Constants/letter';
 import {PaperColor} from '../../../types/types';
 import {PaperColorButton} from './PaperColorButton';
@@ -12,24 +12,29 @@ type Props = {
 export const PaperColorSelector = React.memo(
   ({paperColor, setPaperColor}: Props) => {
     return (
-      <ScrollView
-        horizontal
-        alwaysBounceHorizontal={false}
-        showsHorizontalScrollIndicator={false}
-        style={styles.paperColorSelector}>
-        {(Object.keys(PAPER_COLORS) as PaperColor[]).map((color, index) => (
-          <PaperColorButton
-            key={index}
-            color={color}
-            paperColor={paperColor}
-            setPaperColor={setPaperColor}
-          />
-        ))}
-      </ScrollView>
+      <View style={{height: 70}}>
+        <ScrollView
+          horizontal
+          alwaysBounceHorizontal={false}
+          showsHorizontalScrollIndicator={false}
+          style={styles.paperColorSelector}>
+          {(Object.keys(PAPER_COLORS) as PaperColor[]).map((color, index) => (
+            <PaperColorButton
+              key={index}
+              color={color}
+              paperColor={paperColor}
+              setPaperColor={setPaperColor}
+            />
+          ))}
+        </ScrollView>
+      </View>
     );
   },
 );
 
 const styles = StyleSheet.create({
-  paperColorSelector: {paddingVertical: 16, marginHorizontal: 16},
+  paperColorSelector: {
+    paddingVertical: 16,
+    marginHorizontal: 16,
+  },
 });
