@@ -109,15 +109,14 @@ export function Auth({navigation}: Props) {
   }, []);
 
   return (
-    <LinearGradient
-      colors={['#ffccee', 'white', 'white', 'white', '#ffffcc']}
-      style={styles.container}>
-      <StatusBar barStyle={'dark-content'} />
+    <View style={styles.container}>
+      <StatusBar barStyle={'light-content'} />
       <SafeAreaView style={styles.container}>
-        <View style={styles.titleWrap}>
-          <Text style={styles.titleText}>
-            로그인 및 회원가입 1초 만에 시작하기
-          </Text>
+        <View style={styles.logo}>
+          <Image
+            source={require('../../Assets/logo/logo_L.png')}
+            style={styles.logoImage}
+          />
         </View>
         <View style={styles.buttonWrap}>
           <TouchableWithoutFeedback
@@ -176,18 +175,18 @@ export function Auth({navigation}: Props) {
           </Text>
         </View>
       </SafeAreaView>
-    </LinearGradient>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {flex: 1},
-  titleWrap: {
+  container: {flex: 1, backgroundColor: '#0000CC'},
+  logo: {
     flex: 5,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  titleText: {fontFamily: 'Galmuri11'},
+  logoImage: {height: 220, width: 200},
   buttonWrap: {
     flex: 3,
     justifyContent: 'center',
@@ -220,7 +219,7 @@ const styles = StyleSheet.create({
   bottomText: {
     fontFamily: 'Galmuri11',
     fontSize: 12,
-    color: '#0000cc',
+    color: 'white',
     lineHeight: 17,
   },
   authIcon: {height: 20, width: 20, marginRight: 8},
