@@ -6,6 +6,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {StackParamsList} from '../types/stackParamList';
 import useStore from '../Store/store';
 import {logIn} from '../APIs/member';
+import {sendAttendance} from '../APIs/attendances';
 
 type Props = NativeStackScreenProps<StackParamsList, 'Splash'>;
 
@@ -15,7 +16,7 @@ export function Splash({}: Props) {
   const {setUserInfo, setIsLoggedIn, setIsLoading} = useStore();
 
   useEffect(() => {
-    async function checkForService() {
+    const checkForService = async () => {
       // await AsyncStorage.clear();
       try {
         // 유저 정보 받아옴
@@ -42,6 +43,7 @@ export function Splash({}: Props) {
           });
 
           setIsLoggedIn(true);
+          sendAttendanceOnLaunching();
         }
 
         // 끝나면 로딩 끝
@@ -52,7 +54,11 @@ export function Splash({}: Props) {
         Alert.alert('error', error.message);
         setIsLoading(false);
       }
-    }
+    };
+
+    const sendAttendanceOnLaunching = () => {
+      return sendAttendance();
+    };
 
     checkForService();
   }, [setIsLoading, setIsLoggedIn, setUserInfo]);
