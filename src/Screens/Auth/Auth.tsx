@@ -12,7 +12,6 @@ import {
   StatusBar,
 } from 'react-native';
 import type {StackParamsList} from '../../types/stackParamList';
-import {LinearGradient} from 'expo-linear-gradient';
 import useStore from '../../Store/store';
 import {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
