@@ -1,14 +1,37 @@
-import React from 'react';
-import {Image, Text, View} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Alert, Image, Text, View} from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
-import {useLetterEditorStore} from '../../Store/store';
+import useStore, {useLetterEditorStore} from '../../Store/store';
 import {GRADIENT_COLORS} from '../../Constants/letter';
 import {SCREEN_WIDTH} from '../../Constants/screen';
+import {getCities, getRegions} from '../../APIs/geolocation';
 
 export const DeliveryLetterCoverBackPreview = React.memo(() => {
-  const {deliveryLetter} = useLetterEditorStore();
+  const {deliveryLetter, deliveryLetterTo} = useLetterEditorStore();
+  const {userInfo} = useStore();
 
-  console.log(deliveryLetter.deliveryType);
+  const [fromAddress, setFromAddress] = useState('');
+
+  const getFromAddress = useCallback(async () => {
+    try {
+      if (userInfo?.parentGeolocationId && userInfo.geolocationId) {
+        const userCity = (await getCities(userInfo.parentGeolocationId)).find(
+          city => city.id === userInfo.geolocationId,
+        );
+
+        setFromAddress([userCity?.name].join(''));
+      } else {
+        return '1';
+      }
+    } catch (error: any) {
+      console.error(error.message);
+      Alert.alert('error', error.message);
+    }
+  }, [userInfo]);
+
+  useEffect(() => {
+    getFromAddress();
+  });
 
   return (
     <LinearGradient
@@ -44,7 +67,7 @@ export const DeliveryLetterCoverBackPreview = React.memo(() => {
                     fontSize: 13,
                     color: '#0000cc',
                   }}>
-                  Seoul
+                  {fromAddress}
                 </Text>
                 <Image
                   source={require('../../Assets/arrow.png')}
@@ -60,7 +83,7 @@ export const DeliveryLetterCoverBackPreview = React.memo(() => {
                     fontSize: 13,
                     color: '#0000cc',
                   }}>
-                  Jeju
+                  {deliveryLetterTo?.toAddress.split(' ')[1]}
                 </Text>
               </View>
               <Text
