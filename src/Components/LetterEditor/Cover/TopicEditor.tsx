@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {MAX_TOPIC_COUNT} from '../../../Constants/constants';
+import {MAX_TOPIC_LIMIT} from '../../../Constants/constants';
 import useStore from '../../../Store/store';
 import {ResetButton} from '../../ResetButton';
 import {TopicList} from '../../TopicList';
@@ -22,7 +22,7 @@ export const TopicEditor = ({selectedTopicIds, setSelectedTopicIds}: Props) => {
     (topicId: number) => {
       // alert.reset();
       if (
-        counter < MAX_TOPIC_COUNT &&
+        counter < MAX_TOPIC_LIMIT &&
         selectedTopicIds.includes(topicId) === false
       ) {
         setSelectedTopicIds([...selectedTopicIds, topicId]);
@@ -61,7 +61,7 @@ export const TopicEditor = ({selectedTopicIds, setSelectedTopicIds}: Props) => {
         <View style={styles.counterWrap}>
           <ResetButton reset={reset} />
           <Text style={styles.counter}>
-            {counter} / {MAX_TOPIC_COUNT}
+            {counter} / {MAX_TOPIC_LIMIT}
           </Text>
         </View>
       </View>
@@ -95,7 +95,12 @@ const styles = StyleSheet.create({
     // marginBottom: 30,
     justifyContent: 'flex-end',
   },
-  titleText: {fontSize: 18, fontFamily: 'Galmuri11', color: '#0000cc'},
+  titleText: {
+    fontSize: 18,
+    fontFamily: 'Galmuri11',
+    color: '#0000cc',
+    marginTop: 8,
+  },
   counterWrap: {alignItems: 'center', flexDirection: 'row'},
   counter: {
     width: 48,

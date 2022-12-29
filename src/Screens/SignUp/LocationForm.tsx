@@ -143,7 +143,12 @@ const styles = StyleSheet.create({
     height: 100,
     justifyContent: 'center',
   },
-  titleText: {fontSize: 18, fontFamily: 'Galmuri11', color: '#0000cc'},
+  titleText: {
+    fontSize: 18,
+    fontFamily: 'Galmuri11',
+    color: '#0000cc',
+    marginTop: 8,
+  },
   counterWrap: {flexDirection: 'row', alignItems: 'center'},
   noticeButtonImage: {marginLeft: 3, height: 20, width: 20},
   notice_ios: {

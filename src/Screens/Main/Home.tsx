@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import useStore from '../../Store/store';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import type {StackParamsList} from '../../types/stackParamList';
@@ -13,6 +13,7 @@ import {
   Image,
   Alert,
   ActivityIndicator,
+  StatusBar,
 } from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 import {getPublicLetters} from '../../APIs/letter';
@@ -32,7 +33,7 @@ export function Home({navigation}: Props) {
   // 공개 편지 목록
   const [publicLetters, setPublicLetters] = useState<PublicLetters | []>([]);
   const [currentCursor, setCurrentCursor] = useState<number>();
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const getPublicLettersInit = () => {
     try {
@@ -129,27 +130,30 @@ export function Home({navigation}: Props) {
   };
 
   // cold case
-  const Empty = () => (
-    <View style={styles.emptyArea}>
-      <Image
-        source={require('../../Assets/no_data.png')}
-        style={styles.emptyImage}
-      />
-      <Text style={styles.emptyText}>
-        잘못된 접근/네트워크연결확인{'\n'}잠시 후 다시 시도해주세요.
-      </Text>
-      <Pressable style={styles.emptyBtn} onPress={handleRefresh}>
-        <LinearGradient
-          colors={['#FF6ECE', '#FF3DBD']}
-          style={styles.emptyBtnBg}>
-          <Text style={styles.emptyBtnText}>다시 시도</Text>
-          <Image
-            source={require('../../Assets/refresh.png')}
-            style={styles.emptyBtnIcon}
-          />
-        </LinearGradient>
-      </Pressable>
-    </View>
+  const Empty = useMemo(
+    () => (
+      <View style={[styles.emptyArea, {height: SCREEN_HEIGHT * 0.8}]}>
+        <Image
+          source={require('../../Assets/common/404.png')}
+          style={styles.emptyImage}
+        />
+        <Text style={styles.emptyText}>
+          네트워크 연결이 원활하지 않습니다.{'\n'}잠시 후 다시 시도해주세요.
+        </Text>
+        <Pressable style={styles.emptyBtn} onPress={handleRefresh}>
+          <LinearGradient
+            colors={['#FF6ECE', '#FF3DBD']}
+            style={styles.emptyBtnBg}>
+            <Text style={styles.emptyBtnText}>다시 시도</Text>
+            <Image
+              source={require('../../Assets/refresh.png')}
+              style={styles.emptyBtnIcon}
+            />
+          </LinearGradient>
+        </Pressable>
+      </View>
+    ),
+    [],
   );
 
   const Loading = () => (
@@ -169,6 +173,7 @@ export function Home({navigation}: Props) {
       locations={[0.8, 1]}
       style={styles.container}>
       {/* <SafeAreaView style={styles.container}> */}
+      <StatusBar barStyle={'dark-content'} />
       <LinearGradient
         colors={['#FFCCEE', 'rgba(255, 255, 255, 0)']}
         locations={[0, 1]}
@@ -217,6 +222,7 @@ export function Home({navigation}: Props) {
         refreshing={refreshing}
         onRefresh={handleRefresh}
         data={publicLetters}
+        alwaysBounceVertical={false}
         contentContainerStyle={{paddingVertical: SAFE_AREA_TOP}}
         keyExtractor={item => item.id}
         renderItem={({item, index}) => {
@@ -369,7 +375,6 @@ const styles = StyleSheet.create({
   triangle: {position: 'absolute', bottom: 0, width: 4, height: 5},
   icon: {width: 28, height: 28},
   emptyArea: {
-    height: SCREEN_HEIGHT,
     alignItems: 'center',
     justifyContent: 'center',
   },

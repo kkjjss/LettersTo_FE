@@ -1,7 +1,14 @@
 import React, {useCallback, useMemo} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import type {StackParamsList} from '../../types/stackParamList';
-import {StyleSheet, Text, ScrollView, View, Alert} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  ScrollView,
+  View,
+  Alert,
+  StatusBar,
+} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useEffect, useState} from 'react';
 import {
@@ -95,26 +102,26 @@ export function ReadLetter({route, navigation}: Props) {
   const goBack = useCallback(() => navigation.pop(), [navigation]);
 
   const onPressReply = useCallback(() => {
-    const goToLetterEditor = () => {
-      navigation.navigate('LetterEditor', {
-        reply: route.params.id,
-        to: route.params.to,
-      });
-    };
-
     if (letterContent) {
+      if (letterContent.replied === true) {
+        return Alert.alert('이미 답장하거나 답장할 수 없는 편지입니다.');
+      }
+
       setDeliverLetterTo({
         toNickname: letterContent.fromNickname,
         toAddress: letterContent.fromAddress,
       });
+      navigation.navigate('LetterEditor', {
+        reply: route.params.id,
+        to: route.params.to,
+      });
     }
-
-    goToLetterEditor();
   }, [letterContent, navigation, route.params, setDeliverLetterTo]);
 
   return (
     <PaperBackgroud paperColor={paperColor} paperStyle={paperStyle}>
       <>
+        <StatusBar barStyle={'dark-content'} />
         <SafeAreaView style={styles.container}>
           <Header2
             title={headerTitle}

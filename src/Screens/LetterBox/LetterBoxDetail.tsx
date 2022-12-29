@@ -11,8 +11,9 @@ import {
   TouchableWithoutFeedback,
   FlatList,
   Alert,
+  StatusBar,
 } from 'react-native';
-import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {
   LetterBoxInfo,
   DeliveryLetter,
@@ -28,7 +29,7 @@ import {EnvelopeModal} from '../../Modals/EnvelopeModal';
 type Props = NativeStackScreenProps<StackParamsList, 'LetterBoxDetail'>;
 
 export function LetterBoxDetail({route, navigation}: Props) {
-  const {bottom: SAFE_AREA_BOTTOM} = useSafeAreaInsets();
+  const {top: SAFE_AREA_TOP, bottom: SAFE_AREA_BOTTOM} = useSafeAreaInsets();
 
   // 메인 (편지탐색)
   const goHome = () => {
@@ -132,7 +133,9 @@ export function LetterBoxDetail({route, navigation}: Props) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
+      <StatusBar barStyle={'light-content'} />
+      <View style={{height: SAFE_AREA_TOP, backgroundColor: '#0000cc'}} />
       <Header
         navigation={navigation}
         title={`${info?.fromNickname}와의 사서함`}
@@ -257,7 +260,7 @@ export function LetterBoxDetail({route, navigation}: Props) {
           onOpenLetter={() => goToReadLetter(selectedItem.id)}
         />
       )}
-    </SafeAreaView>
+    </View>
   );
 }
 

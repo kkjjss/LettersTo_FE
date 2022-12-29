@@ -1,6 +1,7 @@
 import {useEffect, useMemo, useRef, useState} from 'react';
 import {Alert, Animated} from 'react-native';
 import {getPersonalities} from '../../APIs/personality';
+import {MAX_PERSONALITY_LIMIT} from '../../Constants/constants';
 import {Personalities} from '../../types/types';
 
 export const usePersonality = () => {
@@ -36,7 +37,7 @@ export const usePersonality = () => {
   const selectPersonality = (personalityId: number) => {
     alert.reset();
     if (
-      counter < 9 &&
+      counter < MAX_PERSONALITY_LIMIT &&
       selectedPersonalityIds.includes(personalityId) === false
     ) {
       setSelectedPersonalityIds([...selectedPersonalityIds, personalityId]);

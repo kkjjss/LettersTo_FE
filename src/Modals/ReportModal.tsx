@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from 'react-native';
 import {ModalHeader} from '../Components/ModalHeader';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -60,6 +61,9 @@ export const ReportModal = ({
       await reportLetter(reportData);
     } catch (error: any) {
       console.error(error);
+    } finally {
+      Alert.alert('신고 접수되었습니다.');
+      hideModal();
     }
   };
 

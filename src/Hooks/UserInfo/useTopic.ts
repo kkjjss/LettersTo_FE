@@ -1,6 +1,7 @@
 import {useEffect, useMemo, useRef, useState} from 'react';
 import {Alert, Animated} from 'react-native';
 import {getTopics} from '../../APIs/topic';
+import {MAX_TOPIC_LIMIT} from '../../Constants/constants';
 import {Topics} from '../../types/types';
 
 export const useTopic = () => {
@@ -30,7 +31,10 @@ export const useTopic = () => {
 
   const selectTopic = (topicId: number) => {
     alert.reset();
-    if (counter < 7 && selectedTopicIds.includes(topicId) === false) {
+    if (
+      counter < MAX_TOPIC_LIMIT &&
+      selectedTopicIds.includes(topicId) === false
+    ) {
       setSelectedTopicIds([...selectedTopicIds, topicId]);
     } else if (selectedTopicIds.includes(topicId) === true) {
       setSelectedTopicIds([...selectedTopicIds].filter(e => e !== topicId));

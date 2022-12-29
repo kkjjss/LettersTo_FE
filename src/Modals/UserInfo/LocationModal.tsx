@@ -187,7 +187,12 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     justifyContent: 'flex-end',
   },
-  titleText: {fontSize: 18, fontFamily: 'Galmuri11', color: '#0000cc'},
+  titleText: {
+    fontSize: 18,
+    fontFamily: 'Galmuri11',
+    color: '#0000cc',
+    marginTop: 8,
+  },
   counterWrap: {flexDirection: 'row', alignItems: 'center'},
   noticeButtonImage: {marginLeft: 3, height: 20, width: 20},
   notice: {

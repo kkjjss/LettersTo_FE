@@ -11,6 +11,7 @@ import {
   Alert,
   KeyboardAvoidingView,
   Platform,
+  StatusBar,
   StyleSheet,
   TextInput,
   View,
@@ -375,99 +376,104 @@ export function LetterEditor({navigation, route}: Props) {
 
   return (
     <PaperBackgroud paperColor={paperColor} paperStyle={paperStyle}>
-      <View style={[styles.container, {paddingTop: SAFE_AREA_TOP}]}>
-        <Header2
-          title={'편지 작성'}
-          onPressBack={goBack}
-          onPressNext={goNext}
-          disableNext={disableNext}
-        />
+      <>
+        <StatusBar barStyle={'dark-content'} />
+        <View style={[styles.container, {paddingTop: SAFE_AREA_TOP}]}>
+          <Header2
+            title={'편지 작성'}
+            onPressBack={goBack}
+            onPressNext={goNext}
+            disableNext={disableNext}
+          />
 
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-          style={{flex: 1, marginTop: 24}}>
-          <View style={{flex: 1}}>
-            <TextInput
-              value={title}
-              onChangeText={setTitle}
-              placeholder={'⌜제목⌟︎'}
-              onFocus={onFocusTitle}
-              onBlur={onFocusOutTitle}
-              autoCorrect={false}
-              showSoftInputOnFocus={!texticonSelectorVisible}
-              ref={titleRef}
-              onSelectionChange={onChangeSelection}
-              placeholderTextColor="#00000066"
-              style={[
-                styles.titleInput,
-                {
-                  textAlign: align,
-                  // textAlign: align.current,
-                },
-              ]}
-            />
-
-            <TextInput
-              value={text}
-              key="text"
-              onChangeText={setText}
-              multiline
-              placeholder="내용"
-              onFocus={onFocusText}
-              autoCorrect={false}
-              ref={textRef}
-              onSelectionChange={onChangeSelection}
-              showSoftInputOnFocus={!texticonSelectorVisible}
-              placeholderTextColor="#00000066"
-              style={[
-                styles.textInput,
-                {
-                  textAlign: align,
-                },
-              ]}
-            />
-          </View>
-
-          <View style={styles.bottom}>
-            <ImagePicker
-              images={images}
-              loading={isLoadingImage}
-              deleteImage={deleteImage}
-              onShowImageModal={onShowImageModal}
-            />
-            <BottomBar
-              paddingOn={paddingOn}
-              align={align}
-              onToggleTextAlign={onToggleTextAlign}
-              onShowPaper={onShowPaper}
-              onShowTexticon={onShowTexticon}
-              pickImage={pickImage}
-            />
-            {paperSelectorVisible && (
-              <PaperSelector
-                setPaperColor={setPaperColor}
-                paperColor={paperColor}
-                setPaperStyle={setPaperStyle}
-                paperStyle={paperStyle}
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+            style={{flex: 1, marginTop: 24}}>
+            <View style={{flex: 1}}>
+              <TextInput
+                value={title}
+                onChangeText={setTitle}
+                placeholder={'⌜제목⌟︎'}
+                onFocus={onFocusTitle}
+                onBlur={onFocusOutTitle}
+                autoCorrect={false}
+                showSoftInputOnFocus={!texticonSelectorVisible}
+                ref={titleRef}
+                onSelectionChange={onChangeSelection}
+                placeholderTextColor="#00000066"
+                style={[
+                  styles.titleInput,
+                  {
+                    textAlign: align,
+                    // textAlign: align.current,
+                  },
+                ]}
               />
-            )}
-            {texticonSelectorVisible && (
-              <TexticonSelector
-                setSelectedCategory={setSelectedCategory}
-                selectedCategory={selectedCategory}
-                onSelectTexticon={setTexticonIntoText}
-              />
-            )}
-          </View>
-        </KeyboardAvoidingView>
 
-        {isImageModalVisible && <ModalBlur />}
-        <ImageModal
-          isImageModalVisible={isImageModalVisible}
-          setImageModalVisible={setImageModalVisible}
-          images={images}
-        />
-      </View>
+              <TextInput
+                value={text}
+                key="text"
+                onChangeText={setText}
+                multiline
+                placeholder="내용"
+                onFocus={onFocusText}
+                autoCorrect={false}
+                ref={textRef}
+                onSelectionChange={onChangeSelection}
+                showSoftInputOnFocus={!texticonSelectorVisible}
+                placeholderTextColor="#00000066"
+                style={[
+                  styles.textInput,
+                  {
+                    textAlign: align,
+                  },
+                ]}
+              />
+            </View>
+
+            <View style={styles.bottom}>
+              {images.length > 0 && (
+                <ImagePicker
+                  images={images}
+                  loading={isLoadingImage}
+                  deleteImage={deleteImage}
+                  onShowImageModal={onShowImageModal}
+                />
+              )}
+              <BottomBar
+                paddingOn={paddingOn}
+                align={align}
+                onToggleTextAlign={onToggleTextAlign}
+                onShowPaper={onShowPaper}
+                onShowTexticon={onShowTexticon}
+                pickImage={pickImage}
+              />
+              {paperSelectorVisible && (
+                <PaperSelector
+                  setPaperColor={setPaperColor}
+                  paperColor={paperColor}
+                  setPaperStyle={setPaperStyle}
+                  paperStyle={paperStyle}
+                />
+              )}
+              {texticonSelectorVisible && (
+                <TexticonSelector
+                  setSelectedCategory={setSelectedCategory}
+                  selectedCategory={selectedCategory}
+                  onSelectTexticon={setTexticonIntoText}
+                />
+              )}
+            </View>
+          </KeyboardAvoidingView>
+
+          {isImageModalVisible && <ModalBlur />}
+          <ImageModal
+            isImageModalVisible={isImageModalVisible}
+            setImageModalVisible={setImageModalVisible}
+            images={images}
+          />
+        </View>
+      </>
     </PaperBackgroud>
   );
 }

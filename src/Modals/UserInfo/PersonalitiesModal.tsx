@@ -148,7 +148,12 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     justifyContent: 'flex-end',
   },
-  titleText: {fontSize: 18, fontFamily: 'Galmuri11', color: '#0000cc'},
+  titleText: {
+    fontSize: 18,
+    fontFamily: 'Galmuri11',
+    color: '#0000cc',
+    marginTop: 8,
+  },
   counterWrap: {alignItems: 'center', flexDirection: 'row'},
   counter: {
     width: 35,

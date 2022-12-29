@@ -1,6 +1,6 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useMemo, useState} from 'react';
-import {Alert, FlatList, StyleSheet, Text, View} from 'react-native';
+import {Alert, FlatList, StatusBar, StyleSheet, Text, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {getNotifications, setNotificationRead} from '../../APIs/notification';
 import {Header2} from '../../Components/Headers/Header2';
@@ -86,6 +86,7 @@ export const Notifications = ({navigation}: Props) => {
 
   return (
     <View style={[styles.container, {paddingTop: SAFE_AREA_TOP}]}>
+      <StatusBar barStyle={'light-content'} />
       <Header2 title={'알림'} color={'white'} onPressBack={onPressBack} />
       <View style={styles.contentContainer}>
         <NotificationSlideSwitch

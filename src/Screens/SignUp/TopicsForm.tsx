@@ -18,6 +18,7 @@ import {ResetButton} from '../../Components/ResetButton';
 import useStore from '../../Store/store';
 import {TopicList} from '../../Components/TopicList';
 import {useTopic} from '../../Hooks/UserInfo/useTopic';
+import {MAX_TOPIC_LIMIT} from '../../Constants/constants';
 
 type Props = NativeStackScreenProps<StackParamsList, 'TopicsForm'>;
 
@@ -53,7 +54,9 @@ export function TopicsForm({navigation}: Props) {
           </View>
           <View style={styles.counterWrap}>
             <ResetButton reset={reset} />
-            <Text style={styles.counter}>{counter} / 7</Text>
+            <Text style={styles.counter}>
+              {counter} / {MAX_TOPIC_LIMIT}
+            </Text>
           </View>
         </View>
         <ScrollView alwaysBounceVertical={false} style={styles.topicBox}>
@@ -86,10 +89,15 @@ const styles = StyleSheet.create({
     height: 100,
     justifyContent: 'center',
   },
-  titleText: {fontSize: 18, fontFamily: 'Galmuri11', color: '#0000cc'},
+  titleText: {
+    fontSize: 18,
+    fontFamily: 'Galmuri11',
+    color: '#0000cc',
+    marginTop: 8,
+  },
   counterWrap: {alignItems: 'center', flexDirection: 'row'},
   counter: {
-    width: 35,
+    width: 50,
     fontSize: 13,
     fontFamily: 'Galmuri11',
     color: '#0000cc',

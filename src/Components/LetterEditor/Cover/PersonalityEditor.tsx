@@ -5,7 +5,7 @@ import useStore from '../../../Store/store';
 import {SCREEN_HEIGHT} from '../../../Constants/screen';
 import {PersonalityList} from '../../PersonalityList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {MAX_PERSONALITY_COUNT} from '../../../Constants/constants';
+import {MAX_PERSONALITY_LIMIT} from '../../../Constants/constants';
 
 type Props = {
   selectedPersonalityIds: number[];
@@ -29,7 +29,7 @@ export function PersonalityEditor({
     (personalityId: number) => {
       // alert.reset();
       if (
-        counter < MAX_PERSONALITY_COUNT &&
+        counter < MAX_PERSONALITY_LIMIT &&
         selectedPersonalityIds.includes(personalityId) === false
       ) {
         setSelectedPersonalityIds([...selectedPersonalityIds, personalityId]);
@@ -76,7 +76,7 @@ export function PersonalityEditor({
         <View style={styles.counterWrap}>
           <ResetButton reset={reset} />
           <Text style={styles.counter}>
-            {counter} / {MAX_PERSONALITY_COUNT}
+            {counter} / {MAX_PERSONALITY_LIMIT}
           </Text>
         </View>
       </View>
@@ -105,7 +105,12 @@ const styles = StyleSheet.create({
     // marginBottom: 30,
     justifyContent: 'flex-end',
   },
-  titleText: {fontSize: 18, fontFamily: 'Galmuri11', color: '#0000cc'},
+  titleText: {
+    fontSize: 18,
+    fontFamily: 'Galmuri11',
+    color: '#0000cc',
+    marginTop: 8,
+  },
   counterWrap: {alignItems: 'center', flexDirection: 'row'},
   counter: {
     width: 48,
