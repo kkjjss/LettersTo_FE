@@ -18,6 +18,7 @@ import useStore from '../../Store/store';
 import {ResetButton} from '../../Components/ResetButton';
 import {PersonalityList} from '../../Components/PersonalityList';
 import {usePersonality} from '../../Hooks/UserInfo/usePersonality';
+import {MAX_PERSONALITY_LIMIT} from '../../Constants/constants';
 
 type Props = NativeStackScreenProps<StackParamsList, 'PersonalityForm'>;
 
@@ -59,7 +60,9 @@ export function PersonalityForm({navigation}: Props) {
           </View>
           <View style={styles.counterWrap}>
             <ResetButton reset={reset} />
-            <Text style={styles.counter}>{counter} / 9</Text>
+            <Text style={styles.counter}>
+              {counter} / {MAX_PERSONALITY_LIMIT}{' '}
+            </Text>
           </View>
         </View>
         <ScrollView alwaysBounceVertical={false} style={styles.personalityBox}>
@@ -100,7 +103,7 @@ const styles = StyleSheet.create({
   },
   counterWrap: {alignItems: 'center', flexDirection: 'row'},
   counter: {
-    width: 35,
+    width: 50,
     fontSize: 13,
     fontFamily: 'Galmuri11',
     color: '#0000cc',

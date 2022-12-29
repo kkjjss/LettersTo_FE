@@ -146,7 +146,7 @@ export function Auth({navigation}: Props) {
               </View>
             </TouchableWithoutFeedback>
           )}
-          <TouchableWithoutFeedback>
+          {/* <TouchableWithoutFeedback>
             <View style={[styles.loginButton, styles.emailLoginButton]}>
               <Image
                 source={require('../../Assets/social/email.png')}
@@ -156,7 +156,7 @@ export function Auth({navigation}: Props) {
                 이메일로 시작하기
               </Text>
             </View>
-          </TouchableWithoutFeedback>
+          </TouchableWithoutFeedback> */}
         </View>
         <View style={styles.bottomWrap}>
           <Text style={styles.bottomText}>

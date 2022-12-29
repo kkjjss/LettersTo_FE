@@ -13,8 +13,8 @@ export const TOPIC_CATEGORY = [
   },
 ];
 
-export const MAX_PERSONALITY_COUNT = 12;
-export const MAX_TOPIC_COUNT = 10;
+export const MAX_PERSONALITY_LIMIT = 12;
+export const MAX_TOPIC_LIMIT = 10;
 
 export const PUBLIC_COVER_EDIT_STEPS = {
   total: 3,
