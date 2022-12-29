@@ -102,21 +102,20 @@ export function ReadLetter({route, navigation}: Props) {
   const goBack = useCallback(() => navigation.pop(), [navigation]);
 
   const onPressReply = useCallback(() => {
-    const goToLetterEditor = () => {
-      navigation.navigate('LetterEditor', {
-        reply: route.params.id,
-        to: route.params.to,
-      });
-    };
-
     if (letterContent) {
+      if (letterContent.replied === true) {
+        return Alert.alert('이미 답장하거나 답장할 수 없는 편지입니다.');
+      }
+
       setDeliverLetterTo({
         toNickname: letterContent.fromNickname,
         toAddress: letterContent.fromAddress,
       });
+      navigation.navigate('LetterEditor', {
+        reply: route.params.id,
+        to: route.params.to,
+      });
     }
-
-    goToLetterEditor();
   }, [letterContent, navigation, route.params, setDeliverLetterTo]);
 
   return (
