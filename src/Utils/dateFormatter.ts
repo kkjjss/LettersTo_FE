@@ -9,3 +9,12 @@ export const dateFormatter = (format: DateFormat, ISO: Date) => {
     return `${year}.${month}.${date}`;
   }
 };
+
+export const subDate = (x: Date, y: Date) => {
+  const millisecond = x.getTime() - y.getTime();
+  const days = Math.floor(millisecond / 1000 / 60 / 60 / 24);
+  const hours = Math.floor((millisecond / 1000 / 60 / 60) % 24);
+  const minutes = Math.floor((millisecond / 1000 / 60) % 24);
+
+  return {days, hours, minutes};
+};

@@ -219,3 +219,10 @@ export interface StampHistory {
 }
 
 export type StampHistories = StampHistory[];
+
+export type DeliveryType = 'STANDARD' | 'EXPRESS';
+
+export interface DeliveryDate {
+  deliveryDate: Date;
+  deliveryType: DeliveryType;
+}

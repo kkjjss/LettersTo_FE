@@ -1,5 +1,4 @@
 import {
-  DeliveryLetterContent,
   DeliveryLetterWriteRequest,
   PublicLetterContent,
   PublicLetters,
@@ -51,4 +50,10 @@ export async function postDeliveryLetter(
 
 export async function getDeliveryLetterContent(id: number) {
   return await instanceWithAuth.post(`/delivery-letters/${id}/open`);
+}
+
+export async function getDeliveryDate(id: number) {
+  return await instanceWithAuth.get(`/letters/${id}/delivery-date`, {
+    deliveryType: 'STANDARD',
+  });
 }

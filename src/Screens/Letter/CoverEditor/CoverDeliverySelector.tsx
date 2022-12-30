@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {StackParamsList} from '../../../types/stackParamList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -10,17 +10,20 @@ import {Header2} from '../../../Components/Headers/Header2';
 import {LinearGradient} from 'expo-linear-gradient';
 import {StepIndicator} from '../../../Components/StepIndicator';
 import {PRIVATE_COVER_EDIT_STEPS} from '../../../Constants/constants';
+import {getDeliveryDate} from '../../../APIs/letter';
+import {DeliveryType} from '../../../types/types';
+import {subDate} from '../../../Utils/dateFormatter';
 
 type Props = NativeStackScreenProps<StackParamsList, 'CoverDeliverySelector'>;
 
 export function CoverDeliverySelector({navigation, route}: Props) {
+  const [deliveryType, setDeliveryType] = useState<DeliveryType>('STANDARD');
+  const [standardDeliveryDateString, setStandardDeliveryDate] = useState<string>();
+
   const {userInfo} = useStore();
+  const {deliveryLetter} = useLetterEditorStore();
 
   const stampQuantity = userInfo?.stampQuantity ?? 0;
-
-  const [deliveryType, setDeliveryType] = useState<
-    'NONE' | 'STANDARD' | 'EXPRESS'
-  >('STANDARD');
 
   const {setDeliveryLetterData} = useLetterEditorStore();
 
@@ -47,6 +50,28 @@ export function CoverDeliverySelector({navigation, route}: Props) {
       to: route.params.to,
     });
   };
+
+  useEffect(() => {
+    const getStandardDeliveryDate = async () => {
+      if (deliveryLetter.id) {
+        const {deliveryDate} = await getDeliveryDate(deliveryLetter?.id);
+        const {days, hours, minutes} = subDate(
+          new Date(deliveryDate),
+          new Date(),
+        );
+
+        let dateString = '';
+        if (days > 0) dateString = days + '일 ';
+        if (hours > 0) dateString += hours + '시간 ';
+        if (minutes > 0) dateString += minutes + '분 ';
+
+        setStandardDeliveryDate(dateString);
+      }
+    };
+
+    getStandardDeliveryDate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <View style={{flex: 1}}>
@@ -176,7 +201,7 @@ export function CoverDeliverySelector({navigation, route}: Props) {
                   fontSize: 15,
                   color: '#0000cc',
                 }}>
-                2일 18시간 40분 후에 도착해요
+                {standardDeliveryDateString}후에 도착해요
               </Text>
             </View>
           </TouchableOpacity>
