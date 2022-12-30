@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import {
   StyleSheet,
   Text,
@@ -33,13 +33,21 @@ export function PublicLetterItem(props: PublicLetterItemProps) {
     [key: number]: any;
   };
   const STAMPS: StampType = {
-    1: require('../Assets/stamp_sample/1.jpg'),
-    2: require('../Assets/stamp_sample/2.jpg'),
-    3: require('../Assets/stamp_sample/3.jpg'),
-    4: require('../Assets/stamp_sample/4.jpg'),
-    5: require('../Assets/stamp_sample/5.jpg'),
-    6: require('../Assets/stamp_sample/6.jpg'),
+    1: require('../Assets/stamp/1.png'),
+    2: require('../Assets/stamp/2.png'),
+    3: require('../Assets/stamp/3.png'),
+    4: require('../Assets/stamp/4.png'),
+    5: require('../Assets/stamp/5.png'),
+    6: require('../Assets/stamp/6.png'),
   };
+
+  const letterTitle = useMemo(() => {
+    if (!title) return '무제';
+    if (title.length > 26) {
+      return `${title.substr(0, 26)}…`;
+    }
+    return title;
+  }, [title]);
 
   return (
     <Pressable
@@ -49,16 +57,16 @@ export function PublicLetterItem(props: PublicLetterItemProps) {
         locations={[0, 0.5]}
         colors={[GRADIENT_COLORS[paperColor], 'white']}
         style={styles.background}>
-        <Text style={styles.title}>⌜{title || '무제'}⌟︎︎</Text>
-        <View style={styles.fromArea}>
-          <Image style={styles.fromImg} source={require('../Assets/from.png')} />
-          <Text style={styles.fromText}>{`${fromNickname}, ${fromAddress}`}</Text>
-        </View>
         <ImageBackground
           source={require('../Assets/bg_stamp.png')}
           style={styles.stampArea}>
           <Image style={styles.stampImg} source={STAMPS[stampId]} />
         </ImageBackground>
+        <Text style={styles.title}>⌜{letterTitle}⌟︎︎</Text>
+        <View style={styles.fromArea}>
+          <Image style={styles.fromImg} source={require('../Assets/from.png')} />
+          <Text style={styles.fromText}>{`${fromNickname}, ${fromAddress}`}</Text>
+        </View>
         <View style={styles.tagArea}>
           <View style={styles.tagList}>
             {topics
