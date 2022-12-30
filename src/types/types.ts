@@ -125,6 +125,7 @@ export interface PublicLetterContent {
   alignType: 'LEFT' | 'CENTER' | 'RIGHT';
   stampId: number;
   replied: boolean;
+  canReply: boolean;
   files: string[];
   createdDate: Date;
 }
@@ -140,6 +141,7 @@ export interface DeliveryLetterContent {
   alignType: 'LEFT' | 'CENTER' | 'RIGHT';
   stampId: number;
   replied: boolean;
+  canReply: boolean;
   files: string[];
   createdDate: Date;
 }
