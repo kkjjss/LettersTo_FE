@@ -44,7 +44,7 @@ export const ImageModal = React.memo(
             showsHorizontalScrollIndicator={false}
             alwaysBounceHorizontal={false}
             pagingEnabled
-            snapToInterval={SCREEN_WIDTH - 100}
+            snapToInterval={SCREEN_WIDTH - 75}
             snapToAlignment="start"
             decelerationRate="fast"
             contentContainerStyle={styles.imageWrap}>
@@ -74,13 +74,13 @@ const styles = StyleSheet.create({
   imageWrap: {
     alignItems: 'center',
     paddingBottom: 28,
-    paddingHorizontal: 48,
+    paddingHorizontal: 37.5,
   },
   image: {
     width: SCREEN_WIDTH - 100,
     minHeight: SCREEN_HEIGHT - 300,
+    marginHorizontal: 12.5,
     resizeMode: 'contain',
-    marginRight: 0,
   },
   paddingBottom: {marginBottom: 40},
 });
