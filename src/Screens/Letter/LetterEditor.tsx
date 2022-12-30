@@ -374,6 +374,11 @@ export function LetterEditor({navigation, route}: Props) {
     [lastestFocus, selection, setCurrentSelection, text, title],
   );
 
+  useEffect(() => {
+    lastestFocus.ref.current.focus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <PaperBackgroud paperColor={paperColor} paperStyle={paperStyle}>
       <>
@@ -400,7 +405,7 @@ export function LetterEditor({navigation, route}: Props) {
                 showSoftInputOnFocus={!texticonSelectorVisible}
                 ref={titleRef}
                 onSelectionChange={onChangeSelection}
-                placeholderTextColor="#00000066"
+                placeholderTextColor="#0000CC66"
                 style={[
                   styles.titleInput,
                   {
@@ -421,7 +426,7 @@ export function LetterEditor({navigation, route}: Props) {
                 ref={textRef}
                 onSelectionChange={onChangeSelection}
                 showSoftInputOnFocus={!texticonSelectorVisible}
-                placeholderTextColor="#00000066"
+                placeholderTextColor="#0000CC66"
                 style={[
                   styles.textInput,
                   {
