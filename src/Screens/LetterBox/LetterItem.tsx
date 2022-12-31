@@ -86,12 +86,23 @@ export function LetterItem(props: LetterItemProps) {
     if (days) {
       result += `${days}일 `;
     }
-    if (days > 0 || hours > 0) {
-      result += `${hours < 10 ? `0${hours}` : hours}시간 `;
+    if (hours) {
+      result += `${hours}시간 `;
     }
-    result += `${minutes < 10 ? `0${minutes}` : minutes}분 후 도착`;
+    if (minutes) {
+      result += `${minutes}분 `;
+    }
+    result += `후 도착`;
     return result;
   }, [deliveryDate]);
+
+  const letterTitle = useMemo(() => {
+    if (!title) return '무제';
+    if (title.length > 26) {
+      return `${title.substr(0, 26)}…`;
+    }
+    return title;
+  }, [title]);
 
   const ArrivedLetter = () => (
     <TouchableOpacity
@@ -153,7 +164,7 @@ export function LetterItem(props: LetterItemProps) {
             </ImageBackground>
           </View>
         )}
-        <Text style={styles.title}>⌜{title || '무제'}⌟︎︎</Text>
+        <Text style={styles.title}>⌜{letterTitle}⌟︎︎</Text>
         <View style={styles.fromArea}>
           {me ? (
             <>
@@ -161,10 +172,7 @@ export function LetterItem(props: LetterItemProps) {
                 style={[styles.fromImg, {width: 25}]}
                 source={require('../../Assets/to.png')}
               />
-              <Text
-                style={styles.fromText}
-                numberOfLines={1}
-                ellipsizeMode="clip">{`${toNickname}, ${toAddress}`}</Text>
+              <Text style={styles.fromText}>{`${toNickname},\n${toAddress}`}</Text>
             </>
           ) : (
             <>
@@ -172,10 +180,7 @@ export function LetterItem(props: LetterItemProps) {
                 style={[styles.fromImg, {width: 48}]}
                 source={require('../../Assets/from.png')}
               />
-              <Text
-                style={styles.fromText}
-                numberOfLines={1}
-                ellipsizeMode="clip">{`${fromNickname}, ${fromAddress}`}</Text>
+              <Text style={styles.fromText}>{`${fromNickname},\n${fromAddress}`}</Text>
             </>
           )}
         </View>
@@ -260,10 +265,9 @@ export function LetterItem(props: LetterItemProps) {
 }
 
 const styles = StyleSheet.create({
-  letterItem: {flex: 1, height: 212},
+  letterItem: {flex: 1, height: 214},
   read: {position: 'absolute', top: 0, left: 0, width: '100%', height: 7},
   background: {
-    overflow: 'hidden',
     flex: 1,
     borderWidth: 1,
     borderColor: '#0000CC',
@@ -283,7 +287,7 @@ const styles = StyleSheet.create({
     marginLeft: 16,
     fontFamily: 'Galmuri11',
     fontSize: 13,
-    lineHeight: 24,
+    lineHeight: 23,
     color: '#0000CC',
   },
   stampArea: {position: 'absolute', bottom: 106, right: 16},
@@ -313,13 +317,13 @@ const styles = StyleSheet.create({
     height: 4,
     marginLeft: -25,
   },
-  fromArea: {position: 'absolute', bottom: 106, left: 16},
+  fromArea: {position: 'absolute', bottom: 90, left: 16},
   fromImg: {height: 22, resizeMode: 'contain'},
   fromText: {
-    height: 20,
     marginLeft: 16,
     fontFamily: 'Galmuri11',
     fontSize: 12,
+    lineHeight: 21.5,
     color: '#0000CC',
   },
   deliveryInfo: {
