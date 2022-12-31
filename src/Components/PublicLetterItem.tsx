@@ -65,7 +65,7 @@ export function PublicLetterItem(props: PublicLetterItemProps) {
         <Text style={styles.title}>⌜{letterTitle}⌟︎︎</Text>
         <View style={styles.fromArea}>
           <Image style={styles.fromImg} source={require('../Assets/from.png')} />
-          <Text style={styles.fromText}>{`${fromNickname}, ${fromAddress}`}</Text>
+          <Text style={styles.fromText}>{`${fromNickname},\n${fromAddress}`}</Text>
         </View>
         <View style={styles.tagArea}>
           <View style={styles.tagList}>
@@ -128,12 +128,13 @@ const styles = StyleSheet.create({
     lineHeight: 23,
     color: '#0000CC',
   },
-  fromArea: {position: 'absolute', bottom: 106, left: 16},
+  fromArea: {position: 'absolute', top: 60, left: 16, width: '60%'},
   fromImg: {width: 48, height: 22, resizeMode: 'contain'},
   fromText: {
     marginLeft: 16,
     fontFamily: 'Galmuri11',
     fontSize: 12,
+    lineHeight: 21.5,
     color: '#0000CC',
   },
   stampArea: {position: 'absolute', top: 16, right: 16, padding: 7},

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useMemo} from 'react';
 import {
   StyleSheet,
   Pressable,
@@ -55,12 +55,12 @@ export const EnvelopeModal = ({
     [key: number]: any;
   };
   const STAMPS: StampType = {
-    1: require('../Assets/stamp_sample/1.jpg'),
-    2: require('../Assets/stamp_sample/2.jpg'),
-    3: require('../Assets/stamp_sample/3.jpg'),
-    4: require('../Assets/stamp_sample/4.jpg'),
-    5: require('../Assets/stamp_sample/5.jpg'),
-    6: require('../Assets/stamp_sample/6.jpg'),
+    1: require('../Assets/stamp/1.png'),
+    2: require('../Assets/stamp/2.png'),
+    3: require('../Assets/stamp/3.png'),
+    4: require('../Assets/stamp/4.png'),
+    5: require('../Assets/stamp/5.png'),
+    6: require('../Assets/stamp/6.png'),
   };
 
   // 애니메이션
@@ -92,6 +92,14 @@ export const EnvelopeModal = ({
     moveUp.reset();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const letterTitle = useMemo(() => {
+    if (!title) return '무제';
+    if (title.length > 26) {
+      return `${title.substr(0, 26)}…`;
+    }
+    return title;
+  }, [title]);
 
   return (
     <Modal
@@ -183,9 +191,7 @@ export const EnvelopeModal = ({
                     </ImageBackground>
                   </View>
                 )}
-                <Text style={styles.title} numberOfLines={2}>
-                  ⌜{`${title}` || '무제'}⌟︎︎
-                </Text>
+                <Text style={styles.title}>⌜{letterTitle}⌟︎︎</Text>
                 <View style={styles.fromArea}>
                   {me ? (
                     <>
@@ -193,10 +199,7 @@ export const EnvelopeModal = ({
                         style={[styles.fromImg, {width: 25}]}
                         source={require('../Assets/to.png')}
                       />
-                      <Text
-                        style={styles.fromText}
-                        numberOfLines={1}
-                        ellipsizeMode="clip">{`${toNickname}, ${toAddress}`}</Text>
+                      <Text style={styles.fromText}>{`${toNickname},\n${toAddress}`}</Text>
                     </>
                   ) : (
                     <>
@@ -204,10 +207,7 @@ export const EnvelopeModal = ({
                         style={[styles.fromImg, {width: 48}]}
                         source={require('../Assets/from.png')}
                       />
-                      <Text
-                        style={styles.fromText}
-                        numberOfLines={1}
-                        ellipsizeMode="clip">{`${fromNickname}, ${fromAddress}`}</Text>
+                      <Text style={styles.fromText}>{`${fromNickname},\n${fromAddress}`}</Text>
                     </>
                   )}
                 </View>
@@ -342,16 +342,16 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontFamily: 'Galmuri11',
     fontSize: 13,
-    lineHeight: 22,
+    lineHeight: 23,
     color: '#0000CC',
   },
-  fromArea: {position: 'absolute', bottom: 106, left: 16},
+  fromArea: {position: 'absolute', top: 50, left: 16, width: '60%'},
   fromImg: {height: 22, resizeMode: 'contain'},
   fromText: {
-    height: 20,
     marginLeft: 16,
     fontFamily: 'Galmuri11',
     fontSize: 12,
+    lineHeight: 21.5,
     color: '#0000CC',
   },
   stampArea: {position: 'absolute', bottom: 106, right: 16},
