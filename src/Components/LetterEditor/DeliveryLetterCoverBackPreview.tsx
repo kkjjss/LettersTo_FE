@@ -4,11 +4,12 @@ import {LinearGradient} from 'expo-linear-gradient';
 import useStore, {useLetterEditorStore} from '../../Store/store';
 import {GRADIENT_COLORS} from '../../Constants/letter';
 import {SCREEN_WIDTH} from '../../Constants/screen';
-import {getCities, getRegions} from '../../APIs/geolocation';
+import {getCities} from '../../APIs/geolocation';
 
 export const DeliveryLetterCoverBackPreview = React.memo(() => {
-  const {deliveryLetter, deliveryLetterTo} = useLetterEditorStore();
   const {userInfo} = useStore();
+  const {deliveryLetter, deliveryLetterTo, standardDeliveryDate} =
+    useLetterEditorStore();
 
   const [fromAddress, setFromAddress] = useState('');
 
@@ -93,7 +94,7 @@ export const DeliveryLetterCoverBackPreview = React.memo(() => {
                   color: '#0000cc',
                   marginTop: 10,
                 }}>
-                1일 20시간 24분 후 도착
+                {standardDeliveryDate}후 도착
               </Text>
             </View>
           </>
@@ -127,7 +128,7 @@ export const DeliveryLetterCoverBackPreview = React.memo(() => {
                     fontSize: 13,
                     color: '#0000cc',
                   }}>
-                  Seoul
+                  {fromAddress}
                 </Text>
                 <Image
                   source={require('../../Assets/arrow.png')}
@@ -143,7 +144,7 @@ export const DeliveryLetterCoverBackPreview = React.memo(() => {
                     fontSize: 13,
                     color: '#0000cc',
                   }}>
-                  Jeju
+                  {deliveryLetterTo?.toAddress.split(' ')[1]}
                 </Text>
               </View>
               <Text

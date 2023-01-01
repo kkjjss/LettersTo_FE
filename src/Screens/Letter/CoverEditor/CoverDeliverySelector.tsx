@@ -12,17 +12,18 @@ import {StepIndicator} from '../../../Components/StepIndicator';
 import {PRIVATE_COVER_EDIT_STEPS} from '../../../Constants/constants';
 import {getDeliveryDate} from '../../../APIs/letter';
 import {DeliveryType} from '../../../types/types';
-import {subDate} from '../../../Utils/dateFormatter';
+// import {subDate} from '../../../Utils/dateFormatter';
 
 type Props = NativeStackScreenProps<StackParamsList, 'CoverDeliverySelector'>;
 
 export function CoverDeliverySelector({navigation, route}: Props) {
   const [deliveryType, setDeliveryType] = useState<DeliveryType>('STANDARD');
-  const [standardDeliveryDateString, setStandardDeliveryDate] =
-    useState<string>();
+  // const [standardDeliveryDate, setStandardDeliveryDate] =
+  //   useState<string>();
 
   const {userInfo} = useStore();
-  const {deliveryLetter} = useLetterEditorStore();
+  const {deliveryLetter, standardDeliveryDate, setStandardDeliveryDate} =
+    useLetterEditorStore();
 
   const stampQuantity = userInfo?.stampQuantity ?? 0;
 
@@ -56,17 +57,7 @@ export function CoverDeliverySelector({navigation, route}: Props) {
     const getStandardDeliveryDate = async () => {
       if (deliveryLetter.id) {
         const {deliveryDate} = await getDeliveryDate(deliveryLetter?.id);
-        const {days, hours, minutes} = subDate(
-          new Date(deliveryDate),
-          new Date(),
-        );
-
-        let dateString = '';
-        if (days > 0) dateString = days + '일 ';
-        if (hours > 0) dateString += hours + '시간 ';
-        if (minutes > 0) dateString += minutes + '분 ';
-
-        setStandardDeliveryDate(dateString);
+        setStandardDeliveryDate(deliveryDate);
       }
     };
 
@@ -202,7 +193,7 @@ export function CoverDeliverySelector({navigation, route}: Props) {
                   fontSize: 15,
                   color: '#0000cc',
                 }}>
-                {standardDeliveryDateString}후에 도착해요
+                {standardDeliveryDate}후에 도착해요
               </Text>
             </View>
           </TouchableOpacity>

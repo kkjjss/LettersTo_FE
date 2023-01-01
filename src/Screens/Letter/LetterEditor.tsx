@@ -70,10 +70,13 @@ export function LetterEditor({navigation, route}: Props) {
 
   const {setDeliveryLetterData} = useLetterEditorStore();
 
-  const disableNext = useMemo(
-    () => String(title).trim() === '' || String(text).trim() === '',
-    [title, text],
-  );
+  const disableNext = useMemo(() => {
+    if (!route.params) {
+      return String(title).trim() === '' || String(text).trim() === '';
+    } else {
+      return String(text).trim() === '';
+    }
+  }, [route.params, title, text]);
 
   const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
 
@@ -113,7 +116,7 @@ export function LetterEditor({navigation, route}: Props) {
 
   const setDeliveryLetterDataOnStore = useCallback(
     (id: number) => {
-      const deliberyLetterData = {
+      const deliveryLetterData = {
         id,
         title: title.replace(/(⌜|⌟︎)/g, ''),
         content: text,
@@ -124,7 +127,7 @@ export function LetterEditor({navigation, route}: Props) {
         stampId: undefined,
       };
 
-      setDeliveryLetterData(deliberyLetterData);
+      setDeliveryLetterData(deliveryLetterData);
     },
     [
       alignType,
@@ -279,8 +282,6 @@ export function LetterEditor({navigation, route}: Props) {
     filename?: string | null,
   ): Promise<string> => {
     const presignUrl = await getImageUploadUrl(filename ?? 'UNKNOWN_FILENAME');
-
-    console.log(presignUrl);
 
     await fetch(presignUrl.uploadUrl, {
       method: 'PUT',
