@@ -15,7 +15,7 @@ import {
   getDeliveryLetterContent,
   getPublicLetterContent,
 } from '../../APIs/letter';
-import {PublicLetterContent} from '../../types/types';
+import {DeliveryLetterContent, PublicLetterContent} from '../../types/types';
 import {PaperBackgroud} from '../../Components/Letter/PaperBackground/PaperBackgroud';
 import {BottomButton} from '../../Components/BottomButton';
 import {dateFormatter} from '../../Utils/dateFormatter';
@@ -26,10 +26,18 @@ import {Header2} from '../../Components/Headers/Header2';
 import {useLetterEditorStore} from '../../Store/store';
 import {ReportModal} from '../../Modals/ReportModal';
 
+const TEXT_ALIGN = {
+  LEFT: 'left',
+  RIGHT: 'right',
+  CENTER: 'center',
+} as const;
+
 type Props = NativeStackScreenProps<StackParamsList, 'ReadLetter'>;
 
 export function ReadLetter({route, navigation}: Props) {
-  const [letterContent, setLetterContent] = useState<PublicLetterContent>();
+  const [letterContent, setLetterContent] = useState<
+    PublicLetterContent | DeliveryLetterContent
+  >();
   const [isImageModalVisible, setImageModalVisible] = useState(false);
   const [isReportModalVisible, setReportModalVisible] = useState(false);
 
@@ -46,6 +54,13 @@ export function ReadLetter({route, navigation}: Props) {
     } else {
       return 'PLAIN';
     }
+  }, [letterContent]);
+
+  const alignType = useMemo(() => {
+    if (letterContent) {
+      return TEXT_ALIGN[letterContent.alignType];
+    }
+    return 'left';
   }, [letterContent]);
 
   const headerTitle = useMemo(
@@ -70,6 +85,7 @@ export function ReadLetter({route, navigation}: Props) {
     const getPublicLetter = async (id: number) => {
       try {
         const data = await getPublicLetterContent(id);
+        console.log('PublicLetterContent:', data);
         setLetterContent(data);
       } catch (error: any) {
         console.error(error.message);
@@ -80,6 +96,7 @@ export function ReadLetter({route, navigation}: Props) {
     const getDeliveryLetter = async (id: number) => {
       try {
         const data = await getDeliveryLetterContent(id);
+        console.log('DeliveryLetterContent:', data);
         setLetterContent(data);
       } catch (error: any) {
         console.error(error.message);
@@ -103,7 +120,7 @@ export function ReadLetter({route, navigation}: Props) {
 
   const onPressReply = useCallback(() => {
     if (letterContent) {
-      if (letterContent.replied === true) {
+      if (letterContent.replied === true || letterContent.canReply === false) {
         return Alert.alert('이미 답장하거나 답장할 수 없는 편지입니다.');
       }
 
@@ -146,6 +163,7 @@ export function ReadLetter({route, navigation}: Props) {
                 fontFamily: 'Galmuri11',
                 color: '#0000cc',
                 paddingTop: 30,
+                textAlign: alignType,
               }}>
               ⌜{letterContent?.title}⌟︎
             </Text>
@@ -156,6 +174,7 @@ export function ReadLetter({route, navigation}: Props) {
                 fontSize: 14,
                 fontFamily: 'Galmuri11',
                 color: '#0000cc',
+                textAlign: alignType,
               }}>
               {letterContent?.content}
             </Text>

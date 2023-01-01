@@ -7,6 +7,7 @@ import {
   PaperStyle,
   DeliveryLetterWriteRequest,
 } from '../types/types';
+import {subDate} from '../Utils/dateFormatter';
 
 interface Store {
   isLoggedIn: boolean;
@@ -206,9 +207,13 @@ interface LetterEditorStore {
       }
     | undefined;
 
+  standardDeliveryDate: string;
+
   setDeliveryLetterData: (value: DeliveryLetterWriteRequest) => void;
 
   setDeliverLetterTo: (value: {toNickname: string; toAddress: string}) => void;
+
+  setStandardDeliveryDate: (value: string) => void;
 
   initializeDeliverLetter: () => void;
 
@@ -230,11 +235,24 @@ export const useLetterEditorStore = create<LetterEditorStore>((set, get) => ({
 
   deliveryLetterTo: undefined,
 
+  standardDeliveryDate: '',
+
   setDeliverLetterTo: (value: {toNickname: string; toAddress: string}) =>
     set(() => ({deliveryLetterTo: value})),
 
   setDeliveryLetterData: (value: DeliveryLetterWriteRequest) =>
     set(state => ({deliveryLetter: {...state.deliveryLetter, ...value}})),
+
+  setStandardDeliveryDate: (deliveryDate: string) => {
+    const {days, hours, minutes} = subDate(new Date(deliveryDate), new Date());
+
+    let dateString = '';
+    if (days > 0) dateString = days + '일 ';
+    if (hours > 0) dateString += hours + '시간 ';
+    if (minutes > 0) dateString += minutes + '분 ';
+
+    set(() => ({standardDeliveryDate: dateString}));
+  },
 
   initializeDeliverLetter: () =>
     set(() => ({

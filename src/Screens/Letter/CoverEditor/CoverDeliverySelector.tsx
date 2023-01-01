@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {StackParamsList} from '../../../types/stackParamList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -10,17 +10,22 @@ import {Header2} from '../../../Components/Headers/Header2';
 import {LinearGradient} from 'expo-linear-gradient';
 import {StepIndicator} from '../../../Components/StepIndicator';
 import {PRIVATE_COVER_EDIT_STEPS} from '../../../Constants/constants';
+import {getDeliveryDate} from '../../../APIs/letter';
+import {DeliveryType} from '../../../types/types';
+// import {subDate} from '../../../Utils/dateFormatter';
 
 type Props = NativeStackScreenProps<StackParamsList, 'CoverDeliverySelector'>;
 
 export function CoverDeliverySelector({navigation, route}: Props) {
+  const [deliveryType, setDeliveryType] = useState<DeliveryType>('STANDARD');
+  // const [standardDeliveryDate, setStandardDeliveryDate] =
+  //   useState<string>();
+
   const {userInfo} = useStore();
+  const {deliveryLetter, standardDeliveryDate, setStandardDeliveryDate} =
+    useLetterEditorStore();
 
   const stampQuantity = userInfo?.stampQuantity ?? 0;
-
-  const [deliveryType, setDeliveryType] = useState<
-    'NONE' | 'STANDARD' | 'EXPRESS'
-  >('STANDARD');
 
   const {setDeliveryLetterData} = useLetterEditorStore();
 
@@ -47,6 +52,18 @@ export function CoverDeliverySelector({navigation, route}: Props) {
       to: route.params.to,
     });
   };
+
+  useEffect(() => {
+    const getStandardDeliveryDate = async () => {
+      if (deliveryLetter.id) {
+        const {deliveryDate} = await getDeliveryDate(deliveryLetter?.id);
+        setStandardDeliveryDate(deliveryDate);
+      }
+    };
+
+    getStandardDeliveryDate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <View style={{flex: 1}}>
@@ -176,7 +193,7 @@ export function CoverDeliverySelector({navigation, route}: Props) {
                   fontSize: 15,
                   color: '#0000cc',
                 }}>
-                2일 18시간 40분 후에 도착해요
+                {standardDeliveryDate}후에 도착해요
               </Text>
             </View>
           </TouchableOpacity>

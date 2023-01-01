@@ -149,21 +149,23 @@ export const ImagePicker = React.memo(
                       height: 55,
                     }}
                   />
-                  <TouchableOpacity
-                    activeOpacity={0.7}
-                    onPress={() => deleteImage(image)}
-                    style={{
-                      position: 'absolute',
-                      backgroundColor: 'white',
-                    }}>
-                    <Image
-                      source={closeButton}
+                  {deleteImage && (
+                    <TouchableOpacity
+                      activeOpacity={0.7}
+                      onPress={() => deleteImage(image)}
                       style={{
-                        height: 16,
-                        width: 16,
-                      }}
-                    />
-                  </TouchableOpacity>
+                        position: 'absolute',
+                        backgroundColor: 'white',
+                      }}>
+                      <Image
+                        source={closeButton}
+                        style={{
+                          height: 16,
+                          width: 16,
+                        }}
+                      />
+                    </TouchableOpacity>
+                  )}
                 </Pressable>
               ))}
           </ScrollView>

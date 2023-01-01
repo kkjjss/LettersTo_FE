@@ -49,6 +49,11 @@ export const DeliveryLetterCoverPreview = React.memo(() => {
 
   const [fromText, setFromText] = useState('');
 
+  const titleText = useMemo(
+    () => deliveryLetter?.title || '무제',
+    [deliveryLetter?.title],
+  );
+
   const getFromAddress = useCallback(async () => {
     try {
       if (userInfo?.parentGeolocationId && userInfo.geolocationId) {
@@ -119,7 +124,7 @@ export const DeliveryLetterCoverPreview = React.memo(() => {
               color: '#0000CC',
               lineHeight: 30,
             }}>
-            ⌜{deliveryLetter?.title}⌟︎︎
+            ⌜{titleText}⌟︎︎
           </Text>
         </View>
         <View style={{flex: 74}}>

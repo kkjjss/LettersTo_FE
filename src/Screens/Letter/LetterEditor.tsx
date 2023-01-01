@@ -70,10 +70,13 @@ export function LetterEditor({navigation, route}: Props) {
 
   const {setDeliveryLetterData} = useLetterEditorStore();
 
-  const disableNext = useMemo(
-    () => String(title).trim() === '' || String(text).trim() === '',
-    [title, text],
-  );
+  const disableNext = useMemo(() => {
+    if (!route.params) {
+      return String(title).trim() === '' || String(text).trim() === '';
+    } else {
+      return String(text).trim() === '';
+    }
+  }, [route.params, title, text]);
 
   const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
 
@@ -113,7 +116,7 @@ export function LetterEditor({navigation, route}: Props) {
 
   const setDeliveryLetterDataOnStore = useCallback(
     (id: number) => {
-      const deliberyLetterData = {
+      const deliveryLetterData = {
         id,
         title: title.replace(/(⌜|⌟︎)/g, ''),
         content: text,
@@ -124,7 +127,7 @@ export function LetterEditor({navigation, route}: Props) {
         stampId: undefined,
       };
 
-      setDeliveryLetterData(deliberyLetterData);
+      setDeliveryLetterData(deliveryLetterData);
     },
     [
       alignType,
@@ -157,6 +160,9 @@ export function LetterEditor({navigation, route}: Props) {
 
   const onFocusOutTitle = () => {
     if (title) {
+      if (title.length > 30) {
+        Alert.alert('글자수 초과', '제목은 최대 30자까지만 작성하실 수 있어요');
+      }
       setTitle('⌜' + title.slice(0, 30) + '⌟︎');
     }
   };
@@ -280,8 +286,6 @@ export function LetterEditor({navigation, route}: Props) {
   ): Promise<string> => {
     const presignUrl = await getImageUploadUrl(filename ?? 'UNKNOWN_FILENAME');
 
-    console.log(presignUrl);
-
     await fetch(presignUrl.uploadUrl, {
       method: 'PUT',
       headers: {
@@ -374,6 +378,11 @@ export function LetterEditor({navigation, route}: Props) {
     [lastestFocus, selection, setCurrentSelection, text, title],
   );
 
+  useEffect(() => {
+    lastestFocus.ref.current.focus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <PaperBackgroud paperColor={paperColor} paperStyle={paperStyle}>
       <>
@@ -400,7 +409,7 @@ export function LetterEditor({navigation, route}: Props) {
                 showSoftInputOnFocus={!texticonSelectorVisible}
                 ref={titleRef}
                 onSelectionChange={onChangeSelection}
-                placeholderTextColor="#00000066"
+                placeholderTextColor="#0000CC66"
                 style={[
                   styles.titleInput,
                   {
@@ -421,7 +430,7 @@ export function LetterEditor({navigation, route}: Props) {
                 ref={textRef}
                 onSelectionChange={onChangeSelection}
                 showSoftInputOnFocus={!texticonSelectorVisible}
-                placeholderTextColor="#00000066"
+                placeholderTextColor="#0000CC66"
                 style={[
                   styles.textInput,
                   {
