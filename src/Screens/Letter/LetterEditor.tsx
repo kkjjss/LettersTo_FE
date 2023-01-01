@@ -160,6 +160,9 @@ export function LetterEditor({navigation, route}: Props) {
 
   const onFocusOutTitle = () => {
     if (title) {
+      if (title.length > 30) {
+        Alert.alert('글자수 초과', '제목은 최대 30자까지만 작성하실 수 있어요');
+      }
       setTitle('⌜' + title.slice(0, 30) + '⌟︎');
     }
   };
