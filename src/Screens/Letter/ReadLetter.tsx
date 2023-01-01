@@ -26,6 +26,12 @@ import {Header2} from '../../Components/Headers/Header2';
 import {useLetterEditorStore} from '../../Store/store';
 import {ReportModal} from '../../Modals/ReportModal';
 
+const TEXT_ALIGN = {
+  LEFT: 'left',
+  RIGHT: 'right',
+  CENTER: 'center',
+} as const;
+
 type Props = NativeStackScreenProps<StackParamsList, 'ReadLetter'>;
 
 export function ReadLetter({route, navigation}: Props) {
@@ -48,6 +54,13 @@ export function ReadLetter({route, navigation}: Props) {
     } else {
       return 'PLAIN';
     }
+  }, [letterContent]);
+
+  const alignType = useMemo(() => {
+    if (letterContent) {
+      return TEXT_ALIGN[letterContent.alignType];
+    }
+    return 'left';
   }, [letterContent]);
 
   const headerTitle = useMemo(
@@ -150,6 +163,7 @@ export function ReadLetter({route, navigation}: Props) {
                 fontFamily: 'Galmuri11',
                 color: '#0000cc',
                 paddingTop: 30,
+                textAlign: alignType,
               }}>
               ⌜{letterContent?.title}⌟︎
             </Text>
@@ -160,6 +174,7 @@ export function ReadLetter({route, navigation}: Props) {
                 fontSize: 14,
                 fontFamily: 'Galmuri11',
                 color: '#0000cc',
+                textAlign: alignType,
               }}>
               {letterContent?.content}
             </Text>

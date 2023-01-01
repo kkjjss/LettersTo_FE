@@ -18,7 +18,8 @@ type Props = NativeStackScreenProps<StackParamsList, 'CoverDeliverySelector'>;
 
 export function CoverDeliverySelector({navigation, route}: Props) {
   const [deliveryType, setDeliveryType] = useState<DeliveryType>('STANDARD');
-  const [standardDeliveryDateString, setStandardDeliveryDate] = useState<string>();
+  const [standardDeliveryDateString, setStandardDeliveryDate] =
+    useState<string>();
 
   const {userInfo} = useStore();
   const {deliveryLetter} = useLetterEditorStore();

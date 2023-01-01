@@ -86,13 +86,15 @@ export type PaperColor =
 
 export type PaperStyle = 'GRID' | 'DOT' | 'PLAIN';
 
+export type AlignType = 'LEFT' | 'CENTER' | 'RIGHT';
+
 export type PublicLetterWriteRequest = {
   title: string;
   content: string;
   paperType: PaperStyle;
   paperColor: PaperColor;
   stampId: number;
-  alignType: 'LEFT' | 'CENTER' | 'RIGHT';
+  alignType: AlignType;
   topics: number[];
   personalities: number[];
   files?: string[];
@@ -107,7 +109,7 @@ export interface PublicLetter {
   personalities: string[];
   paperColor: PaperColor;
   stampId: number;
-  alignType: 'LEFT' | 'CENTER' | 'RIGHT';
+  alignType: AlignType;
   createDate?: Date;
   [key: string]: any;
 }
@@ -122,7 +124,7 @@ export interface PublicLetterContent {
   fromNickname: string;
   paperColor: PaperColor;
   paperType: PaperStyle | 'LINE';
-  alignType: 'LEFT' | 'CENTER' | 'RIGHT';
+  alignType: AlignType;
   stampId: number;
   replied: boolean;
   canReply: boolean;
@@ -138,7 +140,7 @@ export interface DeliveryLetterContent {
   fromNickname: string;
   paperColor: PaperColor;
   paperType: PaperStyle | 'LINE';
-  alignType: 'LEFT' | 'CENTER' | 'RIGHT';
+  alignType: AlignType;
   stampId: number;
   replied: boolean;
   canReply: boolean;
@@ -152,7 +154,7 @@ export interface DeliveryLetterWriteRequest {
   content?: string;
   paperType?: PaperStyle;
   paperColor?: PaperColor;
-  alignType?: 'LEFT' | 'CENTER' | 'RIGHT';
+  alignType?: AlignType;
   stampId?: number;
   files?: string[];
   deliveryType?: 'NONE' | 'STANDARD' | 'EXPRESS';
