@@ -56,6 +56,8 @@ export function LetterEditor({navigation, route}: Props) {
   const [isLoadingImage, setLoadingImage] = useState(false);
   const [isImageModalVisible, setImageModalVisible] = useState(false);
 
+  const [disableNext, setDisableNext] = useState<boolean>(false);
+
   const selection = useRef<Selector>({start: 0, end: 0});
 
   const titleRef = useRef(null);
@@ -70,11 +72,17 @@ export function LetterEditor({navigation, route}: Props) {
 
   const {setDeliveryLetterData} = useLetterEditorStore();
 
-  const disableNext = useMemo(() => {
-    if (!route.params) {
-      return String(title).trim() === '' || String(text).trim() === '';
+  useEffect(() => {
+    if (
+      title.replace(/(⌜|⌟︎)/g, '').length > 30 ||
+      text.length < 100 ||
+      text.length > 1000
+    ) {
+      setDisableNext(true);
+    } else if (!route.params) {
+      setDisableNext(String(title).trim() === '' || String(text).trim() === '');
     } else {
-      return String(text).trim() === '';
+      setDisableNext(String(text).trim() === '');
     }
   }, [route.params, title, text]);
 
@@ -160,11 +168,15 @@ export function LetterEditor({navigation, route}: Props) {
 
   const onFocusOutTitle = () => {
     if (title) {
-      if (title.length > 30) {
-        Alert.alert('글자수 초과', '제목은 최대 30자까지만 작성하실 수 있어요');
-      }
       setTitle('⌜' + title.slice(0, 30) + '⌟︎');
     }
+  };
+
+  const onChangeTitle = (titleTemp: string) => {
+    if (titleTemp.length > 30) {
+      return;
+    }
+    setTitle(titleTemp);
   };
 
   const onChangeSelection = ({
@@ -248,8 +260,6 @@ export function LetterEditor({navigation, route}: Props) {
     let result = await imagePicker.launchImageLibraryAsync({
       allowsMultipleSelection: true,
     });
-
-    console.log(result);
 
     if (!result.cancelled) {
       setLoadingImage(true);
@@ -339,6 +349,15 @@ export function LetterEditor({navigation, route}: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigation, setDeliveryLetterDataOnStore, setLetterData]);
 
+  const onPressNext = useCallback(() => {
+    if (text.length < 100) {
+      return Alert.alert('내용은 최소 100자 이상 입력해 주세요.');
+    } else if (disableNext) {
+      return;
+    }
+    goNext();
+  }, [disableNext, goNext, text]);
+
   useEffect(() => {
     if (Platform.OS === 'ios') {
       const tempText = text;
@@ -391,7 +410,7 @@ export function LetterEditor({navigation, route}: Props) {
           <Header2
             title={'편지 작성'}
             onPressBack={goBack}
-            onPressNext={goNext}
+            onPressNext={onPressNext}
             disableNext={disableNext}
           />
 
@@ -401,7 +420,7 @@ export function LetterEditor({navigation, route}: Props) {
             <View style={{flex: 1}}>
               <TextInput
                 value={title}
-                onChangeText={setTitle}
+                onChangeText={onChangeTitle}
                 placeholder={'⌜제목⌟︎'}
                 onFocus={onFocusTitle}
                 onBlur={onFocusOutTitle}

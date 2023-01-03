@@ -8,12 +8,9 @@ type Props = {
 };
 
 export const NextButton = React.memo(
-  ({onPress: processAndNext, disable}: Props) => {
+  ({onPress: onPressNext, disable}: Props) => {
     return (
-      <TouchableOpacity
-        activeOpacity={0.7}
-        onPress={processAndNext}
-        disabled={disable}>
+      <TouchableOpacity activeOpacity={0.7} onPress={onPressNext}>
         {disable ? (
           <View
             style={{
