@@ -23,7 +23,7 @@ import {ImagePicker} from '../../Components/LetterEditor/ImagePicker';
 import {ImageModal} from '../../Modals/ImageModal';
 import {ModalBlur} from '../../Modals/ModalBlur';
 import {Header2} from '../../Components/Headers/Header2';
-import {useLetterEditorStore} from '../../Store/store';
+import useStore, {useLetterEditorStore} from '../../Store/store';
 import {ReportModal} from '../../Modals/ReportModal';
 
 const TEXT_ALIGN = {
@@ -42,6 +42,7 @@ export function ReadLetter({route, navigation}: Props) {
   const [isReportModalVisible, setReportModalVisible] = useState(false);
 
   const {setDeliverLetterTo} = useLetterEditorStore();
+  const nickname = useStore(state => state.userInfo?.nickname);
 
   const paperColor = useMemo(
     () => letterContent?.paperColor ?? 'PINK',
@@ -85,7 +86,7 @@ export function ReadLetter({route, navigation}: Props) {
     const getPublicLetter = async (id: number) => {
       try {
         const data = await getPublicLetterContent(id);
-        console.log('PublicLetterContent:', data);
+        // console.log('PublicLetterContent:', data);
         setLetterContent(data);
       } catch (error: any) {
         console.error(error.message);
@@ -96,7 +97,7 @@ export function ReadLetter({route, navigation}: Props) {
     const getDeliveryLetter = async (id: number) => {
       try {
         const data = await getDeliveryLetterContent(id);
-        console.log('DeliveryLetterContent:', data);
+        // console.log('DeliveryLetterContent:', data);
         setLetterContent(data);
       } catch (error: any) {
         console.error(error.message);
@@ -118,10 +119,28 @@ export function ReadLetter({route, navigation}: Props) {
 
   const goBack = useCallback(() => navigation.pop(), [navigation]);
 
+  const alertButtonOK = [{text: '확인', onPress: () => navigation.pop()}];
+
   const onPressReply = useCallback(() => {
     if (letterContent) {
-      if (letterContent.replied === true || letterContent.canReply === false) {
-        return Alert.alert('이미 답장하거나 답장할 수 없는 편지입니다.');
+      if (letterContent.fromNickname === nickname) {
+        return Alert.alert(
+          '내가 작성한 편지에요. 다른 편지에 답장해 보세요.',
+          undefined,
+          alertButtonOK,
+        );
+      } else if (letterContent.replied === true) {
+        return Alert.alert(
+          '이미 답장한 편지에요. 다른 편지들을 보러갈까요?',
+          undefined,
+          alertButtonOK,
+        );
+      } else if (letterContent.canReply === false) {
+        return Alert.alert(
+          '답장할 수 없는 편지입니다.',
+          undefined,
+          alertButtonOK,
+        );
       }
 
       setDeliverLetterTo({
