@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import {TouchableWithoutFeedback, View, Text} from 'react-native';
 import {Notification} from '../../types/types';
+import {subDate} from '../../Utils/dateFormatter';
 import {Avatar} from '../Avatar/Avatar';
 
 type Props = {
@@ -9,6 +10,22 @@ type Props = {
 };
 
 export const NotificationItem = ({notification, onPress}: Props) => {
+  const notifiedDate = useMemo(() => {
+    const {days, hours, minutes} = subDate(
+      new Date(),
+      new Date(notification.createdDate),
+    );
+
+    if (days > 0) {
+      return days + '일 전';
+    } else if (hours > 0) {
+      return hours + '시간 전';
+    } else if (minutes > 0) {
+      return minutes + '분 전';
+    } else {
+      return '방금';
+    }
+  }, [notification]);
   return (
     <TouchableWithoutFeedback onPress={onPress(notification)}>
       <View
@@ -31,7 +48,7 @@ export const NotificationItem = ({notification, onPress}: Props) => {
             fontSize: 12,
             color: '#0000cc',
           }}>
-          방금
+          {notifiedDate}
         </Text>
         <Avatar notificationType={notification.type} />
         <View style={{marginLeft: 12, marginRight: 24}}>

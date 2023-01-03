@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React from 'react';
+import React, {useCallback} from 'react';
 import {Alert, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {
@@ -19,6 +19,7 @@ import {
   DeliveryLetterWriteRequest,
   PublicLetterWriteRequest,
 } from '../../types/types';
+import {showToast} from '../../Components/Toast/toast';
 
 type Props = NativeStackScreenProps<StackParamsList, 'LetterComplete'>;
 
@@ -28,7 +29,7 @@ export const LetterComplete = ({navigation, route}: Props) => {
   const {cover, letter} = useStore();
   const {deliveryLetter} = useLetterEditorStore();
 
-  const sendPublicLetter = async () => {
+  const sendPublicLetter = useCallback(async () => {
     if (cover.stamp && letter) {
       try {
         const letterData: PublicLetterWriteRequest = {
@@ -44,16 +45,16 @@ export const LetterComplete = ({navigation, route}: Props) => {
         };
 
         await postPublicLetter(letterData);
-
+        showToast('편지 작성이 완료되었습니다!');
         navigation.navigate('Main');
       } catch (error: any) {
         console.error(error.message);
         Alert.alert('error', error.message);
       }
     }
-  };
+  }, [cover.personalityIds, cover.stamp, cover.topicIds, letter, navigation]);
 
-  const sendDeliveryLetter = async () => {
+  const sendDeliveryLetter = useCallback(async () => {
     try {
       const letterData: DeliveryLetterWriteRequest = {
         ...deliveryLetter,
@@ -64,20 +65,21 @@ export const LetterComplete = ({navigation, route}: Props) => {
       } else if (route.params?.to === 'DELIVERY') {
         await postDeliveryLetter(letterData);
       }
+      showToast('편지 작성이 완료되었습니다!');
       navigation.navigate('Main');
     } catch (error: any) {
       console.error(error.message);
       Alert.alert('error', error.message);
     }
-  };
+  }, [deliveryLetter, navigation, route.params?.to]);
 
-  const sendLetter = () => {
+  const sendLetter = useCallback(() => {
     if (route.params) {
       sendDeliveryLetter();
     } else {
       sendPublicLetter();
     }
-  };
+  }, [route.params, sendDeliveryLetter, sendPublicLetter]);
 
   return (
     <View style={{backgroundColor: '#ffccee', flex: 1}}>

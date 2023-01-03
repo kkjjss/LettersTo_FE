@@ -76,6 +76,7 @@ export function Auth({navigation}: Props) {
       if (appleAuth.isSupported) {
         const appleAuthRequestResponse = await appleAuth.performRequest({
           requestedOperation: appleAuth.Operation.LOGIN,
+          requestedScopes: [appleAuth.Scope.EMAIL],
         });
 
         if (!appleAuthRequestResponse.identityToken) {
@@ -146,17 +147,6 @@ export function Auth({navigation}: Props) {
               </View>
             </TouchableWithoutFeedback>
           )}
-          {/* <TouchableWithoutFeedback>
-            <View style={[styles.loginButton, styles.emailLoginButton]}>
-              <Image
-                source={require('../../Assets/social/email.png')}
-                style={styles.authIcon}
-              />
-              <Text style={[styles.loginText, styles.emailLoginText]}>
-                이메일로 시작하기
-              </Text>
-            </View>
-          </TouchableWithoutFeedback> */}
         </View>
         <View style={styles.bottomWrap}>
           <Text style={styles.bottomText}>

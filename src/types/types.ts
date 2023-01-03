@@ -208,6 +208,7 @@ export interface Notification {
   type: 'STAMP' | 'LETTER';
   intent: string;
   read: boolean;
+  createdDate: Date;
 }
 
 export type NotificationList = Notification[];
