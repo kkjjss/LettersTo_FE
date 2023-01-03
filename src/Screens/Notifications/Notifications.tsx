@@ -95,16 +95,6 @@ export const Notifications = ({navigation}: Props) => {
         />
         {(excludeReadNotifications === true && notificationList.length > 0) ||
         (excludeReadNotifications === false && notificationList.length > 0) ? (
-          // <ScrollView contentContainerStyle={{paddingBottom: SAFE_AREA_BOTTOM}}>
-          //   <View style={styles.hr} />
-          //   {notificationList.map(notification => (
-          //     <NotificationItem
-          //       key={notification.id}
-          //       notification={notification}
-          //       onPress={onPressNotification}
-          //     />
-          //   ))}
-          // </ScrollView>
           <FlatList
             data={notifications}
             contentContainerStyle={{paddingBottom: SAFE_AREA_BOTTOM}}
