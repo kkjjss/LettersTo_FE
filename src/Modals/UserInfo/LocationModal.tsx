@@ -53,11 +53,11 @@ export function LocationModal({isModalVisible, setModalVisible}: Props) {
         };
         await patchUserInfo(newUserInfo);
       }
-
-      hideModal();
     } catch (error: any) {
       console.error(error.message);
-      Alert.alert('error', error.message);
+      Alert.alert('추가 변경은 일주일 후에 가능해요');
+    } finally {
+      hideModal();
     }
   };
 
