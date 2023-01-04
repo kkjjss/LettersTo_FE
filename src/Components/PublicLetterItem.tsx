@@ -6,6 +6,7 @@ import {
   View,
   Image,
   ImageBackground,
+  Platform,
 } from 'react-native';
 import {PublicLetter} from '../types/types';
 import {LinearGradient} from 'expo-linear-gradient';
@@ -110,13 +111,19 @@ const styles = StyleSheet.create({
     borderColor: '#0000CC',
     borderRadius: 10,
     shadowColor: '#FF6ECE',
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 50,
-    elevation: 5,
+    ...Platform.select({
+      ios: {
+        shadowOpacity: 0.25,
+        shadowRadius: 50,
+        shadowOffset: {
+          width: 0,
+          height: 0,
+        },
+      },
+      android: {
+        elevation: 10,
+      },
+    }),
   },
   background: {flex: 1},
   title: {

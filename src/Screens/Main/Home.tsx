@@ -50,6 +50,7 @@ export function Home({navigation}: Props) {
   };
 
   useEffect(() => {
+    setLoading(true);
     getPublicLettersInit();
   }, []);
 
@@ -64,6 +65,7 @@ export function Home({navigation}: Props) {
   const publicLetterListRef = React.useRef<FlatList>(null);
   const scrollToTop = () => {
     publicLetterListRef.current?.scrollToIndex({animated: true, index: 0});
+    setTimeout(() => setCurrentPositionY(0), 300);
   };
 
   // 무한 스크롤
@@ -163,7 +165,7 @@ export function Home({navigation}: Props) {
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-      <ActivityIndicator size={'large'} />
+      <ActivityIndicator size="large" color="#0000CC" />
     </View>
   );
 
