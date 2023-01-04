@@ -8,6 +8,7 @@ import {
   Animated,
   Easing,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import {DeliveryLetter, PaperColor} from '../../types/types';
 import {LinearGradient} from 'expo-linear-gradient';
@@ -256,7 +257,7 @@ export function LetterItem(props: LetterItemProps) {
         </Text>
         <View>
           <Text style={styles.readText}>{read ? '읽음' : '안읽음'}</Text>
-          {!read && <View style={styles.dot} />}
+          {!read && !me && <View style={styles.dot} />}
         </View>
       </View>
       {IsArrived ? <ArrivedLetter /> : <PendingLetter />}
@@ -273,13 +274,19 @@ const styles = StyleSheet.create({
     borderColor: '#0000CC',
     borderRadius: 10,
     shadowColor: '#FF6ECE',
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 50,
-    elevation: 5,
+    ...Platform.select({
+      ios: {
+        shadowOpacity: 0.25,
+        shadowRadius: 50,
+        shadowOffset: {
+          width: 0,
+          height: 0,
+        },
+      },
+      android: {
+        elevation: 10,
+      },
+    }),
   },
   title: {
     width: '60%',

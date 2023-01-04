@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   FlatList,
   Alert,
+  ActivityIndicator,
   StatusBar,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -32,17 +33,22 @@ export function LetterBoxList({navigation, onPressHome}: Props) {
 
   // 내 사서함 목록
   const [letterBoxes, setLetterBoxes] = useState<LetterBoxes>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
   const getLetterBoxesInit = () => {
     try {
       getLetterBoxes().then(data => {
         setLetterBoxes(data);
+        setLoading(false);
       });
     } catch (error: any) {
       console.error(error.message);
       Alert.alert('error', error.message);
     }
   };
+
   useEffect(() => {
+    setLoading(true);
     getLetterBoxesInit();
   }, []);
 
@@ -80,6 +86,17 @@ export function LetterBoxList({navigation, onPressHome}: Props) {
           <Text style={styles.emptyBtnText}>공개편지 보러가기</Text>
         </LinearGradient>
       </Pressable>
+    </View>
+  );
+
+  const Loading = () => (
+    <View
+      style={{
+        height: SCREEN_HEIGHT,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+      <ActivityIndicator size="large" color="#0000CC" />
     </View>
   );
 
@@ -130,7 +147,7 @@ export function LetterBoxList({navigation, onPressHome}: Props) {
         </View>
       </View>
       <FlatList
-        ListEmptyComponent={Empty}
+        ListEmptyComponent={loading ? Loading : Empty}
         contentContainerStyle={{marginTop: SAFE_AREA_TOP}}
         data={letterBoxes}
         renderItem={({item, index}) => {
