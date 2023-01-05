@@ -93,12 +93,14 @@ export function LetterItem(props: LetterItemProps) {
     if (minutes) {
       result += `${minutes}분 `;
     }
-    result += `후 도착`;
+    result += '후 도착';
     return result;
   }, [deliveryDate]);
 
   const letterTitle = useMemo(() => {
-    if (!title) return '무제';
+    if (!title) {
+      return '무제';
+    }
     if (title.length > 26) {
       return `${title.substr(0, 26)}…`;
     }
@@ -115,7 +117,7 @@ export function LetterItem(props: LetterItemProps) {
         colors={[GRADIENT_COLORS[paperColor], 'white']}
         style={[
           styles.background,
-          read && {borderTopRightRadius: 0, borderTopLeftRadius: 0},
+          // read && {borderRadius},
         ]}>
         {/* 우표 */}
         {deliveryType === 'STANDARD' ? (
@@ -173,7 +175,8 @@ export function LetterItem(props: LetterItemProps) {
                 style={[styles.fromImg, {width: 25}]}
                 source={require('../../Assets/to.png')}
               />
-              <Text style={styles.fromText}>{`${toNickname},\n${toAddress}`}</Text>
+              <Text
+                style={styles.fromText}>{`${toNickname},\n${toAddress}`}</Text>
             </>
           ) : (
             <>
@@ -181,7 +184,10 @@ export function LetterItem(props: LetterItemProps) {
                 style={[styles.fromImg, {width: 48}]}
                 source={require('../../Assets/from.png')}
               />
-              <Text style={styles.fromText}>{`${fromNickname},\n${fromAddress}`}</Text>
+              <Text
+                style={
+                  styles.fromText
+                }>{`${fromNickname},\n${fromAddress}`}</Text>
             </>
           )}
         </View>
@@ -201,10 +207,14 @@ export function LetterItem(props: LetterItemProps) {
         </View>
       </LinearGradient>
       {read && (
-        <Image source={require('../../Assets/read.png')} style={styles.read} />
+        <Image
+          source={require('../../Assets/read_white.png')}
+          style={styles.read}
+        />
       )}
     </TouchableOpacity>
   );
+
   const PendingLetter = () => (
     <View style={[styles.letterItem]}>
       <LinearGradient
@@ -267,7 +277,7 @@ export function LetterItem(props: LetterItemProps) {
 
 const styles = StyleSheet.create({
   letterItem: {flex: 1, height: 214},
-  read: {position: 'absolute', top: 0, left: 0, width: '100%', height: 7},
+  read: {position: 'absolute', top: 0, left: 0, width: '100%', height: 11},
   background: {
     flex: 1,
     borderWidth: 1,
