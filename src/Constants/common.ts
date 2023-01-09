@@ -1,1 +1,1 @@
-export const BASE_URL_TEST = 'http://13.209.12.14/api';
+export const BASE_URL_TEST = 'http://3.38.51.233/api';
