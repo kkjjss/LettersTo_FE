@@ -43,7 +43,6 @@ export function Auth({navigation}: Props) {
       await loginWithToken(userTokens);
     } catch (error: any) {
       console.error(error.message);
-      Alert.alert('error', error.message);
     } finally {
       setDisableSignUp(false);
     }
@@ -114,7 +113,7 @@ export function Auth({navigation}: Props) {
       <SafeAreaView style={styles.container}>
         <View style={styles.logo}>
           <Image
-            source={require('../../Assets/logo/logo_L.png')}
+            source={require('../../Assets/logo/logo_main.gif')}
             style={styles.logoImage}
           />
         </View>
