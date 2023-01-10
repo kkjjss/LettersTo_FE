@@ -41,8 +41,6 @@ export function SignUpButton({disableSignUp, onPress: onPressSignUp}: Props) {
           geolocationId: store.signUpInfo.geolocationId,
         };
 
-        console.log(userInfo);
-
         const {accessToken, refreshToken} = await signUp(userInfo);
 
         await Promise.all([

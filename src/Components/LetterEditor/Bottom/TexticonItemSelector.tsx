@@ -11,7 +11,6 @@ type Props = {
 
 export const TexticonItemSelector = React.memo(
   ({selectedCategory, onSelectTexticon}: Props) => {
-    console.log(selectedCategory);
     return (
       <ScrollView alwaysBounceHorizontal={false}>
         <View style={styles.texticonItemSelector}>

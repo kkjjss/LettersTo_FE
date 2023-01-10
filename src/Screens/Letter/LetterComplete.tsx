@@ -24,8 +24,6 @@ import {showToast} from '../../Components/Toast/toast';
 type Props = NativeStackScreenProps<StackParamsList, 'LetterComplete'>;
 
 export const LetterComplete = ({navigation, route}: Props) => {
-  console.log(route.params);
-
   const {cover, letter} = useStore();
   const {deliveryLetter} = useLetterEditorStore();
 
