@@ -8,7 +8,6 @@ import {
   Animated,
   Easing,
   TouchableOpacity,
-  Platform,
 } from 'react-native';
 import {DeliveryLetter, PaperColor} from '../../types/types';
 import {LinearGradient} from 'expo-linear-gradient';
@@ -115,20 +114,6 @@ export function LetterItem(props: LetterItemProps) {
       <View
         style={{
           flex: 1,
-          shadowColor: '#FF6ECE',
-          ...Platform.select({
-            // ios: {
-            //   shadowOpacity: 0.25,
-            //   shadowRadius: 50,
-            //   shadowOffset: {
-            //     width: 0,
-            //     height: 0,
-            //   },
-            // },
-            android: {
-              elevation: 10,
-            },
-          }),
         }}>
         <LinearGradient
           locations={[0, 0.5]}
