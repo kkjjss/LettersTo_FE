@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   Image,
   ImageBackground,
@@ -13,6 +13,7 @@ import {TopicItem} from '../TopicItem';
 import {PersonalityItem} from '../PersonalityItem';
 import {GRADIENT_COLORS} from '../../Constants/letter';
 import {SCREEN_WIDTH} from '../../Constants/screen';
+import {getCities, getRegions} from '../../APIs/geolocation';
 
 const SelectedStampImage = () => {
   const {cover, stamps} = useStore();
@@ -54,6 +55,31 @@ const SelectedStampImage = () => {
 export const LetterCoverPreview = React.memo(() => {
   const {userInfo, cover, topics, personalities, letter} = useStore();
 
+  const [fromAddress, setFromAddress] = useState('');
+
+  const getFromAddress = useCallback(async () => {
+    try {
+      if (userInfo?.parentGeolocationId && userInfo.geolocationId) {
+        const userRegion = (await getRegions()).find(
+          region => region.id === userInfo.parentGeolocationId,
+        );
+        const userCity = (await getCities(userInfo.parentGeolocationId)).find(
+          city => city.id === userInfo.geolocationId,
+        );
+
+        setFromAddress([userRegion?.name, ' ', userCity?.name].join(''));
+      } else {
+        return '1';
+      }
+    } catch (error: any) {
+      console.error(error.message);
+    }
+  }, [userInfo]);
+
+  useEffect(() => {
+    getFromAddress();
+  }, []);
+
   return (
     <LinearGradient
       colors={[GRADIENT_COLORS[letter?.paperColor ?? 'PINK'], 'white']}
@@ -70,7 +96,8 @@ export const LetterCoverPreview = React.memo(() => {
             source={require('../../Assets/From..png')}
             style={styles.From}
           />
-          <Text style={styles.fromText}>{userInfo?.nickname}</Text>
+          <Text style={styles.fromText}>{userInfo?.nickname},</Text>
+          <Text style={styles.fromText}>{fromAddress}</Text>
         </View>
         <View style={{flex: 74}}>
           <ImageBackground
@@ -124,21 +151,26 @@ const styles = StyleSheet.create({
   topArea: {
     flexDirection: 'row',
   },
-  title: {flex: 173, flexWrap: 'wrap', marginRight: 16},
+  title: {
+    flex: 173,
+    flexWrap: 'wrap',
+    marginRight: 16,
+  },
   titleText: {
     width: '100%',
-    fontSize: 15,
+    height: 50,
+    fontSize: 13,
     fontFamily: 'Galmuri11',
     color: '#0000CC',
-    lineHeight: 30,
+    lineHeight: 22.1,
   },
-  From: {height: 22, width: 48, resizeMode: 'contain'},
+  From: {height: 22, width: 48, resizeMode: 'contain', marginTop: 8},
   fromText: {
-    marginLeft: 30,
-    fontSize: 15,
+    marginLeft: 16,
+    fontSize: 12,
     fontFamily: 'Galmuri11',
     color: '#0000CC',
-    lineHeight: 30,
+    lineHeight: 20,
   },
   tagList: {flexDirection: 'row', marginTop: 8},
   stampBg: {

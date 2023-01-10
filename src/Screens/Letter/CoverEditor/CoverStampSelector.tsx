@@ -34,6 +34,8 @@ export function CoverStampSelector({navigation, route}: Props) {
   };
 
   const goNext = () => {
+    if (disableNext) return;
+
     if (route.params) {
       setDeliveryLetterData({stampId: selectedStampId});
 

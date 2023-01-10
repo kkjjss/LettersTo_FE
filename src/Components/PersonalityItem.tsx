@@ -27,7 +27,13 @@ export function PersonalityItem({
           marginRight: 5,
         },
       ]}>
-      <Text style={styles.personalityText}>{personality.name}</Text>
+      <Text
+        style={[
+          styles.personalityText,
+          parent === 'preview' && {fontSize: 12},
+        ]}>
+        {personality.name}
+      </Text>
     </View>
   );
 }

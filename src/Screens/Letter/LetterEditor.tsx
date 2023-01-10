@@ -74,6 +74,7 @@ export function LetterEditor({navigation, route}: Props) {
 
   useEffect(() => {
     if (
+      (!route.params && title.replace(/(⌜|⌟︎)/g, '').length < 5) ||
       title.replace(/(⌜|⌟︎)/g, '').length > 30 ||
       text.length < 100 ||
       text.length > 1000
@@ -349,14 +350,16 @@ export function LetterEditor({navigation, route}: Props) {
   }, [navigation, setDeliveryLetterDataOnStore, setLetterData]);
 
   const onPressNext = useCallback(() => {
-    if (text.length < 100) {
-      dismissKeyboard();
+    dismissKeyboard();
+    if (!route.params && title.replace(/(⌜|⌟︎)/g, '').length < 5) {
+      return showToast('제목은 5자 이상 입력해주세요');
+    } else if (text.length < 100) {
       return showToast('내용은 최소 100자 이상 입력해 주세요.');
     } else if (disableNext) {
       return;
     }
     goNext();
-  }, [disableNext, dismissKeyboard, goNext, text.length]);
+  }, [disableNext, dismissKeyboard, goNext, text, title]);
 
   useEffect(() => {
     if (Platform.OS === 'ios') {
