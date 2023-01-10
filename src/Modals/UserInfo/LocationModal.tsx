@@ -35,10 +35,6 @@ export function LocationModal({isModalVisible, setModalVisible}: Props) {
     [disable, selectedCityId, userInfo],
   );
 
-  useEffect(() => {
-    console.log(disable);
-  }, [disable, selectedCityId, userInfo]);
-
   const {bottom: SAFE_AREA_BOTTOM} = useSafeAreaInsets();
 
   const hideModal = () => {

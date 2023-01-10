@@ -8,7 +8,7 @@ import {RootSiblingParent} from 'react-native-root-siblings';
 
 export default function App() {
   React.useEffect(() => {
-    SplashScreen.hide();
+    setTimeout(() => SplashScreen.hide(), 1500);
   }, []);
 
   return (

@@ -23,7 +23,9 @@ export function TopicItem({topic, selectedTopicIds, parent}: Props) {
           marginRight: 5,
         },
       ]}>
-      <Text style={styles.topicText}>{topic.name}</Text>
+      <Text style={[styles.topicText, parent === 'preview' && {fontSize: 12}]}>
+        {topic.name}
+      </Text>
     </View>
   );
 }

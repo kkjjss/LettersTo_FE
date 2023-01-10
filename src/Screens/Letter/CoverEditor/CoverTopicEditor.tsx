@@ -1,7 +1,6 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useMemo, useState} from 'react';
 import {Alert, StyleSheet, View} from 'react-native';
-import {Header} from '../../../Components/Headers/Header';
 import {StackParamsList} from '../../../types/stackParamList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {TopicEditor} from '../../../Components/LetterEditor/Cover/TopicEditor';
@@ -11,6 +10,7 @@ import {getTopics} from '../../../APIs/topic';
 import {getPersonalities} from '../../../APIs/personality';
 import {StepIndicator} from '../../../Components/StepIndicator';
 import {PUBLIC_COVER_EDIT_STEPS} from '../../../Constants/constants';
+import {Header2} from '../../../Components/Headers/Header2';
 
 type Props = NativeStackScreenProps<StackParamsList, 'CoverTopicEditor'>;
 
@@ -25,6 +25,13 @@ export function CoverTopicEditor({navigation}: Props) {
     () => selectedTopicIds.length === 0,
     [selectedTopicIds],
   );
+
+  const goNext = () =>
+    !disableNext && navigation.navigate('CoverPersonalityEditor');
+
+  const goBack = () => {
+    navigation.pop();
+  };
 
   useEffect(() => {
     const getTopicsList = () => {
@@ -68,11 +75,10 @@ export function CoverTopicEditor({navigation}: Props) {
             paddingTop: SAFE_AREA_TOP,
           },
         ]}>
-        <Header
-          navigation={navigation}
+        <Header2
           title={'관심사 선택'}
-          next={'CoverPersonalityEditor'}
-          // onPressNext={onPressNext}
+          onPressNext={goNext}
+          onPressBack={goBack}
           disableNext={disableNext}
         />
         <View style={styles.cover}>

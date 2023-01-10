@@ -8,7 +8,6 @@ import React, {
   useState,
 } from 'react';
 import {
-  Alert,
   KeyboardAvoidingView,
   Platform,
   StatusBar,
@@ -39,6 +38,7 @@ import {ModalBlur} from '../../Modals/ModalBlur';
 import {PaperBackgroud} from '../../Components/Letter/PaperBackground/PaperBackgroud';
 import {Header2} from '../../Components/Headers/Header2';
 import {logIn as getUserInfo} from '../../APIs/member';
+import {showToast} from '../../Components/Toast/toast';
 
 type Props = NativeStackScreenProps<StackParamsList, 'LetterEditor'>;
 
@@ -74,6 +74,7 @@ export function LetterEditor({navigation, route}: Props) {
 
   useEffect(() => {
     if (
+      (!route.params && title.replace(/(⌜|⌟︎)/g, '').length < 5) ||
       title.replace(/(⌜|⌟︎)/g, '').length > 30 ||
       text.length < 100 ||
       text.length > 1000
@@ -330,7 +331,6 @@ export function LetterEditor({navigation, route}: Props) {
       setStampQuantity(stampQuantity);
     } catch (error: any) {
       console.error(error.message);
-      Alert.alert('error', error.message);
     }
   }, [setStampQuantity]);
 
@@ -350,13 +350,16 @@ export function LetterEditor({navigation, route}: Props) {
   }, [navigation, setDeliveryLetterDataOnStore, setLetterData]);
 
   const onPressNext = useCallback(() => {
-    if (text.length < 100) {
-      return Alert.alert('내용은 최소 100자 이상 입력해 주세요.');
+    dismissKeyboard();
+    if (!route.params && title.replace(/(⌜|⌟︎)/g, '').length < 5) {
+      return showToast('제목은 5자 이상 입력해주세요');
+    } else if (text.length < 100) {
+      return showToast('내용은 최소 100자 이상 입력해 주세요.');
     } else if (disableNext) {
       return;
     }
     goNext();
-  }, [disableNext, goNext, text]);
+  }, [disableNext, dismissKeyboard, goNext, text, title]);
 
   useEffect(() => {
     if (Platform.OS === 'ios') {

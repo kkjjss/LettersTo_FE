@@ -11,6 +11,7 @@ export const StepIndicator = React.memo(({current, of}: Props) => {
     if (i + 1 === current) {
       return (
         <ImageBackground
+          key={i}
           source={require('../Assets/step.png')}
           style={{
             height: 20,

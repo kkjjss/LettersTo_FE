@@ -8,7 +8,6 @@ import {
   Animated,
   Easing,
   TouchableOpacity,
-  Platform,
 } from 'react-native';
 import {DeliveryLetter, PaperColor} from '../../types/types';
 import {LinearGradient} from 'expo-linear-gradient';
@@ -93,12 +92,14 @@ export function LetterItem(props: LetterItemProps) {
     if (minutes) {
       result += `${minutes}분 `;
     }
-    result += `후 도착`;
+    result += '후 도착';
     return result;
   }, [deliveryDate]);
 
   const letterTitle = useMemo(() => {
-    if (!title) return '무제';
+    if (!title) {
+      return '무제';
+    }
     if (title.length > 26) {
       return `${title.substr(0, 26)}…`;
     }
@@ -110,101 +111,113 @@ export function LetterItem(props: LetterItemProps) {
       activeOpacity={0.9}
       style={[styles.letterItem]}
       onPress={onOpenLetter}>
-      <LinearGradient
-        locations={[0, 0.5]}
-        colors={[GRADIENT_COLORS[paperColor], 'white']}
-        style={[
-          styles.background,
-          read && {borderTopRightRadius: 0, borderTopLeftRadius: 0},
-        ]}>
-        {/* 우표 */}
-        {deliveryType === 'STANDARD' ? (
-          <View style={styles.stampArea}>
-            <ImageBackground
-              source={require('../../Assets/bg_stamp.png')}
-              style={styles.stampBg}>
-              <Image style={styles.stampImg} source={STAMPS[stampId]} />
-              <Image
-                style={styles.stampType}
-                source={require('../../Assets/stamp_standard.png')}
+      <View
+        style={{
+          flex: 1,
+        }}>
+        <LinearGradient
+          locations={[0, 0.5]}
+          colors={[GRADIENT_COLORS[paperColor], 'white']}
+          style={[styles.background]}>
+          {/* 우표 */}
+          {deliveryType === 'STANDARD' ? (
+            <View style={styles.stampArea}>
+              <ImageBackground
+                source={require('../../Assets/bg_stamp.png')}
+                style={styles.stampBg}>
+                <Image style={styles.stampImg} source={STAMPS[stampId]} />
+                <Image
+                  style={styles.stampType}
+                  source={require('../../Assets/stamp_standard.png')}
+                />
+              </ImageBackground>
+            </View>
+          ) : deliveryType === 'EXPRESS' ? (
+            <View style={styles.stampArea}>
+              <ImageBackground
+                source={require('../../Assets/bg_stamp.png')}
+                style={[
+                  styles.stampBg,
+                  {position: 'absolute', transform: [{rotate: '10deg'}]},
+                ]}
               />
-            </ImageBackground>
-          </View>
-        ) : deliveryType === 'EXPRESS' ? (
-          <View style={styles.stampArea}>
-            <ImageBackground
-              source={require('../../Assets/bg_stamp.png')}
-              style={[
-                styles.stampBg,
-                {position: 'absolute', transform: [{rotate: '10deg'}]},
-              ]}
-            />
-            <ImageBackground
-              source={require('../../Assets/bg_stamp.png')}
-              style={[
-                styles.stampBg,
-                {position: 'absolute', transform: [{rotate: '-5deg'}]},
-              ]}
-            />
-            <ImageBackground
-              source={require('../../Assets/bg_stamp.png')}
-              style={styles.stampBg}>
-              <Image style={styles.stampImg} source={STAMPS[stampId]} />
-              <Image
-                style={styles.stampType}
-                source={require('../../Assets/stamp_express.png')}
+              <ImageBackground
+                source={require('../../Assets/bg_stamp.png')}
+                style={[
+                  styles.stampBg,
+                  {position: 'absolute', transform: [{rotate: '-5deg'}]},
+                ]}
               />
-            </ImageBackground>
-          </View>
-        ) : (
-          <View style={styles.stampArea}>
-            <ImageBackground
-              source={require('../../Assets/bg_stamp.png')}
-              style={styles.stampBg}>
-              <Image style={styles.stampImg} source={STAMPS[stampId]} />
-            </ImageBackground>
-          </View>
-        )}
-        <Text style={styles.title}>⌜{letterTitle}⌟︎︎</Text>
-        <View style={styles.fromArea}>
-          {me ? (
-            <>
-              <Image
-                style={[styles.fromImg, {width: 25}]}
-                source={require('../../Assets/to.png')}
-              />
-              <Text style={styles.fromText}>{`${toNickname},\n${toAddress}`}</Text>
-            </>
+              <ImageBackground
+                source={require('../../Assets/bg_stamp.png')}
+                style={styles.stampBg}>
+                <Image style={styles.stampImg} source={STAMPS[stampId]} />
+                <Image
+                  style={styles.stampType}
+                  source={require('../../Assets/stamp_express.png')}
+                />
+              </ImageBackground>
+            </View>
           ) : (
-            <>
-              <Image
-                style={[styles.fromImg, {width: 48}]}
-                source={require('../../Assets/from.png')}
-              />
-              <Text style={styles.fromText}>{`${fromNickname},\n${fromAddress}`}</Text>
-            </>
+            <View style={styles.stampArea}>
+              <ImageBackground
+                source={require('../../Assets/bg_stamp.png')}
+                style={styles.stampBg}>
+                <Image style={styles.stampImg} source={STAMPS[stampId]} />
+              </ImageBackground>
+            </View>
           )}
-        </View>
-        <View style={styles.deliveryInfo}>
-          <View style={styles.deliveryAddress}>
-            <Text style={styles.deliveryAddressText}>{fromAddress}</Text>
-            <Image
-              style={styles.arrow}
-              resizeMode="contain"
-              source={require('../../Assets/arrow.png')}
-            />
-            <Text style={styles.deliveryAddressText}>{toAddress}</Text>
+          <Text style={styles.title}>⌜{letterTitle}⌟︎︎</Text>
+          <View style={styles.fromArea}>
+            {me ? (
+              <>
+                <Image
+                  style={[styles.fromImg, {width: 25}]}
+                  source={require('../../Assets/to.png')}
+                />
+                <Text
+                  style={
+                    styles.fromText
+                  }>{`${toNickname},\n${toAddress}`}</Text>
+              </>
+            ) : (
+              <>
+                <Image
+                  style={[styles.fromImg, {width: 48}]}
+                  source={require('../../Assets/from.png')}
+                />
+                <Text
+                  style={
+                    styles.fromText
+                  }>{`${fromNickname},\n${fromAddress}`}</Text>
+              </>
+            )}
           </View>
-          <Text style={styles.deliveryDate}>
-            {dateFormatter('yyyy.mm.dd', deliveryDate)}
-          </Text>
-        </View>
-      </LinearGradient>
+          <View style={styles.deliveryInfo}>
+            <View style={styles.deliveryAddress}>
+              <Text style={styles.deliveryAddressText}>{fromAddress}</Text>
+              <Image
+                style={styles.arrow}
+                resizeMode="contain"
+                source={require('../../Assets/arrow.png')}
+              />
+              <Text style={styles.deliveryAddressText}>{toAddress}</Text>
+            </View>
+            <Text style={styles.deliveryDate}>
+              {dateFormatter('yyyy.mm.dd', deliveryDate)}
+            </Text>
+          </View>
+        </LinearGradient>
+      </View>
       {read && (
-        <Image source={require('../../Assets/read.png')} style={styles.read} />
+        <Image
+          source={require('../../Assets/read_white.png')}
+          style={styles.read}
+        />
       )}
     </TouchableOpacity>
   );
+
   const PendingLetter = () => (
     <View style={[styles.letterItem]}>
       <LinearGradient
@@ -267,26 +280,12 @@ export function LetterItem(props: LetterItemProps) {
 
 const styles = StyleSheet.create({
   letterItem: {flex: 1, height: 214},
-  read: {position: 'absolute', top: 0, left: 0, width: '100%', height: 7},
+  read: {position: 'absolute', top: 0, left: 0, width: '100%', height: 11},
   background: {
     flex: 1,
     borderWidth: 1,
     borderColor: '#0000CC',
     borderRadius: 10,
-    shadowColor: '#FF6ECE',
-    ...Platform.select({
-      ios: {
-        shadowOpacity: 0.25,
-        shadowRadius: 50,
-        shadowOffset: {
-          width: 0,
-          height: 0,
-        },
-      },
-      android: {
-        elevation: 10,
-      },
-    }),
   },
   title: {
     width: '60%',

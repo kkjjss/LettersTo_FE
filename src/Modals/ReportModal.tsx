@@ -7,7 +7,6 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
-  Alert,
 } from 'react-native';
 import {ModalHeader} from '../Components/ModalHeader';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -15,6 +14,7 @@ import {BottomButton} from '../Components/BottomButton';
 import {useKeyboard} from '../Hooks/Hardware/useKeyboard';
 import {reportLetter} from '../APIs/report';
 import {ReportData} from '../types/types';
+import {showToast} from '../Components/Toast/toast';
 
 const REPORT_ITEMS = [
   {id: 0, text: '욕설 및 비하발언 포함'},
@@ -59,10 +59,10 @@ export const ReportModal = ({
       };
 
       await reportLetter(reportData);
+      showToast('신고 접수되었습니다.');
     } catch (error: any) {
       console.error(error);
     } finally {
-      Alert.alert('신고 접수되었습니다.');
       hideModal();
     }
   };

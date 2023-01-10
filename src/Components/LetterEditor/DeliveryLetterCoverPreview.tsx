@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {Alert, Image, ImageBackground, Text, View} from 'react-native';
+import {Image, ImageBackground, StyleSheet, Text, View} from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 import useStore, {useLetterEditorStore} from '../../Store/store';
 import {GRADIENT_COLORS} from '../../Constants/letter';
@@ -47,7 +47,7 @@ export const DeliveryLetterCoverPreview = React.memo(() => {
   const {userInfo} = useStore();
   const {deliveryLetter, deliveryLetterTo} = useLetterEditorStore();
 
-  const [fromText, setFromText] = useState('');
+  const [fromAddress, setFromAddress] = useState('');
 
   const titleText = useMemo(
     () => deliveryLetter?.title || '무제',
@@ -64,113 +64,97 @@ export const DeliveryLetterCoverPreview = React.memo(() => {
           city => city.id === userInfo.geolocationId,
         );
 
-        setFromText(
-          [
-            userInfo?.nickname,
-            ', ',
-            userRegion?.name,
-            ' ',
-            userCity?.name,
-          ].join(''),
-        );
+        setFromAddress([userRegion?.name, ' ', userCity?.name].join(''));
       } else {
         return '1';
       }
     } catch (error: any) {
       console.error(error.message);
-      Alert.alert('error', error.message);
     }
   }, [userInfo]);
 
-  const toText = useMemo(
-    () =>
-      [deliveryLetterTo?.toNickname, deliveryLetterTo?.toAddress].join(', '),
-    [deliveryLetterTo],
-  );
-
   useEffect(() => {
     getFromAddress();
-  }, [getFromAddress]);
+  }, []);
 
   return (
     <LinearGradient
       colors={[GRADIENT_COLORS[deliveryLetter?.paperColor ?? 'PINK'], 'white']}
-      style={{
-        width: SCREEN_WIDTH - 80,
-        height: undefined,
-        aspectRatio: 295 / 212,
-        borderColor: '#0000cc',
-        borderWidth: 1,
-        borderRadius: 10,
-        padding: 16,
-      }}>
-      <View
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-        }}>
-        <View
-          style={{
-            flex: 173,
-            flexWrap: 'wrap',
-            marginRight: 16,
-            justifyContent: 'space-between',
-          }}>
-          <Text
-            style={{
-              width: '100%',
-              fontSize: 15,
-              fontFamily: 'Galmuri11',
-              color: '#0000CC',
-              lineHeight: 30,
-            }}>
-            ⌜{titleText}⌟︎︎
-          </Text>
+      style={[
+        {
+          width: SCREEN_WIDTH - 80,
+          // height: undefined,
+          // aspectRatio: 295 / 212,
+          // borderColor: '#0000cc',
+          // borderWidth: 1,
+          // borderRadius: 10,
+          // padding: 16,
+        },
+        styles.container,
+      ]}>
+      <View style={styles.topArea}>
+        <View style={styles.title}>
+          <Text style={styles.titleText}>⌜{titleText}⌟︎︎</Text>
+          <Image source={require('../../Assets/to.png')} style={styles.To} />
+          <Text style={styles.fromText}>{deliveryLetterTo?.toNickname}</Text>
+          <Text style={styles.fromText}>{deliveryLetterTo?.toAddress}</Text>
+          <Image
+            source={require('../../Assets/From..png')}
+            style={styles.From}
+          />
+          <Text style={styles.fromText}>{userInfo?.nickname},</Text>
+          <Text style={styles.fromText}>{fromAddress}</Text>
         </View>
         <View style={{flex: 74}}>
           <ImageBackground
             source={require('../../Assets/stamp.png')}
-            style={{
-              width: 74,
-              height: undefined,
-              aspectRatio: 94 / 116,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
+            style={styles.stampBg}>
             <SelectedStampImage stampId={deliveryLetter.stampId} />
           </ImageBackground>
         </View>
       </View>
-      <View style={{flex: 1, justifyContent: 'flex-end'}}>
-        <Image
-          source={require('../../Assets/to.png')}
-          style={{height: 22, width: 25, resizeMode: 'contain'}}
-        />
-        <Text
-          style={{
-            marginLeft: 30,
-            fontSize: 15,
-            fontFamily: 'Galmuri11',
-            color: '#0000CC',
-            lineHeight: 30,
-          }}>
-          {toText}
-        </Text>
-        <Image
-          source={require('../../Assets/From..png')}
-          style={{height: 22, width: 48, resizeMode: 'contain'}}
-        />
-        <Text
-          style={{
-            marginLeft: 30,
-            fontSize: 15,
-            fontFamily: 'Galmuri11',
-            color: '#0000CC',
-            lineHeight: 30,
-          }}>
-          {fromText}
-        </Text>
-      </View>
     </LinearGradient>
   );
+});
+
+const styles = StyleSheet.create({
+  container: {
+    height: undefined,
+    aspectRatio: 295 / 212,
+    borderColor: '#0000cc',
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 16,
+    justifyContent: 'space-between',
+  },
+  topArea: {
+    flexDirection: 'row',
+  },
+  title: {flex: 173, flexWrap: 'wrap', marginRight: 16},
+  titleText: {
+    width: '100%',
+    height: 50,
+    fontSize: 13,
+    fontFamily: 'Galmuri11',
+    color: '#0000CC',
+    lineHeight: 22.1,
+  },
+  To: {height: 22, width: 25, resizeMode: 'contain', marginTop: 8},
+  From: {height: 22, width: 48, resizeMode: 'contain', marginTop: 4},
+  fromText: {
+    marginLeft: 16,
+    fontSize: 12,
+    fontFamily: 'Galmuri11',
+    color: '#0000CC',
+    lineHeight: 20,
+  },
+  tagList: {flexDirection: 'row', marginTop: 8},
+  stampBg: {
+    width: 74,
+    height: undefined,
+    aspectRatio: 94 / 116,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  topics: {marginBottom: 8},
 });

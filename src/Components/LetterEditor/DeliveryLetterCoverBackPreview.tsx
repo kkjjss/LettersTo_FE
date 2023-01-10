@@ -32,7 +32,7 @@ export const DeliveryLetterCoverBackPreview = React.memo(() => {
 
   useEffect(() => {
     getFromAddress();
-  });
+  }, []);
 
   return (
     <LinearGradient
