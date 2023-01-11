@@ -18,7 +18,7 @@ import {ResetButton} from '../../Components/ResetButton';
 import useStore from '../../Store/store';
 import {TopicList} from '../../Components/TopicList';
 import {useTopic} from '../../Hooks/UserInfo/useTopic';
-import {MAX_TOPIC_LIMIT} from '../../Constants/constants';
+import {MAX_TOPIC_LIMIT} from '../../Constants/user';
 
 type Props = NativeStackScreenProps<StackParamsList, 'TopicsForm'>;
 

@@ -9,7 +9,7 @@ import useStore from '../../../Store/store';
 import {getTopics} from '../../../APIs/topic';
 import {getPersonalities} from '../../../APIs/personality';
 import {StepIndicator} from '../../../Components/StepIndicator';
-import {PUBLIC_COVER_EDIT_STEPS} from '../../../Constants/constants';
+import {PUBLIC_COVER_EDIT_STEPS} from '../../../Constants/user';
 import {Header2} from '../../../Components/Headers/Header2';
 
 type Props = NativeStackScreenProps<StackParamsList, 'CoverTopicEditor'>;

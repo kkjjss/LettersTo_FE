@@ -5,7 +5,7 @@ import useStore from '../../../Store/store';
 import {SCREEN_HEIGHT} from '../../../Constants/screen';
 import {PersonalityList} from '../../PersonalityList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {MAX_PERSONALITY_LIMIT} from '../../../Constants/constants';
+import {MAX_PERSONALITY_LIMIT} from '../../../Constants/user';
 
 type Props = {
   selectedPersonalityIds: number[];

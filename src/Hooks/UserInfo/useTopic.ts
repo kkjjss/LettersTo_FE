@@ -1,7 +1,7 @@
 import {useEffect, useMemo, useRef, useState} from 'react';
 import {Alert, Animated} from 'react-native';
 import {getTopics} from '../../APIs/topic';
-import {MAX_TOPIC_LIMIT} from '../../Constants/constants';
+import {MAX_TOPIC_LIMIT} from '../../Constants/user';
 import {Topics} from '../../types/types';
 
 export const useTopic = () => {

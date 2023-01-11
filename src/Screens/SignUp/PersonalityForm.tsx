@@ -18,7 +18,7 @@ import useStore from '../../Store/store';
 import {ResetButton} from '../../Components/ResetButton';
 import {PersonalityList} from '../../Components/PersonalityList';
 import {usePersonality} from '../../Hooks/UserInfo/usePersonality';
-import {MAX_PERSONALITY_LIMIT} from '../../Constants/constants';
+import {MAX_PERSONALITY_LIMIT} from '../../Constants/user';
 
 type Props = NativeStackScreenProps<StackParamsList, 'PersonalityForm'>;
 
