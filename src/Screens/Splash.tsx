@@ -1,12 +1,13 @@
 // Import React and Component
 import React, {useState, useEffect} from 'react';
-import {ActivityIndicator, View, StyleSheet, Alert} from 'react-native';
+import {ActivityIndicator, View, StyleSheet} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {StackParamsList} from '../types/stackParamList';
 import useStore from '../Store/store';
 import {logIn} from '../APIs/member';
 import {sendAttendance} from '../APIs/attendances';
+import {showToast} from '../Components/Toast/toast';
 
 type Props = NativeStackScreenProps<StackParamsList, 'Splash'>;
 
@@ -51,7 +52,7 @@ export function Splash({}: Props) {
         setIsLoading(false);
       } catch (error: any) {
         console.error(error.message);
-        Alert.alert('error', error.message);
+        showToast('문제가 발생했습니다');
         setIsLoading(false);
       }
     };

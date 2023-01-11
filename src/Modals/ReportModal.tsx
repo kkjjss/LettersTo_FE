@@ -62,6 +62,7 @@ export const ReportModal = ({
       showToast('신고 접수되었습니다.');
     } catch (error: any) {
       console.error(error);
+      showToast('문제가 발생했습니다');
     } finally {
       hideModal();
     }

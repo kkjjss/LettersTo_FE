@@ -1,10 +1,11 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {Text, View, Modal, StyleSheet, Platform, Alert} from 'react-native';
+import {Text, View, Modal, StyleSheet, Platform} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {patchUserInfo} from '../../APIs/member';
 import {BottomButton} from '../../Components/Button/Bottom/BottomButton';
 import {ModalHeader} from '../../Components/ModalHeader';
+import {showToast} from '../../Components/Toast/toast';
 import {SCREEN_HEIGHT} from '../../Constants/screen';
 import {useLocation} from '../../Hooks/UserInfo/useLocation';
 import useStore from '../../Store/store';
@@ -51,7 +52,7 @@ export function LocationModal({isModalVisible, setModalVisible}: Props) {
       }
     } catch (error: any) {
       console.error(error.message);
-      Alert.alert('추가 변경은 일주일 후에 가능해요');
+      showToast('추가 변경은 일주일 후에 가능해요');
     } finally {
       hideModal();
     }

@@ -6,7 +6,6 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   SafeAreaView,
-  Alert,
   Image,
   Platform,
   StatusBar,
@@ -27,6 +26,8 @@ import {
   onPressTermsOfService,
 } from '../../Utils/hyperlink';
 
+import {showToast} from '../../Components/Toast/toast';
+
 type Props = NativeStackScreenProps<StackParamsList, 'Auth'>;
 
 export function Auth({navigation}: Props) {
@@ -43,6 +44,7 @@ export function Auth({navigation}: Props) {
       await loginWithToken(userTokens);
     } catch (error: any) {
       console.error(error.message);
+      showToast('문제가 발생했습니다');
     } finally {
       setDisableSignUp(false);
     }
@@ -91,7 +93,6 @@ export function Auth({navigation}: Props) {
       }
     } catch (error: any) {
       console.error(error.message);
-      Alert.alert('error', error.message);
     } finally {
       setDisableSignUp(false);
     }

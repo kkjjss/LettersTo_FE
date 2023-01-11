@@ -1,11 +1,12 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useMemo, useState} from 'react';
-import {Alert, FlatList, StatusBar, StyleSheet, Text, View} from 'react-native';
+import {FlatList, StatusBar, StyleSheet, Text, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {getNotifications, setNotificationRead} from '../../APIs/notification';
 import {Header2} from '../../Components/Headers/Header2';
 import {NotificationItem} from '../../Components/Notification/NotificationItem';
 import {NotificationSlideSwitch} from '../../Components/Notification/NotificationSlideSwitch';
+import {showToast} from '../../Components/Toast/toast';
 import {StackParamsList} from '../../types/stackParamList';
 import {Notification, NotificationList} from '../../types/types';
 
@@ -37,7 +38,7 @@ export const Notifications = ({navigation}: Props) => {
     try {
       await setNotificationRead(notification.id);
     } catch (error: any) {
-      Alert.alert(error.message);
+      showToast('문제가 발생했습니다');
     }
   };
 
@@ -75,7 +76,8 @@ export const Notifications = ({navigation}: Props) => {
       setNotifications([...notifications, ...content]);
       setCurrentCursor(nextCursor);
     } catch (error: any) {
-      Alert.alert(error.message);
+      console.error(error.message);
+      showToast('문제가 발생했습니다');
     }
   };
 

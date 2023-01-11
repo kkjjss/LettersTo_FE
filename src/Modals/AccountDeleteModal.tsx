@@ -1,8 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
-import {Alert, Modal, Pressable, Text, View} from 'react-native';
+import {Modal, Pressable, Text, View} from 'react-native';
 import useStore from '../Store/store';
 import {deleteAccount} from '../APIs/member';
+import {showToast} from '../Components/Toast/toast';
 
 type Props = {
   hideModal: () => void;
@@ -20,9 +21,10 @@ export function AccountDeleteModal({hideModal, isModalVisible}: Props) {
       signOut();
     } catch (error: any) {
       console.error(error.message);
-      Alert.alert('error', error.message);
+      showToast('문제가 발생했습니다');
     }
   };
+
   return (
     <Modal
       statusBarTranslucent={true} // android

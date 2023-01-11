@@ -339,6 +339,7 @@ export function LetterEditor({navigation, route}: Props) {
       setStampQuantity(stampQuantity);
     } catch (error: any) {
       console.error(error.message);
+      showToast('문제가 발생했습니다');
     }
   }, [setStampQuantity]);
 

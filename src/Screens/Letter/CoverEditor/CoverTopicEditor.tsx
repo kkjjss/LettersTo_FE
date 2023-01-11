@@ -1,6 +1,6 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useMemo, useState} from 'react';
-import {Alert, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {StackParamsList} from '../../../types/stackParamList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {TopicEditor} from '../../../Components/LetterEditor/Cover/TopicEditor';
@@ -11,6 +11,7 @@ import {getPersonalities} from '../../../APIs/personality';
 import {StepIndicator} from '../../../Components/StepIndicator';
 import {PUBLIC_COVER_EDIT_STEPS} from '../../../Constants/user';
 import {Header2} from '../../../Components/Headers/Header2';
+import {showToast} from '../../../Components/Toast/toast';
 
 type Props = NativeStackScreenProps<StackParamsList, 'CoverTopicEditor'>;
 
@@ -41,7 +42,7 @@ export function CoverTopicEditor({navigation}: Props) {
         });
       } catch (error: any) {
         console.error(error.message);
-        Alert.alert('error', error.message);
+        showToast('문제가 발생했습니다');
       }
     };
 
@@ -52,7 +53,7 @@ export function CoverTopicEditor({navigation}: Props) {
         });
       } catch (error: any) {
         console.error(error.message);
-        Alert.alert('error', error.message);
+        showToast('문제가 발생했습니다');
       }
     };
 

@@ -8,7 +8,6 @@ import {
   Text,
   View,
   Image,
-  Alert,
   TouchableOpacity,
   StatusBar,
 } from 'react-native';
@@ -17,6 +16,7 @@ import {Header2} from '../../Components/Headers/Header2';
 import {getStampHistories} from '../../APIs/stamp';
 import {StampHistories} from '../../types/types';
 import {dateFormatter} from '../../Utils/dateFormatter';
+import {showToast} from '../../Components/Toast/toast';
 
 type Props = NativeStackScreenProps<StackParamsList, 'StampHistory'>;
 
@@ -37,7 +37,7 @@ export const StampHistory = ({navigation}: Props) => {
       });
     } catch (error: any) {
       console.error(error.message);
-      Alert.alert('error', error.message);
+      showToast('문제가 발생했습니다');
     }
   }, []);
 

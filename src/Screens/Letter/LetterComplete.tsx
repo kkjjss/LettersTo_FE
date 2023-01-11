@@ -1,6 +1,6 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useCallback} from 'react';
-import {Alert, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {
   postDeliveryLetter,
@@ -47,7 +47,7 @@ export const LetterComplete = ({navigation, route}: Props) => {
         navigation.navigate('Main');
       } catch (error: any) {
         console.error(error.message);
-        Alert.alert('error', error.message);
+        showToast('문제가 발생했습니다');
       }
     }
   }, [cover.personalityIds, cover.stamp, cover.topicIds, letter, navigation]);
@@ -67,7 +67,7 @@ export const LetterComplete = ({navigation, route}: Props) => {
       navigation.navigate('Main');
     } catch (error: any) {
       console.error(error.message);
-      Alert.alert('error', error.message);
+      showToast('문제가 발생했습니다');
     }
   }, [deliveryLetter, navigation, route.params?.to]);
 

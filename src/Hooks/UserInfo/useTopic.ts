@@ -1,6 +1,7 @@
 import {useEffect, useMemo, useRef, useState} from 'react';
-import {Alert, Animated} from 'react-native';
+import {Animated} from 'react-native';
 import {getTopics} from '../../APIs/topic';
+import {showToast} from '../../Components/Toast/toast';
 import {MAX_TOPIC_LIMIT} from '../../Constants/user';
 import {Topics} from '../../types/types';
 
@@ -54,7 +55,7 @@ export const useTopic = () => {
       });
     } catch (error: any) {
       console.error(error.message);
-      Alert.alert('error', error.message);
+      showToast('문제가 발생했습니다');
     }
   }, []);
 

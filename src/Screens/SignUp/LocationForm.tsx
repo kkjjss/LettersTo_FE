@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   View,
@@ -40,13 +40,13 @@ export function LocationForm({navigation}: Props) {
   const [openRegion, setOpenRegion] = useState(false);
   const [openCity, setOpenCity] = useState(false);
 
-  const store = useStore();
+  const setAddress = useStore(store => store.setAddress);
 
-  const onPressSignUp = async () => {
+  useEffect(() => {
     if (selectedRegionId && selectedCityId) {
-      store.setAddress(selectedCityId);
+      setAddress(selectedCityId);
     }
-  };
+  }, [selectedRegionId, selectedCityId, setAddress]);
 
   return (
     <LinearGradient colors={['#ffccee', 'white', 'white', 'white', '#ffffcc']}>
@@ -124,7 +124,7 @@ export function LocationForm({navigation}: Props) {
             </View>
           )}
         </View>
-        <SignUpButton disableSignUp={disable} onPress={onPressSignUp} />
+        <SignUpButton disableSignUp={disable} />
       </SafeAreaView>
     </LinearGradient>
   );

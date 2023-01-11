@@ -11,7 +11,6 @@ import {
   Pressable,
   TouchableOpacity,
   FlatList,
-  Alert,
   ActivityIndicator,
   StatusBar,
 } from 'react-native';
@@ -21,6 +20,7 @@ import {SCREEN_HEIGHT} from '../../Constants/screen';
 import {LetterBoxes, PaperColor} from '../../types/types';
 import {getLetterBoxes} from '../../APIs/letterBox';
 import {GRADIENT_COLORS} from '../../Constants/letter';
+import {showToast} from '../../Components/Toast/toast';
 
 type Props = {
   navigation: NativeStackNavigationProp<StackParamsList, 'Main', undefined>;
@@ -43,7 +43,7 @@ export function LetterBoxList({navigation, onPressHome}: Props) {
       });
     } catch (error: any) {
       console.error(error.message);
-      Alert.alert('error', error.message);
+      showToast('문제가 발생했습니다');
     }
   };
 

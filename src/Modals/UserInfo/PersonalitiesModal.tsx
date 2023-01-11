@@ -6,7 +6,6 @@ import {
   StyleSheet,
   Animated,
   ScrollView,
-  Alert,
 } from 'react-native';
 import {ResetButton} from '../../Components/ResetButton';
 import useStore from '../../Store/store';
@@ -17,6 +16,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {patchUserInfo} from '../../APIs/member';
 import {usePersonality} from '../../Hooks/UserInfo/usePersonality';
 import {BottomButton} from '../../Components/Button/Bottom/BottomButton';
+import {showToast} from '../../Components/Toast/toast';
 
 type Props = {
   isModalVisible: boolean;
@@ -61,7 +61,7 @@ export function PersonalitiesModal({isModalVisible, setModalVisible}: Props) {
       hideModal();
     } catch (error: any) {
       console.error(error.message);
-      Alert.alert('error', error.message);
+      showToast('문제가 발생했습니다');
     }
   };
 

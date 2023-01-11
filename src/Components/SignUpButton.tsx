@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {Alert} from 'react-native';
 import {useState} from 'react';
 import useStore from '../Store/store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -7,19 +6,18 @@ import {signUp} from '../APIs/member';
 
 import type {UserInfo} from '../types/types';
 import {BottomButton} from './Button/Bottom/BottomButton';
+import {showToast} from './Toast/toast';
 
 type Props = {
   disableSignUp: boolean;
-  onPress: () => void;
 };
 
-export function SignUpButton({disableSignUp, onPress: onPressSignUp}: Props) {
+export function SignUpButton({disableSignUp}: Props) {
   const [disable, setDisable] = useState(false);
   const store = useStore();
 
   const onPress = async () => {
     setDisable(true);
-    onPressSignUp();
     try {
       if (
         store.registerToken &&
@@ -50,7 +48,7 @@ export function SignUpButton({disableSignUp, onPress: onPressSignUp}: Props) {
       }
     } catch (error: any) {
       console.error(error.message);
-      Alert.alert('error', error.message);
+      showToast('문제가 발생했습니다');
     } finally {
       setDisable(false);
     }

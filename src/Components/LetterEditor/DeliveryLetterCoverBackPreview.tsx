@@ -1,10 +1,11 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {Alert, Image, Text, View} from 'react-native';
+import {Image, Text, View} from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 import useStore, {useLetterEditorStore} from '../../Store/store';
 import {GRADIENT_COLORS} from '../../Constants/letter';
 import {SCREEN_WIDTH} from '../../Constants/screen';
 import {getCities} from '../../APIs/geolocation';
+import {showToast} from '../Toast/toast';
 
 export const DeliveryLetterCoverBackPreview = React.memo(() => {
   const {userInfo} = useStore();
@@ -26,12 +27,13 @@ export const DeliveryLetterCoverBackPreview = React.memo(() => {
       }
     } catch (error: any) {
       console.error(error.message);
-      Alert.alert('error', error.message);
+      showToast('문제가 발생했습니다');
     }
   }, [userInfo]);
 
   useEffect(() => {
     getFromAddress();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
