@@ -199,7 +199,10 @@ export const EnvelopeModal = ({
                         style={[styles.fromImg, {width: 25}]}
                         source={require('../Assets/to.png')}
                       />
-                      <Text style={styles.fromText}>{`${toNickname},\n${toAddress}`}</Text>
+                      <Text
+                        style={
+                          styles.fromText
+                        }>{`${toNickname},\n${toAddress}`}</Text>
                     </>
                   ) : (
                     <>
@@ -207,7 +210,10 @@ export const EnvelopeModal = ({
                         style={[styles.fromImg, {width: 48}]}
                         source={require('../Assets/from.png')}
                       />
-                      <Text style={styles.fromText}>{`${fromNickname},\n${fromAddress}`}</Text>
+                      <Text
+                        style={
+                          styles.fromText
+                        }>{`${fromNickname},\n${fromAddress}`}</Text>
                     </>
                   )}
                 </View>
@@ -260,7 +266,7 @@ export const EnvelopeModal = ({
               </LinearGradient>
             </View>
             <View
-              style={styles.swipe}
+              style={styles.swipeArea}
               onStartShouldSetResponder={() => true}
               onResponderStart={event => {
                 onSwipeXStart(
@@ -293,7 +299,14 @@ const styles = StyleSheet.create({
   openText: {fontFamily: 'Galmuri11', fontSize: 15, color: 'white'},
   openArrow: {width: 144, height: 10, marginTop: 16},
   envelope: {position: 'absolute', top: '40%', width: '80%'},
-  swipe: {position: 'absolute', top: 0, left: 0, width: '100%', height: '60%'},
+  swipeArea: {
+    position: 'absolute',
+    bottom: 90,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    zIndex: 2,
+  },
   dashBot: {
     position: 'absolute',
     bottom: -1,
