@@ -13,7 +13,7 @@ import type {StackParamsList} from '../../types/stackParamList';
 import {LinearGradient} from 'expo-linear-gradient';
 import {Header} from '../../Components/Headers/Header';
 import {SCREEN_HEIGHT} from '../../Constants/screen';
-import {NextButton} from '../../Components/NextButton';
+import {NextButton} from '../../Components/Button/Bottom/NextButton';
 import useStore from '../../Store/store';
 import {ResetButton} from '../../Components/ResetButton';
 import {PersonalityList} from '../../Components/PersonalityList';

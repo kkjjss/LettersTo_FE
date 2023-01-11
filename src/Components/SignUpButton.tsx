@@ -1,17 +1,12 @@
 import * as React from 'react';
-import {
-  Alert,
-  StyleSheet,
-  Text,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
+import {Alert} from 'react-native';
 import {useState} from 'react';
 import useStore from '../Store/store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {signUp} from '../APIs/member';
 
 import type {UserInfo} from '../types/types';
+import {BottomButton} from './Button/Bottom/BottomButton';
 
 type Props = {
   disableSignUp: boolean;
@@ -39,17 +34,19 @@ export function SignUpButton({disableSignUp, onPress: onPressSignUp}: Props) {
           topicIds: store.signUpInfo.topicIds,
           personalityIds: store.signUpInfo.personalityIds,
           geolocationId: store.signUpInfo.geolocationId,
+          stampQuantity: 0,
         };
 
         const {accessToken, refreshToken} = await signUp(userInfo);
+        if (accessToken && refreshToken) {
+          await Promise.all([
+            AsyncStorage.setItem('accessToken', accessToken),
+            AsyncStorage.setItem('refreshToken', refreshToken),
+          ]);
 
-        await Promise.all([
-          AsyncStorage.setItem('accessToken', accessToken),
-          AsyncStorage.setItem('refreshToken', refreshToken),
-        ]);
-
-        store.clearSignupInfo();
-        store.setIsLoading(true);
+          store.clearSignupInfo();
+          store.setIsLoading(true);
+        }
       }
     } catch (error: any) {
       console.error(error.message);
@@ -60,29 +57,23 @@ export function SignUpButton({disableSignUp, onPress: onPressSignUp}: Props) {
   };
 
   return (
-    <TouchableWithoutFeedback
-      disabled={disableSignUp || disable}
-      onPress={onPress}>
-      <View
-        style={[
-          styles.signUpButton,
-          {
-            backgroundColor: !disableSignUp ? '#ff6ece' : '#ffc7f0',
-          },
-        ]}>
-        <Text style={styles.nextButtonText}>가입 완료!</Text>
-      </View>
-    </TouchableWithoutFeedback>
+    // <TouchableWithoutFeedback
+    //   disabled={disableSignUp || disable}
+    //   onPress={onPress}>
+    //   <View
+    //     style={[
+    //       styles.signUpButton,
+    //       {
+    //         backgroundColor: !disableSignUp ? '#ff6ece' : '#ffc7f0',
+    //       },
+    //     ]}>
+    //     <Text style={styles.nextButtonText}>가입 완료!</Text>
+    //   </View>
+    // </TouchableWithoutFeedback>
+    <BottomButton
+      buttonText="가입 완료!"
+      onPress={onPress}
+      disable={disableSignUp || disable}
+    />
   );
 }
-
-const styles = StyleSheet.create({
-  signUpButton: {
-    marginHorizontal: 16,
-    borderRadius: 10,
-    height: 52,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  nextButtonText: {fontFamily: 'Galmuri11', color: 'white'},
-});

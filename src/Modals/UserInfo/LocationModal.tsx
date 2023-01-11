@@ -3,7 +3,7 @@ import {Text, View, Modal, StyleSheet, Platform, Alert} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {patchUserInfo} from '../../APIs/member';
-import {BottomButton} from '../../Components/BottomButton';
+import {BottomButton} from '../../Components/Button/Bottom/BottomButton';
 import {ModalHeader} from '../../Components/ModalHeader';
 import {SCREEN_HEIGHT} from '../../Constants/screen';
 import {useLocation} from '../../Hooks/UserInfo/useLocation';

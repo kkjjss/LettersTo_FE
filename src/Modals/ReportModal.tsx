@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import {ModalHeader} from '../Components/ModalHeader';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {BottomButton} from '../Components/BottomButton';
+import {BottomButton} from '../Components/Button/Bottom/BottomButton';
 import {useKeyboard} from '../Hooks/Hardware/useKeyboard';
 import {reportLetter} from '../APIs/report';
 import {ReportData} from '../types/types';
