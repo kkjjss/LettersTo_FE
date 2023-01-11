@@ -24,7 +24,7 @@ import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../Constants/screen';
 import {ModalBlur} from '../../Modals/ModalBlur';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Header2} from '../../Components/Headers/Header2';
-import {BottomButton} from '../../Components/BottomButton';
+import {BottomButton} from '../../Components/Button/Bottom/BottomButton';
 import {AlertModal} from '../../Modals/AlertModal';
 import {
   onPressPrivacyPolicy,

@@ -9,7 +9,7 @@ import {DeliveryLetterCoverPreview} from '../../../Components/LetterEditor/Deliv
 import {Header2} from '../../../Components/Headers/Header2';
 import {LinearGradient} from 'expo-linear-gradient';
 import {StepIndicator} from '../../../Components/StepIndicator';
-import {PRIVATE_COVER_EDIT_STEPS} from '../../../Constants/constants';
+import {PRIVATE_COVER_EDIT_STEPS} from '../../../Constants/user';
 import {getDeliveryDate} from '../../../APIs/letter';
 import {DeliveryType} from '../../../types/types';
 // import {subDate} from '../../../Utils/dateFormatter';

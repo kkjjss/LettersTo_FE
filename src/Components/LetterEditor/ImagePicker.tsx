@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {SCREEN_WIDTH} from '../../Constants/screen';
-import {BASE_URL_TEST} from '../../Constants/common';
+import {getImageUrl} from '../../Utils/image';
 
 const foldButton = require('../../Assets/fold.png');
 const unfoldButton = require('../../Assets/unfold.png');
@@ -142,7 +142,7 @@ export const ImagePicker = React.memo(
                   }}>
                   <Image
                     source={{
-                      uri: BASE_URL_TEST + `/files/${image}`,
+                      uri: getImageUrl(image),
                     }}
                     style={{
                       width: 55,

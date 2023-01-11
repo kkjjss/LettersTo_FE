@@ -8,7 +8,7 @@ import {LetterCoverPreview} from '../../../Components/LetterEditor/LetterCoverPr
 import useStore from '../../../Store/store';
 import {Header2} from '../../../Components/Headers/Header2';
 import {StepIndicator} from '../../../Components/StepIndicator';
-import {PUBLIC_COVER_EDIT_STEPS} from '../../../Constants/constants';
+import {PUBLIC_COVER_EDIT_STEPS} from '../../../Constants/user';
 
 type Props = NativeStackScreenProps<StackParamsList, 'CoverPersonalityEditor'>;
 

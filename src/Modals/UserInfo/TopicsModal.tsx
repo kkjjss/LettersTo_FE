@@ -16,7 +16,7 @@ import {TopicList} from '../../Components/TopicList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {patchUserInfo} from '../../APIs/member';
 import {useTopic} from '../../Hooks/UserInfo/useTopic';
-import {BottomButton} from '../../Components/BottomButton';
+import {BottomButton} from '../../Components/Button/Bottom/BottomButton';
 
 type Props = {
   isModalVisible: boolean;

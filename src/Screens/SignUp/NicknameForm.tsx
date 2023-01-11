@@ -10,7 +10,7 @@ import {
   SafeAreaView,
   Platform,
 } from 'react-native';
-import {NextButton} from '../../Components/NextButton';
+import {NextButton} from '../../Components/Button/Bottom/NextButton';
 import {SCREEN_HEIGHT} from '../../Constants/screen';
 import {LinearGradient} from 'expo-linear-gradient';
 import {Header} from '../../Components/Headers/Header';

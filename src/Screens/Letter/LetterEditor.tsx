@@ -12,6 +12,7 @@ import {
   Platform,
   StatusBar,
   StyleSheet,
+  Text,
   TextInput,
   View,
 } from 'react-native';
@@ -39,6 +40,12 @@ import {PaperBackgroud} from '../../Components/Letter/PaperBackground/PaperBackg
 import {Header2} from '../../Components/Headers/Header2';
 import {logIn as getUserInfo} from '../../APIs/member';
 import {showToast} from '../../Components/Toast/toast';
+import {
+  MAX_TEXT_LIMIT,
+  MAX_TITLE_LIMIT,
+  MIN_TEXT_LIMIT,
+  MIN_TITLE_LIMIT,
+} from '../../Constants/letter';
 
 type Props = NativeStackScreenProps<StackParamsList, 'LetterEditor'>;
 
@@ -74,10 +81,11 @@ export function LetterEditor({navigation, route}: Props) {
 
   useEffect(() => {
     if (
-      (!route.params && title.replace(/(⌜|⌟︎)/g, '').length < 5) ||
-      title.replace(/(⌜|⌟︎)/g, '').length > 30 ||
-      text.length < 100 ||
-      text.length > 1000
+      (!route.params &&
+        title.replace(/(⌜|⌟︎)/g, '').length < MIN_TITLE_LIMIT) ||
+      title.replace(/(⌜|⌟︎)/g, '').length > MAX_TITLE_LIMIT ||
+      text.length < MIN_TEXT_LIMIT ||
+      text.length > MAX_TEXT_LIMIT
     ) {
       setDisableNext(true);
     } else if (!route.params) {
@@ -169,12 +177,12 @@ export function LetterEditor({navigation, route}: Props) {
 
   const onFocusOutTitle = () => {
     if (title) {
-      setTitle('⌜' + title.slice(0, 30) + '⌟︎');
+      setTitle('⌜' + title.slice(0, MAX_TITLE_LIMIT) + '⌟︎');
     }
   };
 
   const onChangeTitle = (titleTemp: string) => {
-    if (titleTemp.length > 30) {
+    if (titleTemp.length > MAX_TITLE_LIMIT) {
       return;
     }
     setTitle(titleTemp);
@@ -351,15 +359,18 @@ export function LetterEditor({navigation, route}: Props) {
 
   const onPressNext = useCallback(() => {
     dismissKeyboard();
-    if (!route.params && title.replace(/(⌜|⌟︎)/g, '').length < 5) {
+    if (
+      !route.params &&
+      title.replace(/(⌜|⌟︎)/g, '').length < MIN_TITLE_LIMIT
+    ) {
       return showToast('제목은 5자 이상 입력해주세요');
-    } else if (text.length < 100) {
+    } else if (text.length < MIN_TEXT_LIMIT) {
       return showToast('내용은 최소 100자 이상 입력해 주세요.');
     } else if (disableNext) {
       return;
     }
     goNext();
-  }, [disableNext, dismissKeyboard, goNext, text, title]);
+  }, [disableNext, dismissKeyboard, goNext, route.params, text.length, title]);
 
   useEffect(() => {
     if (Platform.OS === 'ios') {
@@ -463,6 +474,17 @@ export function LetterEditor({navigation, route}: Props) {
             </View>
 
             <View style={styles.bottom}>
+              <Text
+                style={{
+                  position: 'absolute',
+                  right: 16,
+                  top: -30,
+                  fontFamily: 'Galmuri11',
+                  fontSize: 12,
+                  color: '#0000CC66',
+                }}>
+                {text.length}/{MAX_TEXT_LIMIT}
+              </Text>
               {images.length > 0 && (
                 <ImagePicker
                   images={images}

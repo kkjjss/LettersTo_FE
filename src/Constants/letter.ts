@@ -1,5 +1,11 @@
 import {Texticons, PaperColor} from '../types/types';
 
+export const MAX_TEXT_LIMIT = 1000;
+export const MIN_TEXT_LIMIT = 100;
+
+export const MAX_TITLE_LIMIT = 30;
+export const MIN_TITLE_LIMIT = 5;
+
 export const PAPER_COLORS: {
   [key in PaperColor]: string;
 } = {

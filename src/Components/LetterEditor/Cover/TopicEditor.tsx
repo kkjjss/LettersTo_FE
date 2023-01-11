@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {MAX_TOPIC_LIMIT} from '../../../Constants/constants';
+import {MAX_TOPIC_LIMIT} from '../../../Constants/user';
 import useStore from '../../../Store/store';
 import {ResetButton} from '../../ResetButton';
 import {TopicList} from '../../TopicList';

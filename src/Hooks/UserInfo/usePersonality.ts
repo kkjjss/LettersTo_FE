@@ -1,7 +1,7 @@
 import {useEffect, useMemo, useRef, useState} from 'react';
 import {Alert, Animated} from 'react-native';
 import {getPersonalities} from '../../APIs/personality';
-import {MAX_PERSONALITY_LIMIT} from '../../Constants/constants';
+import {MAX_PERSONALITY_LIMIT} from '../../Constants/user';
 import {Personalities} from '../../types/types';
 
 export const usePersonality = () => {

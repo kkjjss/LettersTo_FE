@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {patchUserInfo} from '../../APIs/member';
-import {BottomButton} from '../../Components/BottomButton';
+import {BottomButton} from '../../Components/Button/Bottom/BottomButton';
 import {useKeyboard} from '../../Hooks/Hardware/useKeyboard';
 import {useNickname} from '../../Hooks/UserInfo/useNickname';
 import useStore from '../../Store/store';

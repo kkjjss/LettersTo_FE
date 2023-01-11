@@ -8,8 +8,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {BASE_URL_TEST} from '../Constants/common';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../Constants/screen';
+import {getImageUrl} from '../Utils/image';
 
 type Props = {
   isImageModalVisible: boolean;
@@ -52,7 +52,7 @@ export const ImageModal = React.memo(
               <Image
                 key={index}
                 source={{
-                  uri: BASE_URL_TEST + `/files/${image}`,
+                  uri: getImageUrl(image),
                 }}
                 style={styles.image}
               />
