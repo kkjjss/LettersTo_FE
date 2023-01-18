@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     color: '#0000CC',
     lineHeight: 22.1,
   },
-  To: {height: 22, width: 25, resizeMode: 'contain', marginTop: 8},
+  To: {height: 22, width: 25, resizeMode: 'contain'},
   From: {height: 22, width: 48, resizeMode: 'contain', marginTop: 4},
   fromText: {
     marginLeft: 16,

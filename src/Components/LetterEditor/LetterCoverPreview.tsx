@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     color: '#0000CC',
     lineHeight: 22.1,
   },
-  From: {height: 22, width: 48, resizeMode: 'contain', marginTop: 8},
+  From: {height: 22, width: 48, resizeMode: 'contain'},
   fromText: {
     marginLeft: 16,
     fontSize: 12,
