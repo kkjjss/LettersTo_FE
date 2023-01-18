@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
   topArea: {
     flexDirection: 'row',
   },
-  title: {flex: 173, flexWrap: 'wrap', marginRight: 16},
+  title: {flex: 173, marginRight: 16},
   titleText: {
     width: '100%',
     height: 50,

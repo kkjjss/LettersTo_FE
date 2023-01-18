@@ -156,7 +156,6 @@ const styles = StyleSheet.create({
   },
   title: {
     flex: 173,
-    flexWrap: 'wrap',
     marginRight: 16,
   },
   titleText: {
