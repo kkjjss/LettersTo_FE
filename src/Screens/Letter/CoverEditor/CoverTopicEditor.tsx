@@ -11,7 +11,7 @@ import {getPersonalities} from '../../../APIs/personality';
 import {StepIndicator} from '../../../Components/StepIndicator';
 import {PUBLIC_COVER_EDIT_STEPS} from '../../../Constants/user';
 import {Header2} from '../../../Components/Headers/Header2';
-import {showToast} from '../../../Components/Toast/toast';
+import Toast from '../../../Components/Toast/toast';
 
 type Props = NativeStackScreenProps<StackParamsList, 'CoverTopicEditor'>;
 
@@ -42,7 +42,7 @@ export function CoverTopicEditor({navigation}: Props) {
         });
       } catch (error: any) {
         console.error(error.message);
-        showToast('문제가 발생했습니다');
+        Toast.show('문제가 발생했습니다');
       }
     };
 
@@ -53,7 +53,7 @@ export function CoverTopicEditor({navigation}: Props) {
         });
       } catch (error: any) {
         console.error(error.message);
-        showToast('문제가 발생했습니다');
+        Toast.show('문제가 발생했습니다');
       }
     };
 

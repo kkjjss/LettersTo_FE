@@ -6,7 +6,7 @@ import {signUp} from '../APIs/member';
 
 import type {UserInfo} from '../types/types';
 import {BottomButton} from './Button/Bottom/BottomButton';
-import {showToast} from './Toast/toast';
+import Toast from './Toast/toast';
 
 type Props = {
   disableSignUp: boolean;
@@ -48,7 +48,7 @@ export function SignUpButton({disableSignUp}: Props) {
       }
     } catch (error: any) {
       console.error(error.message);
-      showToast('문제가 발생했습니다');
+      Toast.show('문제가 발생했습니다');
     } finally {
       setDisable(false);
     }

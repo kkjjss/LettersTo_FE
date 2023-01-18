@@ -14,7 +14,7 @@ import {PersonalityItem} from '../PersonalityItem';
 import {GRADIENT_COLORS} from '../../Constants/letter';
 import {SCREEN_WIDTH} from '../../Constants/screen';
 import {getCities, getRegions} from '../../APIs/geolocation';
-import {showToast} from '../Toast/toast';
+import Toast from '../Toast/toast';
 
 const SelectedStampImage = () => {
   const {cover, stamps} = useStore();
@@ -74,7 +74,7 @@ export const LetterCoverPreview = React.memo(() => {
       }
     } catch (error: any) {
       console.error(error.message);
-      showToast('문제가 발생했습니다');
+      Toast.show('문제가 발생했습니다');
     }
   }, [userInfo]);
 

@@ -24,7 +24,7 @@ import {Header} from '../../Components/Headers/Header';
 import {dateFormatter} from '../../Utils/dateFormatter';
 import {LetterItem} from './LetterItem';
 import {EnvelopeModal} from '../../Modals/EnvelopeModal';
-import {showToast} from '../../Components/Toast/toast';
+import Toast from '../../Components/Toast/toast';
 
 type Props = NativeStackScreenProps<StackParamsList, 'LetterBoxDetail'>;
 
@@ -57,7 +57,7 @@ export function LetterBoxDetail({route, navigation}: Props) {
       });
     } catch (error: any) {
       console.error(error.message);
-      showToast('문제가 발생했습니다');
+      Toast.show('문제가 발생했습니다');
     }
   };
 
@@ -73,7 +73,7 @@ export function LetterBoxDetail({route, navigation}: Props) {
       });
     } catch (error: any) {
       console.error(error.message);
-      showToast('문제가 발생했습니다');
+      Toast.show('문제가 발생했습니다');
     }
 
     // 주고받은 편지 목록 조회
@@ -92,7 +92,7 @@ export function LetterBoxDetail({route, navigation}: Props) {
         });
       } catch (error: any) {
         console.error(error.message);
-        showToast('문제가 발생했습니다');
+        Toast.show('문제가 발생했습니다');
       }
     }
   };

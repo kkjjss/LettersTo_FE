@@ -5,7 +5,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {patchUserInfo} from '../../APIs/member';
 import {BottomButton} from '../../Components/Button/Bottom/BottomButton';
 import {ModalHeader} from '../../Components/ModalHeader';
-import {showToast} from '../../Components/Toast/toast';
+import Toast from '../../Components/Toast/toast';
 import {SCREEN_HEIGHT} from '../../Constants/screen';
 import {useLocation} from '../../Hooks/UserInfo/useLocation';
 import useStore from '../../Store/store';
@@ -52,7 +52,7 @@ export function LocationModal({isModalVisible, setModalVisible}: Props) {
       }
     } catch (error: any) {
       console.error(error.message);
-      showToast('추가 변경은 일주일 후에 가능해요');
+      Toast.show('추가 변경은 일주일 후에 가능해요');
     } finally {
       hideModal();
     }

@@ -25,7 +25,7 @@ import {ModalBlur} from '../../Modals/ModalBlur';
 import {Header2} from '../../Components/Headers/Header2';
 import useStore, {useLetterEditorStore} from '../../Store/store';
 import {ReportModal} from '../../Modals/ReportModal';
-import {showToast} from '../../Components/Toast/toast';
+import Toast from '../../Components/Toast/toast';
 
 const TEXT_ALIGN = {
   LEFT: 'left',
@@ -91,7 +91,7 @@ export function ReadLetter({route, navigation}: Props) {
         setLetterContent(data);
       } catch (error: any) {
         console.error(error.message);
-        showToast('문제가 발생했습니다');
+        Toast.show('문제가 발생했습니다');
       }
     };
 
@@ -102,7 +102,7 @@ export function ReadLetter({route, navigation}: Props) {
         setLetterContent(data);
       } catch (error: any) {
         console.error(error.message);
-        showToast('문제가 발생했습니다');
+        Toast.show('문제가 발생했습니다');
       }
     };
 

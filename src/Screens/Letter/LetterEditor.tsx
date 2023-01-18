@@ -39,7 +39,7 @@ import {ModalBlur} from '../../Modals/ModalBlur';
 import {PaperBackgroud} from '../../Components/Letter/PaperBackground/PaperBackgroud';
 import {Header2} from '../../Components/Headers/Header2';
 import {logIn as getUserInfo} from '../../APIs/member';
-import {showToast} from '../../Components/Toast/toast';
+import Toast from '../../Components/Toast/toast';
 import {
   MAX_TEXT_LIMIT,
   MAX_TITLE_LIMIT,
@@ -339,7 +339,7 @@ export function LetterEditor({navigation, route}: Props) {
       setStampQuantity(stampQuantity);
     } catch (error: any) {
       console.error(error.message);
-      showToast('문제가 발생했습니다');
+      Toast.show('문제가 발생했습니다');
     }
   }, [setStampQuantity]);
 
@@ -364,9 +364,9 @@ export function LetterEditor({navigation, route}: Props) {
       !route.params &&
       title.replace(/(⌜|⌟︎)/g, '').length < MIN_TITLE_LIMIT
     ) {
-      return showToast('제목은 5자 이상 입력해주세요');
+      return Toast.show('제목은 5자 이상 입력해주세요');
     } else if (text.length < MIN_TEXT_LIMIT) {
-      return showToast('내용은 최소 100자 이상 입력해 주세요.');
+      return Toast.show('내용은 최소 100자 이상 입력해 주세요.');
     } else if (disableNext) {
       return;
     }

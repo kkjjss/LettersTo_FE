@@ -5,7 +5,7 @@ import useStore, {useLetterEditorStore} from '../../Store/store';
 import {GRADIENT_COLORS} from '../../Constants/letter';
 import {getCities, getRegions} from '../../APIs/geolocation';
 import {SCREEN_WIDTH} from '../../Constants/screen';
-import {showToast} from '../Toast/toast';
+import Toast from '../Toast/toast';
 
 const SelectedStampImage = ({stampId}: {stampId: number | undefined}) => {
   const {stamps} = useStore();
@@ -71,7 +71,7 @@ export const DeliveryLetterCoverPreview = React.memo(() => {
       }
     } catch (error: any) {
       console.error(error.message);
-      showToast('문제가 발생했습니다');
+      Toast.show('문제가 발생했습니다');
     }
   }, [userInfo]);
 

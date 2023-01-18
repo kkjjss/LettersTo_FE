@@ -1,7 +1,7 @@
 import {useEffect, useMemo, useRef, useState} from 'react';
 import {Animated} from 'react-native';
 import {getPersonalities} from '../../APIs/personality';
-import {showToast} from '../../Components/Toast/toast';
+import Toast from '../../Components/Toast/toast';
 import {MAX_PERSONALITY_LIMIT} from '../../Constants/user';
 import {Personalities} from '../../types/types';
 
@@ -62,7 +62,7 @@ export const usePersonality = () => {
       });
     } catch (error: any) {
       console.error(error.message);
-      showToast('문제가 발생했습니다');
+      Toast.show('문제가 발생했습니다');
     }
   }, []);
 
