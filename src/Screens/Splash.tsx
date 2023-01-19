@@ -7,7 +7,7 @@ import {StackParamsList} from '../types/stackParamList';
 import useStore from '../Store/store';
 import {logIn} from '../APIs/member';
 import {sendAttendance} from '../APIs/attendances';
-import {showToast} from '../Components/Toast/toast';
+import Toast from '../Components/Toast/toast';
 
 type Props = NativeStackScreenProps<StackParamsList, 'Splash'>;
 
@@ -52,7 +52,7 @@ export function Splash({}: Props) {
         setIsLoading(false);
       } catch (error: any) {
         console.error(error.message);
-        showToast('문제가 발생했습니다');
+        Toast.show('문제가 발생했습니다');
         setIsLoading(false);
       }
     };

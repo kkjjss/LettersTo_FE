@@ -40,6 +40,8 @@ export function PublicLetterItem(props: PublicLetterItemProps) {
     4: require('../Assets/stamp/4.png'),
     5: require('../Assets/stamp/5.png'),
     6: require('../Assets/stamp/6.png'),
+    7: require('../Assets/stamp/7.png'),
+    8: require('../Assets/stamp/8.png'),
   };
 
   const letterTitle = useMemo(() => {
@@ -51,9 +53,7 @@ export function PublicLetterItem(props: PublicLetterItemProps) {
   }, [title]);
 
   return (
-    <Pressable
-      style={[styles.publicLetterItem, style]}
-      onPress={onOpenLetter}>
+    <Pressable style={[styles.publicLetterItem, style]} onPress={onOpenLetter}>
       <LinearGradient
         locations={[0, 0.5]}
         colors={[GRADIENT_COLORS[paperColor], 'white']}
@@ -65,8 +65,12 @@ export function PublicLetterItem(props: PublicLetterItemProps) {
         </ImageBackground>
         <Text style={styles.title}>⌜{letterTitle}⌟︎︎</Text>
         <View style={styles.fromArea}>
-          <Image style={styles.fromImg} source={require('../Assets/from.png')} />
-          <Text style={styles.fromText}>{`${fromNickname},\n${fromAddress}`}</Text>
+          <Image
+            style={styles.fromImg}
+            source={require('../Assets/from.png')}
+          />
+          <Text
+            style={styles.fromText}>{`${fromNickname},\n${fromAddress}`}</Text>
         </View>
         <View style={styles.tagArea}>
           <View style={styles.tagList}>

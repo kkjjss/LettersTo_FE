@@ -61,6 +61,8 @@ export const EnvelopeModal = ({
     4: require('../Assets/stamp/4.png'),
     5: require('../Assets/stamp/5.png'),
     6: require('../Assets/stamp/6.png'),
+    7: require('../Assets/stamp/7.png'),
+    8: require('../Assets/stamp/8.png'),
   };
 
   // 애니메이션

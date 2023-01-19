@@ -14,7 +14,7 @@ import {PersonalityItem} from '../PersonalityItem';
 import {GRADIENT_COLORS} from '../../Constants/letter';
 import {SCREEN_WIDTH} from '../../Constants/screen';
 import {getCities, getRegions} from '../../APIs/geolocation';
-import {showToast} from '../Toast/toast';
+import Toast from '../Toast/toast';
 
 const SelectedStampImage = () => {
   const {cover, stamps} = useStore();
@@ -74,7 +74,7 @@ export const LetterCoverPreview = React.memo(() => {
       }
     } catch (error: any) {
       console.error(error.message);
-      showToast('문제가 발생했습니다');
+      Toast.show('문제가 발생했습니다');
     }
   }, [userInfo]);
 
@@ -156,7 +156,6 @@ const styles = StyleSheet.create({
   },
   title: {
     flex: 173,
-    flexWrap: 'wrap',
     marginRight: 16,
   },
   titleText: {
@@ -167,7 +166,7 @@ const styles = StyleSheet.create({
     color: '#0000CC',
     lineHeight: 22.1,
   },
-  From: {height: 22, width: 48, resizeMode: 'contain', marginTop: 8},
+  From: {height: 22, width: 48, resizeMode: 'contain'},
   fromText: {
     marginLeft: 16,
     fontSize: 12,

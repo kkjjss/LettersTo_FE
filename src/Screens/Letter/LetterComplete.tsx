@@ -19,7 +19,7 @@ import {
   DeliveryLetterWriteRequest,
   PublicLetterWriteRequest,
 } from '../../types/types';
-import {showToast} from '../../Components/Toast/toast';
+import Toast from '../../Components/Toast/toast';
 
 type Props = NativeStackScreenProps<StackParamsList, 'LetterComplete'>;
 
@@ -43,11 +43,11 @@ export const LetterComplete = ({navigation, route}: Props) => {
         };
 
         await postPublicLetter(letterData);
-        showToast('편지 작성이 완료되었습니다!');
+        Toast.show('편지 작성이 완료되었습니다!');
         navigation.navigate('Main');
       } catch (error: any) {
         console.error(error.message);
-        showToast('문제가 발생했습니다');
+        Toast.show('문제가 발생했습니다');
       }
     }
   }, [cover.personalityIds, cover.stamp, cover.topicIds, letter, navigation]);
@@ -63,11 +63,11 @@ export const LetterComplete = ({navigation, route}: Props) => {
       } else if (route.params?.to === 'DELIVERY') {
         await postDeliveryLetter(letterData);
       }
-      showToast('편지 작성이 완료되었습니다!');
+      Toast.show('편지 작성이 완료되었습니다!');
       navigation.navigate('Main');
     } catch (error: any) {
       console.error(error.message);
-      showToast('문제가 발생했습니다');
+      Toast.show('문제가 발생했습니다');
     }
   }, [deliveryLetter, navigation, route.params?.to]);
 

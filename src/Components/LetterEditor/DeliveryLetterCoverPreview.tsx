@@ -5,7 +5,7 @@ import useStore, {useLetterEditorStore} from '../../Store/store';
 import {GRADIENT_COLORS} from '../../Constants/letter';
 import {getCities, getRegions} from '../../APIs/geolocation';
 import {SCREEN_WIDTH} from '../../Constants/screen';
-import {showToast} from '../Toast/toast';
+import Toast from '../Toast/toast';
 
 const SelectedStampImage = ({stampId}: {stampId: number | undefined}) => {
   const {stamps} = useStore();
@@ -71,7 +71,7 @@ export const DeliveryLetterCoverPreview = React.memo(() => {
       }
     } catch (error: any) {
       console.error(error.message);
-      showToast('문제가 발생했습니다');
+      Toast.show('문제가 발생했습니다');
     }
   }, [userInfo]);
 
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
   topArea: {
     flexDirection: 'row',
   },
-  title: {flex: 173, flexWrap: 'wrap', marginRight: 16},
+  title: {flex: 173, marginRight: 16},
   titleText: {
     width: '100%',
     height: 50,
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     color: '#0000CC',
     lineHeight: 22.1,
   },
-  To: {height: 22, width: 25, resizeMode: 'contain', marginTop: 8},
+  To: {height: 22, width: 25, resizeMode: 'contain'},
   From: {height: 22, width: 48, resizeMode: 'contain', marginTop: 4},
   fromText: {
     marginLeft: 16,

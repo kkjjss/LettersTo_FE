@@ -14,7 +14,7 @@ import {BottomButton} from '../Components/Button/Bottom/BottomButton';
 import {useKeyboard} from '../Hooks/Hardware/useKeyboard';
 import {reportLetter} from '../APIs/report';
 import {ReportData} from '../types/types';
-import {showToast} from '../Components/Toast/toast';
+import Toast from '../Components/Toast/toast';
 
 const REPORT_ITEMS = [
   {id: 0, text: '욕설 및 비하발언 포함'},
@@ -59,10 +59,10 @@ export const ReportModal = ({
       };
 
       await reportLetter(reportData);
-      showToast('신고 접수되었습니다.');
+      Toast.show('신고 접수되었습니다.');
     } catch (error: any) {
       console.error(error);
-      showToast('문제가 발생했습니다');
+      Toast.show('문제가 발생했습니다');
     } finally {
       hideModal();
     }

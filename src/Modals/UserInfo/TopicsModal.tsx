@@ -16,7 +16,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {patchUserInfo} from '../../APIs/member';
 import {useTopic} from '../../Hooks/UserInfo/useTopic';
 import {BottomButton} from '../../Components/Button/Bottom/BottomButton';
-import {showToast} from '../../Components/Toast/toast';
+import Toast from '../../Components/Toast/toast';
 
 type Props = {
   isModalVisible: boolean;
@@ -61,7 +61,7 @@ export const TopicsModal = ({isModalVisible, setModalVisible}: Props) => {
       hideModal();
     } catch (error: any) {
       console.error(error.message);
-      showToast('문제가 발생했습니다');
+      Toast.show('문제가 발생했습니다');
     }
   };
 

@@ -1,7 +1,7 @@
 import {useEffect, useRef, useState} from 'react';
 import {Animated} from 'react-native';
 import {existsNickname} from '../../APIs/member';
-import {showToast} from '../../Components/Toast/toast';
+import Toast from '../../Components/Toast/toast';
 
 export const useNickname = (curruntNickname?: string) => {
   const [nickname, setNickname] = useState('');
@@ -69,7 +69,7 @@ export const useNickname = (curruntNickname?: string) => {
           alert.start();
         } catch (error: any) {
           console.error(error.message);
-          showToast('문제가 발생했습니다');
+          Toast.show('문제가 발생했습니다');
         }
       }
     };

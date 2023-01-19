@@ -6,7 +6,7 @@ import {getNotifications, setNotificationRead} from '../../APIs/notification';
 import {Header2} from '../../Components/Headers/Header2';
 import {NotificationItem} from '../../Components/Notification/NotificationItem';
 import {NotificationSlideSwitch} from '../../Components/Notification/NotificationSlideSwitch';
-import {showToast} from '../../Components/Toast/toast';
+import Toast from '../../Components/Toast/toast';
 import {StackParamsList} from '../../types/stackParamList';
 import {Notification, NotificationList} from '../../types/types';
 
@@ -38,7 +38,7 @@ export const Notifications = ({navigation}: Props) => {
     try {
       await setNotificationRead(notification.id);
     } catch (error: any) {
-      showToast('문제가 발생했습니다');
+      Toast.show('문제가 발생했습니다');
     }
   };
 
@@ -77,7 +77,7 @@ export const Notifications = ({navigation}: Props) => {
       setCurrentCursor(nextCursor);
     } catch (error: any) {
       console.error(error.message);
-      showToast('문제가 발생했습니다');
+      Toast.show('문제가 발생했습니다');
     }
   };
 

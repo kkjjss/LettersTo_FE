@@ -20,7 +20,7 @@ import {PublicLetter, PublicLetters} from '../../types/types';
 import {PublicLetterItem} from '../../Components/PublicLetterItem';
 import {EnvelopeModal} from '../../Modals/EnvelopeModal';
 import {SCREEN_HEIGHT} from '../../Constants/screen';
-import {showToast} from '../../Components/Toast/toast';
+import Toast from '../../Components/Toast/toast';
 
 type Props = {
   navigation: NativeStackNavigationProp<StackParamsList, 'Main', undefined>;
@@ -45,7 +45,7 @@ export function Home({navigation}: Props) {
       });
     } catch (error: any) {
       console.error(error.message);
-      showToast('문제가 발생했습니다');
+      Toast.show('문제가 발생했습니다');
     }
   };
 
@@ -80,7 +80,7 @@ export function Home({navigation}: Props) {
         });
       } catch (error: any) {
         console.error(error.message);
-        showToast('문제가 발생했습니다');
+        Toast.show('문제가 발생했습니다');
       }
     }
   };
@@ -98,7 +98,7 @@ export function Home({navigation}: Props) {
       });
     } catch (error: any) {
       console.error(error.message);
-      showToast('문제가 발생했습니다');
+      Toast.show('문제가 발생했습니다');
     }
   };
 

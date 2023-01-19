@@ -26,7 +26,7 @@ import {
   onPressTermsOfService,
 } from '../../Utils/hyperlink';
 
-import {showToast} from '../../Components/Toast/toast';
+import Toast from '../../Components/Toast/toast';
 
 type Props = NativeStackScreenProps<StackParamsList, 'Auth'>;
 
@@ -44,7 +44,7 @@ export function Auth({navigation}: Props) {
       await loginWithToken(userTokens);
     } catch (error: any) {
       console.error(error.message);
-      showToast('문제가 발생했습니다');
+      Toast.show('문제가 발생했습니다');
     } finally {
       setDisableSignUp(false);
     }
