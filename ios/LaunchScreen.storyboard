@@ -12,31 +12,49 @@
         <scene sceneID="EHf-IW-A2E">
             <objects>
                 <viewController id="01J-lp-oVM" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
+                    <view key="view" contentMode="scaleAspectFit" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="obG-Y5-kRd">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="obG-Y5-kRd">
                                 <rect key="frame" x="0.0" y="832" width="393" height="0.0"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="1" translatesAutoresizingMaskIntoConstraints="NO" id="ffh-Xq-WwO">
-                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="image 3.png" translatesAutoresizingMaskIntoConstraints="NO" id="U6f-gb-VaO">
+                                <rect key="frame" x="56.666666666666657" y="286" width="280" height="280"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="ffh-Xq-WwO" secondAttribute="height" multiplier="131:284" id="EpA-bE-nwg"/>
+                                    <constraint firstAttribute="height" constant="280" id="EtD-co-1jB"/>
+                                    <constraint firstAttribute="width" constant="280" id="Jd1-EZ-Gxs"/>
+                                </constraints>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Letters to . . ..png" translatesAutoresizingMaskIntoConstraints="NO" id="QeP-61-cw8">
+                                <rect key="frame" x="40" y="107.33333333333334" width="121" height="85.333333333333343"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="85.329999999999998" id="BUX-gA-PBb"/>
+                                    <constraint firstAttribute="width" constant="121" id="Pca-xb-uao"/>
+                                </constraints>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="진짜 나와 너로 만나는 우편 사서함.png" translatesAutoresizingMaskIntoConstraints="NO" id="nCO-t0-73J">
+                                <rect key="frame" x="40" y="726.66666666666663" width="134" height="50.666666666666629"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="134" id="SIb-rj-VeG"/>
+                                    <constraint firstAttribute="height" constant="50.670000000000002" id="vdW-rb-GM6"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
                         <color key="backgroundColor" red="0.92156863209999995" green="0.32941177490000001" blue="0.78039217000000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <color key="tintColor" red="0.92156863209999995" green="0.32941177490000001" blue="0.78039217000000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
-                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="centerX" secondItem="obG-Y5-kRd" secondAttribute="centerX" id="5cz-MP-9tL"/>
-                            <constraint firstItem="ffh-Xq-WwO" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="AuU-CY-XmR"/>
-                            <constraint firstItem="ffh-Xq-WwO" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="M7b-Y1-pD8"/>
-                            <constraint firstItem="obG-Y5-kRd" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" symbolic="YES" id="SfN-ll-jLj"/>
-                            <constraint firstAttribute="bottom" secondItem="obG-Y5-kRd" secondAttribute="bottom" constant="20" id="Y44-ml-fuU"/>
+                            <constraint firstItem="U6f-gb-VaO" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="JdX-8S-3rL"/>
+                            <constraint firstItem="nCO-t0-73J" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="40" id="bbv-KX-Tx9"/>
+                            <constraint firstItem="QeP-61-cw8" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="top" constant="150" id="dyZ-fR-3K1"/>
+                            <constraint firstItem="U6f-gb-VaO" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="ezQ-mM-gSZ"/>
+                            <constraint firstItem="QeP-61-cw8" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="40" id="k93-An-hgv"/>
+                            <constraint firstItem="nCO-t0-73J" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="bottom" constant="-100" id="mpY-rj-v9x"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -46,6 +64,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="1" width="393" height="852"/>
+        <image name="Letters to . . ..png" width="133.25" height="85.25"/>
+        <image name="image 3.png" width="345" height="345"/>
+        <image name="진짜 나와 너로 만나는 우편 사서함.png" width="175.25" height="50.5"/>
     </resources>
 </document>

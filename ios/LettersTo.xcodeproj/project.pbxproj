@@ -17,9 +17,9 @@
 		EE0CF416293CA7DF00B67905 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EE0CF415293CA7DF00B67905 /* LaunchScreen.storyboard */; };
 		EE0EC79028EF183900F700DF /* font in Resources */ = {isa = PBXBuildFile; fileRef = EE0EC78F28EF183900F700DF /* font */; };
 		EE683A1929240BCB0053A12A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EE683A1829240BCB0053A12A /* GoogleService-Info.plist */; };
-		EEF9D168296D6CD9006AF3DC /* splash_beta.png in Resources */ = {isa = PBXBuildFile; fileRef = EEF9D165296D6CD8006AF3DC /* splash_beta.png */; };
-		EEF9D169296D6CD9006AF3DC /* splash_beta@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EEF9D166296D6CD8006AF3DC /* splash_beta@2x.png */; };
-		EEF9D16A296D6CD9006AF3DC /* splash_beta@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = EEF9D167296D6CD9006AF3DC /* splash_beta@3x.png */; };
+		EEF9D172297906EF006AF3DC /* image 3.png in Resources */ = {isa = PBXBuildFile; fileRef = EEF9D170297906EF006AF3DC /* image 3.png */; };
+		EEF9D17729790F61006AF3DC /* Letters to . . ..png in Resources */ = {isa = PBXBuildFile; fileRef = EEF9D17429790F60006AF3DC /* Letters to . . ..png */; };
+		EEF9D17829790F61006AF3DC /* 진짜 나와 너로 만나는 우편 사서함.png in Resources */ = {isa = PBXBuildFile; fileRef = EEF9D17629790F61006AF3DC /* 진짜 나와 너로 만나는 우편 사서함.png */; };
 		F0DEC80EB9DA56BCA16F7339 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0419D5229857C0CCF6E99EC7 /* ExpoModulesProvider.swift */; };
 /* End PBXBuildFile section */
 
@@ -66,9 +66,9 @@
 		EE683A1829240BCB0053A12A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EE8129702938A7CB00495330 /* LettersToDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = LettersToDebug.entitlements; path = LettersTo/LettersToDebug.entitlements; sourceTree = "<group>"; };
 		EED391152938F0E3001A3FFF /* LettersToRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = LettersToRelease.entitlements; path = LettersTo/LettersToRelease.entitlements; sourceTree = "<group>"; };
-		EEF9D165296D6CD8006AF3DC /* splash_beta.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = splash_beta.png; sourceTree = "<group>"; };
-		EEF9D166296D6CD8006AF3DC /* splash_beta@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splash_beta@2x.png"; sourceTree = "<group>"; };
-		EEF9D167296D6CD9006AF3DC /* splash_beta@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splash_beta@3x.png"; sourceTree = "<group>"; };
+		EEF9D170297906EF006AF3DC /* image 3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "image 3.png"; sourceTree = "<group>"; };
+		EEF9D17429790F60006AF3DC /* Letters to . . ..png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Letters to . . ..png"; sourceTree = "<group>"; };
+		EEF9D17629790F61006AF3DC /* 진짜 나와 너로 만나는 우편 사서함.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "진짜 나와 너로 만나는 우편 사서함.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,9 +128,9 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				EE0CF415293CA7DF00B67905 /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
-				EEF9D165296D6CD8006AF3DC /* splash_beta.png */,
-				EEF9D166296D6CD8006AF3DC /* splash_beta@2x.png */,
-				EEF9D167296D6CD9006AF3DC /* splash_beta@3x.png */,
+				EEF9D170297906EF006AF3DC /* image 3.png */,
+				EEF9D17629790F61006AF3DC /* 진짜 나와 너로 만나는 우편 사서함.png */,
+				EEF9D17429790F60006AF3DC /* Letters to . . ..png */,
 			);
 			name = LettersTo;
 			sourceTree = "<group>";
@@ -328,12 +328,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				EE0EC79028EF183900F700DF /* font in Resources */,
+				EEF9D17729790F61006AF3DC /* Letters to . . ..png in Resources */,
 				EE683A1929240BCB0053A12A /* GoogleService-Info.plist in Resources */,
-				EEF9D16A296D6CD9006AF3DC /* splash_beta@3x.png in Resources */,
-				EEF9D168296D6CD9006AF3DC /* splash_beta.png in Resources */,
+				EEF9D17829790F61006AF3DC /* 진짜 나와 너로 만나는 우편 사서함.png in Resources */,
+				EEF9D172297906EF006AF3DC /* image 3.png in Resources */,
 				EE0CF416293CA7DF00B67905 /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				EEF9D169296D6CD9006AF3DC /* splash_beta@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
