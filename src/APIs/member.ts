@@ -1,11 +1,12 @@
-import type {RegisterToken, UserInfo} from '../types/types';
+import type {RegisterToken, UserInfo as RegisterInfo} from '../types/types';
+import type {UserInfo} from '../types/user';
 import {instance, instanceWithAuth} from '../Utils/http';
 
-export async function signUp(userInfo: UserInfo): Promise<RegisterToken> {
+export async function signUp(userInfo: RegisterInfo): Promise<RegisterToken> {
   return await instance.post('/members', {...userInfo});
 }
 
-export async function logIn() {
+export async function logIn(): Promise<UserInfo> {
   return await instanceWithAuth.get('/members');
 }
 
