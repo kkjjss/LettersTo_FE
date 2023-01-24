@@ -3,18 +3,16 @@ import React, {useEffect} from 'react';
 import {ActivityIndicator, View, StyleSheet} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {StackParamsList} from '../types/stackParamList';
-import useUserStore from '../Store/user';
+import useAuthStore from '../Store/auth';
 
 type Props = NativeStackScreenProps<StackParamsList, 'Splash'>;
 
 export function Splash({}: Props) {
-  const {login} = useUserStore(state => ({
-    login: state.action.login,
-  }));
+  const authAction = useAuthStore(state => state.action);
 
   useEffect(() => {
-    login();
-  }, [login]);
+    authAction.loginWithExistTokens();
+  }, [authAction]);
 
   return (
     <View style={styles.container}>

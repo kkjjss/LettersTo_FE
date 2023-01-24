@@ -1,24 +1,22 @@
-import * as React from 'react';
+import React from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   View,
   Text,
   StyleSheet,
-  TouchableWithoutFeedback,
   SafeAreaView,
   Image,
   Platform,
   StatusBar,
 } from 'react-native';
 import type {StackParamsList} from '../../types/stackParamList';
-import useStore from '../../Store/store';
 import {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {logIn} from '../../APIs/member';
-import {postToken} from '../../APIs/token';
-import {RegisterToken} from '../../types/types';
-import {useKakaoLogin} from '../../Hooks/Auth/useKaKaoLogin';
-
+import {verifyProviderToken} from '../../APIs/token';
+import {
+  KakaoOAuthToken,
+  login as loginWithKakaoOAuth,
+} from '@react-native-seoul/kakao-login';
 import appleAuth from '@invertase/react-native-apple-authentication';
 import {HyperLink} from '../../Components/HyperLink/HyperLinkText';
 import {
@@ -27,76 +25,91 @@ import {
 } from '../../Utils/hyperlink';
 
 import Toast from '../../Components/Toast/toast';
+import {ProviderToken} from '../../types/auth';
+import useAuthStore from '../../Store/auth';
+import {AuthButton} from '../../Components/Button/Auth/AuthButton';
+
+const kakaoLogo = require('../../Assets/social/kakao.png');
+const appleLogo = require('../../Assets/social/apple.png');
 
 type Props = NativeStackScreenProps<StackParamsList, 'Auth'>;
 
+const isKakaoOAuthTokenType = (arg: any): arg is KakaoOAuthToken => {
+  return arg.idToken !== undefined;
+};
+
 export function Auth({navigation}: Props) {
-  const store = useStore();
+  const authAction = useAuthStore(state => state.action);
 
   const [disableSignUp, setDisableSignUp] = useState(false);
-
-  const {signUpWithKakao} = useKakaoLogin();
 
   const onPressSignUpWithKaKao = async () => {
     setDisableSignUp(true);
     try {
-      const userTokens = await signUpWithKakao();
-      await loginWithToken(userTokens);
-    } catch (error: any) {
-      console.error(error.message);
-      Toast.show('문제가 발생했습니다');
-    } finally {
-      setDisableSignUp(false);
-    }
-  };
-
-  const loginWithToken = async (userTokens: RegisterToken) => {
-    if (userTokens.verified === false) {
-      // 회원가입 폼으로 이동
-      store.setRegisterToken(userTokens.registerToken);
-      navigation.navigate('NicknameForm');
-    } else if (userTokens.accessToken && userTokens.refreshToken) {
-      // 토큰을 사용하여 로그인
-      AsyncStorage.setItem('accessToken', userTokens.accessToken);
-      AsyncStorage.setItem('refreshToken', userTokens.refreshToken);
-      const userInfo = await logIn();
-      store.setUserInfo({
-        nickname: userInfo.nickname,
-        personalityIds: userInfo.personalityIds,
-        topicIds: userInfo.topicIds,
-        geolocationId: userInfo.geolocationId,
-        parentGeolocationId: userInfo.parentGeolocationId,
-        stampQuantity: userInfo.stampQuantity,
-      });
-      store.setIsLoggedIn(true);
-    }
-  };
-
-  async function onPressSignUpWithApple() {
-    try {
-      if (appleAuth.isSupported) {
-        const appleAuthRequestResponse = await appleAuth.performRequest({
-          requestedOperation: appleAuth.Operation.LOGIN,
-          requestedScopes: [appleAuth.Scope.EMAIL],
-        });
-
-        if (!appleAuthRequestResponse.identityToken) {
-          throw new Error('애플 로그인 연동에 실패했습니다.');
-        }
-
-        const userTokens = await postToken({
-          idToken: appleAuthRequestResponse.identityToken,
-          providerType: 'APPLE',
-        });
-
-        await loginWithToken(userTokens);
+      const kakaoOAuthToken = await loginWithKakaoOAuth();
+      if (!isKakaoOAuthTokenType(kakaoOAuthToken)) {
+        throw new Error('KakaoOAuthToken 형식이 아님');
       }
+
+      const providerToken: ProviderToken = {
+        idToken: kakaoOAuthToken.idToken,
+        providerType: 'KAKAO',
+      };
+
+      await loginWithProvider(providerToken);
+    } catch (error: any) {
+      console.error(error.message);
+      Toast.show('문제가 발생했습니다.');
+    } finally {
+      setDisableSignUp(false);
+    }
+  };
+
+  const onPressSignUpWithApple = async () => {
+    setDisableSignUp(true);
+    try {
+      if (!appleAuth.isSupported) {
+        throw new Error('애플 로그인을 지원하지 않는 기기입니다.');
+      }
+
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        requestedOperation: appleAuth.Operation.LOGIN,
+        requestedScopes: [appleAuth.Scope.EMAIL],
+      });
+
+      if (!appleAuthRequestResponse.identityToken) {
+        throw new Error('애플 로그인 연동에 실패했습니다.');
+      }
+
+      const providerToken: ProviderToken = {
+        idToken: appleAuthRequestResponse.identityToken,
+        providerType: 'APPLE',
+      };
+
+      await loginWithProvider(providerToken);
     } catch (error: any) {
       console.error(error.message);
     } finally {
       setDisableSignUp(false);
     }
-  }
+  };
+
+  const loginWithProvider = async (providerToken: ProviderToken) => {
+    const authTokens = await verifyProviderToken(providerToken);
+
+    if (authTokens.verified === false && authTokens.registerToken) {
+      // 회원가입 폼으로 이동
+      authAction.initRegisterInfo(authTokens.registerToken);
+      navigation.navigate('NicknameForm');
+    } else if (authTokens.accessToken && authTokens.refreshToken) {
+      // 토큰을 사용하여 로그인
+      await Promise.all([
+        AsyncStorage.setItem('accessToken', authTokens.accessToken),
+        AsyncStorage.setItem('refreshToken', authTokens.refreshToken),
+      ]);
+      authAction.loginWithExistTokens();
+    }
+  };
 
   useEffect(() => {
     if (appleAuth.isSupported) {
@@ -119,33 +132,23 @@ export function Auth({navigation}: Props) {
           />
         </View>
         <View style={styles.buttonWrap}>
-          <TouchableWithoutFeedback
-            disabled={disableSignUp}
-            onPress={onPressSignUpWithKaKao}>
-            <View style={[styles.loginButton, styles.kakaoLoginButton]}>
-              <Image
-                source={require('../../Assets/social/kakao.png')}
-                style={styles.authIcon}
-              />
-              <Text style={[styles.loginText, styles.kakaoLoginText]}>
-                카카오로 시작하기
-              </Text>
-            </View>
-          </TouchableWithoutFeedback>
+          <AuthButton
+            providerName={'카카오'}
+            providerLogo={kakaoLogo}
+            disable={disableSignUp}
+            onPress={onPressSignUpWithKaKao}
+            buttonStyle={styles.kakaoLoginButton}
+            textStyle={styles.kakaoLoginText}
+          />
           {Platform.OS === 'ios' && (
-            <TouchableWithoutFeedback
-              disabled={disableSignUp}
-              onPress={onPressSignUpWithApple}>
-              <View style={[styles.loginButton, styles.appleLoginButton]}>
-                <Image
-                  source={require('../../Assets/social/apple.png')}
-                  style={styles.authIcon}
-                />
-                <Text style={[styles.loginText, styles.appleLoginText]}>
-                  Apple로 시작하기
-                </Text>
-              </View>
-            </TouchableWithoutFeedback>
+            <AuthButton
+              providerName={'Apple'}
+              providerLogo={appleLogo}
+              disable={disableSignUp}
+              onPress={onPressSignUpWithApple}
+              buttonStyle={styles.appleLoginButton}
+              textStyle={styles.appleLoginText}
+            />
           )}
         </View>
         <View style={styles.bottomWrap}>

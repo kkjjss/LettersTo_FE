@@ -1,6 +1,8 @@
 import {instance} from '../Utils/http';
-import type {Token, RegisterToken} from '../types/types';
+import {AuthTokens, ProviderToken} from '../types/auth';
 
-export async function postToken(body: Token): Promise<RegisterToken> {
+export async function verifyProviderToken(
+  body: ProviderToken,
+): Promise<AuthTokens> {
   return await instance.post('/token', body);
 }

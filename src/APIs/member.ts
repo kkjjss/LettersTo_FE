@@ -1,5 +1,5 @@
 import type {RegisterToken, UserInfo as RegisterInfo} from '../types/types';
-import type {UserInfo} from '../types/user';
+import type {UserInfo} from '../types/auth';
 import {instance, instanceWithAuth} from '../Utils/http';
 
 export async function signUp(userInfo: RegisterInfo): Promise<RegisterToken> {

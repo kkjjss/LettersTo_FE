@@ -35,12 +35,12 @@ import {Notifications} from '../Screens/Notifications/Notifications';
 
 // 우표
 import {StampHistory} from '../Screens/Stamp/StampHistory';
-import useUserStore from '../Store/user';
+import useAuthStore from '../Store/auth';
 
 const Stack = createNativeStackNavigator<StackParamsList>();
 
 export default function StackNavigator() {
-  const {isLoggedIn, isLoading} = useUserStore(state => ({
+  const {isLoggedIn, isLoading} = useAuthStore(state => ({
     isLoggedIn: state.isLoggedIn,
     isLoading: state.isLoading,
   }));
