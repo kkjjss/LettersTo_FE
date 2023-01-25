@@ -15,10 +15,11 @@ interface AuthStore {
   action: {
     loginWithExistTokens: () => void;
     initRegisterInfo: (registerToken: string) => void;
+    setNicknameInRegisterInfo: (nickname: string) => void;
   };
 }
 
-const useAuthStore = create<AuthStore>(set => ({
+export const useAuthStore = create<AuthStore>(set => ({
   isLoggedIn: false,
   isLoading: true,
 
@@ -82,7 +83,11 @@ const useAuthStore = create<AuthStore>(set => ({
           personalityIds: [],
         },
       })),
+    setNicknameInRegisterInfo: nickname =>
+      set(state => ({
+        registerInfo: {...state.registerInfo, nickname},
+      })),
   },
 }));
 
-export default useAuthStore;
+export const useAuthAction = () => useAuthStore(state => state.action);

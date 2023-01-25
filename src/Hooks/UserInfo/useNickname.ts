@@ -50,7 +50,7 @@ export const useNickname = (curruntNickname?: string) => {
       if (nickname) {
         if (/^[가-힣A-Za-z0-9]{3,10}$/.test(nickname)) {
           setIsFormCorrect(true);
-          checkNicknameExistss();
+          checkNicknameExists();
         } else {
           setIsFormCorrect(false);
           alert.start();
@@ -58,7 +58,7 @@ export const useNickname = (curruntNickname?: string) => {
       }
     };
 
-    const checkNicknameExistss = async () => {
+    const checkNicknameExists = async () => {
       if (nickname) {
         try {
           const response = await existsNickname(nickname);

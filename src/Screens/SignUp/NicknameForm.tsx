@@ -16,8 +16,7 @@ import {LinearGradient} from 'expo-linear-gradient';
 import {Header} from '../../Components/Headers/Header';
 import type {StackParamsList} from '../../types/stackParamList';
 import {useNickname} from '../../Hooks/UserInfo/useNickname';
-
-import useStore from '../../Store/store';
+import {useAuthAction} from '../../Store/auth';
 
 type Props = NativeStackScreenProps<StackParamsList, 'NicknameForm'>;
 
@@ -32,10 +31,10 @@ export function NicknameForm({navigation}: Props) {
     onChangeNickname,
   } = useNickname();
 
-  const store = useStore();
+  const {setNicknameInRegisterInfo} = useAuthAction();
 
   const goToTopicForm = () => {
-    store.setNickname(nickname);
+    setNicknameInRegisterInfo(nickname);
     navigation.navigate('TopicsForm');
   };
 

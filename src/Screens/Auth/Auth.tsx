@@ -26,7 +26,7 @@ import {
 
 import Toast from '../../Components/Toast/toast';
 import {ProviderToken} from '../../types/auth';
-import useAuthStore from '../../Store/auth';
+import {useAuthAction} from '../../Store/auth';
 import {AuthButton} from '../../Components/Button/Auth/AuthButton';
 
 const kakaoLogo = require('../../Assets/social/kakao.png');
@@ -39,7 +39,7 @@ const isKakaoOAuthTokenType = (arg: any): arg is KakaoOAuthToken => {
 };
 
 export function Auth({navigation}: Props) {
-  const authAction = useAuthStore(state => state.action);
+  const authAction = useAuthAction();
 
   const [disableSignUp, setDisableSignUp] = useState(false);
 

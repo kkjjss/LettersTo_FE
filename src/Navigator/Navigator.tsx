@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {StackParamsList} from '../types/stackParamList';
-import useStore from '../Store/store';
 
 // Splash
 import {Splash} from '../Screens/Splash';
@@ -35,7 +34,7 @@ import {Notifications} from '../Screens/Notifications/Notifications';
 
 // 우표
 import {StampHistory} from '../Screens/Stamp/StampHistory';
-import useAuthStore from '../Store/auth';
+import {useAuthStore} from '../Store/auth';
 
 const Stack = createNativeStackNavigator<StackParamsList>();
 
