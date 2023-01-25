@@ -16,6 +16,7 @@ interface AuthStore {
     loginWithExistTokens: () => void;
     initRegisterInfo: (registerToken: string) => void;
     setNicknameInRegisterInfo: (nickname: string) => void;
+    setTopicIdsInRegisterInfo: (topicIds: number[]) => void;
   };
 }
 
@@ -86,6 +87,10 @@ export const useAuthStore = create<AuthStore>(set => ({
     setNicknameInRegisterInfo: nickname =>
       set(state => ({
         registerInfo: {...state.registerInfo, nickname},
+      })),
+    setTopicIdsInRegisterInfo: topicIds =>
+      set(state => ({
+        registerInfo: {...state.registerInfo, topicIds},
       })),
   },
 }));

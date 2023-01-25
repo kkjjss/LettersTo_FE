@@ -11,7 +11,7 @@ type Props = {
   selectedTopicIds: number[];
 };
 
-export function TopicList({topics, selectTopic, selectedTopicIds}: Props) {
+export const TopicList = ({topics, selectTopic, selectedTopicIds}: Props) => {
   return (
     <>
       {TOPIC_CATEGORY.map(({text, key}, idx) => (
@@ -35,7 +35,7 @@ export function TopicList({topics, selectTopic, selectedTopicIds}: Props) {
       ))}
     </>
   );
-}
+};
 
 const styles = StyleSheet.create({
   topicWrap: {

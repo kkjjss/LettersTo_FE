@@ -6,8 +6,8 @@ import {
   StyleSheet,
   Animated,
   SafeAreaView,
-  ScrollView,
   Platform,
+  ScrollView,
 } from 'react-native';
 import type {StackParamsList} from '../../types/stackParamList';
 import {LinearGradient} from 'expo-linear-gradient';
@@ -15,10 +15,10 @@ import {Header} from '../../Components/Headers/Header';
 import {SCREEN_HEIGHT} from '../../Constants/screen';
 import {NextButton} from '../../Components/Button/Bottom/NextButton';
 import {ResetButton} from '../../Components/ResetButton';
-import useStore from '../../Store/store';
 import {TopicList} from '../../Components/TopicList';
 import {useTopic} from '../../Hooks/UserInfo/useTopic';
 import {MAX_TOPIC_LIMIT} from '../../Constants/user';
+import {useAuthAction} from '../../Store/auth';
 
 type Props = NativeStackScreenProps<StackParamsList, 'TopicsForm'>;
 
@@ -31,10 +31,10 @@ export function TopicsForm({navigation}: Props) {
     [selectedTopicIds],
   );
 
-  const store = useStore();
+  const {setTopicIdsInRegisterInfo} = useAuthAction();
 
   const goToPersonalityForm = () => {
-    store.setTopicIds(selectedTopicIds);
+    setTopicIdsInRegisterInfo(selectedTopicIds);
     navigation.navigate('PersonalityForm');
   };
 
@@ -68,7 +68,9 @@ export function TopicsForm({navigation}: Props) {
         </ScrollView>
         <View style={styles.alertBox}>
           <Animated.View style={{opacity: alertOpacity}}>
-            <Text style={styles.alertText}>최대 7개까지만 선택 가능해요!</Text>
+            <Text style={styles.alertText}>
+              최대 {MAX_TOPIC_LIMIT}개까지만 선택 가능해요!
+            </Text>
           </Animated.View>
         </View>
         <NextButton disable={disableNext} onPress={goToPersonalityForm} />
@@ -141,7 +143,7 @@ const styles = StyleSheet.create({
   },
   alertBox: {
     marginHorizontal: 24,
-    marginBottom: 20,
+    marginVertical: 10,
   },
   alertText: {
     fontFamily: 'Galmuri11',
