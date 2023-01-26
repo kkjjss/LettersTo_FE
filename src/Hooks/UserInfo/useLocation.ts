@@ -48,9 +48,11 @@ export const useLocation = () => {
   useEffect(() => {
     setSelectedCityId(null);
     const getCitiesList = async (regionId: number) => {
-      const citiesList = (await getCities(regionId)).map(({id, name}) => {
-        return {value: id, label: name};
-      });
+      const citiesList = (await getCities(regionId))
+        .sort((a, b) => (a.name > b.name ? 1 : -1))
+        .map(({id, name}) => {
+          return {value: id, label: name};
+        });
       setCities(citiesList);
     };
 

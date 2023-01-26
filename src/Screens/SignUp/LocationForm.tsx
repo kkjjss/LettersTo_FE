@@ -12,19 +12,21 @@ import {
   Platform,
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-
 import type {StackParamsList} from '../../types/stackParamList';
 import {LinearGradient} from 'expo-linear-gradient';
 import {Header} from '../../Components/Headers/Header';
 import {SCREEN_HEIGHT} from '../../Constants/screen';
-import {SignUpButton} from '../../Components/SignUpButton';
-import useStore from '../../Store/store';
-
+import {SignUpButton as SignUpButton1} from '../../Components/SignUpButton';
 import {useLocation} from '../../Hooks/UserInfo/useLocation';
+import {SignUpButton} from '../../Components/Button/Bottom/SignUpButton';
+import {useAuthAction} from '../../Store/auth';
 
 type Props = NativeStackScreenProps<StackParamsList, 'LocationForm'>;
 
 export function LocationForm({navigation}: Props) {
+  const [openRegion, setOpenRegion] = useState(false);
+  const [openCity, setOpenCity] = useState(false);
+
   const {
     regions,
     selectedRegionId,
@@ -37,16 +39,13 @@ export function LocationForm({navigation}: Props) {
     disable,
   } = useLocation();
 
-  const [openRegion, setOpenRegion] = useState(false);
-  const [openCity, setOpenCity] = useState(false);
-
-  const setAddress = useStore(store => store.setAddress);
+  const {setGeolocationIdInRegisterInfo, signup} = useAuthAction();
 
   useEffect(() => {
     if (selectedRegionId && selectedCityId) {
-      setAddress(selectedCityId);
+      setGeolocationIdInRegisterInfo(selectedCityId);
     }
-  }, [selectedRegionId, selectedCityId, setAddress]);
+  }, [selectedRegionId, selectedCityId, setGeolocationIdInRegisterInfo]);
 
   return (
     <LinearGradient colors={['#ffccee', 'white', 'white', 'white', '#ffffcc']}>
@@ -102,10 +101,6 @@ export function LocationForm({navigation}: Props) {
               textStyle={styles.pickerText}
             />
           </View>
-          {/*
-            ios와 android의 zindex가 다름
-            android에서는 하위 드롭다운을 없어지게 처리
-          */}
           {((Platform.OS === 'ios' && !openRegion) ||
             Platform.OS === 'android') && (
             <View>
@@ -124,7 +119,8 @@ export function LocationForm({navigation}: Props) {
             </View>
           )}
         </View>
-        <SignUpButton disableSignUp={disable} />
+        <SignUpButton1 disableSignUp={disable} />
+        <SignUpButton disable={disable} onPress={signup} />
       </SafeAreaView>
     </LinearGradient>
   );

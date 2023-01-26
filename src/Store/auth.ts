@@ -1,6 +1,6 @@
 import create from 'zustand';
 import {sendAttendance} from '../APIs/attendances';
-import {logIn} from '../APIs/member';
+import {logIn, signUp} from '../APIs/member';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {RegisterInfo, UserInfo} from '../types/auth';
 
@@ -17,10 +17,13 @@ interface AuthStore {
     initRegisterInfo: (registerToken: string) => void;
     setNicknameInRegisterInfo: (nickname: string) => void;
     setTopicIdsInRegisterInfo: (topicIds: number[]) => void;
+    setPersonalityIdsInRegisterInfo: (personalityIds: number[]) => void;
+    setGeolocationIdInRegisterInfo: (geolocationId: number) => void;
+    signup: () => void;
   };
 }
 
-export const useAuthStore = create<AuthStore>(set => ({
+export const useAuthStore = create<AuthStore>((set, get) => ({
   isLoggedIn: false,
   isLoading: true,
 
@@ -92,6 +95,34 @@ export const useAuthStore = create<AuthStore>(set => ({
       set(state => ({
         registerInfo: {...state.registerInfo, topicIds},
       })),
+    setPersonalityIdsInRegisterInfo: personalityIds =>
+      set(state => ({
+        registerInfo: {...state.registerInfo, personalityIds},
+      })),
+    setGeolocationIdInRegisterInfo: geolocationId =>
+      set(state => ({
+        registerInfo: {...state.registerInfo, geolocationId},
+      })),
+    signup: async () => {
+      const {registerInfo} = get();
+      if (
+        !registerInfo.nickname ||
+        !registerInfo.topicIds.length ||
+        !registerInfo.personalityIds.length ||
+        !registerInfo.geolocationId
+      ) {
+        throw new Error('회원가입 정보 유실');
+      }
+      const {accessToken, refreshToken} = await signUp(registerInfo);
+      if (!accessToken || !refreshToken) {
+        throw new Error('회원가입 실패');
+      }
+      await Promise.all([
+        AsyncStorage.setItem('accessToken', accessToken),
+        AsyncStorage.setItem('refreshToken', refreshToken),
+      ]);
+      set(() => ({isLoading: true}));
+    },
   },
 }));
 

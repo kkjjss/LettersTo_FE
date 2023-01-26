@@ -14,11 +14,11 @@ import {LinearGradient} from 'expo-linear-gradient';
 import {Header} from '../../Components/Headers/Header';
 import {SCREEN_HEIGHT} from '../../Constants/screen';
 import {NextButton} from '../../Components/Button/Bottom/NextButton';
-import useStore from '../../Store/store';
 import {ResetButton} from '../../Components/ResetButton';
 import {PersonalityList} from '../../Components/PersonalityList';
 import {usePersonality} from '../../Hooks/UserInfo/usePersonality';
 import {MAX_PERSONALITY_LIMIT} from '../../Constants/user';
+import {useAuthAction} from '../../Store/auth';
 
 type Props = NativeStackScreenProps<StackParamsList, 'PersonalityForm'>;
 
@@ -37,10 +37,10 @@ export function PersonalityForm({navigation}: Props) {
     [selectedPersonalityIds],
   );
 
-  const store = useStore();
+  const {setPersonalityIdsInRegisterInfo} = useAuthAction();
 
   const goToLocationForm = () => {
-    store.setPersonalityIds(selectedPersonalityIds);
+    setPersonalityIdsInRegisterInfo(selectedPersonalityIds);
     navigation.navigate('LocationForm');
   };
 
@@ -74,7 +74,9 @@ export function PersonalityForm({navigation}: Props) {
         </ScrollView>
         <View style={styles.alertBox}>
           <Animated.View style={{opacity: alertOpacity}}>
-            <Text style={styles.alertText}>최대 9개까지만 선택 가능해요!</Text>
+            <Text style={styles.alertText}>
+              최대 {MAX_PERSONALITY_LIMIT}개까지만 선택 가능해요!
+            </Text>
           </Animated.View>
         </View>
         <NextButton disable={disableNext} onPress={goToLocationForm} />
@@ -115,7 +117,7 @@ const styles = StyleSheet.create({
   },
   alertBox: {
     marginHorizontal: 24,
-    marginBottom: 20,
+    marginVertical: 10,
   },
   alertText: {
     fontFamily: 'Galmuri11',
