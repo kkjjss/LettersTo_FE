@@ -1,8 +1,8 @@
-import {instance} from '../Utils/http';
+import {axiosInstance} from '../Utils/http';
 import {AuthTokens, ProviderToken} from '../types/auth';
 
 export async function verifyProviderToken(
   body: ProviderToken,
 ): Promise<AuthTokens> {
-  return await instance.post('/token', body);
+  return await axiosInstance.post('/token', body);
 }

@@ -16,16 +16,17 @@ import type {StackParamsList} from '../../types/stackParamList';
 import {LinearGradient} from 'expo-linear-gradient';
 import {Header} from '../../Components/Headers/Header';
 import {SCREEN_HEIGHT} from '../../Constants/screen';
-import {SignUpButton as SignUpButton1} from '../../Components/SignUpButton';
 import {useLocation} from '../../Hooks/UserInfo/useLocation';
 import {SignUpButton} from '../../Components/Button/Bottom/SignUpButton';
 import {useAuthAction} from '../../Store/auth';
+import toast from '../../Components/Toast/toast';
 
 type Props = NativeStackScreenProps<StackParamsList, 'LocationForm'>;
 
 export function LocationForm({navigation}: Props) {
   const [openRegion, setOpenRegion] = useState(false);
   const [openCity, setOpenCity] = useState(false);
+  const [disableSignUp, setDisableSignUp] = useState(true);
 
   const {
     regions,
@@ -46,6 +47,30 @@ export function LocationForm({navigation}: Props) {
       setGeolocationIdInRegisterInfo(selectedCityId);
     }
   }, [selectedRegionId, selectedCityId, setGeolocationIdInRegisterInfo]);
+
+  const onClickSignUp = async () => {
+    console.log(disableSignUp);
+    if (disableSignUp) {
+      return toast.show('처리중이에요!');
+    }
+
+    try {
+      setDisableSignUp(true);
+      signup();
+    } catch (error: any) {
+      console.error(error.message);
+      toast.show(error.message);
+      setDisableSignUp(false);
+    }
+  };
+
+  useEffect(() => {
+    if (disable === true) {
+      setDisableSignUp(true);
+    } else {
+      setDisableSignUp(false);
+    }
+  }, [disable, selectedCityId, selectedRegionId]);
 
   return (
     <LinearGradient colors={['#ffccee', 'white', 'white', 'white', '#ffffcc']}>
@@ -119,8 +144,8 @@ export function LocationForm({navigation}: Props) {
             </View>
           )}
         </View>
-        <SignUpButton1 disableSignUp={disable} />
-        <SignUpButton disable={disable} onPress={signup} />
+        {/* <SignUpButton1 disableSignUp={disable} /> */}
+        <SignUpButton disable={disable} onPress={onClickSignUp} />
       </SafeAreaView>
     </LinearGradient>
   );

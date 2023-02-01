@@ -20,6 +20,9 @@ interface AuthStore {
     setPersonalityIdsInRegisterInfo: (personalityIds: number[]) => void;
     setGeolocationIdInRegisterInfo: (geolocationId: number) => void;
     signup: () => void;
+    setUserInfo: (userInfo: UserInfo) => void;
+    login: () => void;
+    endLoading: () => void;
   };
 }
 
@@ -77,6 +80,13 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
         set(() => ({isLoading: false}));
       }
     },
+    setUserInfo: (userInfo: UserInfo) =>
+      set(() => ({
+        isLoggedIn: true,
+        userInfo: {...userInfo},
+      })),
+    login: () => set(() => ({isLoggedIn: true})),
+    endLoading: () => set(() => ({isLoading: false})),
     initRegisterInfo: registerToken =>
       set(() => ({
         registerInfo: {

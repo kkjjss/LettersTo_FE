@@ -1,15 +1,49 @@
 import {useEffect, useRef, useState} from 'react';
 import {Animated} from 'react-native';
 import {existsNickname} from '../../APIs/member';
-import Toast from '../../Components/Toast/toast';
+
+type NicknameValidationKey =
+  | 'CURRENT_NICKNAME'
+  | 'ALREADY_USED'
+  | 'FORM_INCORRECT'
+  | 'PASS';
+
+type NicknameValidationResult = {
+  valid: boolean;
+  message: string;
+};
+
+type NicknameValidationResultMap = {
+  [key in NicknameValidationKey]: NicknameValidationResult;
+};
+
+const NICKNAME_VALIDATION_RESULT_MAP: NicknameValidationResultMap = {
+  CURRENT_NICKNAME: {
+    valid: false,
+    message: '이미 사용중인 별명이에요.',
+  },
+  ALREADY_USED: {
+    valid: false,
+    message: '이미 사용중인 별명이에요.',
+  },
+  FORM_INCORRECT: {
+    valid: false,
+    message: '3-10자 이내의 별명을 입력해주세요.',
+  },
+  PASS: {
+    valid: true,
+    message: '사용 가능한 별명이에요.',
+  },
+};
 
 export const useNickname = (curruntNickname?: string) => {
   const [nickname, setNickname] = useState('');
   const [tempNickname, setTempNickname] = useState('');
-  const [isFormCorrect, setIsFormCorrect] = useState(false);
-  const [isExists, setIsExists] = useState(false);
-  const [isAlreadyUsed, setIsAlreadyUsed] = useState(false);
   const [disable, setDisable] = useState(true);
+
+  const [nicknameValidationResult, setNicknameValidationResult] = useState<
+    NicknameValidationResult | undefined
+  >();
 
   const alterOpacity = useRef(new Animated.Value(0)).current;
 
@@ -36,48 +70,28 @@ export const useNickname = (curruntNickname?: string) => {
   }, [tempNickname]);
 
   useEffect(() => {
-    const checkNicknameAlreadyUsed = async () => {
+    const checkNicknameAvailable = async () => {
       if (curruntNickname && nickname === curruntNickname) {
-        setIsAlreadyUsed(true);
-        alert.start();
+        setNicknameValidationResult(
+          NICKNAME_VALIDATION_RESULT_MAP.CURRENT_NICKNAME,
+        );
+      } else if (!/^[가-힣A-Za-z0-9]{3,10}$/.test(nickname)) {
+        setNicknameValidationResult(
+          NICKNAME_VALIDATION_RESULT_MAP.FORM_INCORRECT,
+        );
+      } else if (await existsNickname(nickname)) {
+        setNicknameValidationResult(
+          NICKNAME_VALIDATION_RESULT_MAP.ALREADY_USED,
+        );
       } else {
-        setIsAlreadyUsed(false);
-        checkNicknameFormCorrect();
+        setNicknameValidationResult(NICKNAME_VALIDATION_RESULT_MAP.PASS);
+        setDisable(false);
       }
+      alert.start();
     };
 
-    const checkNicknameFormCorrect = async () => {
-      if (nickname) {
-        if (/^[가-힣A-Za-z0-9]{3,10}$/.test(nickname)) {
-          setIsFormCorrect(true);
-          checkNicknameExists();
-        } else {
-          setIsFormCorrect(false);
-          alert.start();
-        }
-      }
-    };
-
-    const checkNicknameExists = async () => {
-      if (nickname) {
-        try {
-          const response = await existsNickname(nickname);
-          setIsExists(response);
-          if (response === false) {
-            setDisable(false);
-          }
-          alert.start();
-        } catch (error: any) {
-          console.error(error.message);
-          Toast.show('문제가 발생했습니다');
-        }
-      }
-    };
-
-    if (curruntNickname) {
-      checkNicknameAlreadyUsed();
-    } else {
-      checkNicknameFormCorrect();
+    if (nickname) {
+      checkNicknameAvailable();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nickname]);
@@ -90,11 +104,9 @@ export const useNickname = (curruntNickname?: string) => {
   return {
     nickname,
     tempNickname,
-    isFormCorrect,
-    isExists,
     disable,
     alterOpacity,
-    isAlreadyUsed,
+    nicknameValidationResult,
     onChangeNickname,
     initializeNicknameModal,
   };

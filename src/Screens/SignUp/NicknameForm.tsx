@@ -24,11 +24,10 @@ export function NicknameForm({navigation}: Props) {
   const {
     nickname,
     tempNickname,
-    isFormCorrect,
-    isExists,
     disable,
     alterOpacity,
     onChangeNickname,
+    nicknameValidationResult,
   } = useNickname();
 
   const {setNicknameInRegisterInfo} = useAuthAction();
@@ -62,15 +61,14 @@ export function NicknameForm({navigation}: Props) {
             </View>
           </View>
           <Animated.View style={[styles.alert, {opacity: alterOpacity}]}>
-            {isFormCorrect ? (
-              !isExists ? (
-                <Text style={styles.alertSuccess}>사용 가능한 별명이에요.</Text>
-              ) : (
-                <Text style={styles.alertFail}>이미 사용중인 별명이에요.</Text>
-              )
-            ) : (
-              <Text style={styles.alertFail}>
-                3-10자 이내의 별명을 입력해주세요.
+            {nicknameValidationResult && (
+              <Text
+                style={
+                  nicknameValidationResult.valid
+                    ? styles.alertSuccess
+                    : styles.alertFail
+                }>
+                {nicknameValidationResult.message}
               </Text>
             )}
           </Animated.View>

@@ -29,11 +29,9 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
   const {
     nickname,
     tempNickname,
-    isFormCorrect,
-    isExists,
     disable,
     alterOpacity,
-    isAlreadyUsed,
+    nicknameValidationResult,
     onChangeNickname,
     initializeNicknameModal,
   } = useNickname(userInfo?.nickname);
@@ -96,24 +94,15 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
             />
 
             <Animated.View style={[styles.alert, {opacity: alterOpacity}]}>
-              {!isAlreadyUsed ? (
-                isFormCorrect ? (
-                  !isExists ? (
-                    <Text style={styles.alertSuccess}>
-                      사용 가능한 별명이에요.
-                    </Text>
-                  ) : (
-                    <Text style={styles.alertFail}>
-                      이미 사용중인 별명이에요.
-                    </Text>
-                  )
-                ) : (
-                  <Text style={styles.alertFail}>
-                    3-10자 이내의 별명을 입력해주세요.
-                  </Text>
-                )
-              ) : (
-                <Text style={styles.alertFail}>이미 사용중인 별명이에요.</Text>
+              {nicknameValidationResult && (
+                <Text
+                  style={
+                    nicknameValidationResult.valid
+                      ? styles.alertSuccess
+                      : styles.alertFail
+                  }>
+                  {nicknameValidationResult.message}
+                </Text>
               )}
             </Animated.View>
           </ScrollView>
