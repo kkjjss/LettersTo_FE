@@ -1,13 +1,14 @@
-import {useEffect, useMemo, useRef, useState} from 'react';
+import {useMemo, useRef} from 'react';
 import {Animated} from 'react-native';
+import Toast from 'react-native-root-toast';
+import {useQuery} from 'react-query';
 import {getTopics} from '../../APIs/topic';
-import Toast from '../../Components/Toast/toast';
 import {MAX_TOPIC_LIMIT} from '../../Constants/user';
-import {Topics} from '../../types/types';
+import {useAuthAction, useAuthStore} from '../../Store/auth';
 
 export const useTopic = () => {
-  const [topics, setTopics] = useState<Topics>([]);
-  const [selectedTopicIds, setSelectedTopicIds] = useState<number[]>([]);
+  const selectedTopicIds = useAuthStore(state => state.registerInfo.topicIds);
+  const {setTopicIdsInRegisterInfo: setSelectedTopicIds} = useAuthAction();
 
   const counter = useMemo(() => selectedTopicIds.length, [selectedTopicIds]);
 
@@ -48,19 +49,15 @@ export const useTopic = () => {
     setSelectedTopicIds([]);
   };
 
-  useEffect(() => {
-    try {
-      getTopics().then(topicData => {
-        setTopics([...topicData]);
-      });
-    } catch (error: any) {
+  const {data: topics} = useQuery('topics', getTopics, {
+    onError: (error: any) => {
       console.error(error.message);
       Toast.show('문제가 발생했습니다');
-    }
-  }, []);
+    },
+  });
 
   return {
-    topics,
+    topics: topics || [],
     selectedTopicIds,
     setSelectedTopicIds,
     selectTopic,
