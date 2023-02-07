@@ -18,7 +18,6 @@ import {ResetButton} from '../../Components/ResetButton';
 import {PersonalityList} from '../../Components/PersonalityList';
 import {usePersonality} from '../../Hooks/UserInfo/usePersonality';
 import {MAX_PERSONALITY_LIMIT} from '../../Constants/user';
-import {useAuthAction} from '../../Store/auth';
 
 type Props = NativeStackScreenProps<StackParamsList, 'PersonalityForm'>;
 
@@ -37,10 +36,7 @@ export function PersonalityForm({navigation}: Props) {
     [selectedPersonalityIds],
   );
 
-  const {setPersonalityIdsInRegisterInfo} = useAuthAction();
-
   const goToLocationForm = () => {
-    setPersonalityIdsInRegisterInfo(selectedPersonalityIds);
     navigation.navigate('LocationForm');
   };
 

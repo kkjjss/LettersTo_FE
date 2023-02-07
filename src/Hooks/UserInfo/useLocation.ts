@@ -1,13 +1,19 @@
 import {useEffect, useMemo, useRef, useState} from 'react';
 import {Animated} from 'react-native';
+import Toast from '../../Components/Toast/toast';
+import {useQuery} from 'react-query';
 import {getCities, getRegions} from '../../APIs/geolocation';
+import {useAuthAction} from '../../Store/auth';
 
 export const useLocation = () => {
-  const [regions, setRegions] = useState([{label: '', value: 0}]);
-  const [selectedRegionId, setSelectedRegionId] = useState<null | number>(null);
+  const [selectedRegionId, setSelectedRegionId] = useState<null | number>(0);
+  const [selectedCityId, setSelectedCityId] = useState<number>(0);
 
-  const [cities, setCities] = useState([{label: '', value: 0}]);
-  const [selectedCityId, setSelectedCityId] = useState<null | number>(null);
+  const {setGeolocationIdInRegisterInfo} = useAuthAction();
+
+  useEffect(() => {
+    setGeolocationIdInRegisterInfo(selectedCityId);
+  }, [selectedCityId, setGeolocationIdInRegisterInfo]);
 
   const noticeOpacity = useRef(new Animated.Value(0)).current;
 
@@ -34,40 +40,45 @@ export const useLocation = () => {
     [selectedCityId, selectedRegionId],
   );
 
-  useEffect(() => {
-    const getRegionsList = async () => {
-      const regionsList = (await getRegions()).map(({id, name}) => {
+  const {data: regions} = useQuery(
+    'regions',
+    async () =>
+      (await getRegions()).map(({id, name}) => {
         return {value: id, label: name};
-      });
-      setRegions(regionsList);
-    };
+      }),
+    {
+      onError: (error: any) => {
+        console.error(error.message);
+        Toast.show('문제가 발생했습니다');
+      },
+    },
+  );
 
-    getRegionsList();
-  }, []);
-
-  useEffect(() => {
-    setSelectedCityId(null);
-    const getCitiesList = async (regionId: number) => {
-      const citiesList = (await getCities(regionId))
-        .sort((a, b) => (a.name > b.name ? 1 : -1))
-        .map(({id, name}) => {
-          return {value: id, label: name};
-        });
-      setCities(citiesList);
-    };
-
-    if (selectedRegionId) {
-      getCitiesList(selectedRegionId);
-    } else {
-      setCities([{label: '', value: 0}]);
-    }
-  }, [selectedRegionId]);
+  const {data: cities} = useQuery(
+    ['cities', selectedRegionId],
+    async () => {
+      setSelectedCityId(0);
+      if (selectedRegionId) {
+        return (await getCities(selectedRegionId))
+          .sort((a, b) => (a.name > b.name ? 1 : -1))
+          .map(({id, name}) => {
+            return {value: id, label: name};
+          });
+      }
+    },
+    {
+      onError: (error: any) => {
+        console.error(error.message);
+        Toast.show('문제가 발생했습니다');
+      },
+    },
+  );
 
   return {
-    regions,
+    regions: regions || [],
     selectedRegionId,
     setSelectedRegionId,
-    cities,
+    cities: cities || [],
     selectedCityId,
     setSelectedCityId,
     noticeOpacity,

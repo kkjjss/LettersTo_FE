@@ -18,15 +18,17 @@ import {Header} from '../../Components/Headers/Header';
 import {SCREEN_HEIGHT} from '../../Constants/screen';
 import {useLocation} from '../../Hooks/UserInfo/useLocation';
 import {SignUpButton} from '../../Components/Button/Bottom/SignUpButton';
-import {useAuthAction} from '../../Store/auth';
-import toast from '../../Components/Toast/toast';
+import {useAuthAction, useAuthStore} from '../../Store/auth';
+import {useMutation} from 'react-query';
+import {signUp} from '../../APIs/member';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from '../../Components/Toast/toast';
 
 type Props = NativeStackScreenProps<StackParamsList, 'LocationForm'>;
 
 export function LocationForm({navigation}: Props) {
   const [openRegion, setOpenRegion] = useState(false);
   const [openCity, setOpenCity] = useState(false);
-  const [disableSignUp, setDisableSignUp] = useState(true);
 
   const {
     regions,
@@ -40,7 +42,8 @@ export function LocationForm({navigation}: Props) {
     disable,
   } = useLocation();
 
-  const {setGeolocationIdInRegisterInfo, signup} = useAuthAction();
+  const {setGeolocationIdInRegisterInfo, startLoading} = useAuthAction();
+  const registerInfo = useAuthStore(state => state.registerInfo);
 
   useEffect(() => {
     if (selectedRegionId && selectedCityId) {
@@ -48,29 +51,40 @@ export function LocationForm({navigation}: Props) {
     }
   }, [selectedRegionId, selectedCityId, setGeolocationIdInRegisterInfo]);
 
-  const onClickSignUp = async () => {
-    console.log(disableSignUp);
-    if (disableSignUp) {
-      return toast.show('처리중이에요!');
+  const {mutate: mutateSignUp, isLoading} = useMutation(
+    ['signup', selectedCityId],
+    async () => {
+      console.log(registerInfo);
+      if (
+        !registerInfo.nickname ||
+        !registerInfo.topicIds.length ||
+        !registerInfo.personalityIds.length ||
+        !registerInfo.geolocationId
+      ) {
+        throw new Error('회원가입 정보 유실');
+      }
+
+      const {accessToken, refreshToken} = await signUp(registerInfo);
+      if (!accessToken || !refreshToken) {
+        throw new Error('회원가입 실패');
+      }
+
+      await Promise.all([
+        AsyncStorage.setItem('accessToken', accessToken),
+        AsyncStorage.setItem('refreshToken', refreshToken),
+      ]);
+
+      startLoading();
+    },
+  );
+
+  const onPressSignUp = async () => {
+    if (isLoading) {
+      return Toast.show('처리중이에요!');
     }
 
-    try {
-      setDisableSignUp(true);
-      signup();
-    } catch (error: any) {
-      console.error(error.message);
-      toast.show(error.message);
-      setDisableSignUp(false);
-    }
+    mutateSignUp();
   };
-
-  useEffect(() => {
-    if (disable === true) {
-      setDisableSignUp(true);
-    } else {
-      setDisableSignUp(false);
-    }
-  }, [disable, selectedCityId, selectedRegionId]);
 
   return (
     <LinearGradient colors={['#ffccee', 'white', 'white', 'white', '#ffffcc']}>
@@ -130,6 +144,7 @@ export function LocationForm({navigation}: Props) {
             Platform.OS === 'android') && (
             <View>
               <DropDownPicker
+                disabled={!selectedRegionId}
                 open={openCity}
                 value={selectedCityId}
                 items={cities}
@@ -145,7 +160,7 @@ export function LocationForm({navigation}: Props) {
           )}
         </View>
         {/* <SignUpButton1 disableSignUp={disable} /> */}
-        <SignUpButton disable={disable} onPress={onClickSignUp} />
+        <SignUpButton disable={disable} onPress={onPressSignUp} />
       </SafeAreaView>
     </LinearGradient>
   );

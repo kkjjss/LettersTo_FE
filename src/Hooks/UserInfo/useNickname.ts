@@ -1,7 +1,7 @@
 import {useEffect, useRef, useState} from 'react';
 import {Animated} from 'react-native';
 import {existsNickname} from '../../APIs/member';
-import {useAuthAction, useAuthStore} from '../../Store/auth';
+import {useAuthStore} from '../../Store/auth';
 
 type NicknameValidationKey =
   | 'CURRENT_NICKNAME'
@@ -41,8 +41,10 @@ export const useNickname = (curruntNickname?: string) => {
   const [tempNickname, setTempNickname] = useState('');
   const [disable, setDisable] = useState(true);
 
-  const nickname = useAuthStore(state => state.registerInfo.nickname);
-  const {setNicknameInRegisterInfo} = useAuthAction();
+  const [nickname, setNickname] = useAuthStore(state => [
+    state.registerInfo.nickname,
+    state.action.setNicknameInRegisterInfo,
+  ]);
 
   const [nicknameValidationResult, setNicknameValidationResult] = useState<
     NicknameValidationResult | undefined
@@ -67,10 +69,10 @@ export const useNickname = (curruntNickname?: string) => {
       setDisable(true);
     }
     const debounce = setTimeout(() => {
-      setNicknameInRegisterInfo(tempNickname);
+      setNickname(tempNickname);
     }, 500);
     return () => clearTimeout(debounce);
-  }, [setNicknameInRegisterInfo, tempNickname]);
+  }, [setNickname, tempNickname]);
 
   useEffect(() => {
     const checkNicknameAvailable = async () => {

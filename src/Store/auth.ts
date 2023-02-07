@@ -22,6 +22,7 @@ interface AuthStore {
     signup: () => void;
     setUserInfo: (userInfo: UserInfo) => void;
     login: () => void;
+    startLoading: () => void;
     endLoading: () => void;
   };
 }
@@ -86,6 +87,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
         userInfo: {...userInfo},
       })),
     login: () => set(() => ({isLoggedIn: true})),
+    startLoading: () => set(() => ({isLoading: true})),
     endLoading: () => set(() => ({isLoading: false})),
     initRegisterInfo: registerToken =>
       set(() => ({

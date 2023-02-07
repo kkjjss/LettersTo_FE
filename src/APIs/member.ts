@@ -1,8 +1,8 @@
 import type {UserInfo, RegisterInfo, AuthTokens} from '../types/auth';
-import {axiosInstance, instance, instanceWithAuth} from '../Utils/http';
+import {axiosInstance, instanceWithAuth} from '../Utils/http';
 
 export async function signUp(registerInfo: RegisterInfo): Promise<AuthTokens> {
-  return await instance.post('/members', {...registerInfo});
+  return await axiosInstance.post('/members', {...registerInfo});
 }
 
 export async function logIn() {

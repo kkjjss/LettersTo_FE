@@ -1,14 +1,16 @@
 import {useMemo, useRef} from 'react';
 import {Animated} from 'react-native';
-import Toast from 'react-native-root-toast';
+import Toast from '../../Components/Toast/toast';
 import {useQuery} from 'react-query';
 import {getTopics} from '../../APIs/topic';
 import {MAX_TOPIC_LIMIT} from '../../Constants/user';
-import {useAuthAction, useAuthStore} from '../../Store/auth';
+import {useAuthStore} from '../../Store/auth';
 
 export const useTopic = () => {
-  const selectedTopicIds = useAuthStore(state => state.registerInfo.topicIds);
-  const {setTopicIdsInRegisterInfo: setSelectedTopicIds} = useAuthAction();
+  const [selectedTopicIds, setSelectedTopicIds] = useAuthStore(state => [
+    state.registerInfo.topicIds,
+    state.action.setTopicIdsInRegisterInfo,
+  ]);
 
   const counter = useMemo(() => selectedTopicIds.length, [selectedTopicIds]);
 

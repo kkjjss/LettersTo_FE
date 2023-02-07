@@ -18,7 +18,6 @@ import {ResetButton} from '../../Components/ResetButton';
 import {TopicList} from '../../Components/TopicList';
 import {useTopic} from '../../Hooks/UserInfo/useTopic';
 import {MAX_TOPIC_LIMIT} from '../../Constants/user';
-import {useAuthAction} from '../../Store/auth';
 
 type Props = NativeStackScreenProps<StackParamsList, 'TopicsForm'>;
 
@@ -31,10 +30,7 @@ export function TopicsForm({navigation}: Props) {
     [selectedTopicIds],
   );
 
-  const {setTopicIdsInRegisterInfo} = useAuthAction();
-
   const goToPersonalityForm = () => {
-    setTopicIdsInRegisterInfo(selectedTopicIds);
     navigation.navigate('PersonalityForm');
   };
 
