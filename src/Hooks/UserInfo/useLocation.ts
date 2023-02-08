@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useRef, useState} from 'react';
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Animated} from 'react-native';
 import Toast from '../../Components/Toast/toast';
 import {useQuery} from 'react-query';
@@ -30,10 +30,10 @@ export const useLocation = () => {
     }),
   ]);
 
-  const onStartNotice = () => {
+  const onStartNotice = useCallback(() => {
     alert.reset();
     alert.start();
-  };
+  }, [alert]);
 
   const disable = useMemo(
     () => !selectedCityId || !selectedRegionId,
@@ -42,10 +42,13 @@ export const useLocation = () => {
 
   const {data: regions} = useQuery(
     'regions',
-    async () =>
-      (await getRegions()).map(({id, name}) => {
-        return {value: id, label: name};
-      }),
+    useCallback(
+      async () =>
+        (await getRegions()).map(({id, name}) => {
+          return {value: id, label: name};
+        }),
+      [],
+    ),
     {
       onError: (error: any) => {
         console.error(error.message);
@@ -56,7 +59,7 @@ export const useLocation = () => {
 
   const {data: cities} = useQuery(
     ['cities', selectedRegionId],
-    async () => {
+    useCallback(async () => {
       setSelectedCityId(0);
       if (selectedRegionId) {
         return (await getCities(selectedRegionId))
@@ -65,7 +68,7 @@ export const useLocation = () => {
             return {value: id, label: name};
           });
       }
-    },
+    }, [selectedRegionId]),
     {
       onError: (error: any) => {
         console.error(error.message);

@@ -1,4 +1,4 @@
-import {useMemo, useRef} from 'react';
+import {useCallback, useMemo, useRef} from 'react';
 import {Animated} from 'react-native';
 import {useQuery} from 'react-query';
 import {getPersonalities} from '../../APIs/personality';
@@ -34,29 +34,32 @@ export const usePersonality = () => {
     }),
   ]);
 
-  const resetAlert = () => {
+  const resetAlert = useCallback(() => {
     alert.reset();
-  };
+  }, [alert]);
 
-  const selectPersonality = (personalityId: number) => {
-    alert.reset();
-    if (
-      counter < MAX_PERSONALITY_LIMIT &&
-      selectedPersonalityIds.includes(personalityId) === false
-    ) {
-      setSelectedPersonalityIds([...selectedPersonalityIds, personalityId]);
-    } else if (selectedPersonalityIds.includes(personalityId) === true) {
-      setSelectedPersonalityIds(
-        [...selectedPersonalityIds].filter(e => e !== personalityId),
-      );
-    } else {
-      alert.start();
-    }
-  };
+  const selectPersonality = useCallback(
+    (personalityId: number) => {
+      alert.reset();
+      if (
+        counter < MAX_PERSONALITY_LIMIT &&
+        selectedPersonalityIds.includes(personalityId) === false
+      ) {
+        setSelectedPersonalityIds([...selectedPersonalityIds, personalityId]);
+      } else if (selectedPersonalityIds.includes(personalityId) === true) {
+        setSelectedPersonalityIds(
+          [...selectedPersonalityIds].filter(e => e !== personalityId),
+        );
+      } else {
+        alert.start();
+      }
+    },
+    [alert, counter, selectedPersonalityIds, setSelectedPersonalityIds],
+  );
 
-  const reset = () => {
+  const reset = useCallback(() => {
     setSelectedPersonalityIds([]);
-  };
+  }, [setSelectedPersonalityIds]);
 
   const {data: personalities} = useQuery('personalities', getPersonalities, {
     onError: (error: any) => {

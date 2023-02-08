@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {Animated} from 'react-native';
 import {existsNickname} from '../../APIs/member';
 import {useAuthStore} from '../../Store/auth';
@@ -58,11 +58,14 @@ export const useNickname = (curruntNickname?: string) => {
     useNativeDriver: true,
   });
 
-  const onChangeNickname = (name: string) => {
-    alert.reset();
-    setTempNickname(name);
-    setDisable(true);
-  };
+  const onChangeNickname = useCallback(
+    (name: string) => {
+      alert.reset();
+      setTempNickname(name);
+      setDisable(true);
+    },
+    [alert],
+  );
 
   useEffect(() => {
     if (!tempNickname) {
@@ -101,10 +104,10 @@ export const useNickname = (curruntNickname?: string) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nickname]);
 
-  const initializeNicknameModal = () => {
+  const initializeNicknameModal = useCallback(() => {
     setTempNickname('');
     alert.reset();
-  };
+  }, [alert]);
 
   return {
     nickname,

@@ -9,46 +9,50 @@ type Props = {
   white?: true;
 };
 
-export function BottomButton({buttonText, onPress, disable, white}: Props) {
-  const [pressed, setPressed] = useState(false);
+export const BottomButton = React.memo(
+  ({buttonText, onPress, disable, white}: Props) => {
+    const [pressed, setPressed] = useState(false);
 
-  const GradientButton = () => (
-    <TouchableOpacity
-      activeOpacity={0.7}
-      disabled={disable || pressed}
-      onPress={async () => {
-        setPressed(true);
-        await onPress();
-        setPressed(false);
-      }}>
-      {disable === true ? (
-        <View style={[styles.button]}>
-          <Text style={styles.buttonText}>{buttonText}</Text>
+    const GradientButton = () => (
+      <TouchableOpacity
+        activeOpacity={0.7}
+        disabled={disable || pressed}
+        onPress={async () => {
+          setPressed(true);
+          await onPress();
+          setPressed(false);
+        }}>
+        {disable === true ? (
+          <View style={[styles.button]}>
+            <Text style={styles.buttonText}>{buttonText}</Text>
+          </View>
+        ) : (
+          <LinearGradient
+            colors={['#FF6ECE', '#FF3DBD']}
+            style={[styles.button]}>
+            <Text style={styles.buttonText}>{buttonText}</Text>
+          </LinearGradient>
+        )}
+      </TouchableOpacity>
+    );
+
+    const WhiteButton = () => (
+      <TouchableOpacity
+        activeOpacity={0.5}
+        onPress={async () => {
+          setPressed(true);
+          await onPress();
+          setPressed(false);
+        }}>
+        <View style={[styles.whiteButton]}>
+          <Text style={styles.whiteButtonText}>{buttonText}</Text>
         </View>
-      ) : (
-        <LinearGradient colors={['#FF6ECE', '#FF3DBD']} style={[styles.button]}>
-          <Text style={styles.buttonText}>{buttonText}</Text>
-        </LinearGradient>
-      )}
-    </TouchableOpacity>
-  );
+      </TouchableOpacity>
+    );
 
-  const WhiteButton = () => (
-    <TouchableOpacity
-      activeOpacity={0.5}
-      onPress={async () => {
-        setPressed(true);
-        await onPress();
-        setPressed(false);
-      }}>
-      <View style={[styles.whiteButton]}>
-        <Text style={styles.whiteButtonText}>{buttonText}</Text>
-      </View>
-    </TouchableOpacity>
-  );
-
-  return white ? <WhiteButton /> : <GradientButton />;
-}
+    return white ? <WhiteButton /> : <GradientButton />;
+  },
+);
 
 const styles = StyleSheet.create({
   button: {

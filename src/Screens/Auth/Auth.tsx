@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   View,
@@ -10,7 +10,7 @@ import {
   StatusBar,
 } from 'react-native';
 import type {StackParamsList} from '../../types/stackParamList';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {verifyProviderToken} from '../../APIs/token';
 import {
@@ -43,7 +43,27 @@ export function Auth({navigation}: Props) {
 
   const [disableSignUp, setDisableSignUp] = useState(false);
 
-  const onPressSignUpWithKaKao = async () => {
+  const loginWithProvider = useCallback(
+    async (providerToken: ProviderToken) => {
+      const authTokens = await verifyProviderToken(providerToken);
+
+      if (authTokens.verified === false && authTokens.registerToken) {
+        // 회원가입 폼으로 이동
+        authAction.initRegisterInfo(authTokens.registerToken);
+        navigation.navigate('NicknameForm');
+      } else if (authTokens.accessToken && authTokens.refreshToken) {
+        // 토큰을 사용하여 로그인
+        await Promise.all([
+          AsyncStorage.setItem('accessToken', authTokens.accessToken),
+          AsyncStorage.setItem('refreshToken', authTokens.refreshToken),
+        ]);
+        authAction.loginWithExistTokens();
+      }
+    },
+    [authAction, navigation],
+  );
+
+  const onPressSignUpWithKaKao = useCallback(async () => {
     setDisableSignUp(true);
     try {
       const kakaoOAuthToken = await loginWithKakaoOAuth();
@@ -63,9 +83,9 @@ export function Auth({navigation}: Props) {
     } finally {
       setDisableSignUp(false);
     }
-  };
+  }, [loginWithProvider]);
 
-  const onPressSignUpWithApple = async () => {
+  const onPressSignUpWithApple = useCallback(async () => {
     setDisableSignUp(true);
     try {
       if (!appleAuth.isSupported) {
@@ -92,34 +112,7 @@ export function Auth({navigation}: Props) {
     } finally {
       setDisableSignUp(false);
     }
-  };
-
-  const loginWithProvider = async (providerToken: ProviderToken) => {
-    const authTokens = await verifyProviderToken(providerToken);
-
-    if (authTokens.verified === false && authTokens.registerToken) {
-      // 회원가입 폼으로 이동
-      authAction.initRegisterInfo(authTokens.registerToken);
-      navigation.navigate('NicknameForm');
-    } else if (authTokens.accessToken && authTokens.refreshToken) {
-      // 토큰을 사용하여 로그인
-      await Promise.all([
-        AsyncStorage.setItem('accessToken', authTokens.accessToken),
-        AsyncStorage.setItem('refreshToken', authTokens.refreshToken),
-      ]);
-      authAction.loginWithExistTokens();
-    }
-  };
-
-  useEffect(() => {
-    if (appleAuth.isSupported) {
-      return appleAuth.onCredentialRevoked(async () => {
-        console.warn(
-          'If this function executes, User Credentials have been Revoked',
-        );
-      });
-    }
-  }, []);
+  }, [loginWithProvider]);
 
   return (
     <View style={styles.container}>

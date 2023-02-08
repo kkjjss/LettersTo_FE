@@ -6,8 +6,8 @@ interface Props {
   onPress: () => void;
 }
 
-export function SignUpButton({disable, onPress}: Props) {
+export const SignUpButton = React.memo(({disable, onPress}: Props) => {
   return (
     <BottomButton buttonText="가입 완료!" disable={disable} onPress={onPress} />
   );
-}
+});

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   View,
@@ -28,9 +28,9 @@ export function NicknameForm({navigation}: Props) {
     nicknameValidationResult,
   } = useNickname();
 
-  const goToTopicForm = () => {
+  const goToTopicForm = useCallback(() => {
     navigation.navigate('TopicsForm');
-  };
+  }, [navigation]);
 
   return (
     <LinearGradient colors={['#ffccee', 'white', 'white', 'white', '#ffffcc']}>

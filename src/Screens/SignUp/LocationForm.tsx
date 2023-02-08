@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   View,
@@ -53,8 +53,7 @@ export function LocationForm({navigation}: Props) {
 
   const {mutate: mutateSignUp, isLoading} = useMutation(
     ['signup', selectedCityId],
-    async () => {
-      console.log(registerInfo);
+    useCallback(async () => {
       if (
         !registerInfo.nickname ||
         !registerInfo.topicIds.length ||
@@ -75,16 +74,16 @@ export function LocationForm({navigation}: Props) {
       ]);
 
       startLoading();
-    },
+    }, [registerInfo, startLoading]),
   );
 
-  const onPressSignUp = async () => {
+  const onPressSignUp = useCallback(async () => {
     if (isLoading) {
       return Toast.show('처리중이에요!');
     }
 
     mutateSignUp();
-  };
+  }, [isLoading, mutateSignUp]);
 
   return (
     <LinearGradient colors={['#ffccee', 'white', 'white', 'white', '#ffffcc']}>

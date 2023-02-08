@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   View,
@@ -36,9 +36,9 @@ export function PersonalityForm({navigation}: Props) {
     [selectedPersonalityIds],
   );
 
-  const goToLocationForm = () => {
+  const goToLocationForm = useCallback(() => {
     navigation.navigate('LocationForm');
-  };
+  }, [navigation]);
 
   return (
     <LinearGradient colors={['#ffccee', 'white', 'white', 'white', '#ffffcc']}>

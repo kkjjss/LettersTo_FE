@@ -1,4 +1,4 @@
-import {useMemo, useRef} from 'react';
+import {useCallback, useMemo, useRef} from 'react';
 import {Animated} from 'react-native';
 import Toast from '../../Components/Toast/toast';
 import {useQuery} from 'react-query';
@@ -29,27 +29,30 @@ export const useTopic = () => {
     }),
   ]);
 
-  const resetAlert = () => {
+  const resetAlert = useCallback(() => {
     alert.reset();
-  };
+  }, [alert]);
 
-  const selectTopic = (topicId: number) => {
-    alert.reset();
-    if (
-      counter < MAX_TOPIC_LIMIT &&
-      selectedTopicIds.includes(topicId) === false
-    ) {
-      setSelectedTopicIds([...selectedTopicIds, topicId]);
-    } else if (selectedTopicIds.includes(topicId) === true) {
-      setSelectedTopicIds([...selectedTopicIds].filter(e => e !== topicId));
-    } else {
-      alert.start();
-    }
-  };
+  const selectTopic = useCallback(
+    (topicId: number) => {
+      alert.reset();
+      if (
+        counter < MAX_TOPIC_LIMIT &&
+        selectedTopicIds.includes(topicId) === false
+      ) {
+        setSelectedTopicIds([...selectedTopicIds, topicId]);
+      } else if (selectedTopicIds.includes(topicId) === true) {
+        setSelectedTopicIds([...selectedTopicIds].filter(e => e !== topicId));
+      } else {
+        alert.start();
+      }
+    },
+    [alert, counter, selectedTopicIds, setSelectedTopicIds],
+  );
 
-  const reset = () => {
+  const reset = useCallback(() => {
     setSelectedTopicIds([]);
-  };
+  }, [setSelectedTopicIds]);
 
   const {data: topics} = useQuery('topics', getTopics, {
     onError: (error: any) => {
