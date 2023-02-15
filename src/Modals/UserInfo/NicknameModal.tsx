@@ -11,21 +11,24 @@ import {
   ScrollView,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useMutation, useQueryClient} from 'react-query';
 import {patchUserInfo} from '../../APIs/member';
 import {BottomButton} from '../../Components/Button/Bottom/BottomButton';
 import Toast from '../../Components/Toast/toast';
 import {useKeyboard} from '../../Hooks/Hardware/useKeyboard';
 import {useNickname} from '../../Hooks/UserInfo/useNickname';
-import useStore from '../../Store/store';
 
 type Props = {
+  currentNickname: string;
   isModalVisible: boolean;
-  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  onPressClose: () => void;
 };
 
-export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
-  const {userInfo} = useStore();
-
+export const NicknameModal = ({
+  currentNickname,
+  isModalVisible,
+  onPressClose,
+}: Props) => {
   const {
     nickname,
     tempNickname,
@@ -34,7 +37,9 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
     nicknameValidationResult,
     onChangeNickname,
     initializeNicknameModal,
-  } = useNickname(userInfo?.nickname);
+  } = useNickname(currentNickname);
+
+  const queryClient = useQueryClient();
 
   const {keyboardHeight, keyboardVisible} = useKeyboard();
 
@@ -42,24 +47,25 @@ export const NicknameModal = ({isModalVisible, setModalVisible}: Props) => {
 
   const hideModal = () => {
     initializeNicknameModal();
-    setModalVisible(false);
+    onPressClose();
   };
 
-  const updateNickname = async () => {
-    try {
-      if (userInfo && nickname) {
-        const newUserInfo = {
-          nickname: nickname,
-        };
-        await patchUserInfo(newUserInfo);
-      }
-
-      hideModal();
-    } catch (error: any) {
-      console.error(error.message);
-      Toast.show('문제가 발생했습니다');
-    }
-  };
+  const {mutate: updateNickname} = useMutation(
+    ['nickname', nickname],
+    async () => {
+      return await patchUserInfo({nickname});
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries('userInfo');
+        hideModal();
+      },
+      onError: (error: any) => {
+        console.error(error.message);
+        Toast.show('문제가 발생했습니다');
+      },
+    },
+  );
 
   return (
     <Modal

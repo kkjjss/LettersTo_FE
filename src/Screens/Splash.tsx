@@ -6,7 +6,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {StackParamsList} from '../types/stackParamList';
 import {useAuthAction} from '../Store/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {logIn} from '../APIs/member';
+import {getUserInfo} from '../APIs/member';
 import {sendAttendance} from '../APIs/attendances';
 
 type Props = NativeStackScreenProps<StackParamsList, 'Splash'>;
@@ -22,7 +22,7 @@ export function Splash({}: Props) {
     if (!accessToken || !refreshToken) {
       return Promise.reject('저장된 토큰 없음');
     }
-    return logIn();
+    return getUserInfo();
   }, []);
 
   const {isError, isLoading, isSuccess} = useQuery(

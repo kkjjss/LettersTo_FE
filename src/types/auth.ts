@@ -28,3 +28,10 @@ export interface RegisterInfo {
   topicIds: number[];
   geolocationId: number;
 }
+
+export interface PatchUserInfoRequest {
+  nickname?: string;
+  geolocationId?: number;
+  topicIds?: number[];
+  personalityIds?: number[];
+}

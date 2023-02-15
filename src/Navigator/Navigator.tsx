@@ -13,7 +13,7 @@ import {ReadLetter} from '../Screens/Letter/ReadLetter';
 import {LetterBoxDetail} from '../Screens/LetterBox/LetterBoxDetail';
 
 // 인증 관련 스크린
-import {Auth} from '../Screens/Auth/Auth';
+import {Auth} from '../Screens/Auth/AuthScreen';
 import {NicknameForm} from '../Screens/SignUp/NicknameForm';
 import {TopicsForm} from '../Screens/SignUp/TopicsForm';
 import {PersonalityForm} from '../Screens/SignUp/PersonalityForm';

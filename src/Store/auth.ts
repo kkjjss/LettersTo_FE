@@ -1,6 +1,6 @@
 import create from 'zustand';
 import {sendAttendance} from '../APIs/attendances';
-import {logIn, signUp} from '../APIs/member';
+import {getUserInfo, signUp} from '../APIs/member';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {RegisterInfo, UserInfo} from '../types/auth';
 
@@ -22,6 +22,7 @@ interface AuthStore {
     signup: () => void;
     setUserInfo: (userInfo: UserInfo) => void;
     login: () => void;
+    logout: () => void;
     startLoading: () => void;
     endLoading: () => void;
   };
@@ -67,7 +68,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
           refreshToken,
         );
 
-        const userInfo = await logIn();
+        const userInfo = await getUserInfo();
 
         set(() => ({
           isLoggedIn: true,
@@ -87,6 +88,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
         userInfo: {...userInfo},
       })),
     login: () => set(() => ({isLoggedIn: true})),
+    logout: () => set(() => ({isLoggedIn: false})),
     startLoading: () => set(() => ({isLoading: true})),
     endLoading: () => set(() => ({isLoading: false})),
     initRegisterInfo: registerToken =>

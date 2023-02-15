@@ -20,10 +20,10 @@ import Toast from '../../Components/Toast/toast';
 
 type Props = {
   isModalVisible: boolean;
-  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  onPressClose: () => void;
 };
 
-export function PersonalitiesModal({isModalVisible, setModalVisible}: Props) {
+export function PersonalitiesModal({isModalVisible, onPressClose}: Props) {
   const {
     personalities,
     selectedPersonalityIds,
@@ -46,7 +46,7 @@ export function PersonalitiesModal({isModalVisible, setModalVisible}: Props) {
 
   const hideModal = () => {
     resetAlert();
-    setModalVisible(false);
+    onPressClose();
   };
 
   const updatePersonalites = async () => {

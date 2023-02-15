@@ -358,6 +358,9 @@ axiosInstance.interceptors.request.use(async config => {
     config.headers.setAuthorization(`Bearer ${accessToken}`);
   }
 
+  if (config.method === 'patch') {
+    config.params = config.data;
+  }
   return config;
 });
 

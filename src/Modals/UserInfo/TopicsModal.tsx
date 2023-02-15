@@ -20,10 +20,10 @@ import Toast from '../../Components/Toast/toast';
 
 type Props = {
   isModalVisible: boolean;
-  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  onPressClose: () => void;
 };
 
-export const TopicsModal = ({isModalVisible, setModalVisible}: Props) => {
+export const TopicsModal = ({isModalVisible, onPressClose}: Props) => {
   const {
     topics,
     selectedTopicIds,
@@ -46,7 +46,7 @@ export const TopicsModal = ({isModalVisible, setModalVisible}: Props) => {
 
   const hideModal = () => {
     resetAlert();
-    setModalVisible(false);
+    onPressClose();
   };
 
   const updateTopics = async () => {

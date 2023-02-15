@@ -11,10 +11,10 @@ import {useLocation} from '../../Hooks/UserInfo/useLocation';
 import useStore from '../../Store/store';
 type Props = {
   isModalVisible: boolean;
-  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  onPressClose: () => void;
 };
 
-export function LocationModal({isModalVisible, setModalVisible}: Props) {
+export function LocationModal({isModalVisible, onPressClose}: Props) {
   const {
     regions,
     selectedRegionId,
@@ -39,7 +39,7 @@ export function LocationModal({isModalVisible, setModalVisible}: Props) {
   const {bottom: SAFE_AREA_BOTTOM} = useSafeAreaInsets();
 
   const hideModal = () => {
-    setModalVisible(false);
+    onPressClose();
   };
 
   const updateLocation = async () => {
