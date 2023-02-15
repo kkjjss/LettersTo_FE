@@ -2,10 +2,8 @@ import React, {useCallback} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   View,
-  Text,
   StyleSheet,
   SafeAreaView,
-  Image,
   Platform,
   StatusBar,
 } from 'react-native';
@@ -18,7 +16,6 @@ import {
   login as loginWithKakaoOAuth,
 } from '@react-native-seoul/kakao-login';
 import appleAuth from '@invertase/react-native-apple-authentication';
-import {HyperLink} from '../../Components/HyperLink/HyperLinkText';
 import {
   onPressPrivacyPolicy,
   onPressTermsOfService,
@@ -27,7 +24,9 @@ import {
 import Toast from '../../Components/Toast/toast';
 import {ProviderToken} from '../../types/auth';
 import {useAuthAction} from '../../Store/auth';
-import {AuthButton} from '../../Components/Button/Auth/AuthButton';
+import {AuthButton} from './Components/AuthButton';
+import {Logo} from './Components/Logo';
+import {PolicyNotice} from './Components/PolicyNotice';
 
 const kakaoLogo = require('../../Assets/social/kakao.png');
 const appleLogo = require('../../Assets/social/apple.png');
@@ -118,12 +117,7 @@ export function Auth({navigation}: Props) {
     <View style={styles.container}>
       <StatusBar barStyle={'light-content'} />
       <SafeAreaView style={styles.container}>
-        <View style={styles.logo}>
-          <Image
-            source={require('../../Assets/logo/logo_main.gif')}
-            style={styles.logoImage}
-          />
-        </View>
+        <Logo />
         <View style={styles.buttonWrap}>
           <AuthButton
             providerName={'카카오'}
@@ -144,21 +138,10 @@ export function Auth({navigation}: Props) {
             />
           )}
         </View>
-        <View style={styles.bottomWrap}>
-          <Text style={styles.bottomText}>
-            회원가입 시{' '}
-            <HyperLink onPress={onPressPrivacyPolicy}>
-              개인정보처리방침
-            </HyperLink>
-            을 읽었으며
-          </Text>
-          <Text style={styles.bottomText}>
-            <HyperLink onPress={onPressTermsOfService}>
-              서비스이용약관
-            </HyperLink>
-            에 동의하신 것으로 간주합니다
-          </Text>
-        </View>
+        <PolicyNotice
+          onPressPrivacyPolicy={onPressPrivacyPolicy}
+          onPressTermsOfService={onPressTermsOfService}
+        />
       </SafeAreaView>
     </View>
   );
@@ -166,12 +149,6 @@ export function Auth({navigation}: Props) {
 
 const styles = StyleSheet.create({
   container: {flex: 1, backgroundColor: '#0000CC'},
-  logo: {
-    flex: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  logoImage: {height: 220, width: 200},
   buttonWrap: {
     flex: 3,
     justifyContent: 'center',
@@ -200,12 +177,5 @@ const styles = StyleSheet.create({
   kakaoLoginText: {color: 'black'},
   appleLoginText: {color: 'white'},
   emailLoginText: {color: '#0000cc'},
-  bottomWrap: {flex: 1, alignItems: 'center', justifyContent: 'center'},
-  bottomText: {
-    fontFamily: 'Galmuri11',
-    fontSize: 12,
-    color: 'white',
-    lineHeight: 17,
-  },
   authIcon: {height: 20, width: 20, marginRight: 8},
 });
