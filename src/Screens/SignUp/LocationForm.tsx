@@ -158,7 +158,6 @@ export function LocationForm({navigation}: Props) {
             </View>
           )}
         </View>
-        {/* <SignUpButton1 disableSignUp={disable} /> */}
         <SignUpButton disable={disable} onPress={onPressSignUp} />
       </SafeAreaView>
     </LinearGradient>

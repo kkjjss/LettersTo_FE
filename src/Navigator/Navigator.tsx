@@ -14,7 +14,7 @@ import {LetterBoxDetail} from '../Screens/LetterBox/LetterBoxDetail';
 
 // 인증 관련 스크린
 import {Auth} from '../Screens/Auth/AuthScreen';
-import {NicknameForm} from '../Screens/SignUp/NicknameForm';
+import {NicknameForm} from '../Screens/SignUp/NicknameForm/NicknameFormScreen';
 import {TopicsForm} from '../Screens/SignUp/TopicsForm';
 import {PersonalityForm} from '../Screens/SignUp/PersonalityForm';
 import {LocationForm} from '../Screens/SignUp/LocationForm';

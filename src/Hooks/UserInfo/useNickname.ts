@@ -9,13 +9,13 @@ type NicknameValidationKey =
   | 'FORM_INCORRECT'
   | 'PASS';
 
-type NicknameValidationResult = {
-  valid: boolean;
-  message: string;
-};
-
 type NicknameValidationResultMap = {
   [key in NicknameValidationKey]: NicknameValidationResult;
+};
+
+export type NicknameValidationResult = {
+  valid: boolean;
+  message: string;
 };
 
 const NICKNAME_VALIDATION_RESULT_MAP: NicknameValidationResultMap = {

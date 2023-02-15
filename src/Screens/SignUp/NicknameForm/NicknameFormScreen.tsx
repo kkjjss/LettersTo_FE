@@ -4,18 +4,18 @@ import {
   View,
   Text,
   StyleSheet,
-  TextInput,
   ScrollView,
-  Animated,
   SafeAreaView,
   Platform,
 } from 'react-native';
-import {NextButton} from '../../Components/Button/Bottom/NextButton';
-import {SCREEN_HEIGHT} from '../../Constants/screen';
+import {NextButton} from '../../../Components/Button/Bottom/NextButton';
+import {SCREEN_HEIGHT} from '../../../Constants/screen';
 import {LinearGradient} from 'expo-linear-gradient';
-import {Header} from '../../Components/Headers/Header';
-import type {StackParamsList} from '../../types/stackParamList';
-import {useNickname} from '../../Hooks/UserInfo/useNickname';
+import {Header} from '../../../Components/Headers/Header';
+import type {StackParamsList} from '../../../types/stackParamList';
+import {useNickname} from '../../../Hooks/UserInfo/useNickname';
+import {NicknameInput} from './Components/NicknameInput';
+import {NicknameAvailableAlert} from './Components/NicknameAvailableAlert';
 
 type Props = NativeStackScreenProps<StackParamsList, 'NicknameForm'>;
 
@@ -46,27 +46,14 @@ export function NicknameForm({navigation}: Props) {
             <Text style={styles.text}>별명을</Text>
             <Text style={styles.text}>입력해주세요</Text>
           </View>
-          <View style={styles.nicknameWrap}>
-            <View style={styles.nicknameForm}>
-              <TextInput
-                style={styles.nicknameInput}
-                value={tempNickname}
-                onChangeText={onChangeNickname}
-              />
-            </View>
-          </View>
-          <Animated.View style={[styles.alert, {opacity: alterOpacity}]}>
-            {nicknameValidationResult && (
-              <Text
-                style={
-                  nicknameValidationResult.valid
-                    ? styles.alertSuccess
-                    : styles.alertFail
-                }>
-                {nicknameValidationResult.message}
-              </Text>
-            )}
-          </Animated.View>
+          <NicknameInput
+            value={tempNickname}
+            onChangeNickname={onChangeNickname}
+          />
+          <NicknameAvailableAlert
+            alterOpacity={alterOpacity}
+            nicknameValidation={nicknameValidationResult}
+          />
         </ScrollView>
         <NextButton disable={disable} onPress={goToTopicForm} />
       </SafeAreaView>
@@ -83,31 +70,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {fontSize: 18, fontFamily: 'Galmuri11', color: '#0000cc'},
-  nicknameWrap: {
-    marginBottom: 10,
-    marginHorizontal: 24,
-  },
-  nicknameForm: {},
-  nicknameInput: {
-    padding: 17,
-    height: 54,
-    borderWidth: 1,
-    borderColor: '#0000cc',
-    borderRadius: 5,
-    fontFamily: 'Galmuri11',
-    color: '#0000cc',
-  },
-  alert: {
-    marginHorizontal: 24,
-  },
-  alertSuccess: {
-    fontFamily: 'Galmuri11',
-    color: '#44ccff',
-  },
-  alertFail: {
-    fontFamily: 'Galmuri11',
-    color: '#ff44cc',
-  },
   checkButton: {
     justifyContent: 'center',
   },
