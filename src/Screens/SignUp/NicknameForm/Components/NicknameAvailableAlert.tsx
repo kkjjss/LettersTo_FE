@@ -7,20 +7,19 @@ type Params = {
   nicknameValidation: NicknameValidationResult | undefined;
 };
 
-export const NicknameAvailableAlert = ({
-  alterOpacity,
-  nicknameValidation,
-}: Params) => (
-  <Animated.View style={[styles.alert, {opacity: alterOpacity}]}>
-    {nicknameValidation && (
-      <Text
-        style={
-          nicknameValidation.valid ? styles.alertSuccess : styles.alertFail
-        }>
-        {nicknameValidation.message}
-      </Text>
-    )}
-  </Animated.View>
+export const NicknameAvailableAlert = React.memo(
+  ({alterOpacity, nicknameValidation}: Params) => (
+    <Animated.View style={[styles.alert, {opacity: alterOpacity}]}>
+      {nicknameValidation && (
+        <Text
+          style={
+            nicknameValidation.valid ? styles.alertSuccess : styles.alertFail
+          }>
+          {nicknameValidation.message}
+        </Text>
+      )}
+    </Animated.View>
+  ),
 );
 
 const styles = StyleSheet.create({

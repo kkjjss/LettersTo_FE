@@ -3,8 +3,8 @@ import {StyleSheet, Text, View} from 'react-native';
 
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import type {StackParamsList} from '../../types/stackParamList';
-import {BackButton} from './BackButton';
-import {NextButton} from './NextButton';
+import {BackButton} from './Button/BackButton';
+import {NextButton} from './Button/NextButton';
 import {useCallback} from 'react';
 
 type Props = {

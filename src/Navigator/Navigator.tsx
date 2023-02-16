@@ -3,7 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {StackParamsList} from '../types/stackParamList';
 
 // Splash
-import {Splash} from '../Screens/Splash';
+import {Splash} from '../Screens/SplashScreen';
 
 // 메인 서비스 스크린
 import {Main} from '../Screens/Main/Main';
@@ -15,9 +15,9 @@ import {LetterBoxDetail} from '../Screens/LetterBox/LetterBoxDetail';
 // 인증 관련 스크린
 import {Auth} from '../Screens/Auth/AuthScreen';
 import {NicknameForm} from '../Screens/SignUp/NicknameForm/NicknameFormScreen';
-import {TopicsForm} from '../Screens/SignUp/TopicsForm';
-import {PersonalityForm} from '../Screens/SignUp/PersonalityForm';
-import {LocationForm} from '../Screens/SignUp/LocationForm';
+import {TopicsForm} from '../Screens/SignUp/TopicsForm/TopicsFormScreen';
+import {PersonalityForm} from '../Screens/SignUp/PersonalityForm/PersonalityFormScreen';
+import {LocationForm} from '../Screens/SignUp/LocationForm/LocationFormScreen';
 import {MyPage} from '../Screens/MyPage/MyPage';
 import {AccountDelete} from '../Screens/MyPage/AccountDelete';
 

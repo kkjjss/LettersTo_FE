@@ -2,22 +2,23 @@ import React, {useCallback, useMemo} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   View,
-  Text,
   StyleSheet,
-  Animated,
   SafeAreaView,
   ScrollView,
   Platform,
 } from 'react-native';
-import type {StackParamsList} from '../../types/stackParamList';
+import type {StackParamsList} from '../../../types/stackParamList';
 import {LinearGradient} from 'expo-linear-gradient';
-import {Header} from '../../Components/Headers/Header';
-import {SCREEN_HEIGHT} from '../../Constants/screen';
-import {NextButton} from '../../Components/Button/Bottom/NextButton';
-import {ResetButton} from '../../Components/ResetButton';
-import {PersonalityList} from '../../Components/PersonalityList';
-import {usePersonality} from '../../Hooks/UserInfo/usePersonality';
-import {MAX_PERSONALITY_LIMIT} from '../../Constants/user';
+import {SCREEN_HEIGHT} from '../../../Constants/screen';
+import {NextButton} from '../../../Components/Button/Bottom/NextButton';
+import {ResetButton} from '../../../Components/ResetButton';
+import {PersonalityList} from '../../../Components/PersonalityList';
+import {usePersonality} from '../../../Hooks/UserInfo/usePersonality';
+import {MAX_PERSONALITY_LIMIT} from '../../../Constants/user';
+import {Header2} from '../../../Components/Headers/Header2';
+import {UserInfoTitle as Title} from '../../../Components/UserInfo/Title/UserInfoTitle';
+import {Counter} from '../../../Components/UserInfo/Counter/Counter';
+import {MaximumAlert} from '../../../Components/UserInfo/Alert/MaximumAlert';
 
 type Props = NativeStackScreenProps<StackParamsList, 'PersonalityForm'>;
 
@@ -40,6 +41,10 @@ export function PersonalityForm({navigation}: Props) {
     navigation.navigate('LocationForm');
   }, [navigation]);
 
+  const onPressBack = useCallback(() => {
+    navigation.pop();
+  }, [navigation]);
+
   return (
     <LinearGradient colors={['#ffccee', 'white', 'white', 'white', '#ffffcc']}>
       <SafeAreaView
@@ -48,17 +53,12 @@ export function PersonalityForm({navigation}: Props) {
             ? styles.container_android
             : styles.container_ios
         }>
-        <Header navigation={navigation} title={''} />
+        <Header2 onPressBack={onPressBack} />
         <View style={styles.titleBox}>
-          <View style={styles.titleWrap}>
-            <Text style={styles.titleText}>나의 성향을</Text>
-            <Text style={styles.titleText}>모두 선택해주세요</Text>
-          </View>
+          <Title title={'나의 성향을\n모두 선택해주세요'} />
           <View style={styles.counterWrap}>
             <ResetButton reset={reset} />
-            <Text style={styles.counter}>
-              {counter} / {MAX_PERSONALITY_LIMIT}{' '}
-            </Text>
+            <Counter value={counter} max={MAX_PERSONALITY_LIMIT} />
           </View>
         </View>
         <ScrollView alwaysBounceVertical={false} style={styles.personalityBox}>
@@ -68,13 +68,7 @@ export function PersonalityForm({navigation}: Props) {
             selectedPersonalityIds={selectedPersonalityIds}
           />
         </ScrollView>
-        <View style={styles.alertBox}>
-          <Animated.View style={{opacity: alertOpacity}}>
-            <Text style={styles.alertText}>
-              최대 {MAX_PERSONALITY_LIMIT}개까지만 선택 가능해요!
-            </Text>
-          </Animated.View>
-        </View>
+        <MaximumAlert alertOpacity={alertOpacity} max={MAX_PERSONALITY_LIMIT} />
         <NextButton disable={disableNext} onPress={goToLocationForm} />
       </SafeAreaView>
     </LinearGradient>

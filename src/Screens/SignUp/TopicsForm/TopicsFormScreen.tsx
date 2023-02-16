@@ -2,22 +2,23 @@ import React, {useCallback, useMemo} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   View,
-  Text,
   StyleSheet,
-  Animated,
   SafeAreaView,
   Platform,
   ScrollView,
 } from 'react-native';
-import type {StackParamsList} from '../../types/stackParamList';
+import type {StackParamsList} from '../../../types/stackParamList';
 import {LinearGradient} from 'expo-linear-gradient';
-import {Header} from '../../Components/Headers/Header';
-import {SCREEN_HEIGHT} from '../../Constants/screen';
-import {NextButton} from '../../Components/Button/Bottom/NextButton';
-import {ResetButton} from '../../Components/ResetButton';
-import {TopicList} from '../../Components/TopicList';
-import {useTopic} from '../../Hooks/UserInfo/useTopic';
-import {MAX_TOPIC_LIMIT} from '../../Constants/user';
+import {SCREEN_HEIGHT} from '../../../Constants/screen';
+import {NextButton} from '../../../Components/Button/Bottom/NextButton';
+import {ResetButton} from '../../../Components/ResetButton';
+import {TopicList} from '../../../Components/TopicList';
+import {useTopic} from '../../../Hooks/UserInfo/useTopic';
+import {MAX_TOPIC_LIMIT} from '../../../Constants/user';
+import {Counter} from '../../../Components/UserInfo/Counter/Counter';
+import {MaximumAlert} from '../../../Components/UserInfo/Alert/MaximumAlert';
+import {UserInfoTitle as Title} from '../../../Components/UserInfo/Title/UserInfoTitle';
+import {Header2} from '../../../Components/Headers/Header2';
 
 type Props = NativeStackScreenProps<StackParamsList, 'TopicsForm'>;
 
@@ -34,6 +35,10 @@ export function TopicsForm({navigation}: Props) {
     navigation.navigate('PersonalityForm');
   }, [navigation]);
 
+  const onPressBack = useCallback(() => {
+    navigation.pop();
+  }, [navigation]);
+
   return (
     <LinearGradient colors={['#ffccee', 'white', 'white', 'white', '#ffffcc']}>
       <SafeAreaView
@@ -42,17 +47,12 @@ export function TopicsForm({navigation}: Props) {
             ? styles.container_android
             : styles.container_ios
         }>
-        <Header navigation={navigation} title={''} />
+        <Header2 onPressBack={onPressBack} />
         <View style={styles.titleBox}>
-          <View style={styles.titleWrap}>
-            <Text style={styles.titleText}>나의 관심사를</Text>
-            <Text style={styles.titleText}>모두 선택해주세요</Text>
-          </View>
+          <Title title={'나의 관심사를\n모두 선택해주세요'} />
           <View style={styles.counterWrap}>
             <ResetButton reset={reset} />
-            <Text style={styles.counter}>
-              {counter} / {MAX_TOPIC_LIMIT}
-            </Text>
+            <Counter value={counter} max={MAX_TOPIC_LIMIT} />
           </View>
         </View>
         <ScrollView alwaysBounceVertical={false} style={styles.topicBox}>
@@ -62,13 +62,7 @@ export function TopicsForm({navigation}: Props) {
             selectedTopicIds={selectedTopicIds}
           />
         </ScrollView>
-        <View style={styles.alertBox}>
-          <Animated.View style={{opacity: alertOpacity}}>
-            <Text style={styles.alertText}>
-              최대 {MAX_TOPIC_LIMIT}개까지만 선택 가능해요!
-            </Text>
-          </Animated.View>
-        </View>
+        <MaximumAlert alertOpacity={alertOpacity} max={MAX_TOPIC_LIMIT} />
         <NextButton disable={disableNext} onPress={goToPersonalityForm} />
       </SafeAreaView>
     </LinearGradient>
@@ -83,25 +77,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginHorizontal: 24,
   },
-  titleWrap: {
-    height: 100,
-    justifyContent: 'center',
-  },
-  titleText: {
-    fontSize: 18,
-    fontFamily: 'Galmuri11',
-    color: '#0000cc',
-    marginTop: 8,
-  },
   counterWrap: {alignItems: 'center', flexDirection: 'row'},
-  counter: {
-    width: 50,
-    fontSize: 13,
-    fontFamily: 'Galmuri11',
-    color: '#0000cc',
-    marginHorizontal: 8,
-    textAlign: 'right',
-  },
   topicBox: {
     flex: 1,
     marginHorizontal: 24,
@@ -137,14 +113,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#0000cc',
   },
-  alertBox: {
-    marginHorizontal: 24,
-    marginVertical: 10,
-  },
-  alertText: {
-    fontFamily: 'Galmuri11',
-    color: '#ff44cc',
-  },
+
   resetButton: {
     width: 74,
     height: 22,

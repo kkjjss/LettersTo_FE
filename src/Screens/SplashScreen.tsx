@@ -45,8 +45,8 @@ export function Splash({}: Props) {
     <View style={styles.container}>
       <ActivityIndicator
         animating={true}
-        color="#6990F7"
-        size="large"
+        color={'#6990F7'}
+        size={'large'}
         style={styles.activityIndicator}
       />
     </View>

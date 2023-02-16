@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
-import {BackButton} from './BackButton';
-import {NextButton} from './NextButton';
+import {BackButton} from './Button/BackButton';
+import {NextButton} from './Button/NextButton';
 
 type Props = {
   title?: string;

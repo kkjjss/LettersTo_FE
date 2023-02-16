@@ -7,21 +7,20 @@ type Params = {
   onPressTermsOfService: () => void;
 };
 
-export const PolicyNotice = ({
-  onPressPrivacyPolicy,
-  onPressTermsOfService,
-}: Params) => (
-  <View style={styles.policyWrap}>
-    <Text style={styles.policyText}>
-      회원가입 시{' '}
-      <HyperLink onPress={onPressPrivacyPolicy}>개인정보처리방침</HyperLink>을
-      읽었으며
-    </Text>
-    <Text style={styles.policyText}>
-      <HyperLink onPress={onPressTermsOfService}>서비스이용약관</HyperLink>에
-      동의하신 것으로 간주합니다
-    </Text>
-  </View>
+export const PolicyNotice = React.memo(
+  ({onPressPrivacyPolicy, onPressTermsOfService}: Params) => (
+    <View style={styles.policyWrap}>
+      <Text style={styles.policyText}>
+        회원가입 시{' '}
+        <HyperLink onPress={onPressPrivacyPolicy}>개인정보처리방침</HyperLink>을
+        읽었으며
+      </Text>
+      <Text style={styles.policyText}>
+        <HyperLink onPress={onPressTermsOfService}>서비스이용약관</HyperLink>에
+        동의하신 것으로 간주합니다
+      </Text>
+    </View>
+  ),
 );
 
 const styles = StyleSheet.create({

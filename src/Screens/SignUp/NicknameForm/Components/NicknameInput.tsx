@@ -6,16 +6,18 @@ type Props = {
   onChangeNickname: (name: string) => void;
 };
 
-export const NicknameInput = ({value: nickname, onChangeNickname}: Props) => (
-  <View style={styles.nicknameWrap}>
-    <View style={styles.nicknameForm}>
-      <TextInput
-        style={styles.nicknameInput}
-        value={nickname}
-        onChangeText={onChangeNickname}
-      />
+export const NicknameInput = React.memo(
+  ({value: nickname, onChangeNickname}: Props) => (
+    <View style={styles.nicknameWrap}>
+      <View style={styles.nicknameForm}>
+        <TextInput
+          style={styles.nicknameInput}
+          value={nickname}
+          onChangeText={onChangeNickname}
+        />
+      </View>
     </View>
-  </View>
+  ),
 );
 
 const styles = StyleSheet.create({

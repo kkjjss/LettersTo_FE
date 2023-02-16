@@ -8,36 +8,34 @@ type Props = {
   selectedPersonalityIds: number[];
 };
 
-export function PersonalityList({
-  personalities,
-  selectPersonality,
-  selectedPersonalityIds,
-}: Props) {
-  return (
-    <View style={styles.personalityWrap}>
-      {personalities.map(personality => {
-        return (
-          <TouchableHighlight
-            key={personality.id}
-            style={styles.underlayer}
-            underlayColor={'#0000cc'}
-            activeOpacity={0.7}
-            onPress={() => selectPersonality(personality.id)}>
-            <View
-              style={[
-                styles.personality,
-                selectedPersonalityIds.includes(personality.id)
-                  ? styles.selectedPersonality
-                  : styles.notSelectedPersonality,
-              ]}>
-              <Text style={styles.personalityText}>{personality.name}</Text>
-            </View>
-          </TouchableHighlight>
-        );
-      })}
-    </View>
-  );
-}
+export const PersonalityList = React.memo(
+  ({personalities, selectPersonality, selectedPersonalityIds}: Props) => {
+    return (
+      <View style={styles.personalityWrap}>
+        {personalities.map(personality => {
+          return (
+            <TouchableHighlight
+              key={personality.id}
+              style={styles.underlayer}
+              underlayColor={'#0000cc'}
+              activeOpacity={0.7}
+              onPress={() => selectPersonality(personality.id)}>
+              <View
+                style={[
+                  styles.personality,
+                  selectedPersonalityIds.includes(personality.id)
+                    ? styles.selectedPersonality
+                    : styles.notSelectedPersonality,
+                ]}>
+                <Text style={styles.personalityText}>{personality.name}</Text>
+              </View>
+            </TouchableHighlight>
+          );
+        })}
+      </View>
+    );
+  },
+);
 
 const styles = StyleSheet.create({
   personalityWrap: {
