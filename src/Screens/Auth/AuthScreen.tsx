@@ -28,8 +28,8 @@ import {AuthButton} from './Components/AuthButton';
 import {Logo} from './Components/Logo';
 import {PolicyNotice} from './Components/PolicyNotice';
 
-const kakaoLogo = require('../../Assets/social/kakao.png');
-const appleLogo = require('../../Assets/social/apple.png');
+const kakaoLogo = require('../../Assets/Image/social/kakao.png');
+const appleLogo = require('../../Assets/Image/social/apple.png');
 
 type Props = NativeStackScreenProps<StackParamsList, 'Auth'>;
 

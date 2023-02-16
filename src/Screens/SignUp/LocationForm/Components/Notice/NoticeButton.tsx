@@ -1,7 +1,7 @@
 import React from 'react';
 import {TouchableWithoutFeedback, Image, StyleSheet} from 'react-native';
 
-const noticeImage = require('../../../../../Assets/notice.png');
+const noticeImage = require('../../../../../Assets/Icon/notice/notice.png');
 
 type Params = {
   onPress: () => void;

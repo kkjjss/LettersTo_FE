@@ -1,6 +1,6 @@
 import React from 'react';
 import {Image, StyleSheet, View} from 'react-native';
-const logoImage = require('../../../Assets/logo/logo_main.gif');
+const logoImage = require('../../../Assets/Image/logo/logo_animation.gif');
 
 export const Logo = React.memo(() => (
   <View style={styles.logo}>

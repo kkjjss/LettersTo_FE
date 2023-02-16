@@ -1,5 +1,6 @@
 import * as React from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
+import {ReportButton} from '../Button/Report/ReportButton';
 
 import {BackButton} from './Button/BackButton';
 import {NextButton} from './Button/NextButton';
@@ -45,15 +46,7 @@ export const Header2 = React.memo(
         {onPressNext && disableNext !== undefined ? (
           <NextButton onPress={onPressNext} disable={disableNext} />
         ) : onPressReport ? (
-          <TouchableOpacity
-            onPress={onPressReport}
-            activeOpacity={0.7}
-            style={styles.reportButton}>
-            <Image
-              style={styles.report}
-              source={require('../../Assets/report.png')}
-            />
-          </TouchableOpacity>
+          <ReportButton onPress={onPressReport} />
         ) : (
           <View style={{marginRight: 50}} />
         )}
@@ -77,11 +70,4 @@ const styles = StyleSheet.create({
   },
   titleWrap: {justifyContent: 'center'},
   title: {fontFamily: 'Galmuri11', fontSize: 15},
-  reportButton: {
-    marginLeft: 22,
-  },
-  report: {
-    width: 28,
-    height: 28,
-  },
 });
