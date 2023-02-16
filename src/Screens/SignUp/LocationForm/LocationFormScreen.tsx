@@ -6,15 +6,15 @@ import type {StackParamsList} from '../../../types/stackParamList';
 import {LinearGradient} from 'expo-linear-gradient';
 import {SCREEN_HEIGHT} from '../../../Constants/screen';
 import {useLocation} from '../../../Hooks/UserInfo/useLocation';
-import {SignUpButton} from '../../../Components/Button/Bottom/SignUpButton';
+import {SignUpButton} from './Components/SignUpButton';
 import {useAuthAction, useAuthStore} from '../../../Store/auth';
 import {useMutation} from 'react-query';
 import {signUp} from '../../../APIs/member';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from '../../../Components/Toast/toast';
 import {Header2} from '../../../Components/Headers/Header2';
-import {NoticeBalloon} from './Components/NoticeBalloon';
-import {NoticeButton} from './Components/NoticeButton';
+import {NoticeBalloon} from './Components/Notice/NoticeBalloon';
+import {NoticeButton} from './Components/Notice/NoticeButton';
 
 type Props = NativeStackScreenProps<StackParamsList, 'LocationForm'>;
 

@@ -83,34 +83,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginHorizontal: 24,
   },
-  titleWrap: {
-    height: 100,
-    justifyContent: 'center',
-  },
-  titleText: {
-    fontSize: 18,
-    fontFamily: 'Galmuri11',
-    color: '#0000cc',
-    marginTop: 8,
-  },
   counterWrap: {alignItems: 'center', flexDirection: 'row'},
-  counter: {
-    width: 50,
-    fontSize: 13,
-    fontFamily: 'Galmuri11',
-    color: '#0000cc',
-    marginHorizontal: 8,
-    textAlign: 'right',
-  },
   personalityBox: {
     paddingHorizontal: 24,
-  },
-  alertBox: {
-    marginHorizontal: 24,
-    marginVertical: 10,
-  },
-  alertText: {
-    fontFamily: 'Galmuri11',
-    color: '#ff44cc',
   },
 });

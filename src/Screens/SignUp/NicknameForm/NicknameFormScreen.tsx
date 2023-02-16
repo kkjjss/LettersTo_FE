@@ -72,17 +72,4 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginHorizontal: 24,
   },
-  textWrap: {
-    height: 100,
-    marginHorizontal: 24,
-    justifyContent: 'center',
-  },
-  text: {fontSize: 18, fontFamily: 'Galmuri11', color: '#0000cc'},
-  checkButton: {
-    justifyContent: 'center',
-  },
-  buttonWrap: {
-    flex: 2,
-    justifyContent: 'center',
-  },
 });
