@@ -18,7 +18,7 @@ import {NicknameForm} from '../Screens/SignUp/NicknameForm/NicknameFormScreen';
 import {TopicsForm} from '../Screens/SignUp/TopicsForm/TopicsFormScreen';
 import {PersonalityForm} from '../Screens/SignUp/PersonalityForm/PersonalityFormScreen';
 import {LocationForm} from '../Screens/SignUp/LocationForm/LocationFormScreen';
-import {MyPage} from '../Screens/MyPage/MyPage';
+import {MyPage} from '../Screens/MyPage/MyPage/MyPageScreen';
 import {AccountDelete} from '../Screens/MyPage/AccountDelete';
 
 // 편지 작성

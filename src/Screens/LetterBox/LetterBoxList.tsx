@@ -120,7 +120,7 @@ export function LetterBoxList({navigation, onPressHome}: Props) {
               onPress={goToStampHistory}
               style={[styles.headerButton, {marginLeft: 12, width: 40}]}>
               <Image
-                source={require('../../Assets/numberStamps.png')}
+                source={require('../../Assets/Icon/stamp/stamps_blue.png')}
                 style={{width: 24, height: 24, marginLeft: -3}}
               />
               <View style={styles.stampArea}>

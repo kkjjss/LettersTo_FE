@@ -18,6 +18,8 @@ import {StampHistories} from '../../types/types';
 import {dateFormatter} from '../../Utils/dateFormatter';
 import Toast from '../../Components/Toast/toast';
 
+const nextImg = require('../../Assets/Icon/next/next_blue.png');
+
 type Props = NativeStackScreenProps<StackParamsList, 'StampHistory'>;
 
 export const StampHistory = ({navigation}: Props) => {
@@ -79,10 +81,7 @@ export const StampHistory = ({navigation}: Props) => {
               <Text style={styles.eventText}>
                 앱 리뷰 남기고 추가 우표 받기
               </Text>
-              <Image
-                style={{width: 20, height: 20}}
-                source={require('../../Assets/next_blue.png')}
-              />
+              <Image style={{width: 20, height: 20}} source={nextImg} />
             </View>
           </TouchableOpacity>
           {stampHistories?.map((item: any, idx: number) => {

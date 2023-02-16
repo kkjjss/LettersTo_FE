@@ -1,21 +1,18 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
 
-export function ListName({name}: {name: string}) {
+type ListNameProps = {name: string};
+type ListItemProps = {itmeName: string; onPress: () => void};
+
+export const ListName = React.memo(({name}: ListNameProps) => {
   return (
     <View>
       <Text style={styles.nameText}>{name}</Text>
     </View>
   );
-}
+});
 
-export function ListItem({
-  itmeName,
-  onPress,
-}: {
-  itmeName: string;
-  onPress: () => void;
-}) {
+export const ListItem = React.memo(({itmeName, onPress}: ListItemProps) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.itemWrap}>
@@ -23,7 +20,7 @@ export function ListItem({
       </View>
     </TouchableWithoutFeedback>
   );
-}
+});
 
 const styles = StyleSheet.create({
   nameText: {
