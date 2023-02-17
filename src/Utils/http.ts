@@ -200,6 +200,7 @@ class InstanceWithAuth {
         }
       });
     }
+    console.log(query);
     const url = this.baseUrl + path + query;
 
     const options = {
@@ -352,6 +353,18 @@ const refreshAccessToken = async () => {
   ]);
 };
 
+const stringifyPatchParams = (params: any) => {
+  let query = '';
+  if (params) {
+    Object.keys(params).map((key, index) => {
+      if (params[key] !== undefined) {
+        query += `${index !== 0 ? '&' : ''}${key}=${params[key]}`;
+      }
+    });
+  }
+  return query;
+};
+
 axiosInstance.interceptors.request.use(async config => {
   const accessToken = await AsyncStorage.getItem('accessToken');
   if (accessToken) {
@@ -360,7 +373,11 @@ axiosInstance.interceptors.request.use(async config => {
 
   if (config.method === 'patch') {
     config.params = config.data;
+    config.paramsSerializer = {
+      serialize: stringifyPatchParams,
+    };
   }
+
   return config;
 });
 
