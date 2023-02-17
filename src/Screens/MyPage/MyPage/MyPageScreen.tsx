@@ -171,6 +171,7 @@ export const MyPage = ({navigation}: Props) => {
         onPressClose={toggleNicknameModal}
       />
       <TopicsModal
+        currentTopics={userInfo.topicIds}
         isModalVisible={isTopicsModalVisible}
         onPressClose={toggleTopicsModal}
       />

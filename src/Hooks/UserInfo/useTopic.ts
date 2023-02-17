@@ -6,7 +6,7 @@ import {getTopics} from '../../APIs/topic';
 import {MAX_TOPIC_LIMIT} from '../../Constants/user';
 import {useAuthStore} from '../../Store/auth';
 
-export const useTopic = () => {
+export const useTopic = (currentTopics: number[] = []) => {
   const [selectedTopicIds, setSelectedTopicIds] = useAuthStore(state => [
     state.registerInfo.topicIds,
     state.action.setTopicIdsInRegisterInfo,
@@ -51,8 +51,8 @@ export const useTopic = () => {
   );
 
   const reset = useCallback(() => {
-    setSelectedTopicIds([]);
-  }, [setSelectedTopicIds]);
+    setSelectedTopicIds(currentTopics);
+  }, [setSelectedTopicIds, currentTopics]);
 
   const {data: topics} = useQuery('topics', getTopics, {
     onError: (error: any) => {

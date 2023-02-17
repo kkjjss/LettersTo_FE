@@ -22,7 +22,7 @@ import {Header2} from '../../../Components/Headers/Header2';
 
 type Props = NativeStackScreenProps<StackParamsList, 'TopicsForm'>;
 
-export function TopicsForm({navigation}: Props) {
+export const TopicsForm = ({navigation}: Props) => {
   const {topics, selectedTopicIds, selectTopic, alertOpacity, counter, reset} =
     useTopic();
 
@@ -67,7 +67,7 @@ export function TopicsForm({navigation}: Props) {
       </SafeAreaView>
     </LinearGradient>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container_ios: {height: SCREEN_HEIGHT},

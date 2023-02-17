@@ -13,13 +13,13 @@ import {LinearGradient} from 'expo-linear-gradient';
 import type {StackParamsList} from '../../../types/stackParamList';
 import {useNickname} from '../../../Hooks/UserInfo/useNickname';
 import {NicknameInput} from './Components/NicknameInput';
-import {NicknameAvailableAlert} from './Components/NicknameAvailableAlert';
+import {NicknameAvailableAlert} from '../../../Components/UserInfo/Alert/NicknameAvailableAlert';
 import {Header2} from '../../../Components/Headers/Header2';
 import {UserInfoTitle as Title} from '../../../Components/UserInfo/Title/UserInfoTitle';
 
 type Props = NativeStackScreenProps<StackParamsList, 'NicknameForm'>;
 
-export function NicknameForm({navigation}: Props) {
+export const NicknameForm = ({navigation}: Props) => {
   const {
     tempNickname,
     disable,
@@ -62,7 +62,7 @@ export function NicknameForm({navigation}: Props) {
       </SafeAreaView>
     </LinearGradient>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container_ios: {height: SCREEN_HEIGHT},

@@ -22,7 +22,7 @@ import {MaximumAlert} from '../../../Components/UserInfo/Alert/MaximumAlert';
 
 type Props = NativeStackScreenProps<StackParamsList, 'PersonalityForm'>;
 
-export function PersonalityForm({navigation}: Props) {
+export const PersonalityForm = ({navigation}: Props) => {
   const {
     personalities,
     selectedPersonalityIds,
@@ -73,7 +73,7 @@ export function PersonalityForm({navigation}: Props) {
       </SafeAreaView>
     </LinearGradient>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container_ios: {height: SCREEN_HEIGHT},

@@ -4,15 +4,17 @@ import {StyleSheet, TextInput, View} from 'react-native';
 type Props = {
   value: string;
   onChangeNickname: (name: string) => void;
+  placeholder?: string;
 };
 
 export const NicknameInput = React.memo(
-  ({value: nickname, onChangeNickname}: Props) => (
+  ({value: nickname, onChangeNickname, placeholder}: Props) => (
     <View style={styles.nicknameWrap}>
       <View style={styles.nicknameForm}>
         <TextInput
           style={styles.nicknameInput}
           value={nickname}
+          placeholder={placeholder}
           onChangeText={onChangeNickname}
         />
       </View>
