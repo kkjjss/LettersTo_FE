@@ -14,6 +14,7 @@ import {Counter} from '../../Components/UserInfo/Counter/Counter';
 import {MAX_TOPIC_LIMIT} from '../../Constants/user';
 import {MaximumAlert} from '../../Components/UserInfo/Alert/MaximumAlert';
 import {UpdateButton} from '../../Components/Button/Bottom/UpdateButton';
+import _ from 'lodash';
 
 type Props = {
   currentTopics: number[];
@@ -41,8 +42,10 @@ export const TopicsModal = ({
   const {bottom: SAFE_AREA_BOTTOM} = useSafeAreaInsets();
 
   const disableUpdate = useMemo(
-    () => selectedTopicIds.length === 0,
-    [selectedTopicIds],
+    () =>
+      selectedTopicIds.length === 0 ||
+      _.isEqual(currentTopics, selectedTopicIds),
+    [currentTopics, selectedTopicIds],
   );
 
   const hideModal = () => {
@@ -51,10 +54,8 @@ export const TopicsModal = ({
   };
 
   const {mutate: updateTopics} = useMutation(
-    ['topicIds', selectedTopicIds],
-    async () => {
-      return await patchUserInfo({topicIds: selectedTopicIds});
-    },
+    ['topics', selectedTopicIds],
+    async () => await patchUserInfo({topicIds: selectedTopicIds}),
     {
       onSuccess: () => {
         Toast.show('성공적으로 변경되었어요!');
@@ -92,14 +93,7 @@ export const TopicsModal = ({
               <Counter value={counter} max={MAX_TOPIC_LIMIT} />
             </View>
           </View>
-          <ScrollView
-            alwaysBounceVertical={false}
-            style={[
-              styles.topicBox,
-              {
-                height: SCREEN_HEIGHT * 0.6,
-              },
-            ]}>
+          <ScrollView alwaysBounceVertical={false} style={styles.topicBox}>
             <TopicList
               topics={topics}
               selectTopic={selectTopic}
@@ -158,6 +152,7 @@ const styles = StyleSheet.create({
   },
   topicBox: {
     marginHorizontal: 24,
+    height: SCREEN_HEIGHT * 0.6,
   },
   alert: {
     marginHorizontal: 24,

@@ -6,7 +6,7 @@ import Toast from '../../Components/Toast/toast';
 import {MAX_PERSONALITY_LIMIT} from '../../Constants/user';
 import {useAuthStore} from '../../Store/auth';
 
-export const usePersonality = () => {
+export const usePersonality = (currentPersonalities: number[] = []) => {
   const [selectedPersonalityIds, setSelectedPersonalityIds] = useAuthStore(
     state => [
       state.registerInfo.personalityIds,
@@ -58,8 +58,8 @@ export const usePersonality = () => {
   );
 
   const reset = useCallback(() => {
-    setSelectedPersonalityIds([]);
-  }, [setSelectedPersonalityIds]);
+    setSelectedPersonalityIds(currentPersonalities);
+  }, [setSelectedPersonalityIds, currentPersonalities]);
 
   const {data: personalities} = useQuery('personalities', getPersonalities, {
     onError: (error: any) => {
