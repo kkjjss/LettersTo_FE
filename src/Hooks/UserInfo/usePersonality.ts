@@ -62,16 +62,13 @@ export const usePersonality = (currentPersonalities: number[] = []) => {
   }, [setSelectedPersonalityIds, currentPersonalities]);
 
   const {data: personalities} = useQuery('personalities', getPersonalities, {
-    onError: (error: any) => {
-      console.error(error.message);
-      Toast.show('문제가 발생했습니다');
-    },
+    onError: () => Toast.show('문제가 발생했습니다'),
   });
 
   return {
     personalities: personalities || [],
     selectedPersonalityIds,
-    setSelectedPersonalityIds,
+
     selectPersonality,
     alertOpacity,
     counter,

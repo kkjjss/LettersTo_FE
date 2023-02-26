@@ -54,8 +54,8 @@ export const NicknameModal = ({
         hideModal();
       },
       onError: (error: any) => {
-        console.error(error.message);
-        Toast.show('문제가 발생했습니다');
+        hideModal();
+        Toast.show(error.response.data.message);
       },
     },
   );

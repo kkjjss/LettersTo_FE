@@ -181,6 +181,10 @@ export const MyPage = ({navigation}: Props) => {
         onPressClose={togglePersonalitiesModal}
       />
       <LocationModal
+        currentLocation={{
+          geolocationId: userInfo.geolocationId,
+          parentGeolocationId: userInfo.parentGeolocationId,
+        }}
         isModalVisible={isLocationModalVisible}
         onPressClose={toggleLocationModal}
       />

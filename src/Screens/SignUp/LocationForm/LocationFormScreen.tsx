@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {View, Text, StyleSheet, SafeAreaView, Platform} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -31,11 +31,15 @@ export function LocationForm({navigation}: Props) {
     setSelectedCityId,
     noticeOpacity,
     onStartNotice,
-    disable,
   } = useLocation();
 
   const {setGeolocationIdInRegisterInfo, startLoading} = useAuthAction();
   const registerInfo = useAuthStore(state => state.registerInfo);
+
+  const disableSignUp = useMemo(
+    () => !selectedCityId || !selectedRegionId,
+    [selectedCityId, selectedRegionId],
+  );
 
   useEffect(() => {
     if (selectedRegionId && selectedCityId) {
@@ -136,7 +140,7 @@ export function LocationForm({navigation}: Props) {
             </View>
           )}
         </View>
-        <SignUpButton disable={disable} onPress={onPressSignUp} />
+        <SignUpButton disable={disableSignUp} onPress={onPressSignUp} />
       </SafeAreaView>
     </LinearGradient>
   );

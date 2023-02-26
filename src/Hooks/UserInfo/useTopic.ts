@@ -64,7 +64,6 @@ export const useTopic = (currentTopics: number[] = []) => {
   return {
     topics: topics || [],
     selectedTopicIds,
-    setSelectedTopicIds,
     selectTopic,
     alertOpacity,
     counter,

@@ -1,11 +1,21 @@
-import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {Animated} from 'react-native';
 import Toast from '../../Components/Toast/toast';
 import {useQuery} from 'react-query';
 import {getCities, getRegions} from '../../APIs/geolocation';
 import {useAuthAction} from '../../Store/auth';
 
-export const useLocation = () => {
+type Props = {
+  parentGeolocationId: number | null;
+  geolocationId: number;
+};
+
+export const useLocation = (
+  currentLocation: Props = {
+    geolocationId: 0,
+    parentGeolocationId: null,
+  },
+) => {
   const [selectedRegionId, setSelectedRegionId] = useState<null | number>(0);
   const [selectedCityId, setSelectedCityId] = useState<number>(0);
 
@@ -35,10 +45,12 @@ export const useLocation = () => {
     alert.start();
   }, [alert]);
 
-  const disable = useMemo(
-    () => !selectedCityId || !selectedRegionId,
-    [selectedCityId, selectedRegionId],
-  );
+  const reset = useCallback(() => {
+    setSelectedRegionId(currentLocation.parentGeolocationId);
+    setTimeout(() => {
+      setSelectedCityId(currentLocation.geolocationId);
+    }, 0);
+  }, [setSelectedCityId, setSelectedRegionId, currentLocation]);
 
   const {data: regions} = useQuery(
     'regions',
@@ -86,6 +98,6 @@ export const useLocation = () => {
     setSelectedCityId,
     noticeOpacity,
     onStartNotice,
-    disable,
+    reset,
   };
 };
