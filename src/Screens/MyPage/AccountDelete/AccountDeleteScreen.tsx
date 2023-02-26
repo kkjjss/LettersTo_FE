@@ -1,79 +1,70 @@
-import React, {useState} from 'react';
-import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
+import React, {useCallback, useState} from 'react';
+import {Image, StyleSheet, Text, View} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {StackParamsList} from '../../types/stackParamList';
+import {StackParamsList} from '../../../types/stackParamList';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {Header} from '../../Components/Headers/Header';
-import {ModalBlur} from '../../Modals/ModalBlur';
-import {AccountDeleteModal} from '../../Modals/AccountDeleteModal';
+import {ModalBlur} from '../../../Modals/ModalBlur';
+import {AccountDeleteModal} from '../../../Modals/AccountDeleteModal';
+import {BottomButton} from './Components/BottomButton';
+import {Header2} from '../../../Components/Headers/Header2';
+
+const noticeImg = require('../../../Assets/Icon/notice/notice_red.png');
 
 type Props = NativeStackScreenProps<StackParamsList, 'AccountDelete'>;
 
 export function AccountDelete({navigation}: Props) {
   const [isModalVisible, setModalVisible] = useState(false);
 
-  const openModal = () => {
-    return setModalVisible(true);
-  };
+  const toggleModal = useCallback(() => {
+    return setModalVisible(!isModalVisible);
+  }, [isModalVisible]);
 
-  const hideModal = () => {
-    return setModalVisible(false);
-  };
-
-  const goback = () => {
+  const goBack = useCallback(() => {
     navigation.pop();
-  };
+  }, [navigation]);
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header navigation={navigation} title={'탈퇴하기'} />
+      <Header2 title={'탈퇴하기'} onPressBack={goBack} />
       <View style={styles.warning}>
-        <Image
-          source={require('../../Assets/warning.png')}
-          style={styles.warningImage}
-        />
-        <Text style={styles.warningText}>정말 탈퇴하시려면 아래 내용을</Text>
-        <Text style={styles.warningText}>한번 더 확인해주세요.</Text>
+        <Image source={noticeImg} style={styles.noticeImg} />
+        <Text style={styles.warningText}>
+          정말 탈퇴하시려면 아래 내용을{'\n'}한번 더 확인해주세요.
+        </Text>
       </View>
       <View style={styles.notice1}>
         <Text style={styles.notice}>【탈퇴 시 계정이 사라져요】</Text>
         <Text style={styles.noticeDesc}>
-          탈퇴 후 동일 소셜 로그인으로 가입해도 이전 편지내역
+          탈퇴 후 동일 소셜 로그인으로 가입해도 이전 편지내역{'\n'}및 연결은
+          불가능해요.
         </Text>
-        <Text style={styles.noticeDesc}>및 연결은 불가능해요.</Text>
       </View>
       <View style={styles.notice2}>
         <Text style={styles.notice}>【탈퇴 전 확인하세요】</Text>
         <Text style={styles.noticeDesc}>
-          탈퇴 시 지급 및 구입한 우표는 모두 사라져요.
-        </Text>
-        <Text style={styles.noticeDesc}>
-          탈퇴 시 개인정보가 삭제되어 본인 확인이 어려워 작성
-        </Text>
-        <Text style={styles.noticeDesc}>
-          한 편지는 편집 및 삭제가 불가능해요.
+          탈퇴 시 지급 및 구입한 우표는 모두 사라져요.{'\n'}탈퇴 시 개인정보가
+          삭제되어 본인 확인이 어려워 작성{'\n'}한 편지는 편집 및 삭제가
+          불가능해요.
         </Text>
       </View>
       <View style={styles.buttonWrap}>
-        <Pressable style={styles.buttonYes} onPress={openModal}>
-          <Text
-            style={{fontFamily: 'Galmuri11', fontSize: 14, color: '#0000cc'}}>
-            상관없어요
-          </Text>
-        </Pressable>
-        <Pressable style={styles.buttonNo} onPress={goback}>
-          <View>
-            <Text
-              style={{fontFamily: 'Galmuri11', fontSize: 14, color: 'white'}}>
-              한번 더 생각해볼게요
-            </Text>
-          </View>
-        </Pressable>
+        <BottomButton
+          onPress={toggleModal}
+          style={styles.buttonYes}
+          textStyle={styles.buttonTextYes}>
+          상관없어요
+        </BottomButton>
+        <BottomButton
+          onPress={goBack}
+          style={styles.buttonNo}
+          textStyle={styles.buttonTextNo}>
+          한번 더 생각해볼게요
+        </BottomButton>
       </View>
 
       {isModalVisible && <ModalBlur />}
       <AccountDeleteModal
-        hideModal={hideModal}
+        hideModal={toggleModal}
         isModalVisible={isModalVisible}
       />
     </SafeAreaView>
@@ -83,7 +74,7 @@ export function AccountDelete({navigation}: Props) {
 const styles = StyleSheet.create({
   container: {flex: 1, backgroundColor: '#FFFFFF'},
   warning: {flex: 1.5, justifyContent: 'center', alignItems: 'center'},
-  warningImage: {height: 24, width: 24},
+  noticeImg: {height: 24, width: 24},
   warningText: {
     fontFamily: 'Galmuri11',
     color: '#E10000',
@@ -115,6 +106,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  buttonTextYes: {fontFamily: 'Galmuri11', fontSize: 14, color: '#0000cc'},
   buttonNo: {
     flex: 195,
     backgroundColor: '#0000cc',
@@ -122,4 +114,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  buttonTextNo: {fontFamily: 'Galmuri11', fontSize: 14, color: 'white'},
 });

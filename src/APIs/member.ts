@@ -4,7 +4,7 @@ import type {
   AuthTokens,
   PatchUserInfoRequest,
 } from '../types/auth';
-import {axiosInstance, instanceWithAuth} from '../Utils/http';
+import {axiosInstance} from '../Utils/http';
 
 export async function signUp(registerInfo: RegisterInfo) {
   return await axiosInstance.post<AuthTokens>('/members', {...registerInfo});
@@ -25,5 +25,5 @@ export async function patchUserInfo(userInfo: PatchUserInfoRequest) {
 }
 
 export async function deleteAccount() {
-  return await instanceWithAuth.delete('/members');
+  return await axiosInstance.delete<null>('/members');
 }

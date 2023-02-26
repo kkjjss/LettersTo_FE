@@ -45,9 +45,7 @@ export const NicknameModal = ({
 
   const {mutate: updateNickname} = useMutation(
     ['nickname', nickname],
-    async () => {
-      return await patchUserInfo({nickname});
-    },
+    async () => await patchUserInfo({nickname}),
     {
       onSuccess: () => {
         queryClient.invalidateQueries('userInfo');

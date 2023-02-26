@@ -19,7 +19,7 @@ import {TopicsForm} from '../Screens/SignUp/TopicsForm/TopicsFormScreen';
 import {PersonalityForm} from '../Screens/SignUp/PersonalityForm/PersonalityFormScreen';
 import {LocationForm} from '../Screens/SignUp/LocationForm/LocationFormScreen';
 import {MyPage} from '../Screens/MyPage/MyPage/MyPageScreen';
-import {AccountDelete} from '../Screens/MyPage/AccountDelete';
+import {AccountDelete} from '../Screens/MyPage/AccountDelete/AccountDeleteScreen';
 
 // 편지 작성
 import {LetterEditor} from '../Screens/Letter/LetterEditor';

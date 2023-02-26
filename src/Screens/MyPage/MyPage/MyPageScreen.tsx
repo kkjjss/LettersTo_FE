@@ -66,25 +66,10 @@ export const MyPage = ({navigation}: Props) => {
     logout();
   }, [logout]);
 
-  const toggleLogoutModal = useCallback(() => {
-    setLogoutModalVisible(!isLogoutModalVisible);
-  }, [isLogoutModalVisible]);
-
-  const toggleNicknameModal = useCallback(() => {
-    setNicknameModalVisible(!isNicknameModalVisible);
-  }, [isNicknameModalVisible]);
-
-  const toggleTopicsModal = useCallback(() => {
-    setTopicsModalVisible(!isTopicsModalVisible);
-  }, [isTopicsModalVisible]);
-
-  const togglePersonalitiesModal = useCallback(() => {
-    setPersonalitiesModalVisible(!isPersonalitiesModalVisible);
-  }, [isPersonalitiesModalVisible]);
-
-  const toggleLocationModal = useCallback(() => {
-    setLocationModalVisible(!isLocationModalVisible);
-  }, [isLocationModalVisible]);
+  const toggleModal =
+    (setModalVisible: React.Dispatch<React.SetStateAction<boolean>>) => () => {
+      setModalVisible(prevState => !prevState);
+    };
 
   const goBack = useCallback(() => {
     navigation.pop();
@@ -115,7 +100,7 @@ export const MyPage = ({navigation}: Props) => {
       <Header2 title={'MY'} color={'white'} onPressBack={goBack} />
       <View style={styles.nicknameWrap}>
         <Profile nickname={userInfo.nickname} />
-        <EditNicknameButton onPress={toggleNicknameModal} />
+        <EditNicknameButton onPress={toggleModal(setNicknameModalVisible)} />
       </View>
 
       <StampBox
@@ -124,14 +109,17 @@ export const MyPage = ({navigation}: Props) => {
       />
 
       <View style={styles.userInfoWrapper}>
-        <EditUserInfoButton text="관심사 관리" onPress={toggleTopicsModal} />
+        <EditUserInfoButton
+          text="관심사 관리"
+          onPress={toggleModal(setTopicsModalVisible)}
+        />
         <EditUserInfoButton
           text="성향 관리"
-          onPress={togglePersonalitiesModal}
+          onPress={toggleModal(setPersonalitiesModalVisible)}
         />
         <EditUserInfoButton
           text="위치 정보 관리"
-          onPress={toggleLocationModal}
+          onPress={toggleModal(setLocationModalVisible)}
         />
       </View>
 
@@ -161,24 +149,28 @@ export const MyPage = ({navigation}: Props) => {
           </View>
         </View>
 
-        <BottomButton white buttonText="로그아웃" onPress={toggleLogoutModal} />
+        <BottomButton
+          white
+          buttonText="로그아웃"
+          onPress={toggleModal(setLogoutModalVisible)}
+        />
       </View>
 
       {isModalVisible && <ModalBlur />}
       <NicknameModal
         currentNickname={userInfo.nickname}
         isModalVisible={isNicknameModalVisible}
-        onPressClose={toggleNicknameModal}
+        onPressClose={toggleModal(setNicknameModalVisible)}
       />
       <TopicsModal
         currentTopics={userInfo.topicIds}
         isModalVisible={isTopicsModalVisible}
-        onPressClose={toggleTopicsModal}
+        onPressClose={toggleModal(setTopicsModalVisible)}
       />
       <PersonalitiesModal
         currentPersonalities={userInfo.personalityIds}
         isModalVisible={isPersonalitiesModalVisible}
-        onPressClose={togglePersonalitiesModal}
+        onPressClose={toggleModal(setPersonalitiesModalVisible)}
       />
       <LocationModal
         currentLocation={{
@@ -186,11 +178,11 @@ export const MyPage = ({navigation}: Props) => {
           parentGeolocationId: userInfo.parentGeolocationId,
         }}
         isModalVisible={isLocationModalVisible}
-        onPressClose={toggleLocationModal}
+        onPressClose={toggleModal(setLocationModalVisible)}
       />
       <LogoutModal
         isVisible={isLogoutModalVisible}
-        onPressClose={toggleLogoutModal}
+        onPressClose={toggleModal(setLogoutModalVisible)}
         onPressLogout={onPressLogout}
       />
     </View>
