@@ -1,5 +1,4 @@
 import React, {useState, useEffect, useMemo} from 'react';
-import useStore from '../../Store/store';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import type {StackParamsList} from '../../types/stackParamList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -21,6 +20,8 @@ import {PublicLetterItem} from '../../Components/PublicLetterItem';
 import {EnvelopeModal} from '../../Modals/EnvelopeModal';
 import {SCREEN_HEIGHT} from '../../Constants/screen';
 import Toast from '../../Components/Toast/toast';
+import {useQuery} from 'react-query';
+import {getUserInfo} from '../../APIs/member';
 
 type Props = {
   navigation: NativeStackNavigationProp<StackParamsList, 'Main', undefined>;
@@ -28,7 +29,6 @@ type Props = {
 
 export function Home({navigation}: Props) {
   const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
-  const {userInfo} = useStore();
 
   // 공개 편지 목록
   const [publicLetters, setPublicLetters] = useState<PublicLetters | []>([]);
@@ -131,6 +131,8 @@ export function Home({navigation}: Props) {
     navigation.navigate('StampHistory');
   };
 
+  const {data: userInfo} = useQuery('userInfo', getUserInfo);
+
   // cold case
   const Empty = useMemo(
     () => (
@@ -188,25 +190,24 @@ export function Home({navigation}: Props) {
                 style={styles.icon}
               />
             </TouchableOpacity>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              onPress={goToStampHistory}
-              style={[styles.headerButton, {marginLeft: 12, width: 40}]}>
-              <Image
-                source={require('../../Assets/Icon/stamp/stamps_blue.png')}
-                style={{width: 24, height: 24, marginLeft: -3}}
-              />
-              <View style={styles.stampArea}>
-                <Text
-                  style={styles.stampText}
-                  numberOfLines={1}
-                  ellipsizeMode="clip">
-                  {userInfo && userInfo.stampQuantity > 999
-                    ? '999+'
-                    : userInfo?.stampQuantity}
-                </Text>
-              </View>
-            </TouchableOpacity>
+            {userInfo && (
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={goToStampHistory}
+                style={[styles.headerButton, {marginLeft: 12, width: 40}]}>
+                <Image
+                  source={require('../../Assets/Icon/stamp/stamps_blue.png')}
+                  style={{width: 24, height: 24, marginLeft: -3}}
+                />
+                <View style={styles.stampArea}>
+                  <Text style={styles.stampText} ellipsizeMode="clip">
+                    {userInfo.stampQuantity > 999
+                      ? '999+'
+                      : userInfo.stampQuantity}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            )}
           </View>
           <TouchableOpacity activeOpacity={0.7} onPress={goToMyPage}>
             <Image

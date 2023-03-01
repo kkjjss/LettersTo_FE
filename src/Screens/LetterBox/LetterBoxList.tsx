@@ -1,6 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import useStore from '../../Store/store';
-// import {TabActions} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import type {StackParamsList} from '../../types/stackParamList';
 import {
@@ -21,6 +19,8 @@ import {LetterBoxes, PaperColor} from '../../types/types';
 import {getLetterBoxes} from '../../APIs/letterBox';
 import {GRADIENT_COLORS} from '../../Constants/letter';
 import Toast from '../../Components/Toast/toast';
+import {getUserInfo} from '../../APIs/member';
+import {useQuery} from 'react-query';
 
 type Props = {
   navigation: NativeStackNavigationProp<StackParamsList, 'Main', undefined>;
@@ -29,7 +29,7 @@ type Props = {
 
 export function LetterBoxList({navigation, onPressHome}: Props) {
   const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
-  const {userInfo} = useStore();
+  // const {userInfo} = useStore();
 
   // 내 사서함 목록
   const [letterBoxes, setLetterBoxes] = useState<LetterBoxes>([]);
@@ -51,6 +51,8 @@ export function LetterBoxList({navigation, onPressHome}: Props) {
     setLoading(true);
     getLetterBoxesInit();
   }, []);
+
+  const {data: userInfo} = useQuery('userInfo', getUserInfo);
 
   // 내 사서함 상세
   const goToDetail = (id: number, fromMemberId: number, color: PaperColor) => {
@@ -115,25 +117,27 @@ export function LetterBoxList({navigation, onPressHome}: Props) {
                 style={styles.icon}
               />
             </TouchableOpacity>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              onPress={goToStampHistory}
-              style={[styles.headerButton, {marginLeft: 12, width: 40}]}>
-              <Image
-                source={require('../../Assets/Icon/stamp/stamps_blue.png')}
-                style={{width: 24, height: 24, marginLeft: -3}}
-              />
-              <View style={styles.stampArea}>
-                <Text
-                  style={styles.stampText}
-                  numberOfLines={1}
-                  ellipsizeMode="clip">
-                  {userInfo && userInfo.stampQuantity > 999
-                    ? `999+`
-                    : userInfo?.stampQuantity}
-                </Text>
-              </View>
-            </TouchableOpacity>
+            {userInfo && (
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={goToStampHistory}
+                style={[styles.headerButton, {marginLeft: 12, width: 40}]}>
+                <Image
+                  source={require('../../Assets/Icon/stamp/stamps_blue.png')}
+                  style={{width: 24, height: 24, marginLeft: -3}}
+                />
+                <View style={styles.stampArea}>
+                  <Text
+                    style={styles.stampText}
+                    numberOfLines={1}
+                    ellipsizeMode="clip">
+                    {userInfo.stampQuantity > 999
+                      ? '999+'
+                      : userInfo.stampQuantity}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            )}
           </View>
           <Text style={styles.pageTitle}>내 사서함</Text>
           <View style={{position: 'absolute', right: 16, flexDirection: 'row'}}>
