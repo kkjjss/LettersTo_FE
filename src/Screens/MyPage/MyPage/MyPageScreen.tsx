@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useMemo, useReducer} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {View, StyleSheet, StatusBar} from 'react-native';
 import type {StackParamsList} from '../../../types/stackParamList';
@@ -31,29 +31,68 @@ import {EditUserInfoButton} from './Components/Button/EditUserInfoButton';
 
 type Props = NativeStackScreenProps<StackParamsList, 'MyPage'>;
 
+type ModalName = 'NICKNAME' | 'TOPIC' | 'PERSONALITY' | 'LOCATION' | 'LOGOUT';
+
+const MODAL_NAME: {[key in ModalName]: key} = {
+  NICKNAME: 'NICKNAME',
+  TOPIC: 'TOPIC',
+  PERSONALITY: 'PERSONALITY',
+  LOCATION: 'LOCATION',
+  LOGOUT: 'LOGOUT',
+};
+
+type ModalState = {
+  [key in ModalName]: boolean;
+};
+
+const initialModalState: ModalState = {
+  NICKNAME: false,
+  TOPIC: false,
+  PERSONALITY: false,
+  LOCATION: false,
+  LOGOUT: false,
+};
+
+const MODAL_ACTION = {
+  TOGGLE_NICKNAME_MODAL: 'TOGGLE_NICKNAME_MODAL',
+  TOGGLE_TOPIC_MODAL: 'TOGGLE_TOPIC_MODAL',
+  TOGGLE_PERSONALITY_MODAL: 'TOGGLE_PERSONALITY_MODAL',
+  TOGGLE_LOCATION_MODAL: 'TOGGLE_LOCATION_MODAL',
+  TOGGLE_LOGOUT_MODAL: 'TOGGLE_LOGOUT_MODAL',
+} as const;
+
+const modalReducer = (
+  state: ModalState,
+  action: {type: keyof typeof MODAL_ACTION},
+) => {
+  switch (action.type) {
+    case MODAL_ACTION.TOGGLE_NICKNAME_MODAL:
+      return {...state, NICKNAME: !state.NICKNAME};
+    case MODAL_ACTION.TOGGLE_TOPIC_MODAL:
+      return {...state, TOPIC: !state.TOPIC};
+    case MODAL_ACTION.TOGGLE_PERSONALITY_MODAL:
+      return {...state, PERSONALITY: !state.PERSONALITY};
+    case MODAL_ACTION.TOGGLE_LOCATION_MODAL:
+      return {...state, LOCATION: !state.LOCATION};
+    case MODAL_ACTION.TOGGLE_LOGOUT_MODAL:
+      return {...state, LOGOUT: !state.LOGOUT};
+  }
+};
+
 export const MyPage = ({navigation}: Props) => {
-  const [isNicknameModalVisible, setNicknameModalVisible] = useState(false);
-  const [isTopicsModalVisible, setTopicsModalVisible] = useState(false);
-  const [isPersonalitiesModalVisible, setPersonalitiesModalVisible] =
-    useState(false);
-  const [isLocationModalVisible, setLocationModalVisible] = useState(false);
+  const [isModalVisible, dispatch] = useReducer(
+    modalReducer,
+    initialModalState,
+  );
 
-  const [isLogoutModalVisible, setLogoutModalVisible] = useState(false);
-
-  const isModalVisible = useMemo(
+  const isAnyModalVisible = useMemo(
     () =>
-      isLocationModalVisible ||
-      isNicknameModalVisible ||
-      isPersonalitiesModalVisible ||
-      isTopicsModalVisible ||
-      isLogoutModalVisible,
-    [
-      isLocationModalVisible,
-      isLogoutModalVisible,
-      isNicknameModalVisible,
-      isPersonalitiesModalVisible,
-      isTopicsModalVisible,
-    ],
+      isModalVisible.NICKNAME ||
+      isModalVisible.TOPIC ||
+      isModalVisible.PERSONALITY ||
+      isModalVisible.LOCATION ||
+      isModalVisible.LOGOUT,
+    [isModalVisible],
   );
 
   const {logout} = useAuthAction();
@@ -66,10 +105,8 @@ export const MyPage = ({navigation}: Props) => {
     logout();
   }, [logout]);
 
-  const toggleModal =
-    (setModalVisible: React.Dispatch<React.SetStateAction<boolean>>) => () => {
-      setModalVisible(prevState => !prevState);
-    };
+  const toggleModal = (modalName: ModalName) => () =>
+    dispatch({type: `TOGGLE_${modalName}_MODAL`});
 
   const goBack = useCallback(() => {
     navigation.pop();
@@ -100,7 +137,7 @@ export const MyPage = ({navigation}: Props) => {
       <Header2 title={'MY'} color={'white'} onPressBack={goBack} />
       <View style={styles.nicknameWrap}>
         <Profile nickname={userInfo.nickname} />
-        <EditNicknameButton onPress={toggleModal(setNicknameModalVisible)} />
+        <EditNicknameButton onPress={toggleModal(MODAL_NAME.NICKNAME)} />
       </View>
 
       <StampBox
@@ -111,15 +148,15 @@ export const MyPage = ({navigation}: Props) => {
       <View style={styles.userInfoWrapper}>
         <EditUserInfoButton
           text="관심사 관리"
-          onPress={toggleModal(setTopicsModalVisible)}
+          onPress={toggleModal(MODAL_NAME.TOPIC)}
         />
         <EditUserInfoButton
           text="성향 관리"
-          onPress={toggleModal(setPersonalitiesModalVisible)}
+          onPress={toggleModal(MODAL_NAME.PERSONALITY)}
         />
         <EditUserInfoButton
           text="위치 정보 관리"
-          onPress={toggleModal(setLocationModalVisible)}
+          onPress={toggleModal(MODAL_NAME.LOCATION)}
         />
       </View>
 
@@ -152,37 +189,37 @@ export const MyPage = ({navigation}: Props) => {
         <BottomButton
           white
           buttonText="로그아웃"
-          onPress={toggleModal(setLogoutModalVisible)}
+          onPress={toggleModal(MODAL_NAME.LOGOUT)}
         />
       </View>
 
-      {isModalVisible && <ModalBlur />}
+      {isAnyModalVisible && <ModalBlur />}
       <NicknameModal
         currentNickname={userInfo.nickname}
-        isModalVisible={isNicknameModalVisible}
-        onPressClose={toggleModal(setNicknameModalVisible)}
+        isModalVisible={isModalVisible.NICKNAME}
+        onPressClose={toggleModal(MODAL_NAME.NICKNAME)}
       />
       <TopicsModal
         currentTopics={userInfo.topicIds}
-        isModalVisible={isTopicsModalVisible}
-        onPressClose={toggleModal(setTopicsModalVisible)}
+        isModalVisible={isModalVisible.TOPIC}
+        onPressClose={toggleModal(MODAL_NAME.TOPIC)}
       />
       <PersonalitiesModal
         currentPersonalities={userInfo.personalityIds}
-        isModalVisible={isPersonalitiesModalVisible}
-        onPressClose={toggleModal(setPersonalitiesModalVisible)}
+        isModalVisible={isModalVisible.PERSONALITY}
+        onPressClose={toggleModal(MODAL_NAME.PERSONALITY)}
       />
       <LocationModal
         currentLocation={{
           geolocationId: userInfo.geolocationId,
           parentGeolocationId: userInfo.parentGeolocationId,
         }}
-        isModalVisible={isLocationModalVisible}
-        onPressClose={toggleModal(setLocationModalVisible)}
+        isModalVisible={isModalVisible.LOCATION}
+        onPressClose={toggleModal(MODAL_NAME.LOCATION)}
       />
       <LogoutModal
-        isVisible={isLogoutModalVisible}
-        onPressClose={toggleModal(setLogoutModalVisible)}
+        isVisible={isModalVisible.LOGOUT}
+        onPressClose={toggleModal(MODAL_NAME.LOGOUT)}
         onPressLogout={onPressLogout}
       />
     </View>
