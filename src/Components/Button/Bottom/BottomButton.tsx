@@ -50,7 +50,12 @@ export const BottomButton = React.memo(
       </TouchableOpacity>
     );
 
-    return white ? <WhiteButton /> : <GradientButton />;
+    // return white ? <WhiteButton /> : <GradientButton />;
+    return (
+      <View style={{paddingBottom: 10, backgroundColor: 'red'}}>
+        {white ? <WhiteButton /> : <GradientButton />}
+      </View>
+    );
   },
 );
 

@@ -1,5 +1,5 @@
-import {instanceWithAuth} from '../Utils/http';
+import {axiosInstance} from '../Utils/http';
 
 export async function getStampHistories() {
-  return await instanceWithAuth.get('/stamp-histories');
+  return await axiosInstance.get('/stamp-histories');
 }
