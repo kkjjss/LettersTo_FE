@@ -1,9 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
-import {Modal, Pressable, Text, View} from 'react-native';
-import useStore from '../Store/store';
+import {Modal, Pressable, StyleSheet, Text, View} from 'react-native';
 import {deleteAccount} from '../APIs/member';
 import Toast from '../Components/Toast/toast';
+import {useMutation} from 'react-query';
+import {useAuthAction} from '../Store/auth';
 
 type Props = {
   hideModal: () => void;
@@ -11,19 +12,22 @@ type Props = {
 };
 
 export function AccountDeleteModal({hideModal, isModalVisible}: Props) {
-  const {signOut} = useStore();
-  const onPressDeleteAccount = async () => {
-    try {
-      await deleteAccount();
+  const {logout} = useAuthAction();
 
-      await AsyncStorage.clear();
-
-      signOut();
-    } catch (error: any) {
-      console.error(error.message);
-      Toast.show('문제가 발생했습니다');
-    }
-  };
+  const {mutate: signOut} = useMutation(
+    ['signOut'],
+    async () => await deleteAccount(),
+    {
+      onSuccess: async () => {
+        hideModal();
+        await AsyncStorage.clear();
+        logout();
+      },
+      onError: (error: any) => {
+        Toast.show(error.response.data.message);
+      },
+    },
+  );
 
   return (
     <Modal
@@ -31,100 +35,22 @@ export function AccountDeleteModal({hideModal, isModalVisible}: Props) {
       transparent={true}
       onRequestClose={hideModal}
       visible={isModalVisible}>
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <View
-          style={{
-            borderRadius: 10,
-            backgroundColor: 'white',
-            height: 300,
-            width: '80%',
-            padding: 24,
-          }}>
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Text
-              style={{
-                fontFamily: 'Galmuri11',
-                fontSize: 18,
-                color: '#0000cc',
-              }}>
-              (´•̥ ᵔ •̥`)
-            </Text>
-            <Text
-              style={{
-                fontFamily: 'Galmuri11',
-                fontSize: 18,
-                color: '#0000cc',
-                marginBottom: 12,
-              }}>
-              【정말 탈퇴하시겠어요?】
-            </Text>
-            <Text
-              style={{
-                fontFamily: 'Galmuri11',
-                fontSize: 12,
-                color: '#0000cc',
-              }}>
-              만족을 드리지 못해 죄송해요.
-            </Text>
-            <Text
-              style={{
-                fontFamily: 'Galmuri11',
-                fontSize: 12,
-                color: '#0000cc',
-              }}>
-              다시 만나뵙도록 노력할게요!
+      <View style={styles.modal}>
+        <View style={styles.container}>
+          <View style={styles.textWrap}>
+            <Text style={styles.texticon}>(´•̥ ᵔ •̥`)</Text>
+            <Text style={styles.confirmText}>【정말 탈퇴하시겠어요?】</Text>
+            <Text style={styles.confirmDesc}>
+              만족을 드리지 못해 죄송해요.{'\n'}다시 만나뵙도록 노력할게요!
             </Text>
           </View>
-          <View
-            style={{
-              height: 42,
-              flexDirection: 'row',
-            }}>
-            <Pressable
-              style={{
-                flex: 1,
-                borderRadius: 10,
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderColor: '#0000cc',
-                borderWidth: 1,
-                marginRight: 12,
-              }}
-              onPress={onPressDeleteAccount}>
-              <Text
-                style={{
-                  fontFamily: 'Galmuri11',
-                  fontSize: 14,
-                  color: '#0000cc',
-                }}>
-                탈퇴할께요
-              </Text>
+          <View style={styles.buttonWrap}>
+            <Pressable style={styles.buttonYes} onPress={() => signOut()}>
+              <Text style={styles.buttonTextYes}>탈퇴할께요</Text>
             </Pressable>
-            <Pressable
-              style={{
-                flex: 1,
-                backgroundColor: '#0000cc',
-                borderRadius: 10,
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderColor: '#0000cc',
-                borderWidth: 1,
-              }}
-              onPress={hideModal}>
+            <Pressable style={styles.buttonNo} onPress={hideModal}>
               <View>
-                <Text
-                  style={{
-                    fontFamily: 'Galmuri11',
-                    fontSize: 14,
-                    color: 'white',
-                  }}>
-                  취소할께요
-                </Text>
+                <Text style={styles.buttonTextNo}>취소할께요</Text>
               </View>
             </Pressable>
           </View>
@@ -133,3 +59,67 @@ export function AccountDeleteModal({hideModal, isModalVisible}: Props) {
     </Modal>
   );
 }
+
+const styles = StyleSheet.create({
+  modal: {flex: 1, justifyContent: 'center', alignItems: 'center'},
+  container: {
+    borderRadius: 10,
+    backgroundColor: 'white',
+    height: 300,
+    width: '80%',
+    padding: 24,
+  },
+  textWrap: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  texticon: {
+    fontFamily: 'Galmuri11',
+    fontSize: 18,
+    color: '#0000cc',
+  },
+  confirmText: {
+    fontFamily: 'Galmuri11',
+    fontSize: 18,
+    color: '#0000cc',
+    marginBottom: 12,
+  },
+  confirmDesc: {
+    fontFamily: 'Galmuri11',
+    fontSize: 12,
+    color: '#0000cc',
+  },
+  buttonWrap: {
+    height: 42,
+    flexDirection: 'row',
+  },
+  buttonYes: {
+    flex: 1,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: '#0000cc',
+    borderWidth: 1,
+    marginRight: 12,
+  },
+  buttonTextYes: {
+    fontFamily: 'Galmuri11',
+    fontSize: 14,
+    color: '#0000cc',
+  },
+  buttonNo: {
+    flex: 1,
+    backgroundColor: '#0000cc',
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: '#0000cc',
+    borderWidth: 1,
+  },
+  buttonTextNo: {
+    fontFamily: 'Galmuri11',
+    fontSize: 14,
+    color: 'white',
+  },
+});

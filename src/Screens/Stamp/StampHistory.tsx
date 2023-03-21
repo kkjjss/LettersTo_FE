@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import useStore from '../../Store/store';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {StackParamsList} from '../../types/stackParamList';
 import {
@@ -17,12 +16,16 @@ import {getStampHistories} from '../../APIs/stamp';
 import {StampHistories} from '../../types/types';
 import {dateFormatter} from '../../Utils/dateFormatter';
 import Toast from '../../Components/Toast/toast';
+import {useQuery} from 'react-query';
+import {getUserInfo} from '../../APIs/member';
+
+const nextImg = require('../../Assets/Icon/next/next_blue.png');
 
 type Props = NativeStackScreenProps<StackParamsList, 'StampHistory'>;
 
 export const StampHistory = ({navigation}: Props) => {
   const {top: SAFE_AREA_TOP, bottom: SAFE_AREA_BOTTOM} = useSafeAreaInsets();
-  const {userInfo} = useStore();
+  // const {userInfo} = useStore();
 
   const onPressBack = () => {
     navigation.pop();
@@ -40,6 +43,8 @@ export const StampHistory = ({navigation}: Props) => {
       Toast.show('문제가 발생했습니다');
     }
   }, []);
+
+  const {data: userInfo} = useQuery('userInfo', getUserInfo);
 
   return (
     <View style={[styles.container, {paddingTop: SAFE_AREA_TOP}]}>
@@ -79,10 +84,7 @@ export const StampHistory = ({navigation}: Props) => {
               <Text style={styles.eventText}>
                 앱 리뷰 남기고 추가 우표 받기
               </Text>
-              <Image
-                style={{width: 20, height: 20}}
-                source={require('../../Assets/next_blue.png')}
-              />
+              <Image style={{width: 20, height: 20}} source={nextImg} />
             </View>
           </TouchableOpacity>
           {stampHistories?.map((item: any, idx: number) => {

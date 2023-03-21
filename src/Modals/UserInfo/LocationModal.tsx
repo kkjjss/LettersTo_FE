@@ -2,19 +2,28 @@ import React, {useEffect, useMemo, useState} from 'react';
 import {Text, View, Modal, StyleSheet, Platform} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useMutation, useQueryClient} from 'react-query';
 import {patchUserInfo} from '../../APIs/member';
 import {BottomButton} from '../../Components/Button/Bottom/BottomButton';
 import {ModalHeader} from '../../Components/ModalHeader';
 import Toast from '../../Components/Toast/toast';
 import {SCREEN_HEIGHT} from '../../Constants/screen';
 import {useLocation} from '../../Hooks/UserInfo/useLocation';
-import useStore from '../../Store/store';
+
 type Props = {
+  currentLocation: {
+    parentGeolocationId: number;
+    geolocationId: number;
+  };
   isModalVisible: boolean;
-  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  onPressClose: () => void;
 };
 
-export function LocationModal({isModalVisible, setModalVisible}: Props) {
+export function LocationModal({
+  currentLocation,
+  isModalVisible,
+  onPressClose,
+}: Props) {
   const {
     regions,
     selectedRegionId,
@@ -22,52 +31,55 @@ export function LocationModal({isModalVisible, setModalVisible}: Props) {
     cities,
     selectedCityId,
     setSelectedCityId,
-    disable,
-  } = useLocation();
+    reset,
+  } = useLocation(currentLocation);
 
   const [openRegion, setOpenRegion] = useState(false);
   const [openCity, setOpenCity] = useState(false);
 
-  const {userInfo} = useStore();
-
   const disableUpdate = useMemo(
     () =>
-      disable || !selectedCityId || selectedCityId === userInfo?.geolocationId,
-    [disable, selectedCityId, userInfo],
+      !selectedCityId ||
+      !selectedRegionId ||
+      (selectedRegionId === currentLocation.parentGeolocationId &&
+        selectedCityId === currentLocation.geolocationId),
+    [
+      currentLocation.geolocationId,
+      currentLocation.parentGeolocationId,
+      selectedCityId,
+      selectedRegionId,
+    ],
   );
 
   const {bottom: SAFE_AREA_BOTTOM} = useSafeAreaInsets();
 
   const hideModal = () => {
-    setModalVisible(false);
+    onPressClose();
   };
 
-  const updateLocation = async () => {
-    try {
-      if (userInfo && selectedCityId) {
-        const newUserInfo = {
-          geolocationId: selectedCityId,
-        };
-        await patchUserInfo(newUserInfo);
-      }
-    } catch (error: any) {
-      console.error(error.message);
-      Toast.show('추가 변경은 일주일 후에 가능해요');
-    } finally {
-      hideModal();
-    }
-  };
+  const queryClient = useQueryClient();
+
+  const {mutate: updateLocation} = useMutation(
+    ['topics', selectedCityId],
+    async () => await patchUserInfo({geolocationId: selectedCityId}),
+    {
+      onSuccess: () => {
+        Toast.show('성공적으로 변경되었어요!');
+        queryClient.invalidateQueries('userInfo');
+        hideModal();
+      },
+      onError: (error: any) => {
+        hideModal();
+        Toast.show(error.response.data.message);
+      },
+    },
+  );
 
   useEffect(() => {
     if (isModalVisible) {
-      if (userInfo) {
-        setSelectedRegionId(userInfo.parentGeolocationId);
-        setTimeout(() => {
-          setSelectedCityId(userInfo.geolocationId);
-        }, 0);
-      }
+      reset();
     }
-  }, [isModalVisible, setSelectedCityId, setSelectedRegionId, userInfo]);
+  }, [isModalVisible, reset]);
 
   return (
     <Modal

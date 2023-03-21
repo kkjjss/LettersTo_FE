@@ -1,15 +1,18 @@
-import {useEffect, useMemo, useRef, useState} from 'react';
+import {useCallback, useMemo, useRef} from 'react';
 import {Animated} from 'react-native';
+import {useQuery} from 'react-query';
 import {getPersonalities} from '../../APIs/personality';
 import Toast from '../../Components/Toast/toast';
 import {MAX_PERSONALITY_LIMIT} from '../../Constants/user';
-import {Personalities} from '../../types/types';
+import {useAuthStore} from '../../Store/auth';
 
-export const usePersonality = () => {
-  const [personalities, setPersonalities] = useState<Personalities>([]);
-  const [selectedPersonalityIds, setSelectedPersonalityIds] = useState<
-    number[]
-  >([]);
+export const usePersonality = (currentPersonalities: number[] = []) => {
+  const [selectedPersonalityIds, setSelectedPersonalityIds] = useAuthStore(
+    state => [
+      state.registerInfo.personalityIds,
+      state.action.setPersonalityIdsInRegisterInfo,
+    ],
+  );
 
   const counter = useMemo(
     () => selectedPersonalityIds.length,
@@ -31,45 +34,41 @@ export const usePersonality = () => {
     }),
   ]);
 
-  const resetAlert = () => {
+  const resetAlert = useCallback(() => {
     alert.reset();
-  };
+  }, [alert]);
 
-  const selectPersonality = (personalityId: number) => {
-    alert.reset();
-    if (
-      counter < MAX_PERSONALITY_LIMIT &&
-      selectedPersonalityIds.includes(personalityId) === false
-    ) {
-      setSelectedPersonalityIds([...selectedPersonalityIds, personalityId]);
-    } else if (selectedPersonalityIds.includes(personalityId) === true) {
-      setSelectedPersonalityIds(
-        [...selectedPersonalityIds].filter(e => e !== personalityId),
-      );
-    } else {
-      alert.start();
-    }
-  };
+  const selectPersonality = useCallback(
+    (personalityId: number) => {
+      alert.reset();
+      if (
+        counter < MAX_PERSONALITY_LIMIT &&
+        selectedPersonalityIds.includes(personalityId) === false
+      ) {
+        setSelectedPersonalityIds([...selectedPersonalityIds, personalityId]);
+      } else if (selectedPersonalityIds.includes(personalityId) === true) {
+        setSelectedPersonalityIds(
+          [...selectedPersonalityIds].filter(e => e !== personalityId),
+        );
+      } else {
+        alert.start();
+      }
+    },
+    [alert, counter, selectedPersonalityIds, setSelectedPersonalityIds],
+  );
 
-  const reset = () => {
-    setSelectedPersonalityIds([]);
-  };
+  const reset = useCallback(() => {
+    setSelectedPersonalityIds(currentPersonalities);
+  }, [setSelectedPersonalityIds, currentPersonalities]);
 
-  useEffect(() => {
-    try {
-      getPersonalities().then(personalityData => {
-        setPersonalities(personalityData);
-      });
-    } catch (error: any) {
-      console.error(error.message);
-      Toast.show('문제가 발생했습니다');
-    }
-  }, []);
+  const {data: personalities} = useQuery('personalities', getPersonalities, {
+    onError: () => Toast.show('문제가 발생했습니다'),
+  });
 
   return {
-    personalities,
+    personalities: personalities || [],
     selectedPersonalityIds,
-    setSelectedPersonalityIds,
+
     selectPersonality,
     alertOpacity,
     counter,

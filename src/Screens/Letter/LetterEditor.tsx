@@ -38,7 +38,7 @@ import {ImageModal} from '../../Modals/ImageModal';
 import {ModalBlur} from '../../Modals/ModalBlur';
 import {PaperBackgroud} from '../../Components/Letter/PaperBackground/PaperBackgroud';
 import {Header2} from '../../Components/Headers/Header2';
-import {logIn as getUserInfo} from '../../APIs/member';
+import {getUserInfo} from '../../APIs/member';
 import Toast from '../../Components/Toast/toast';
 import {
   MAX_TEXT_LIMIT,

@@ -11,31 +11,33 @@ type Props = {
   selectedTopicIds: number[];
 };
 
-export function TopicList({topics, selectTopic, selectedTopicIds}: Props) {
-  return (
-    <>
-      {TOPIC_CATEGORY.map(({text, key}, idx) => (
-        <View key={idx}>
-          <Text style={styles.category}>{text}</Text>
-          <View style={styles.topicWrap}>
-            {topics
-              .filter(topic => topic.group === key)
-              .map(topic => {
-                return (
-                  <TopicButton
-                    key={topic.id}
-                    topic={topic}
-                    selectTopic={selectTopic}
-                    selectedTopicIds={selectedTopicIds}
-                  />
-                );
-              })}
+export const TopicList = React.memo(
+  ({topics, selectTopic, selectedTopicIds}: Props) => {
+    return (
+      <>
+        {TOPIC_CATEGORY.map(({text, key}) => (
+          <View key={key}>
+            <Text style={styles.category}>{text}</Text>
+            <View style={styles.topicWrap}>
+              {topics
+                .filter(topic => topic.group === key)
+                .map(topic => {
+                  return (
+                    <TopicButton
+                      key={topic.id}
+                      topic={topic}
+                      selectTopic={selectTopic}
+                      selectedTopicIds={selectedTopicIds}
+                    />
+                  );
+                })}
+            </View>
           </View>
-        </View>
-      ))}
-    </>
-  );
-}
+        ))}
+      </>
+    );
+  },
+);
 
 const styles = StyleSheet.create({
   topicWrap: {

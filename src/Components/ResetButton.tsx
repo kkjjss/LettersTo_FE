@@ -7,19 +7,22 @@ import {
   View,
 } from 'react-native';
 
-export function ResetButton({reset}: {reset: () => void}) {
+const resetButtonImage = require('../Assets/Icon/reset/reset.png');
+
+type Params = {
+  reset: () => void;
+};
+
+export const ResetButton = React.memo(({reset}: Params) => {
   return (
     <TouchableWithoutFeedback onPress={reset}>
       <View style={styles.resetButton}>
         <Text style={styles.resetButtonText}>초기화</Text>
-        <Image
-          style={styles.resetButtonImage}
-          source={require('../Assets/reset.png')}
-        />
+        <Image style={styles.resetButtonImage} source={resetButtonImage} />
       </View>
     </TouchableWithoutFeedback>
   );
-}
+});
 
 const styles = StyleSheet.create({
   resetButton: {

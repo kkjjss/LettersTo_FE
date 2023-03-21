@@ -1,8 +1,8 @@
 import React from 'react';
 import {Image, Pressable, StyleSheet} from 'react-native';
 
-const back_blue = require('../../Assets/back_blue.png');
-const back_white = require('../../Assets/back_white.png');
+const back_blue = require('../../../Assets/back_blue.png');
+const back_white = require('../../../Assets/back_white.png');
 
 type Props = {
   color: 'blue' | 'white';

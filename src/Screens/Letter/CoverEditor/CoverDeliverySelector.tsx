@@ -115,7 +115,7 @@ export function CoverDeliverySelector({navigation, route}: Props) {
           <View style={styles.counterWrap}>
             <Text style={styles.counter}>보유 우표</Text>
             <Image
-              source={require('../../../Assets/numberStamps.png')}
+              source={require('../../../Assets/Icon/stamp/stamps_blue.png')}
               style={{height: 24, width: 24}}
             />
             <Text style={styles.counter}>X {stampQuantity}</Text>

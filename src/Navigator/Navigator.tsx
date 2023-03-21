@@ -1,10 +1,9 @@
 import * as React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {StackParamsList} from '../types/stackParamList';
-import useStore from '../Store/store';
 
 // Splash
-import {Splash} from '../Screens/Splash';
+import {Splash} from '../Screens/SplashScreen';
 
 // 메인 서비스 스크린
 import {Main} from '../Screens/Main/Main';
@@ -14,13 +13,13 @@ import {ReadLetter} from '../Screens/Letter/ReadLetter';
 import {LetterBoxDetail} from '../Screens/LetterBox/LetterBoxDetail';
 
 // 인증 관련 스크린
-import {Auth} from '../Screens/Auth/Auth';
-import {NicknameForm} from '../Screens/SignUp/NicknameForm';
-import {TopicsForm} from '../Screens/SignUp/TopicsForm';
-import {PersonalityForm} from '../Screens/SignUp/PersonalityForm';
-import {LocationForm} from '../Screens/SignUp/LocationForm';
-import {MyPage} from '../Screens/MyPage/MyPage';
-import {AccountDelete} from '../Screens/MyPage/AccountDelete';
+import {Auth} from '../Screens/Auth/AuthScreen';
+import {NicknameForm} from '../Screens/SignUp/NicknameForm/NicknameFormScreen';
+import {TopicsForm} from '../Screens/SignUp/TopicsForm/TopicsFormScreen';
+import {PersonalityForm} from '../Screens/SignUp/PersonalityForm/PersonalityFormScreen';
+import {LocationForm} from '../Screens/SignUp/LocationForm/LocationFormScreen';
+import {MyPage} from '../Screens/MyPage/MyPage/MyPageScreen';
+import {AccountDelete} from '../Screens/MyPage/AccountDelete/AccountDeleteScreen';
 
 // 편지 작성
 import {LetterEditor} from '../Screens/Letter/LetterEditor';
@@ -35,11 +34,15 @@ import {Notifications} from '../Screens/Notifications/Notifications';
 
 // 우표
 import {StampHistory} from '../Screens/Stamp/StampHistory';
+import {useAuthStore} from '../Store/auth';
 
 const Stack = createNativeStackNavigator<StackParamsList>();
 
 export default function StackNavigator() {
-  const {isLoggedIn, isLoading} = useStore();
+  const {isLoggedIn, isLoading} = useAuthStore(state => ({
+    isLoggedIn: state.isLoggedIn,
+    isLoading: state.isLoading,
+  }));
 
   return (
     <Stack.Navigator

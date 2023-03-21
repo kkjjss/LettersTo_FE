@@ -1,75 +1,79 @@
 import React, {useEffect, useMemo} from 'react';
-import {
-  Text,
-  View,
-  Modal,
-  StyleSheet,
-  Animated,
-  ScrollView,
-} from 'react-native';
+import {View, Modal, StyleSheet, ScrollView} from 'react-native';
 import {ResetButton} from '../../Components/ResetButton';
-import useStore from '../../Store/store';
-import {ModalHeader} from '../../Components/ModalHeader';
+import {ModalHeader} from '../../Components/Headers/ModalHeader';
 import {SCREEN_HEIGHT} from '../../Constants/screen';
 import {TopicList} from '../../Components/TopicList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {patchUserInfo} from '../../APIs/member';
 import {useTopic} from '../../Hooks/UserInfo/useTopic';
-import {BottomButton} from '../../Components/Button/Bottom/BottomButton';
 import Toast from '../../Components/Toast/toast';
+import {useMutation, useQueryClient} from 'react-query';
+import {UserInfoTitle as Title} from '../../Components/UserInfo/Title/UserInfoTitle';
+import {Counter} from '../../Components/UserInfo/Counter/Counter';
+import {MAX_TOPIC_LIMIT} from '../../Constants/user';
+import {MaximumAlert} from '../../Components/UserInfo/Alert/MaximumAlert';
+import {UpdateButton} from '../../Components/Button/Bottom/UpdateButton';
+import _ from 'lodash';
 
 type Props = {
+  currentTopics: number[];
   isModalVisible: boolean;
-  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  onPressClose: () => void;
 };
 
-export const TopicsModal = ({isModalVisible, setModalVisible}: Props) => {
+export const TopicsModal = ({
+  currentTopics,
+  isModalVisible,
+  onPressClose,
+}: Props) => {
   const {
     topics,
     selectedTopicIds,
-    setSelectedTopicIds,
     selectTopic,
     alertOpacity,
     counter,
     reset,
     resetAlert,
-  } = useTopic();
+  } = useTopic(currentTopics);
 
-  const {userInfo} = useStore();
+  const queryClient = useQueryClient();
 
   const {bottom: SAFE_AREA_BOTTOM} = useSafeAreaInsets();
 
   const disableUpdate = useMemo(
-    () => selectedTopicIds.length === 0,
-    [selectedTopicIds],
+    () =>
+      selectedTopicIds.length === 0 ||
+      _.isEqual(currentTopics, selectedTopicIds),
+    [currentTopics, selectedTopicIds],
   );
 
   const hideModal = () => {
     resetAlert();
-    setModalVisible(false);
+    onPressClose();
   };
 
-  const updateTopics = async () => {
-    try {
-      if (userInfo && selectedTopicIds) {
-        const newUserInfo = {
-          topicIds: selectedTopicIds,
-        };
-        await patchUserInfo(newUserInfo);
-      }
-
-      hideModal();
-    } catch (error: any) {
-      console.error(error.message);
-      Toast.show('문제가 발생했습니다');
-    }
-  };
+  const {mutate: updateTopics} = useMutation(
+    ['topics', selectedTopicIds],
+    async () => await patchUserInfo({topicIds: selectedTopicIds}),
+    {
+      onSuccess: () => {
+        Toast.show('성공적으로 변경되었어요!');
+        queryClient.invalidateQueries('userInfo');
+        hideModal();
+      },
+      onError: (error: any) => {
+        hideModal();
+        Toast.show(error.response.data.message);
+      },
+    },
+  );
 
   useEffect(() => {
-    if (userInfo) {
-      setSelectedTopicIds(userInfo.topicIds);
+    if (isModalVisible) {
+      reset();
     }
-  }, [setSelectedTopicIds, userInfo]);
+  }, [isModalVisible, reset]);
 
   return (
     <Modal
@@ -80,41 +84,24 @@ export const TopicsModal = ({isModalVisible, setModalVisible}: Props) => {
       visible={isModalVisible}>
       <View style={styles.container}>
         <View style={[styles.modalView, {paddingBottom: SAFE_AREA_BOTTOM}]}>
-          <ModalHeader title={'관심사 관리'} hideModal={hideModal} />
+          <ModalHeader title={'관심사 관리'} onPressClose={hideModal} />
 
           <View style={styles.titleBox}>
-            <View style={styles.titleWrap}>
-              <Text style={styles.titleText}>나의 관심사를</Text>
-              <Text style={styles.titleText}>모두 선택해주세요</Text>
-            </View>
+            <Title title={'나의 관심사를\n모두 선택해주세요'} />
             <View style={styles.counterWrap}>
               <ResetButton reset={reset} />
-              <Text style={styles.counter}>{counter} / 7</Text>
+              <Counter value={counter} max={MAX_TOPIC_LIMIT} />
             </View>
           </View>
-          <ScrollView
-            alwaysBounceVertical={false}
-            style={[
-              styles.topicBox,
-              {
-                height: SCREEN_HEIGHT * 0.6,
-              },
-            ]}>
+          <ScrollView alwaysBounceVertical={false} style={styles.topicBox}>
             <TopicList
               topics={topics}
               selectTopic={selectTopic}
               selectedTopicIds={selectedTopicIds}
             />
           </ScrollView>
-          <Animated.View style={[styles.alert, {opacity: alertOpacity}]}>
-            <Text style={styles.alertText}>최대 7개까지만 선택 가능해요!</Text>
-          </Animated.View>
-
-          <BottomButton
-            disable={disableUpdate}
-            buttonText="변경하기"
-            onPress={updateTopics}
-          />
+          <MaximumAlert alertOpacity={alertOpacity} max={MAX_TOPIC_LIMIT} />
+          <UpdateButton disable={disableUpdate} onPressUpdate={updateTopics} />
         </View>
       </View>
     </Modal>
@@ -165,6 +152,7 @@ const styles = StyleSheet.create({
   },
   topicBox: {
     marginHorizontal: 24,
+    height: SCREEN_HEIGHT * 0.6,
   },
   alert: {
     marginHorizontal: 24,

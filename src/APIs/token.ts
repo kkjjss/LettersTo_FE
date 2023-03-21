@@ -1,6 +1,8 @@
-import {instance} from '../Utils/http';
-import type {Token, RegisterToken} from '../types/types';
+import {axiosInstance} from '../Utils/http';
+import {AuthTokens, ProviderToken} from '../types/auth';
 
-export async function postToken(body: Token): Promise<RegisterToken> {
-  return await instance.post('/token', body);
+export async function verifyProviderToken(
+  body: ProviderToken,
+): Promise<AuthTokens> {
+  return await axiosInstance.post('/token', body);
 }

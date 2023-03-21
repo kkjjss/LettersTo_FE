@@ -1,13 +1,29 @@
-import {useEffect, useMemo, useRef, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {Animated} from 'react-native';
+import Toast from '../../Components/Toast/toast';
+import {useQuery} from 'react-query';
 import {getCities, getRegions} from '../../APIs/geolocation';
+import {useAuthAction} from '../../Store/auth';
 
-export const useLocation = () => {
-  const [regions, setRegions] = useState([{label: '', value: 0}]);
-  const [selectedRegionId, setSelectedRegionId] = useState<null | number>(null);
+type Props = {
+  parentGeolocationId: number | null;
+  geolocationId: number;
+};
 
-  const [cities, setCities] = useState([{label: '', value: 0}]);
-  const [selectedCityId, setSelectedCityId] = useState<null | number>(null);
+export const useLocation = (
+  currentLocation: Props = {
+    geolocationId: 0,
+    parentGeolocationId: null,
+  },
+) => {
+  const [selectedRegionId, setSelectedRegionId] = useState<null | number>(0);
+  const [selectedCityId, setSelectedCityId] = useState<number>(0);
+
+  const {setGeolocationIdInRegisterInfo} = useAuthAction();
+
+  useEffect(() => {
+    setGeolocationIdInRegisterInfo(selectedCityId);
+  }, [selectedCityId, setGeolocationIdInRegisterInfo]);
 
   const noticeOpacity = useRef(new Animated.Value(0)).current;
 
@@ -24,52 +40,64 @@ export const useLocation = () => {
     }),
   ]);
 
-  const onStartNotice = () => {
+  const onStartNotice = useCallback(() => {
     alert.reset();
     alert.start();
-  };
+  }, [alert]);
 
-  const disable = useMemo(
-    () => !selectedCityId || !selectedRegionId,
-    [selectedCityId, selectedRegionId],
+  const reset = useCallback(() => {
+    setSelectedRegionId(currentLocation.parentGeolocationId);
+    setTimeout(() => {
+      setSelectedCityId(currentLocation.geolocationId);
+    }, 0);
+  }, [setSelectedCityId, setSelectedRegionId, currentLocation]);
+
+  const {data: regions} = useQuery(
+    'regions',
+    useCallback(
+      async () =>
+        (await getRegions()).map(({id, name}) => {
+          return {value: id, label: name};
+        }),
+      [],
+    ),
+    {
+      onError: (error: any) => {
+        console.error(error.message);
+        Toast.show('문제가 발생했습니다');
+      },
+    },
   );
 
-  useEffect(() => {
-    const getRegionsList = async () => {
-      const regionsList = (await getRegions()).map(({id, name}) => {
-        return {value: id, label: name};
-      });
-      setRegions(regionsList);
-    };
-
-    getRegionsList();
-  }, []);
-
-  useEffect(() => {
-    setSelectedCityId(null);
-    const getCitiesList = async (regionId: number) => {
-      const citiesList = (await getCities(regionId)).map(({id, name}) => {
-        return {value: id, label: name};
-      });
-      setCities(citiesList);
-    };
-
-    if (selectedRegionId) {
-      getCitiesList(selectedRegionId);
-    } else {
-      setCities([{label: '', value: 0}]);
-    }
-  }, [selectedRegionId]);
+  const {data: cities} = useQuery(
+    ['cities', selectedRegionId],
+    useCallback(async () => {
+      setSelectedCityId(0);
+      if (selectedRegionId) {
+        return (await getCities(selectedRegionId))
+          .sort((a, b) => (a.name > b.name ? 1 : -1))
+          .map(({id, name}) => {
+            return {value: id, label: name};
+          });
+      }
+    }, [selectedRegionId]),
+    {
+      onError: (error: any) => {
+        console.error(error.message);
+        Toast.show('문제가 발생했습니다');
+      },
+    },
+  );
 
   return {
-    regions,
+    regions: regions || [],
     selectedRegionId,
     setSelectedRegionId,
-    cities,
+    cities: cities || [],
     selectedCityId,
     setSelectedCityId,
     noticeOpacity,
     onStartNotice,
-    disable,
+    reset,
   };
 };

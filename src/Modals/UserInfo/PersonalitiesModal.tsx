@@ -1,75 +1,79 @@
 import React, {useEffect, useMemo} from 'react';
-import {
-  Text,
-  View,
-  Modal,
-  StyleSheet,
-  Animated,
-  ScrollView,
-} from 'react-native';
+import {View, Modal, StyleSheet, ScrollView} from 'react-native';
 import {ResetButton} from '../../Components/ResetButton';
-import useStore from '../../Store/store';
 import {ModalHeader} from '../../Components/ModalHeader';
 import {SCREEN_HEIGHT} from '../../Constants/screen';
 import {PersonalityList} from '../../Components/PersonalityList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {patchUserInfo} from '../../APIs/member';
 import {usePersonality} from '../../Hooks/UserInfo/usePersonality';
-import {BottomButton} from '../../Components/Button/Bottom/BottomButton';
 import Toast from '../../Components/Toast/toast';
+import {useMutation, useQueryClient} from 'react-query';
+import {UserInfoTitle as Title} from '../../Components/UserInfo/Title/UserInfoTitle';
+import _ from 'lodash';
+import {Counter} from '../../Components/UserInfo/Counter/Counter';
+import {MAX_PERSONALITY_LIMIT} from '../../Constants/user';
+import {MaximumAlert} from '../../Components/UserInfo/Alert/MaximumAlert';
+import {UpdateButton} from '../../Components/Button/Bottom/UpdateButton';
 
 type Props = {
+  currentPersonalities: number[];
   isModalVisible: boolean;
-  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  onPressClose: () => void;
 };
 
-export function PersonalitiesModal({isModalVisible, setModalVisible}: Props) {
+export function PersonalitiesModal({
+  currentPersonalities,
+  isModalVisible,
+  onPressClose,
+}: Props) {
   const {
     personalities,
     selectedPersonalityIds,
-    setSelectedPersonalityIds,
     selectPersonality,
     alertOpacity,
     counter,
     reset,
     resetAlert,
-  } = usePersonality();
+  } = usePersonality(currentPersonalities);
 
-  const {userInfo} = useStore();
+  const queryClient = useQueryClient();
 
   const {bottom: SAFE_AREA_BOTTOM} = useSafeAreaInsets();
 
   const disableUpdate = useMemo(
-    () => selectedPersonalityIds.length === 0,
-    [selectedPersonalityIds],
+    () =>
+      selectedPersonalityIds.length === 0 ||
+      _.isEqual(currentPersonalities, selectedPersonalityIds),
+    [currentPersonalities, selectedPersonalityIds],
   );
 
   const hideModal = () => {
     resetAlert();
-    setModalVisible(false);
+    onPressClose();
   };
 
-  const updatePersonalites = async () => {
-    try {
-      if (userInfo && selectedPersonalityIds) {
-        const newUserInfo = {
-          personalityIds: selectedPersonalityIds,
-        };
-        await patchUserInfo(newUserInfo);
-      }
-
-      hideModal();
-    } catch (error: any) {
-      console.error(error.message);
-      Toast.show('문제가 발생했습니다');
-    }
-  };
+  const {mutate: updatePersonalites} = useMutation(
+    ['personalities', selectedPersonalityIds],
+    async () => await patchUserInfo({personalityIds: selectedPersonalityIds}),
+    {
+      onSuccess: () => {
+        Toast.show('성공적으로 변경되었어요!');
+        queryClient.invalidateQueries('userInfo');
+        hideModal();
+      },
+      onError: (error: any) => {
+        hideModal();
+        Toast.show(error.response.data.message);
+      },
+    },
+  );
 
   useEffect(() => {
-    if (userInfo && userInfo.personalityIds) {
-      setSelectedPersonalityIds(userInfo.personalityIds);
+    if (isModalVisible) {
+      reset();
     }
-  }, [setSelectedPersonalityIds, userInfo]);
+  }, [isModalVisible, reset]);
 
   return (
     <Modal
@@ -79,26 +83,16 @@ export function PersonalitiesModal({isModalVisible, setModalVisible}: Props) {
       onRequestClose={hideModal}
       visible={isModalVisible}>
       <View style={styles.container}>
-        <View
-          style={[
-            styles.modalView,
-            {
-              paddingBottom: SAFE_AREA_BOTTOM,
-            },
-          ]}>
+        <View style={[styles.modalView, {paddingBottom: SAFE_AREA_BOTTOM}]}>
           <ModalHeader title={'성향 관리'} hideModal={hideModal} />
 
           <View style={styles.titleBox}>
-            <View style={styles.titleWrap}>
-              <Text style={styles.titleText}>나의 성향을</Text>
-              <Text style={styles.titleText}>모두 선택해주세요</Text>
-            </View>
+            <Title title={'나의 관심사를\n모두 선택해주세요'} />
             <View style={styles.counterWrap}>
               <ResetButton reset={reset} />
-              <Text style={styles.counter}>{counter} / 9</Text>
+              <Counter value={counter} max={MAX_PERSONALITY_LIMIT} />
             </View>
           </View>
-
           <ScrollView alwaysBounceVertical={false} style={styles.topicBox}>
             <PersonalityList
               personalities={personalities}
@@ -106,14 +100,13 @@ export function PersonalitiesModal({isModalVisible, setModalVisible}: Props) {
               selectedPersonalityIds={selectedPersonalityIds}
             />
           </ScrollView>
-          <Animated.View style={[styles.alert, {opacity: alertOpacity}]}>
-            <Text style={styles.alertText}>최대 9개까지만 선택 가능해요!</Text>
-          </Animated.View>
-
-          <BottomButton
+          <MaximumAlert
+            alertOpacity={alertOpacity}
+            max={MAX_PERSONALITY_LIMIT}
+          />
+          <UpdateButton
             disable={disableUpdate}
-            buttonText="변경하기"
-            onPress={updatePersonalites}
+            onPressUpdate={updatePersonalites}
           />
         </View>
       </View>

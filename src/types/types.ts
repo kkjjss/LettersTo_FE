@@ -31,10 +31,12 @@ export type Personality = {
 
 export type Personalities = Personality[];
 
-export type Regions = {
+export type Region = {
   id: number;
   name: string;
-}[];
+};
+
+export type Regions = Region[];
 
 export type Cities = {
   id: number;

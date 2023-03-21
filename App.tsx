@@ -8,11 +8,14 @@ import {
 import StackNavigator from './src/Navigator/Navigator';
 import SplashScreen from 'react-native-splash-screen';
 import {RootSiblingParent} from 'react-native-root-siblings';
+import {QueryClientProvider, QueryClient} from 'react-query';
 import analytics from '@react-native-firebase/analytics';
+
+const queryClient = new QueryClient({});
 
 export default function App() {
   useEffect(() => {
-    setTimeout(() => SplashScreen.hide(), 1500);
+    setTimeout(() => SplashScreen.hide(), 1000);
   }, []);
 
   const routeNameRef = useRef<string>();
@@ -30,24 +33,26 @@ export default function App() {
 
   return (
     <RootSiblingParent>
-      <NavigationContainer
-        ref={navigationRef}
-        onReady={getInitialRouteName}
-        onStateChange={async () => {
-          const previousRouteName = routeNameRef.current;
-          const currentRouteName =
-            navigationRef.current?.getCurrentRoute()?.name;
+      <QueryClientProvider client={queryClient}>
+        <NavigationContainer
+          ref={navigationRef}
+          onReady={getInitialRouteName}
+          onStateChange={async () => {
+            const previousRouteName = routeNameRef.current;
+            const currentRouteName =
+              navigationRef.current?.getCurrentRoute()?.name;
 
-          if (previousRouteName !== currentRouteName) {
-            await analytics().logScreenView({
-              screen_name: currentRouteName,
-            });
-          }
+            if (previousRouteName !== currentRouteName) {
+              await analytics().logScreenView({
+                screen_name: currentRouteName,
+              });
+            }
 
-          routeNameRef.current = currentRouteName;
-        }}>
-        <StackNavigator />
-      </NavigationContainer>
+            routeNameRef.current = currentRouteName;
+          }}>
+          <StackNavigator />
+        </NavigationContainer>
+      </QueryClientProvider>
     </RootSiblingParent>
   );
 }
