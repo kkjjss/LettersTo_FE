@@ -1,4 +1,4 @@
-import {axiosInstance} from '../Utils/http';
+import {axiosInstance, instanceWithAuth} from '../Utils/http';
 
 interface NotificationsRequestParams {
   read: boolean | undefined;
@@ -17,5 +17,5 @@ export const getNotifications = async (data: NotificationsRequestParams) => {
 };
 
 export const setNotificationRead = async (id: number) => {
-  return await axiosInstance.post(`/notifications/${id}/read`);
+  return await instanceWithAuth.post(`/notifications/${id}/read`);
 };

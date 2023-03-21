@@ -1,5 +1,5 @@
-import {axiosInstance} from '../Utils/http';
+import {instance} from '../Utils/http';
 
 export async function getImageUploadUrl(filename: string) {
-  return await axiosInstance.post(`/files?filename=${filename}`);
+  return await instance.post(`/files?filename=${filename}`);
 }
