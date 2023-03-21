@@ -1,5 +1,5 @@
 import {LinearGradient} from 'expo-linear-gradient';
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 type Props = {
@@ -13,15 +13,17 @@ export const BottomButton = React.memo(
   ({buttonText, onPress, disable, white}: Props) => {
     const [pressed, setPressed] = useState(false);
 
+    const onPressButton = useCallback(async () => {
+      setPressed(true);
+      await onPress();
+      setPressed(false);
+    }, [onPress]);
+
     const GradientButton = () => (
       <TouchableOpacity
         activeOpacity={0.7}
         disabled={disable || pressed}
-        onPress={async () => {
-          setPressed(true);
-          await onPress();
-          setPressed(false);
-        }}>
+        onPress={onPressButton}>
         {disable === true ? (
           <View style={[styles.button]}>
             <Text style={styles.buttonText}>{buttonText}</Text>
@@ -37,20 +39,19 @@ export const BottomButton = React.memo(
     );
 
     const WhiteButton = () => (
-      <TouchableOpacity
-        activeOpacity={0.5}
-        onPress={async () => {
-          setPressed(true);
-          await onPress();
-          setPressed(false);
-        }}>
+      <TouchableOpacity activeOpacity={0.5} onPress={onPressButton}>
         <View style={[styles.whiteButton]}>
           <Text style={styles.whiteButtonText}>{buttonText}</Text>
         </View>
       </TouchableOpacity>
     );
 
-    return white ? <WhiteButton /> : <GradientButton />;
+    // return white ? <WhiteButton /> : <GradientButton />;
+    return (
+      <View style={{paddingBottom: 10}}>
+        {white ? <WhiteButton /> : <GradientButton />}
+      </View>
+    );
   },
 );
 
