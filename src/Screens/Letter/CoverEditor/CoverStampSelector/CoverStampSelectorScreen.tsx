@@ -1,37 +1,30 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {StackParamsList} from '../../../types/stackParamList';
+import {StackParamsList} from '../../../../types/stackParamList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {StampSelector} from '../../../Components/LetterEditor/Cover/StampSelector';
-import {LetterCoverPreview} from '../../../Components/LetterEditor/LetterCoverPreview';
-import useStore, {useLetterEditorStore} from '../../../Store/store';
-import {DeliveryLetterCoverPreview} from '../../../Components/LetterEditor/DeliveryLetterCoverPreview';
-import {Header2} from '../../../Components/Headers/Header2';
-import {StepIndicator} from '../../../Components/StepIndicator';
+import {StampSelector} from './Components/StampSelector';
+import {LetterCoverPreview} from '../../../../Components/LetterEditor/LetterCoverPreview';
+import useStore, {useLetterEditorStore} from '../../../../Store/store';
+import {DeliveryLetterCoverPreview} from '../../../../Components/LetterEditor/DeliveryLetterCoverPreview';
+import {Header2} from '../../../../Components/Headers/Header2';
+import {StepIndicator} from '../../../../Components/StepIndicator';
+import {useQuery} from 'react-query';
+import {getUserInfo} from '../../../../APIs/member';
 
 type Props = NativeStackScreenProps<StackParamsList, 'CoverStampSelector'>;
 
 export function CoverStampSelector({navigation, route}: Props) {
+  const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
+
   const [selectedStampId, setSelectedStampId] = useState<number>();
 
   const {
     setCoverStampId,
     cover: {stamp},
-    userInfo,
   } = useStore();
 
-  const stampQuantity = userInfo?.stampQuantity ?? 0;
-
   const {setDeliveryLetterData} = useLetterEditorStore();
-
-  const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
-
-  const disableNext = useMemo(() => !selectedStampId, [selectedStampId]);
-
-  const goBack = () => {
-    navigation.pop();
-  };
 
   const goNext = () => {
     if (disableNext) return;
@@ -48,6 +41,14 @@ export function CoverStampSelector({navigation, route}: Props) {
     }
   };
 
+  const goBack = () => {
+    navigation.pop();
+  };
+
+  const {data: userInfo, isSuccess} = useQuery(['userInfo'], getUserInfo);
+
+  const disableNext = useMemo(() => !selectedStampId, [selectedStampId]);
+
   useEffect(() => {
     if (stamp) {
       setSelectedStampId(stamp);
@@ -60,15 +61,16 @@ export function CoverStampSelector({navigation, route}: Props) {
     } else {
       setDeliveryLetterData({stampId: selectedStampId});
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setDeliveryLetterData, selectedStampId, setCoverStampId]);
+  }, [setDeliveryLetterData, selectedStampId, setCoverStampId, route.params]);
 
-  const step = useMemo(() => {
-    if (!route.params?.reply) {
-      return 3;
-    }
-    return 2;
-  }, [route.params?.reply]);
+  const step = useMemo(
+    () => (!route.params?.reply ? 3 : 2),
+    [route.params?.reply],
+  );
+
+  if (!isSuccess) {
+    return <></>;
+  }
 
   return (
     <View style={{flex: 1}}>
@@ -88,7 +90,7 @@ export function CoverStampSelector({navigation, route}: Props) {
         />
         <View style={styles.cover}>
           {!route.params?.reply ? (
-            <LetterCoverPreview />
+            <LetterCoverPreview userInfo={userInfo} />
           ) : (
             <DeliveryLetterCoverPreview />
           )}
@@ -96,9 +98,9 @@ export function CoverStampSelector({navigation, route}: Props) {
         <StepIndicator current={step} of={step} />
       </View>
       <StampSelector
-        stampQuantity={stampQuantity}
+        stampQuantity={userInfo.stampQuantity}
         selectedStampId={selectedStampId}
-        setSelectedStampId={setSelectedStampId}
+        selectStamp={setSelectedStampId}
       />
     </View>
   );

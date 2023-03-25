@@ -15,6 +15,9 @@ import {GRADIENT_COLORS} from '../../Constants/letter';
 import {SCREEN_WIDTH} from '../../Constants/screen';
 import {getCities, getRegions} from '../../APIs/geolocation';
 import Toast from '../Toast/toast';
+import {useTopic} from '../../Hooks/UserInfo/useTopic';
+import {usePersonality} from '../../Hooks/UserInfo/usePersonality';
+import {UserInfo} from '../../types/auth';
 
 const SelectedStampImage = () => {
   const {cover, stamps} = useStore();
@@ -53,14 +56,24 @@ const SelectedStampImage = () => {
   );
 };
 
-export const LetterCoverPreview = React.memo(() => {
-  const {userInfo, cover, topics, personalities, letter} = useStore();
+type Props = {
+  userInfo: UserInfo;
+};
+
+export const LetterCoverPreview = React.memo(({userInfo}: Props) => {
+  const {cover, letter} = useStore(state => ({
+    cover: state.cover,
+    letter: state.letter,
+  }));
 
   const [fromAddress, setFromAddress] = useState('');
 
+  const {topics} = useTopic();
+  const {personalities} = usePersonality();
+
   const getFromAddress = useCallback(async () => {
     try {
-      if (userInfo?.parentGeolocationId && userInfo.geolocationId) {
+      if (userInfo.parentGeolocationId && userInfo.geolocationId) {
         const userRegion = (await getRegions()).find(
           region => region.id === userInfo.parentGeolocationId,
         );
@@ -80,8 +93,7 @@ export const LetterCoverPreview = React.memo(() => {
 
   useEffect(() => {
     getFromAddress();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [getFromAddress]);
 
   return (
     <LinearGradient

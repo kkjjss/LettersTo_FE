@@ -38,7 +38,6 @@ import {ImageModal} from '../../Modals/ImageModal';
 import {ModalBlur} from '../../Modals/ModalBlur';
 import {PaperBackgroud} from '../../Components/Letter/PaperBackground/PaperBackgroud';
 import {Header2} from '../../Components/Headers/Header2';
-import {getUserInfo} from '../../APIs/member';
 import Toast from '../../Components/Toast/toast';
 import {
   MAX_TEXT_LIMIT,
@@ -75,7 +74,7 @@ export function LetterEditor({navigation, route}: Props) {
     name: 'title' | 'text';
   }>({name: 'title', ref: titleRef});
 
-  const {setLetter, setInitialCoverData, setStampQuantity} = useStore();
+  const {setLetter} = useStore();
 
   const {setDeliveryLetterData} = useLetterEditorStore();
 
@@ -119,17 +118,7 @@ export function LetterEditor({navigation, route}: Props) {
       alignType,
       images,
     });
-    setInitialCoverData();
-  }, [
-    setLetter,
-    title,
-    text,
-    paperColor,
-    paperStyle,
-    alignType,
-    images,
-    setInitialCoverData,
-  ]);
+  }, [setLetter, title, text, paperColor, paperStyle, alignType, images]);
 
   const setDeliveryLetterDataOnStore = useCallback(
     (id: number) => {
@@ -333,18 +322,7 @@ export function LetterEditor({navigation, route}: Props) {
     navigation.pop();
   }, [navigation]);
 
-  const getStampQuantity = useCallback(async () => {
-    try {
-      const {stampQuantity} = await getUserInfo();
-      setStampQuantity(stampQuantity);
-    } catch (error: any) {
-      console.error(error.message);
-      Toast.show('문제가 발생했습니다');
-    }
-  }, [setStampQuantity]);
-
   const goNext = useCallback(() => {
-    getStampQuantity();
     if (!route.params) {
       setLetterData();
       navigation.navigate('CoverTopicEditor');

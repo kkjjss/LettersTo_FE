@@ -17,8 +17,9 @@ import {useTopic} from '../../../Hooks/UserInfo/useTopic';
 import {MAX_TOPIC_LIMIT} from '../../../Constants/user';
 import {Counter} from '../../../Components/UserInfo/Counter/Counter';
 import {MaximumAlert} from '../../../Components/UserInfo/Alert/MaximumAlert';
-import {UserInfoTitle as Title} from '../../../Components/UserInfo/Title/UserInfoTitle';
+import {Title} from '../../../Components/UserInfo/Title/Title';
 import {Header2} from '../../../Components/Headers/Header2';
+import {useAuthAction} from '../../../Store/auth';
 
 type Props = NativeStackScreenProps<StackParamsList, 'TopicsForm'>;
 
@@ -26,14 +27,17 @@ export const TopicsForm = ({navigation}: Props) => {
   const {topics, selectedTopicIds, selectTopic, alertOpacity, counter, reset} =
     useTopic();
 
+  const {setTopicIdsInRegisterInfo} = useAuthAction();
+
   const disableNext = useMemo(
     () => selectedTopicIds.length === 0,
     [selectedTopicIds],
   );
 
   const goToPersonalityForm = useCallback(() => {
+    setTopicIdsInRegisterInfo(selectedTopicIds);
     navigation.navigate('PersonalityForm');
-  }, [navigation]);
+  }, [navigation, selectedTopicIds, setTopicIdsInRegisterInfo]);
 
   const onPressBack = useCallback(() => {
     navigation.pop();

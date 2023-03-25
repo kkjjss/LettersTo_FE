@@ -5,7 +5,7 @@ type Props = {
   title: string;
 };
 
-export const UserInfoTitle = React.memo(({title}: Props) => (
+export const Title = React.memo(({title}: Props) => (
   <View style={styles.titleWrap}>
     {title.split('\n').map((titleText, index) => (
       <Text key={index} style={styles.titleText}>

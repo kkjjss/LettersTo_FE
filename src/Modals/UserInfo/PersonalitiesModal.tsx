@@ -9,7 +9,7 @@ import {patchUserInfo} from '../../APIs/member';
 import {usePersonality} from '../../Hooks/UserInfo/usePersonality';
 import Toast from '../../Components/Toast/toast';
 import {useMutation, useQueryClient} from 'react-query';
-import {UserInfoTitle as Title} from '../../Components/UserInfo/Title/UserInfoTitle';
+import {Title} from '../../Components/UserInfo/Title/Title';
 import _ from 'lodash';
 import {Counter} from '../../Components/UserInfo/Counter/Counter';
 import {MAX_PERSONALITY_LIMIT} from '../../Constants/user';

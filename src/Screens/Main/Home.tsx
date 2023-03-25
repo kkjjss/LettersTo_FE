@@ -131,7 +131,9 @@ export function Home({navigation}: Props) {
     navigation.navigate('StampHistory');
   };
 
-  const {data: userInfo} = useQuery('userInfo', getUserInfo);
+  const {data: userInfo} = useQuery('userInfo', getUserInfo, {
+    onSuccess: () => console.log('!!!'),
+  });
 
   // cold case
   const Empty = useMemo(

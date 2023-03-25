@@ -1,18 +1,21 @@
-import {useCallback, useMemo, useRef} from 'react';
+import {useCallback, useMemo, useRef, useState} from 'react';
 import {Animated} from 'react-native';
 import {useQuery} from 'react-query';
 import {getPersonalities} from '../../APIs/personality';
 import Toast from '../../Components/Toast/toast';
 import {MAX_PERSONALITY_LIMIT} from '../../Constants/user';
-import {useAuthStore} from '../../Store/auth';
 
 export const usePersonality = (currentPersonalities: number[] = []) => {
-  const [selectedPersonalityIds, setSelectedPersonalityIds] = useAuthStore(
-    state => [
-      state.registerInfo.personalityIds,
-      state.action.setPersonalityIdsInRegisterInfo,
-    ],
-  );
+  // const [selectedPersonalityIds, setSelectedPersonalityIds] = useAuthStore(
+  //   state => [
+  //     state.registerInfo.personalityIds,
+  //     state.action.setPersonalityIdsInRegisterInfo,
+  //   ],
+  // );
+
+  const [selectedPersonalityIds, setSelectedPersonalityIds] = useState<
+    number[]
+  >([]);
 
   const counter = useMemo(
     () => selectedPersonalityIds.length,
@@ -68,9 +71,9 @@ export const usePersonality = (currentPersonalities: number[] = []) => {
   return {
     personalities: personalities || [],
     selectedPersonalityIds,
-
     selectPersonality,
     alertOpacity,
+    initUserPersonalityIds: setSelectedPersonalityIds,
     counter,
     reset,
     resetAlert,

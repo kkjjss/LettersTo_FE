@@ -1,16 +1,11 @@
-import {useCallback, useMemo, useRef} from 'react';
+import {useCallback, useMemo, useRef, useState} from 'react';
 import {Animated} from 'react-native';
-import Toast from '../../Components/Toast/toast';
 import {useQuery} from 'react-query';
 import {getTopics} from '../../APIs/topic';
 import {MAX_TOPIC_LIMIT} from '../../Constants/user';
-import {useAuthStore} from '../../Store/auth';
 
 export const useTopic = (currentTopics: number[] = []) => {
-  const [selectedTopicIds, setSelectedTopicIds] = useAuthStore(state => [
-    state.registerInfo.topicIds,
-    state.action.setTopicIdsInRegisterInfo,
-  ]);
+  const [selectedTopicIds, setSelectedTopicIds] = useState<number[]>([]);
 
   const counter = useMemo(() => selectedTopicIds.length, [selectedTopicIds]);
 
@@ -54,17 +49,13 @@ export const useTopic = (currentTopics: number[] = []) => {
     setSelectedTopicIds(currentTopics);
   }, [setSelectedTopicIds, currentTopics]);
 
-  const {data: topics} = useQuery('topics', getTopics, {
-    onError: (error: any) => {
-      console.error(error.message);
-      Toast.show('문제가 발생했습니다');
-    },
-  });
+  const {data: topics} = useQuery('topics', getTopics);
 
   return {
     topics: topics || [],
     selectedTopicIds,
     selectTopic,
+    initUserTopicIds: setSelectedTopicIds,
     alertOpacity,
     counter,
     reset,

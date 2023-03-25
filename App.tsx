@@ -9,9 +9,28 @@ import StackNavigator from './src/Navigator/Navigator';
 import SplashScreen from 'react-native-splash-screen';
 import {RootSiblingParent} from 'react-native-root-siblings';
 import {QueryClientProvider, QueryClient} from 'react-query';
+import Toast from './src/Components/Toast/toast';
 import analytics from '@react-native-firebase/analytics';
 
-const queryClient = new QueryClient({});
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      retry: false,
+      staleTime: 10000,
+      onError: (error: any) => {
+        console.error(error.message);
+        Toast.show('문제가 발생했습니다');
+      },
+    },
+    mutations: {
+      onError: (error: any) => {
+        Toast.show(error.response.data.message);
+      },
+    },
+  },
+});
 
 export default function App() {
   useEffect(() => {

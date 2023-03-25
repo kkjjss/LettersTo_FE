@@ -15,12 +15,14 @@ import {useNickname} from '../../../Hooks/UserInfo/useNickname';
 import {NicknameInput} from './Components/NicknameInput';
 import {NicknameAvailableAlert} from '../../../Components/UserInfo/Alert/NicknameAvailableAlert';
 import {Header2} from '../../../Components/Headers/Header2';
-import {UserInfoTitle as Title} from '../../../Components/UserInfo/Title/UserInfoTitle';
+import {Title} from '../../../Components/UserInfo/Title/Title';
+import {useAuthAction} from '../../../Store/auth';
 
 type Props = NativeStackScreenProps<StackParamsList, 'NicknameForm'>;
 
 export const NicknameForm = ({navigation}: Props) => {
   const {
+    nickname,
     tempNickname,
     disable,
     alterOpacity,
@@ -28,9 +30,12 @@ export const NicknameForm = ({navigation}: Props) => {
     nicknameValidationResult,
   } = useNickname();
 
+  const {setNicknameInRegisterInfo} = useAuthAction();
+
   const goToTopicForm = useCallback(() => {
+    setNicknameInRegisterInfo(nickname);
     navigation.navigate('TopicsForm');
-  }, [navigation]);
+  }, [navigation, nickname, setNicknameInRegisterInfo]);
 
   const onPressBack = useCallback(() => {
     navigation.pop();

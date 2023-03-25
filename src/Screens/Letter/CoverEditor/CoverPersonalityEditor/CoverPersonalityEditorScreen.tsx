@@ -1,34 +1,24 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {StackParamsList} from '../../../types/stackParamList';
+import {StackParamsList} from '../../../../types/stackParamList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {PersonalityEditor} from '../../../Components/LetterEditor/Cover/PersonalityEditor';
-import {LetterCoverPreview} from '../../../Components/LetterEditor/LetterCoverPreview';
-import useStore from '../../../Store/store';
-import {Header2} from '../../../Components/Headers/Header2';
-import {StepIndicator} from '../../../Components/StepIndicator';
-import {PUBLIC_COVER_EDIT_STEPS} from '../../../Constants/user';
+import {PersonalityEditor} from './Components/PersonalityEditor';
+import {LetterCoverPreview} from '../../../../Components/LetterEditor/LetterCoverPreview';
+import useStore from '../../../../Store/store';
+import {Header2} from '../../../../Components/Headers/Header2';
+import {StepIndicator} from '../../../../Components/StepIndicator';
+import {PUBLIC_COVER_EDIT_STEPS} from '../../../../Constants/user';
+import {usePersonality} from '../../../../Hooks/UserInfo/usePersonality';
+import {useQuery} from 'react-query';
+import {getUserInfo} from '../../../../APIs/member';
 
 type Props = NativeStackScreenProps<StackParamsList, 'CoverPersonalityEditor'>;
 
 export function CoverPersonalityEditor({navigation}: Props) {
-  const [selectedPersonalityIds, setSelectedPersonalityIds] = useState<
-    number[]
-  >([]);
-
-  const {
-    setPersonalities,
-    setCoverPersonalityIds,
-    cover: {personalityIds},
-  } = useStore();
-
   const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
 
-  const disableNext = useMemo(
-    () => selectedPersonalityIds.length === 0,
-    [selectedPersonalityIds],
-  );
+  const {setCoverPersonalityIds} = useStore();
 
   const goNext = () =>
     !disableNext && navigation.navigate('CoverStampSelector');
@@ -37,16 +27,35 @@ export function CoverPersonalityEditor({navigation}: Props) {
     navigation.pop();
   };
 
-  useEffect(() => {
-    if (personalityIds) {
-      setSelectedPersonalityIds(personalityIds);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setPersonalities]);
+  const {
+    personalities,
+    selectedPersonalityIds,
+    selectPersonality,
+    counter,
+    reset,
+    initUserPersonalityIds,
+  } = usePersonality();
+
+  const {data: userInfo, isSuccess} = useQuery('userInfo', getUserInfo);
+
+  const disableNext = useMemo(
+    () => selectedPersonalityIds.length === 0,
+    [selectedPersonalityIds],
+  );
 
   useEffect(() => {
     setCoverPersonalityIds(selectedPersonalityIds);
   }, [selectedPersonalityIds, setCoverPersonalityIds]);
+
+  useEffect(() => {
+    if (userInfo) {
+      initUserPersonalityIds(userInfo?.personalityIds);
+    }
+  }, [initUserPersonalityIds, userInfo]);
+
+  if (!isSuccess) {
+    return <></>;
+  }
 
   return (
     <View style={{flex: 1}}>
@@ -65,7 +74,7 @@ export function CoverPersonalityEditor({navigation}: Props) {
           disableNext={disableNext}
         />
         <View style={styles.cover}>
-          <LetterCoverPreview />
+          <LetterCoverPreview userInfo={userInfo} />
         </View>
         <StepIndicator
           current={PUBLIC_COVER_EDIT_STEPS.PERSONALITY}
@@ -73,8 +82,11 @@ export function CoverPersonalityEditor({navigation}: Props) {
         />
       </View>
       <PersonalityEditor
+        personalities={personalities}
         selectedPersonalityIds={selectedPersonalityIds}
-        setSelectedPersonalityIds={setSelectedPersonalityIds}
+        selectPersonality={selectPersonality}
+        counter={counter}
+        reset={reset}
       />
     </View>
   );

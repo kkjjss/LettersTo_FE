@@ -9,7 +9,7 @@ import {patchUserInfo} from '../../APIs/member';
 import {useTopic} from '../../Hooks/UserInfo/useTopic';
 import Toast from '../../Components/Toast/toast';
 import {useMutation, useQueryClient} from 'react-query';
-import {UserInfoTitle as Title} from '../../Components/UserInfo/Title/UserInfoTitle';
+import {Title} from '../../Components/UserInfo/Title/Title';
 import {Counter} from '../../Components/UserInfo/Counter/Counter';
 import {MAX_TOPIC_LIMIT} from '../../Constants/user';
 import {MaximumAlert} from '../../Components/UserInfo/Alert/MaximumAlert';

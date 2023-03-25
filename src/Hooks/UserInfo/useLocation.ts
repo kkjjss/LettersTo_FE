@@ -1,9 +1,7 @@
-import {useCallback, useEffect, useRef, useState} from 'react';
+import {useCallback, useRef, useState} from 'react';
 import {Animated} from 'react-native';
-import Toast from '../../Components/Toast/toast';
 import {useQuery} from 'react-query';
 import {getCities, getRegions} from '../../APIs/geolocation';
-import {useAuthAction} from '../../Store/auth';
 
 type Props = {
   parentGeolocationId: number | null;
@@ -18,12 +16,6 @@ export const useLocation = (
 ) => {
   const [selectedRegionId, setSelectedRegionId] = useState<null | number>(0);
   const [selectedCityId, setSelectedCityId] = useState<number>(0);
-
-  const {setGeolocationIdInRegisterInfo} = useAuthAction();
-
-  useEffect(() => {
-    setGeolocationIdInRegisterInfo(selectedCityId);
-  }, [selectedCityId, setGeolocationIdInRegisterInfo]);
 
   const noticeOpacity = useRef(new Animated.Value(0)).current;
 
@@ -61,12 +53,6 @@ export const useLocation = (
         }),
       [],
     ),
-    {
-      onError: (error: any) => {
-        console.error(error.message);
-        Toast.show('문제가 발생했습니다');
-      },
-    },
   );
 
   const {data: cities} = useQuery(
@@ -81,12 +67,6 @@ export const useLocation = (
           });
       }
     }, [selectedRegionId]),
-    {
-      onError: (error: any) => {
-        console.error(error.message);
-        Toast.show('문제가 발생했습니다');
-      },
-    },
   );
 
   return {

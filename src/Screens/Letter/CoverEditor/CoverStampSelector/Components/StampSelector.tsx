@@ -1,75 +1,69 @@
 import React, {useCallback} from 'react';
 import {Text, View, StyleSheet, ScrollView, Image} from 'react-native';
-import {SCREEN_HEIGHT} from '../../../Constants/screen';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {StampsList} from '../../Stamp/StampsList';
-import useStore from '../../../Store/store';
+import {SCREEN_HEIGHT} from '../../../../../Constants/screen';
+import {StampsList} from '../../../../../Components/Stamp/StampsList';
+import useStore from '../../../../../Store/store';
+import {Title} from '../../../../../Components/UserInfo/Title/Title';
+
+const blankStamp = require('../../../../../Assets/Icon/stamp/stamps_blue.png');
 
 type Props = {
   stampQuantity: number;
   selectedStampId: number | undefined;
-  setSelectedStampId: React.Dispatch<React.SetStateAction<number | undefined>>;
+  selectStamp: React.Dispatch<React.SetStateAction<number | undefined>>;
 };
 
 export function StampSelector({
   stampQuantity,
   selectedStampId,
-  setSelectedStampId,
+  selectStamp,
 }: Props) {
   const {stamps} = useStore();
 
-  const {bottom} = useSafeAreaInsets();
-
-  const selectStamp = useCallback(
+  const onPressStamp = useCallback(
     (id: number) => {
       if (selectedStampId !== id) {
         if (stampQuantity > 0) {
-          setSelectedStampId(id);
+          selectStamp(id);
         }
       } else {
-        setSelectedStampId(undefined);
+        selectStamp(undefined);
       }
     },
-    [selectedStampId, stampQuantity, setSelectedStampId],
+    [selectedStampId, stampQuantity, selectStamp],
   );
 
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: 'white',
-        borderTopColor: '#0000cc',
-        borderTopWidth: 1,
-      }}>
+    <View style={styles.container}>
       <View style={styles.titleBox}>
         <View style={styles.titleWrap}>
-          <Text style={styles.titleText}>우표를</Text>
-          <Text style={styles.titleText}>선택해주세요</Text>
+          <Title title={'나의 관심사를\n모두 선택해주세요'} />
         </View>
         <View style={styles.counterWrap}>
           <Text style={styles.counter}>보유 우표</Text>
-          <Image
-            source={require('../../../Assets/Icon/stamp/stamps_blue.png')}
-            style={{height: 24, width: 24}}
-          />
+          <Image source={blankStamp} style={{height: 24, width: 24}} />
           <Text style={styles.counter}>X {stampQuantity}</Text>
         </View>
       </View>
 
       <ScrollView alwaysBounceVertical={false} style={styles.personalityBox}>
-        <View style={{paddingTop: 16, paddingBottom: bottom}}>
-          <StampsList
-            stamps={stamps}
-            selectedStampId={selectedStampId}
-            onPressStamp={selectStamp}
-          />
-        </View>
+        <StampsList
+          stamps={stamps}
+          selectedStampId={selectedStampId}
+          onPressStamp={onPressStamp}
+        />
       </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+    borderTopColor: '#0000cc',
+    borderTopWidth: 1,
+  },
   titleBox: {
     marginVertical: 16,
     flexDirection: 'row',

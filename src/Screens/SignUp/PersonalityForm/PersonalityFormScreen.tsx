@@ -16,9 +16,10 @@ import {PersonalityList} from '../../../Components/PersonalityList';
 import {usePersonality} from '../../../Hooks/UserInfo/usePersonality';
 import {MAX_PERSONALITY_LIMIT} from '../../../Constants/user';
 import {Header2} from '../../../Components/Headers/Header2';
-import {UserInfoTitle as Title} from '../../../Components/UserInfo/Title/UserInfoTitle';
+import {Title} from '../../../Components/UserInfo/Title/Title';
 import {Counter} from '../../../Components/UserInfo/Counter/Counter';
 import {MaximumAlert} from '../../../Components/UserInfo/Alert/MaximumAlert';
+import {useAuthAction} from '../../../Store/auth';
 
 type Props = NativeStackScreenProps<StackParamsList, 'PersonalityForm'>;
 
@@ -32,14 +33,17 @@ export const PersonalityForm = ({navigation}: Props) => {
     reset,
   } = usePersonality();
 
+  const {setPersonalityIdsInRegisterInfo} = useAuthAction();
+
   const disableNext = useMemo(
     () => selectedPersonalityIds.length === 0,
     [selectedPersonalityIds],
   );
 
   const goToLocationForm = useCallback(() => {
+    setPersonalityIdsInRegisterInfo(selectedPersonalityIds);
     navigation.navigate('LocationForm');
-  }, [navigation]);
+  }, [navigation, selectedPersonalityIds, setPersonalityIdsInRegisterInfo]);
 
   const onPressBack = useCallback(() => {
     navigation.pop();

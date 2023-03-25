@@ -22,7 +22,6 @@ import {
 } from '../../../Utils/hyperlink';
 import {useAuthAction} from '../../../Store/auth';
 import {useQuery} from 'react-query';
-import Toast from '../../../Components/Toast/toast';
 import {LogoutModal} from '../../../Modals/Logout/LogoutModal';
 import {Profile} from './Components/Profile';
 import {EditNicknameButton} from './Components/Button/EditNicknameButton';
@@ -120,12 +119,7 @@ export const MyPage = ({navigation}: Props) => {
     navigation.navigate('AccountDelete');
   }, [navigation]);
 
-  const {data: userInfo, isSuccess} = useQuery(['userInfo'], getUserInfo, {
-    onError: (error: any) => {
-      console.error(error.message);
-      Toast.show('문제가 발생했습니다');
-    },
-  });
+  const {data: userInfo, isSuccess} = useQuery(['userInfo'], getUserInfo);
 
   if (!isSuccess) {
     return <></>;

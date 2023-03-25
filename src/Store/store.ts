@@ -1,7 +1,7 @@
 import create from 'zustand';
 import {
-  Personalities,
-  Topics,
+  // Personalities,
+  // Topics,
   Stamps,
   PaperColor,
   PaperStyle,
@@ -10,55 +10,55 @@ import {
 import {subDate} from '../Utils/dateFormatter';
 
 interface Store {
-  isLoggedIn: boolean;
-  setIsLoggedIn: (value: boolean) => void;
+  // isLoggedIn: boolean;
+  // setIsLoggedIn: (value: boolean) => void;
 
-  isLoading: boolean;
-  setIsLoading: (value: boolean) => void;
+  // isLoading: boolean;
+  // setIsLoading: (value: boolean) => void;
 
-  registerToken: string | undefined;
-  setRegisterToken: (value: string) => void;
+  // registerToken: string | undefined;
+  // setRegisterToken: (value: string) => void;
 
-  topics: Topics;
-  setTopics: (value: Topics) => void;
+  // topics: Topics;
+  // setTopics: (value: Topics) => void;
 
-  personalities: Personalities;
-  setPersonalities: (value: Personalities) => void;
+  // personalities: Personalities;
+  // setPersonalities: (value: Personalities) => void;
 
-  signUpInfo: {
-    nickname: string | undefined;
-    personalityIds: number[] | undefined;
-    topicIds: number[] | undefined;
-    geolocationId: number | undefined;
-  };
-  setNickname: (value: string) => void;
-  setTopicIds: (value: number[]) => void;
-  setPersonalityIds: (value: number[]) => void;
-  setAddress: (value: number) => void;
-  clearSignupInfo: () => void;
+  // signUpInfo: {
+  //   nickname: string | undefined;
+  //   personalityIds: number[] | undefined;
+  //   topicIds: number[] | undefined;
+  //   geolocationId: number | undefined;
+  // };
+  // setNickname: (value: string) => void;
+  // setTopicIds: (value: number[]) => void;
+  // setPersonalityIds: (value: number[]) => void;
+  // setAddress: (value: number) => void;
+  // clearSignupInfo: () => void;
 
-  userInfo:
-    | {
-        nickname: string;
-        personalityIds: number[];
-        topicIds: number[];
-        geolocationId: number;
-        parentGeolocationId: number;
-        stampQuantity: number;
-      }
-    | undefined;
-  setUserInfo: (value: {
-    nickname: string;
-    personalityIds: number[];
-    topicIds: number[];
-    geolocationId: number;
-    parentGeolocationId: number;
-    stampQuantity: number;
-  }) => void;
+  // userInfo:
+  //   | {
+  //       nickname: string;
+  //       personalityIds: number[];
+  //       topicIds: number[];
+  //       geolocationId: number;
+  //       parentGeolocationId: number;
+  //       stampQuantity: number;
+  //     }
+  //   | undefined;
+  // setUserInfo: (value: {
+  //   nickname: string;
+  //   personalityIds: number[];
+  //   topicIds: number[];
+  //   geolocationId: number;
+  //   parentGeolocationId: number;
+  //   stampQuantity: number;
+  // }) => void;
 
-  setStampQuantity: (value: number) => void;
+  // setStampQuantity: (value: number) => void;
 
-  signOut: () => void;
+  // signOut: () => void;
 
   letter:
     | {
@@ -88,72 +88,72 @@ interface Store {
   setCoverTopicIds: (topicIds: number[]) => void;
   setCoverPersonalityIds: (personalityIds: number[]) => void;
   setCoverStampId: (stampId: number | undefined) => void;
-  setInitialCoverData: () => void;
+  // setInitialCoverData: () => void;
 
   stamps: Stamps;
   setStamps: (value: Stamps) => void;
 }
 
 const useStore = create<Store>(set => ({
-  isLoggedIn: false,
-  setIsLoggedIn: value => set(() => ({isLoggedIn: value})),
+  // isLoggedIn: false,
+  // setIsLoggedIn: value => set(() => ({isLoggedIn: value})),
 
-  isLoading: true,
-  setIsLoading: value => set(() => ({isLoading: value})),
+  // isLoading: true,
+  // setIsLoading: value => set(() => ({isLoading: value})),
 
-  registerToken: undefined,
-  setRegisterToken: value => set(() => ({registerToken: value})),
+  // registerToken: undefined,
+  // setRegisterToken: value => set(() => ({registerToken: value})),
 
-  topics: [],
-  setTopics: value => set(() => ({topics: value})),
+  // topics: [],
+  // setTopics: value => set(() => ({topics: value})),
 
-  personalities: [],
-  setPersonalities: value => set(() => ({personalities: value})),
+  // personalities: [],
+  // setPersonalities: value => set(() => ({personalities: value})),
 
-  signUpInfo: {
-    nickname: undefined,
-    personalityIds: undefined,
-    topicIds: undefined,
-    geolocationId: undefined,
-  },
+  // signUpInfo: {
+  //   nickname: undefined,
+  //   personalityIds: undefined,
+  //   topicIds: undefined,
+  //   geolocationId: undefined,
+  // },
 
-  setNickname: value =>
-    set(state => ({signUpInfo: {...state.signUpInfo, nickname: value}})),
+  // setNickname: value =>
+  //   set(state => ({signUpInfo: {...state.signUpInfo, nickname: value}})),
 
-  setTopicIds: value =>
-    set(state => ({signUpInfo: {...state.signUpInfo, topicIds: value}})),
+  // setTopicIds: value =>
+  //   set(state => ({signUpInfo: {...state.signUpInfo, topicIds: value}})),
 
-  setPersonalityIds: value =>
-    set(state => ({signUpInfo: {...state.signUpInfo, personalityIds: value}})),
+  // setPersonalityIds: value =>
+  //   set(state => ({signUpInfo: {...state.signUpInfo, personalityIds: value}})),
 
-  setAddress: value =>
-    set(state => ({signUpInfo: {...state.signUpInfo, geolocationId: value}})),
+  // setAddress: value =>
+  //   set(state => ({signUpInfo: {...state.signUpInfo, geolocationId: value}})),
 
-  clearSignupInfo: () =>
-    set(() => ({
-      signUpInfo: {
-        nickname: undefined,
-        personalityIds: undefined,
-        topicIds: undefined,
-        geolocationId: undefined,
-      },
-    })),
+  // clearSignupInfo: () =>
+  //   set(() => ({
+  //     signUpInfo: {
+  //       nickname: undefined,
+  //       personalityIds: undefined,
+  //       topicIds: undefined,
+  //       geolocationId: undefined,
+  //     },
+  //   })),
 
-  userInfo: undefined,
+  // userInfo: undefined,
 
-  setUserInfo: value => set(() => ({userInfo: value})),
+  // setUserInfo: value => set(() => ({userInfo: value})),
 
-  setStampQuantity: value =>
-    set(state => {
-      if (state.userInfo) {
-        return {userInfo: {...state.userInfo, stampQuantity: value}};
-      } else {
-        return {};
-      }
-    }),
+  // setStampQuantity: value =>
+  //   set(state => {
+  //     if (state.userInfo) {
+  //       return {userInfo: {...state.userInfo, stampQuantity: value}};
+  //     } else {
+  //       return {};
+  //     }
+  //   }),
 
-  signOut: () =>
-    set(() => ({userInfo: undefined, isLoggedIn: false, isLoading: true})),
+  // signOut: () =>
+  //   set(() => ({userInfo: undefined, isLoggedIn: false, isLoading: true})),
 
   letter: undefined,
 
@@ -174,14 +174,14 @@ const useStore = create<Store>(set => ({
   setCoverStampId: stampId =>
     set(state => ({cover: {...state.cover, stamp: stampId}})),
 
-  setInitialCoverData: () =>
-    set(state => ({
-      cover: {
-        topicIds: state.userInfo?.topicIds ?? [],
-        personalityIds: state.userInfo?.personalityIds ?? [],
-        stamp: undefined,
-      },
-    })),
+  // setInitialCoverData: () =>
+  //   set(state => ({
+  //     cover: {
+  //       topicIds: state.userInfo?.topicIds ?? [],
+  //       personalityIds: state.userInfo?.personalityIds ?? [],
+  //       stamp: undefined,
+  //     },
+  //   })),
 
   stamps: [
     {id: 1, image: require('../Assets/stamp/1.png')},

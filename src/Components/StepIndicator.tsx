@@ -34,6 +34,7 @@ export const StepIndicator = React.memo(({current, of}: Props) => {
     }
     return (
       <View
+        key={i}
         style={{
           height: 4,
           width: 4,

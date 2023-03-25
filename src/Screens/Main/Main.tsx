@@ -1,6 +1,8 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
+import {useQueryClient} from 'react-query';
+import {getUserInfo} from '../../APIs/member';
 import {BottomTab} from '../../Components/BottomTab/BottomTab';
 import {StackParamsList} from '../../types/stackParamList';
 import {LetterBoxList} from '../LetterBox/LetterBoxList';
@@ -20,6 +22,16 @@ export const Main = ({navigation}: Props) => {
   const goToLetterBox = () => {
     setSelectedScreen('LetterBox');
   };
+
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      await queryClient.prefetchQuery('userInfo', getUserInfo);
+    };
+
+    fetchUserInfo();
+  }, [queryClient]);
 
   return (
     <View style={{flex: 1}}>
