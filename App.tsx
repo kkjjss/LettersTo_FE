@@ -5,7 +5,7 @@ import {
   NavigationContainer,
   createNavigationContainerRef,
 } from '@react-navigation/native';
-import StackNavigator from '~/Navigator/Navigator';
+import StackNavigator from '~/Navigator';
 import SplashScreen from 'react-native-splash-screen';
 import {RootSiblingParent} from 'react-native-root-siblings';
 import {QueryClientProvider, QueryClient} from 'react-query';
@@ -40,6 +40,7 @@ export default function App() {
   const routeNameRef = useRef<string>();
   const navigationRef = createNavigationContainerRef();
 
+  // Firebase Analytics
   const analyzeScreenView = useCallback(async () => {
     const previousRouteName = routeNameRef.current;
     const currentRouteName = navigationRef.current?.getCurrentRoute()?.name;

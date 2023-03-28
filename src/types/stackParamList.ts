@@ -1,4 +1,6 @@
-export type StackParamsList = {
+export interface StackParamsList {
+  [keys: string]: any;
+
   // Splash
   Splash: undefined;
 
@@ -38,4 +40,4 @@ export type StackParamsList = {
 
   // 우표
   StampHistory: undefined;
-};
+}

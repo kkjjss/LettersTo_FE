@@ -1,40 +1,41 @@
 import * as React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {StackParamsList} from '../types/stackParamList';
+import {StackParamsList} from './types/stackParamList';
 
 // Splash
 import {Splash} from '@screens/SplashScreen';
 
 // 메인 서비스 스크린
-import {Main} from '../Screens/Main/Main';
+import {Main} from '@screens/Main/Main';
 
 // 편지 관련 스크린
-import {ReadLetter} from '../Screens/Letter/ReadLetter';
-import {LetterBoxDetail} from '../Screens/LetterBox/LetterBoxDetail';
+import {ReadLetter} from '@screens/Letter/ReadLetter';
+import {LetterBoxDetail} from '@screens/LetterBox/LetterBoxDetail';
 
 // 인증 관련 스크린
-import {Auth} from '../Screens/Auth/AuthScreen';
-import {NicknameForm} from '../Screens/SignUp/NicknameForm/NicknameFormScreen';
-import {TopicsForm} from '../Screens/SignUp/TopicsForm/TopicsFormScreen';
-import {PersonalityForm} from '../Screens/SignUp/PersonalityForm/PersonalityFormScreen';
-import {LocationForm} from '../Screens/SignUp/LocationForm/LocationFormScreen';
-import {MyPage} from '../Screens/MyPage/MyPage/MyPageScreen';
-import {AccountDelete} from '../Screens/MyPage/AccountDelete/AccountDeleteScreen';
+import {Auth} from '@screens/Auth/AuthScreen';
+import {NicknameForm} from '@screens/SignUp/NicknameForm/NicknameFormScreen';
+import {TopicsForm} from '@screens/SignUp/TopicsForm/TopicsFormScreen';
+import {PersonalityForm} from '@screens/SignUp/PersonalityForm/PersonalityFormScreen';
+import {LocationForm} from '@screens/SignUp/LocationForm/LocationFormScreen';
+import {MyPage} from '@screens/MyPage/MyPage/MyPageScreen';
+import {AccountDelete} from '@screens/MyPage/AccountDelete/AccountDeleteScreen';
 
 // 편지 작성
-import {LetterEditor} from '../Screens/Letter/LetterEditor';
-import {CoverDeliverySelector} from '../Screens/Letter/CoverEditor/CoverDeliverySelector/CoverDeliverySelectorScreen';
-import {CoverTopicEditor} from '../Screens/Letter/CoverEditor/CoverTopicEditor/CoverTopicEditorScreen';
-import {CoverPersonalityEditor} from '../Screens/Letter/CoverEditor/CoverPersonalityEditor/CoverPersonalityEditorScreen';
-import {CoverStampSelector} from '../Screens/Letter/CoverEditor/CoverStampSelector/CoverStampSelectorScreen';
-import {LetterComplete} from '../Screens/Letter/LetterComplete';
+import {LetterEditor} from '@screens/Letter/LetterEditor';
+import {CoverDeliverySelector} from '@screens/Letter/CoverEditor/CoverDeliverySelector/CoverDeliverySelectorScreen';
+import {CoverTopicEditor} from '@screens/Letter/CoverEditor/CoverTopicEditor/CoverTopicEditorScreen';
+import {CoverPersonalityEditor} from '@screens/Letter/CoverEditor/CoverPersonalityEditor/CoverPersonalityEditorScreen';
+import {CoverStampSelector} from '@screens/Letter/CoverEditor/CoverStampSelector/CoverStampSelectorScreen';
+import {LetterComplete} from '@screens/Letter/LetterComplete';
 
 // 알림
-import {Notifications} from '../Screens/Notifications/Notifications';
+import {Notifications} from '@screens/Notifications/Notifications';
 
 // 우표
-import {StampHistory} from '../Screens/Stamp/StampHistory';
-import {useAuthStore} from '../Store/auth';
+import {StampHistory} from '@screens/Stamp/StampHistory';
+
+import {useAuthStore} from '@stores/auth';
 
 const Stack = createNativeStackNavigator<StackParamsList>();
 
