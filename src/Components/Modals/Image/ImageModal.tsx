@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../Constants/screen';
+import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../Constants/screen';
 import {getImageUrl} from '@utils/image';
 
 type Props = {
@@ -34,7 +34,7 @@ export const ImageModal = React.memo(
           <View style={styles.close}>
             <TouchableOpacity onPress={hideModal}>
               <Image
-                source={require('../Assets/close_white.png')}
+                source={require('@assets/close_white.png')}
                 style={styles.closeButton}
               />
             </TouchableOpacity>

@@ -75,7 +75,7 @@ export function LetterBoxList({navigation, onPressHome}: Props) {
   const Empty = () => (
     <View style={styles.emptyArea}>
       <Image
-        source={require('../../Assets/no_data.png')}
+        source={require('@assets/no_data.png')}
         style={styles.emptyImage}
       />
       <Text style={styles.emptyText}>
@@ -113,7 +113,7 @@ export function LetterBoxList({navigation, onPressHome}: Props) {
           <View style={{position: 'absolute', left: 16, flexDirection: 'row'}}>
             <TouchableOpacity activeOpacity={0.7} onPress={goToNotification}>
               <Image
-                source={require('../../Assets/alert_off.png')}
+                source={require('@assets/alert_off.png')}
                 style={styles.icon}
               />
             </TouchableOpacity>
@@ -123,7 +123,7 @@ export function LetterBoxList({navigation, onPressHome}: Props) {
                 onPress={goToStampHistory}
                 style={[styles.headerButton, {marginLeft: 12, width: 40}]}>
                 <Image
-                  source={require('../../Assets/Icon/stamp/stamps_blue.png')}
+                  source={require('@assets/Icon/stamp/stamps_blue.png')}
                   style={{width: 24, height: 24, marginLeft: -3}}
                 />
                 <View style={styles.stampArea}>
@@ -143,7 +143,7 @@ export function LetterBoxList({navigation, onPressHome}: Props) {
           <View style={{position: 'absolute', right: 16, flexDirection: 'row'}}>
             <TouchableOpacity activeOpacity={0.7} onPress={goToMyPage}>
               <Image
-                source={require('../../Assets/menu.png')}
+                source={require('@assets/menu.png')}
                 style={styles.icon}
               />
             </TouchableOpacity>
@@ -193,7 +193,7 @@ export function LetterBoxList({navigation, onPressHome}: Props) {
               </Text>
               <View style={styles.letterArea}>
                 <Image
-                  source={require('../../Assets/letter_blank.png')}
+                  source={require('@assets/letter_blank.png')}
                   resizeMode="contain"
                   style={[styles.letterBlank]}
                 />
@@ -201,7 +201,7 @@ export function LetterBoxList({navigation, onPressHome}: Props) {
                   <>
                     <View style={styles.dot} />
                     <Image
-                      source={require('../../Assets/letter_new.png')}
+                      source={require('@assets/letter_new.png')}
                       resizeMode="contain"
                       style={[styles.letterNew]}
                     />

@@ -3,39 +3,39 @@ import {View, Modal, StyleSheet, ScrollView} from 'react-native';
 import {ResetButton} from '@components/ResetButton';
 import {ModalHeader} from '@components/Headers/ModalHeader';
 import {SCREEN_HEIGHT} from '@constants/screen';
-import {TopicList} from '@components/TopicList';
+import {PersonalityList} from '@components/PersonalityList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {patchUserInfo} from '@apis/member';
-import {useTopic} from '../../Hooks/UserInfo/useTopic';
+import {usePersonality} from '@hooks/UserInfo/usePersonality';
 import Toast from '@components/Toast/toast';
 import {useMutation, useQueryClient} from 'react-query';
 import {Title} from '@components/UserInfo/TitleText';
+import _ from 'lodash';
 import {Counter} from '@components/UserInfo/CounterText';
-import {MAX_TOPIC_LIMIT} from '@constants/user';
+import {MAX_PERSONALITY_LIMIT} from '@constants/user';
 import {MaximumAlert} from '@components/UserInfo/MaximumAlert';
 import {UpdateButton} from '@components/Button/Bottom/UpdateButton';
-import _ from 'lodash';
 
 type Props = {
-  currentTopics: number[];
+  currentPersonalities: number[];
   isModalVisible: boolean;
   onPressClose: () => void;
 };
 
-export const TopicsModal = ({
-  currentTopics,
+export function PersonalitiesModal({
+  currentPersonalities,
   isModalVisible,
   onPressClose,
-}: Props) => {
+}: Props) {
   const {
-    topics,
-    selectedTopicIds,
-    selectTopic,
+    personalities,
+    selectedPersonalityIds,
+    selectPersonality,
     alertOpacity,
     counter,
     reset,
     resetAlert,
-  } = useTopic(currentTopics);
+  } = usePersonality(currentPersonalities);
 
   const queryClient = useQueryClient();
 
@@ -43,9 +43,9 @@ export const TopicsModal = ({
 
   const disableUpdate = useMemo(
     () =>
-      selectedTopicIds.length === 0 ||
-      _.isEqual(currentTopics, selectedTopicIds),
-    [currentTopics, selectedTopicIds],
+      selectedPersonalityIds.length === 0 ||
+      _.isEqual(currentPersonalities, selectedPersonalityIds),
+    [currentPersonalities, selectedPersonalityIds],
   );
 
   const hideModal = () => {
@@ -53,9 +53,9 @@ export const TopicsModal = ({
     onPressClose();
   };
 
-  const {mutate: updateTopics} = useMutation(
-    ['topics', selectedTopicIds],
-    async () => await patchUserInfo({topicIds: selectedTopicIds}),
+  const {mutate: updatePersonalites} = useMutation(
+    ['personalities', selectedPersonalityIds],
+    async () => await patchUserInfo({personalityIds: selectedPersonalityIds}),
     {
       onSuccess: () => {
         Toast.show('성공적으로 변경되었어요!');
@@ -84,29 +84,35 @@ export const TopicsModal = ({
       visible={isModalVisible}>
       <View style={styles.container}>
         <View style={[styles.modalView, {paddingBottom: SAFE_AREA_BOTTOM}]}>
-          <ModalHeader title={'관심사 관리'} onPressClose={hideModal} />
+          <ModalHeader title={'성향 관리'} onPressClose={hideModal} />
 
           <View style={styles.titleBox}>
             <Title title={'나의 관심사를\n모두 선택해주세요'} />
             <View style={styles.counterWrap}>
               <ResetButton reset={reset} />
-              <Counter value={counter} max={MAX_TOPIC_LIMIT} />
+              <Counter value={counter} max={MAX_PERSONALITY_LIMIT} />
             </View>
           </View>
           <ScrollView alwaysBounceVertical={false} style={styles.topicBox}>
-            <TopicList
-              topics={topics}
-              selectTopic={selectTopic}
-              selectedTopicIds={selectedTopicIds}
+            <PersonalityList
+              personalities={personalities}
+              selectPersonality={selectPersonality}
+              selectedPersonalityIds={selectedPersonalityIds}
             />
           </ScrollView>
-          <MaximumAlert alertOpacity={alertOpacity} max={MAX_TOPIC_LIMIT} />
-          <UpdateButton disable={disableUpdate} onPressUpdate={updateTopics} />
+          <MaximumAlert
+            alertOpacity={alertOpacity}
+            max={MAX_PERSONALITY_LIMIT}
+          />
+          <UpdateButton
+            disable={disableUpdate}
+            onPressUpdate={updatePersonalites}
+          />
         </View>
       </View>
     </Modal>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {

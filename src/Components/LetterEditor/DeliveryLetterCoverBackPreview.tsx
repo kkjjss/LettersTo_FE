@@ -1,7 +1,7 @@
 import React from 'react';
 import {Image, Text, View} from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
-import useStore, {useLetterEditorStore} from '../../Store/store';
+import useStore, {useLetterEditorStore} from '@stores/store';
 import {GRADIENT_COLORS} from '@constants/letter';
 import {SCREEN_WIDTH} from '@constants/screen';
 
@@ -26,7 +26,7 @@ export const DeliveryLetterCoverBackPreview = React.memo(() => {
         {deliveryLetter.deliveryType === 'STANDARD' ? (
           <>
             <Image
-              source={require('../../Assets/StandardBox.png')}
+              source={require('@assets/StandardBox.png')}
               style={{width: 63, height: 21, margin: 10}}
             />
             <View
@@ -47,7 +47,7 @@ export const DeliveryLetterCoverBackPreview = React.memo(() => {
                   {cover.address.city}
                 </Text>
                 <Image
-                  source={require('../../Assets/arrow.png')}
+                  source={require('@assets/arrow.png')}
                   style={{
                     width: 31,
                     resizeMode: 'contain',
@@ -77,7 +77,7 @@ export const DeliveryLetterCoverBackPreview = React.memo(() => {
         ) : (
           <>
             <Image
-              source={require('../../Assets/ExpressBox.png')}
+              source={require('@assets/ExpressBox.png')}
               style={{width: 63, height: 21, margin: 10}}
             />
 
@@ -107,7 +107,7 @@ export const DeliveryLetterCoverBackPreview = React.memo(() => {
                   {cover.address.city}
                 </Text>
                 <Image
-                  source={require('../../Assets/arrow.png')}
+                  source={require('@assets/arrow.png')}
                   style={{
                     width: 31,
                     resizeMode: 'contain',

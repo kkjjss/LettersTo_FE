@@ -201,14 +201,14 @@ const useStore = create<Store>(set => ({
   //   })),
 
   stamps: [
-    {id: 1, image: require('../Assets/stamp/1.png')},
-    {id: 2, image: require('../Assets/stamp/2.png')},
-    {id: 3, image: require('../Assets/stamp/3.png')},
-    {id: 4, image: require('../Assets/stamp/4.png')},
-    {id: 5, image: require('../Assets/stamp/5.png')},
-    {id: 6, image: require('../Assets/stamp/6.png')},
-    {id: 7, image: require('../Assets/stamp/7.png')},
-    {id: 8, image: require('../Assets/stamp/8.png')},
+    {id: 1, image: require('@assets/stamp/1.png')},
+    {id: 2, image: require('@assets/stamp/2.png')},
+    {id: 3, image: require('@assets/stamp/3.png')},
+    {id: 4, image: require('@assets/stamp/4.png')},
+    {id: 5, image: require('@assets/stamp/5.png')},
+    {id: 6, image: require('@assets/stamp/6.png')},
+    {id: 7, image: require('@assets/stamp/7.png')},
+    {id: 8, image: require('@assets/stamp/8.png')},
   ],
 
   setStamps: value => set(() => ({stamps: [...value]})),

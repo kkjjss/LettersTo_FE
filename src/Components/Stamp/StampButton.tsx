@@ -14,7 +14,7 @@ export function StampButton({stamp, onPress: selectStamp}: any) {
         padding: 10,
       }}>
       <ImageBackground
-        source={require('../../Assets/stamp.png')}
+        source={require('@assets/stamp.png')}
         style={{
           width: '100%',
           height: undefined,

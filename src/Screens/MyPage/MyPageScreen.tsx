@@ -1,32 +1,31 @@
 import React, {useCallback, useMemo, useReducer} from 'react';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {View, StyleSheet, StatusBar} from 'react-native';
-import type {StackParamsList} from '../../../types/stackParamList';
-import {ListItem, ListName} from './Components/MyPageList';
-
-import {NicknameModal} from '../../../Modals/UserInfo/NicknameModal';
-import {TopicsModal} from '../../../Modals/UserInfo/TopicsModal';
-import {PersonalitiesModal} from '../../../Modals/UserInfo/PersonalitiesModal';
-
-import {LocationModal} from '../../../Modals/UserInfo/LocationModal';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {getUserInfo} from '../../../APIs/member';
-import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../Constants/screen';
-import {ModalBlur} from '../../../Modals/ModalBlur';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {Header2} from '../../../Components/Headers/Header2';
-import {BottomButton} from '../../../Components/Button/Bottom/BottomButton';
-import {
-  onPressPrivacyPolicy,
-  onPressTermsOfService,
-} from '@utils/hyperlink';
-import {useAuthAction} from '../../../Store/auth';
 import {useQuery} from 'react-query';
-import {LogoutModal} from '../../../Modals/Logout/LogoutModal';
-import {Profile} from './Components/Profile';
-import {EditNicknameButton} from './Components/Button/EditNicknameButton';
-import {StampBox} from './Components/StampBox';
-import {EditUserInfoButton} from './Components/Button/EditUserInfoButton';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+
+import {getUserInfo} from '@apis/member';
+import {useAuthAction} from '@stores/auth';
+import {SCREEN_HEIGHT, SCREEN_WIDTH} from '@constants/screen';
+import {onPressPrivacyPolicy, onPressTermsOfService} from '@utils/hyperlink';
+
+import {ListItem, ListName} from '@components/MyPage/MyPageList';
+import {Header2} from '@components/Headers/Header2';
+import {BottomButton} from '@components/Button/Bottom/BottomButton';
+import {Profile} from '@components/MyPage/ProfileView';
+import {EditNicknameButton} from '@components/MyPage/EditNicknameButton';
+import {StampBox} from '@components/MyPage/StampBox';
+import {EditUserInfoButton} from '@components/MyPage/EditUserInfoButton';
+
+import {NicknameModal} from '@components/Modals/MyPage/NicknameModal';
+import {TopicsModal} from '@components/Modals/MyPage/TopicsModal';
+import {PersonalitiesModal} from '@components/Modals/MyPage/PersonalitiesModal';
+import {LocationModal} from '@components/Modals/MyPage/LocationModal';
+import {ModalBlur} from '@components/Modals/ModalBlur';
+import {LogoutModal} from '@components/Modals/MyPage/LogoutModal';
+
+import type {StackParamsList} from '@type/stackParamList';
 
 type Props = NativeStackScreenProps<StackParamsList, 'MyPage'>;
 

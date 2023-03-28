@@ -1,10 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
 import {Modal, Pressable, StyleSheet, Text, View} from 'react-native';
-import {deleteAccount} from '../APIs/member';
-import Toast from '../Components/Toast/toast';
+import {deleteAccount} from '../../../APIs/member';
+import Toast from '../../Toast/toast';
 import {useMutation} from 'react-query';
-import {useAuthAction} from '../Store/auth';
+import {useAuthAction} from '../../../Store/auth';
 
 type Props = {
   hideModal: () => void;

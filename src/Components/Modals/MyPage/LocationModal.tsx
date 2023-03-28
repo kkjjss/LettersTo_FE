@@ -5,10 +5,10 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useMutation, useQueryClient} from 'react-query';
 import {patchUserInfo} from '@apis/member';
 import {BottomButton} from '@components/Button/Bottom/BottomButton';
-import {ModalHeader} from '@components/ModalHeader';
+import {ModalHeader} from '@components/Headers/ModalHeader';
 import Toast from '@components/Toast/toast';
 import {SCREEN_HEIGHT} from '@constants/screen';
-import {useLocation} from '../../Hooks/UserInfo/useLocation';
+import {useLocation} from '@hooks/UserInfo/useLocation';
 
 type Props = {
   currentLocation: {
@@ -96,7 +96,7 @@ export function LocationModal({
               paddingBottom: SAFE_AREA_BOTTOM,
             },
           ]}>
-          <ModalHeader title={'위치 정보 관리'} hideModal={hideModal} />
+          <ModalHeader title={'위치 정보 관리'} onPressClose={hideModal} />
 
           <View style={styles.titleBox}>
             <View style={styles.titleWrap}>

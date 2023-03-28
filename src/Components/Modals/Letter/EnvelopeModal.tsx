@@ -13,9 +13,9 @@ import {
 } from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {useGesture} from '../Hooks/Hardware/useGesture';
-import {GRADIENT_COLORS} from '../Constants/letter';
-import {PublicLetter, DeliveryLetter, PaperColor} from '../types/types';
+import {useGesture} from '@hooks/Hardware/useGesture';
+import {GRADIENT_COLORS} from '../../../Constants/letter';
+import {PublicLetter, DeliveryLetter, PaperColor} from '../../../types/types';
 import {dateFormatter} from '@utils/dateFormatter';
 
 interface EnvelopeModalProps {
@@ -55,14 +55,14 @@ export const EnvelopeModal = ({
     [key: number]: any;
   };
   const STAMPS: StampType = {
-    1: require('../Assets/stamp/1.png'),
-    2: require('../Assets/stamp/2.png'),
-    3: require('../Assets/stamp/3.png'),
-    4: require('../Assets/stamp/4.png'),
-    5: require('../Assets/stamp/5.png'),
-    6: require('../Assets/stamp/6.png'),
-    7: require('../Assets/stamp/7.png'),
-    8: require('../Assets/stamp/8.png'),
+    1: require('@assets/stamp/1.png'),
+    2: require('@assets/stamp/2.png'),
+    3: require('@assets/stamp/3.png'),
+    4: require('@assets/stamp/4.png'),
+    5: require('@assets/stamp/5.png'),
+    6: require('@assets/stamp/6.png'),
+    7: require('@assets/stamp/7.png'),
+    8: require('@assets/stamp/8.png'),
   };
 
   // 애니메이션
@@ -118,7 +118,7 @@ export const EnvelopeModal = ({
             style={[styles.closeButton, {marginTop: SAFE_AREA_TOP}]}
             onPress={hideModal}>
             <Image
-              source={require('../Assets/close_white.png')}
+              source={require('@assets/close_white.png')}
               style={styles.closeIcon}
             />
           </Pressable>
@@ -126,7 +126,7 @@ export const EnvelopeModal = ({
           <Pressable style={styles.openArea} onPress={openLetter}>
             <Text style={styles.openText}>뜯어서 편지 열어보기</Text>
             <Image
-              source={require('../Assets/arrow_long.png')}
+              source={require('@assets/arrow_long.png')}
               style={styles.openArrow}
               resizeMode="contain"
             />
@@ -149,45 +149,45 @@ export const EnvelopeModal = ({
                 {deliveryType === 'STANDARD' ? (
                   <View style={styles.stampArea}>
                     <ImageBackground
-                      source={require('../Assets/bg_stamp.png')}
+                      source={require('@assets/bg_stamp.png')}
                       style={styles.stampBg}>
                       <Image style={styles.stampImg} source={STAMPS[stampId]} />
                       <Image
                         style={styles.stampType}
-                        source={require('../Assets/stamp_standard.png')}
+                        source={require('@assets/stamp_standard.png')}
                       />
                     </ImageBackground>
                   </View>
                 ) : deliveryType === 'EXPRESS' ? (
                   <View style={styles.stampArea}>
                     <ImageBackground
-                      source={require('../Assets/bg_stamp.png')}
+                      source={require('@assets/bg_stamp.png')}
                       style={[
                         styles.stampBg,
                         {position: 'absolute', transform: [{rotate: '10deg'}]},
                       ]}
                     />
                     <ImageBackground
-                      source={require('../Assets/bg_stamp.png')}
+                      source={require('@assets/bg_stamp.png')}
                       style={[
                         styles.stampBg,
                         {position: 'absolute', transform: [{rotate: '-5deg'}]},
                       ]}
                     />
                     <ImageBackground
-                      source={require('../Assets/bg_stamp.png')}
+                      source={require('@assets/bg_stamp.png')}
                       style={styles.stampBg}>
                       <Image style={styles.stampImg} source={STAMPS[stampId]} />
                       <Image
                         style={styles.stampType}
-                        source={require('../Assets/stamp_express.png')}
+                        source={require('@assets/stamp_express.png')}
                       />
                     </ImageBackground>
                   </View>
                 ) : (
                   <View style={styles.stampArea}>
                     <ImageBackground
-                      source={require('../Assets/bg_stamp.png')}
+                      source={require('@assets/bg_stamp.png')}
                       style={styles.stampBg}>
                       <Image style={styles.stampImg} source={STAMPS[stampId]} />
                     </ImageBackground>
@@ -199,7 +199,7 @@ export const EnvelopeModal = ({
                     <>
                       <Image
                         style={[styles.fromImg, {width: 25}]}
-                        source={require('../Assets/to.png')}
+                        source={require('@assets/to.png')}
                       />
                       <Text
                         style={
@@ -210,7 +210,7 @@ export const EnvelopeModal = ({
                     <>
                       <Image
                         style={[styles.fromImg, {width: 48}]}
-                        source={require('../Assets/from.png')}
+                        source={require('@assets/from.png')}
                       />
                       <Text
                         style={
@@ -254,7 +254,7 @@ export const EnvelopeModal = ({
                       <Image
                         style={styles.arrow}
                         resizeMode="contain"
-                        source={require('../Assets/arrow.png')}
+                        source={require('@assets/arrow.png')}
                       />
                       <Text style={styles.deliveryAddressText}>
                         {toAddress}

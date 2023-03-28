@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {Avatar} from '../../../../Components/Avatar/Avatar';
+import {Avatar} from '@components/Avatar/Avatar';
 
 type Props = {
   nickname: string;

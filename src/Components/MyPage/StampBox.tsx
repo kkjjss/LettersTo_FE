@@ -1,7 +1,7 @@
 import React from 'react';
 import {TouchableOpacity, Image, Text, StyleSheet} from 'react-native';
-const stampImg = require('../../../../Assets/Icon/stamp/stamps_blue.png');
-const nextImg = require('../../../../Assets/Icon/next/next_blue.png');
+const stampImg = require('@assets/Icon/stamp/stamps_blue.png');
+const nextImg = require('@assets/Icon/next/next_blue.png');
 
 type Props = {
   stampQuantity: number;

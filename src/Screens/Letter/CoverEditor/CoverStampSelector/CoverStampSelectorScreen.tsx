@@ -10,7 +10,7 @@ import {DeliveryLetterCoverPreview} from '../../../../Components/LetterEditor/De
 import {Header2} from '../../../../Components/Headers/Header2';
 import {StepIndicator} from '../../../../Components/StepIndicator';
 import {useQuery} from 'react-query';
-import {getUserInfo} from '../../../../APIs/member';
+import {getUserInfo} from '@apis/member';
 
 type Props = NativeStackScreenProps<StackParamsList, 'CoverStampSelector'>;
 

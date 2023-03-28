@@ -1,6 +1,6 @@
 import React from 'react';
 import {Pressable, Image, StyleSheet} from 'react-native';
-const pencilImg = require('../../../../../Assets/Icon/pencil/pencil_white.png');
+const pencilImg = require('@assets/Icon/pencil/pencil_white.png');
 
 type Props = {
   onPress: () => void;

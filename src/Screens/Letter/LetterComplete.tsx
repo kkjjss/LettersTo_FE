@@ -13,7 +13,7 @@ import {DeliveryLetterCoverPreview} from '@components/LetterEditor/DeliveryLette
 import {LetterCoverPreview} from '@components/LetterEditor/LetterCoverPreview';
 import {SendLetterButton} from '@components/LetterEditor/SendLetterButton';
 import {SCREEN_WIDTH} from '@constants/screen';
-import useStore, {useLetterEditorStore} from '../../Store/store';
+import useStore, {useLetterEditorStore} from '@stores/store';
 import type {StackParamsList} from '@type/stackParamList';
 import {
   DeliveryLetterWriteRequest,

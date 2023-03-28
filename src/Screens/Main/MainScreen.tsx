@@ -4,7 +4,7 @@ import {useQueryClient} from 'react-query';
 import {getUserInfo} from '@apis/member';
 import {BottomTab} from '@components/BottomTab/BottomTab';
 import {LetterBoxList} from '../LetterBox/LetterBoxList';
-import {Home} from './Home';
+import {Home} from './HomeScreen';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import type {StackParamsList} from '@type/stackParamList';
 

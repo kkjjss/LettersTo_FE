@@ -23,7 +23,7 @@ import {getLetterBoxInfo, getDeliveryLetters} from '@apis/letterBox';
 import {Header} from '@components/Headers/Header';
 import {dateFormatter} from '@utils/dateFormatter';
 import {LetterItem} from './LetterItem';
-import {EnvelopeModal} from '../../Modals/EnvelopeModal';
+import {EnvelopeModal} from '@components/Modals/Letter/EnvelopeModal';
 import Toast from '@components/Toast/toast';
 
 type Props = NativeStackScreenProps<StackParamsList, 'LetterBoxDetail'>;
@@ -153,7 +153,7 @@ export function LetterBoxDetail({route, navigation}: Props) {
                   <Text style={styles.infoDateText}>{fromPeriod}일째 인연</Text>
                   <Image
                     style={styles.iconQuestion}
-                    source={require('../../Assets/question.png')}
+                    source={require('@assets/question.png')}
                   />
                 </View>
               </TouchableWithoutFeedback>
@@ -162,7 +162,7 @@ export function LetterBoxDetail({route, navigation}: Props) {
                   <Text style={styles.tooltipText}>편지 시작일 {fromDate}</Text>
                   <Image
                     style={styles.tooltipTail}
-                    source={require('../../Assets/tooltip.png')}
+                    source={require('@assets/tooltip.png')}
                   />
                 </View>
               )}
@@ -232,7 +232,7 @@ export function LetterBoxDetail({route, navigation}: Props) {
             <View style={styles.tabInactive}>
               <Text style={styles.tabInactiveText}>편지탐색</Text>
               <Image
-                source={require('../../Assets/triangle.png')}
+                source={require('@assets/triangle.png')}
                 style={[styles.triangle, {right: 0}]}
               />
             </View>
@@ -240,7 +240,7 @@ export function LetterBoxDetail({route, navigation}: Props) {
           <Pressable disabled>
             <View style={styles.tabActive}>
               <Image
-                source={require('../../Assets/triangle.png')}
+                source={require('@assets/triangle.png')}
                 style={[
                   styles.triangle,
                   {left: '100%', transform: [{scaleX: -1}]},

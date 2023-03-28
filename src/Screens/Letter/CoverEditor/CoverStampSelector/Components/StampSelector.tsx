@@ -5,7 +5,7 @@ import {StampsList} from '../../../../../Components/Stamp/StampsList';
 import useStore from '../../../../../Store/store';
 import {Title} from '../../../../../Components/UserInfo/TitleText';
 
-const stampImg = require('../../../../../Assets/Icon/stamp/stamps_blue.png');
+const stampImg = require('@assets/Icon/stamp/stamps_blue.png');
 
 type Props = {
   stampQuantity: number;

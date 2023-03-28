@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react';
 import {Image, ImageBackground, StyleSheet, Text, View} from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
-import useStore, {useLetterEditorStore} from '../../Store/store';
+import useStore, {useLetterEditorStore} from '@stores/store';
 import {GRADIENT_COLORS} from '@constants/letter';
 import {SCREEN_WIDTH} from '@constants/screen';
 
@@ -34,7 +34,7 @@ const SelectedStampImage = ({stampId}: {stampId: number | undefined}) => {
           }}>
           <Image
             style={{height: 18, width: 18}}
-            source={require('../../Assets/photo_blue.png')}
+            source={require('@assets/photo_blue.png')}
           />
         </View>
       )}
@@ -63,11 +63,11 @@ export const DeliveryLetterCoverPreview = React.memo(() => {
       <View style={styles.topArea}>
         <View style={styles.title}>
           <Text style={styles.titleText}>⌜{titleText}⌟︎︎</Text>
-          <Image source={require('../../Assets/to.png')} style={styles.To} />
+          <Image source={require('@assets/to.png')} style={styles.To} />
           <Text style={styles.fromText}>{deliveryLetterTo?.toNickname}</Text>
           <Text style={styles.fromText}>{deliveryLetterTo?.toAddress}</Text>
           <Image
-            source={require('../../Assets/From..png')}
+            source={require('@assets/From..png')}
             style={styles.From}
           />
           <Text style={styles.fromText}>{cover.nickname},</Text>
@@ -77,7 +77,7 @@ export const DeliveryLetterCoverPreview = React.memo(() => {
         </View>
         <View style={{flex: 74}}>
           <ImageBackground
-            source={require('../../Assets/stamp.png')}
+            source={require('@assets/stamp.png')}
             style={styles.stampBg}>
             <SelectedStampImage stampId={deliveryLetter.stampId} />
           </ImageBackground>

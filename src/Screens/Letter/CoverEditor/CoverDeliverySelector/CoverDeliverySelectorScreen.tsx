@@ -17,16 +17,16 @@ import {Header2} from '../../../../Components/Headers/Header2';
 import {LinearGradient} from 'expo-linear-gradient';
 import {StepIndicator} from '../../../../Components/StepIndicator';
 import {PRIVATE_COVER_EDIT_STEPS} from '../../../../Constants/user';
-import {getDeliveryDate} from '../../../../APIs/letter';
+import {getDeliveryDate} from '@apis/letter';
 import {DeliveryType} from '../../../../types/types';
-import {getUserInfo} from '../../../../APIs/member';
+import {getUserInfo} from '@apis/member';
 import {useQuery} from 'react-query';
-import {getCities, getRegions} from '../../../../APIs/geolocation';
+import {getCities, getRegions} from '@apis/geolocation';
 import Toast from '../../../../Components/Toast/toast';
 
-const stampsImg = require('../../../../Assets/Icon/stamp/stamps_blue.png');
-const stampImg = require('../../../../Assets/Icon/stamp/stamp_blue.png');
-const expressTypeImg = require('../../../../Assets/Icon/delivery/Express.png');
+const stampsImg = require('@assets/Icon/stamp/stamps_blue.png');
+const stampImg = require('@assets/Icon/stamp/stamp_blue.png');
+const expressTypeImg = require('@assets/Icon/delivery/Express.png');
 
 type Props = NativeStackScreenProps<StackParamsList, 'CoverDeliverySelector'>;
 

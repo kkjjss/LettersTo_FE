@@ -1,14 +1,14 @@
 import React, {useCallback, useState} from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
-import type {StackParamsList} from '../../../types/stackParamList';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {ModalBlur} from '../../../Modals/ModalBlur';
-import {AccountDeleteModal} from '../../../Modals/AccountDeleteModal';
-import {BottomButton} from './Components/BottomButton';
-import {Header2} from '../../../Components/Headers/Header2';
+import {BottomButton} from '@components/MyPage/BottomButton';
+import {Header2} from '@components/Headers/Header2';
+import {ModalBlur} from '@components/Modals/ModalBlur';
+import {AccountDeleteModal} from '@components/Modals/MyPage/AccountDeleteModal';
+import type {StackParamsList} from '@type/stackParamList';
 
-const noticeImg = require('../../../Assets/Icon/notice/notice_red.png');
+const noticeImg = require('@assets/Icon/notice/notice_red.png');
 
 type Props = NativeStackScreenProps<StackParamsList, 'AccountDelete'>;
 

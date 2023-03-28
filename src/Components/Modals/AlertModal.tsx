@@ -31,7 +31,7 @@ export const AlertModal = ({
           <View style={styles.header}>
             <Pressable onPress={hideModal}>
               <Image
-                source={require('../Assets/Icon/close/close_blue.png')}
+                source={require('@assets/Icon/close/close_blue.png')}
                 style={styles.closeButton}
               />
             </Pressable>

@@ -6,7 +6,7 @@ import type {StackParamsList} from '@type/stackParamList';
 import {Splash} from '@screens/SplashScreen';
 
 // 메인 서비스 스크린
-import {Main} from '@screens/Main/Main';
+import {Main} from '@screens/Main/MainScreen';
 
 // 편지 관련 스크린
 import {ReadLetter} from '@screens/Letter/ReadLetter';
@@ -18,8 +18,8 @@ import {NicknameForm} from '@screens/SignUp/NicknameFormScreen';
 import {TopicsForm} from '@screens/SignUp/TopicsFormScreen';
 import {PersonalityForm} from '@screens/SignUp/PersonalityFormScreen';
 import {LocationForm} from '@screens/SignUp/LocationFormScreen';
-import {MyPage} from '@screens/MyPage/MyPage/MyPageScreen';
-import {AccountDelete} from '@screens/MyPage/AccountDelete/AccountDeleteScreen';
+import {MyPage} from '@screens/MyPage/MyPageScreen';
+import {AccountDelete} from '@screens/MyPage/AccountDeleteScreen';
 
 // 편지 작성
 import {LetterEditor} from '@screens/Letter/LetterEditor';

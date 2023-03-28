@@ -9,11 +9,11 @@ import useStore from '../../../../Store/store';
 import {StepIndicator} from '../../../../Components/StepIndicator';
 import {PUBLIC_COVER_EDIT_STEPS} from '../../../../Constants/user';
 import {Header2} from '../../../../Components/Headers/Header2';
-import {useTopic} from '../../../../Hooks/UserInfo/useTopic';
+import {useTopic} from '@hooks/UserInfo/useTopic';
 import {useQuery} from 'react-query';
 import Toast from '../../../../Components/Toast/toast';
-import {getUserInfo} from '../../../../APIs/member';
-import {getCities, getRegions} from '../../../../APIs/geolocation';
+import {getUserInfo} from '@apis/member';
+import {getCities, getRegions} from '@apis/geolocation';
 
 type Props = NativeStackScreenProps<StackParamsList, 'CoverTopicEditor'>;
 

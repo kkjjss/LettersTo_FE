@@ -1,41 +1,41 @@
 import React, {useEffect, useMemo} from 'react';
 import {View, Modal, StyleSheet, ScrollView} from 'react-native';
 import {ResetButton} from '@components/ResetButton';
-import {ModalHeader} from '@components/ModalHeader';
+import {ModalHeader} from '@components/Headers/ModalHeader';
 import {SCREEN_HEIGHT} from '@constants/screen';
-import {PersonalityList} from '@components/PersonalityList';
+import {TopicList} from '@components/TopicList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {patchUserInfo} from '@apis/member';
-import {usePersonality} from '../../Hooks/UserInfo/usePersonality';
+import {useTopic} from '@hooks/UserInfo/useTopic';
 import Toast from '@components/Toast/toast';
 import {useMutation, useQueryClient} from 'react-query';
 import {Title} from '@components/UserInfo/TitleText';
-import _ from 'lodash';
 import {Counter} from '@components/UserInfo/CounterText';
-import {MAX_PERSONALITY_LIMIT} from '@constants/user';
+import {MAX_TOPIC_LIMIT} from '@constants/user';
 import {MaximumAlert} from '@components/UserInfo/MaximumAlert';
 import {UpdateButton} from '@components/Button/Bottom/UpdateButton';
+import _ from 'lodash';
 
 type Props = {
-  currentPersonalities: number[];
+  currentTopics: number[];
   isModalVisible: boolean;
   onPressClose: () => void;
 };
 
-export function PersonalitiesModal({
-  currentPersonalities,
+export const TopicsModal = ({
+  currentTopics,
   isModalVisible,
   onPressClose,
-}: Props) {
+}: Props) => {
   const {
-    personalities,
-    selectedPersonalityIds,
-    selectPersonality,
+    topics,
+    selectedTopicIds,
+    selectTopic,
     alertOpacity,
     counter,
     reset,
     resetAlert,
-  } = usePersonality(currentPersonalities);
+  } = useTopic(currentTopics);
 
   const queryClient = useQueryClient();
 
@@ -43,9 +43,9 @@ export function PersonalitiesModal({
 
   const disableUpdate = useMemo(
     () =>
-      selectedPersonalityIds.length === 0 ||
-      _.isEqual(currentPersonalities, selectedPersonalityIds),
-    [currentPersonalities, selectedPersonalityIds],
+      selectedTopicIds.length === 0 ||
+      _.isEqual(currentTopics, selectedTopicIds),
+    [currentTopics, selectedTopicIds],
   );
 
   const hideModal = () => {
@@ -53,9 +53,9 @@ export function PersonalitiesModal({
     onPressClose();
   };
 
-  const {mutate: updatePersonalites} = useMutation(
-    ['personalities', selectedPersonalityIds],
-    async () => await patchUserInfo({personalityIds: selectedPersonalityIds}),
+  const {mutate: updateTopics} = useMutation(
+    ['topics', selectedTopicIds],
+    async () => await patchUserInfo({topicIds: selectedTopicIds}),
     {
       onSuccess: () => {
         Toast.show('성공적으로 변경되었어요!');
@@ -84,35 +84,29 @@ export function PersonalitiesModal({
       visible={isModalVisible}>
       <View style={styles.container}>
         <View style={[styles.modalView, {paddingBottom: SAFE_AREA_BOTTOM}]}>
-          <ModalHeader title={'성향 관리'} hideModal={hideModal} />
+          <ModalHeader title={'관심사 관리'} onPressClose={hideModal} />
 
           <View style={styles.titleBox}>
             <Title title={'나의 관심사를\n모두 선택해주세요'} />
             <View style={styles.counterWrap}>
               <ResetButton reset={reset} />
-              <Counter value={counter} max={MAX_PERSONALITY_LIMIT} />
+              <Counter value={counter} max={MAX_TOPIC_LIMIT} />
             </View>
           </View>
           <ScrollView alwaysBounceVertical={false} style={styles.topicBox}>
-            <PersonalityList
-              personalities={personalities}
-              selectPersonality={selectPersonality}
-              selectedPersonalityIds={selectedPersonalityIds}
+            <TopicList
+              topics={topics}
+              selectTopic={selectTopic}
+              selectedTopicIds={selectedTopicIds}
             />
           </ScrollView>
-          <MaximumAlert
-            alertOpacity={alertOpacity}
-            max={MAX_PERSONALITY_LIMIT}
-          />
-          <UpdateButton
-            disable={disableUpdate}
-            onPressUpdate={updatePersonalites}
-          />
+          <MaximumAlert alertOpacity={alertOpacity} max={MAX_TOPIC_LIMIT} />
+          <UpdateButton disable={disableUpdate} onPressUpdate={updateTopics} />
         </View>
       </View>
     </Modal>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {

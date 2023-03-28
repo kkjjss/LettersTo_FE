@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {TEXTICONS} from '../../../Constants/letter';
-import type {TexticonCategory} from '../../../types/types';
+import type {TexticonCategory} from '@type/types';
 
 type Props = {
   category: TexticonCategory;

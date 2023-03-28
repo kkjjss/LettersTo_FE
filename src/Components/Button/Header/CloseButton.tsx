@@ -1,7 +1,7 @@
 import React from 'react';
 import {Image, Pressable, StyleSheet} from 'react-native';
 
-const closeImg = require('../../../Assets/Icon/close/close_blue.png');
+const closeImg = require('@assets/Icon/close/close_blue.png');
 
 type Props = {
   onPress: () => void;

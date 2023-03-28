@@ -15,7 +15,7 @@ import {LinearGradient} from 'expo-linear-gradient';
 import {getPublicLetters} from '@apis/letter';
 import {PublicLetter, PublicLetters} from '@type/types';
 import {PublicLetterItem} from '@components/PublicLetterItem';
-import {EnvelopeModal} from '../../Modals/EnvelopeModal';
+import {EnvelopeModal} from '@components/Modals/Letter/EnvelopeModal';
 import {SCREEN_HEIGHT} from '@constants/screen';
 import Toast from '@components/Toast/toast';
 import {useQuery} from 'react-query';
@@ -189,7 +189,7 @@ export function Home({navigation}: Props) {
           <View style={{flexDirection: 'row'}}>
             <TouchableOpacity activeOpacity={0.7} onPress={goToNotification}>
               <Image
-                source={require('../../Assets/alert_off.png')}
+                source={require('@assets/alert_off.png')}
                 style={styles.icon}
               />
             </TouchableOpacity>
@@ -199,7 +199,7 @@ export function Home({navigation}: Props) {
                 onPress={goToStampHistory}
                 style={[styles.headerButton, {marginLeft: 12, width: 40}]}>
                 <Image
-                  source={require('../../Assets/Icon/stamp/stamps_blue.png')}
+                  source={require('@assets/Icon/stamp/stamps_blue.png')}
                   style={{width: 24, height: 24, marginLeft: -3}}
                 />
                 <View style={styles.stampArea}>
@@ -213,10 +213,7 @@ export function Home({navigation}: Props) {
             )}
           </View>
           <TouchableOpacity activeOpacity={0.7} onPress={goToMyPage}>
-            <Image
-              source={require('../../Assets/menu.png')}
-              style={styles.icon}
-            />
+            <Image source={require('@assets/menu.png')} style={styles.icon} />
           </TouchableOpacity>
         </View>
       </LinearGradient>
@@ -285,10 +282,7 @@ export function Home({navigation}: Props) {
             activeOpacity={0.7}
             style={[styles.btn, styles.btnPrimary]}
             onPress={scrollToTop}>
-            <Image
-              source={require('../../Assets/top.png')}
-              style={styles.icon}
-            />
+            <Image source={require('@assets/top.png')} style={styles.icon} />
           </TouchableOpacity>
         ) : (
           <TouchableOpacity
@@ -296,7 +290,7 @@ export function Home({navigation}: Props) {
             style={[styles.btn, styles.btnPrimary]}
             onPress={handleRefresh}>
             <Image
-              source={require('../../Assets/refresh.png')}
+              source={require('@assets/refresh.png')}
               style={styles.icon}
             />
           </TouchableOpacity>
@@ -305,10 +299,7 @@ export function Home({navigation}: Props) {
           activeOpacity={0.7}
           style={[styles.btn, styles.btnSecondary]}
           onPress={goToLetterEditor}>
-          <Image
-            source={require('../../Assets/write.png')}
-            style={styles.icon}
-          />
+          <Image source={require('@assets/write.png')} style={styles.icon} />
         </TouchableOpacity>
       </View>
       {selectedItem && (

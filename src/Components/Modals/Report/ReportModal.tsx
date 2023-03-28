@@ -8,13 +8,13 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import {ModalHeader} from '../Components/ModalHeader';
+import {ModalHeader} from '@components/Headers/ModalHeader';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {BottomButton} from '../Components/Button/Bottom/BottomButton';
-import {useKeyboard} from '../Hooks/Hardware/useKeyboard';
-import {reportLetter} from '../APIs/report';
-import {ReportData} from '../types/types';
-import Toast from '../Components/Toast/toast';
+import {BottomButton} from '@components/Button/Bottom/BottomButton';
+import {useKeyboard} from '@hooks/Hardware/useKeyboard';
+import {reportLetter} from '@apis/report';
+import {ReportData} from '@type/types';
+import Toast from '@components/Toast/toast';
 
 const REPORT_ITEMS = [
   {id: 0, text: '욕설 및 비하발언 포함'},
@@ -88,7 +88,7 @@ export const ReportModal = ({
       <View style={styles.container}>
         <View style={[styles.modalView, {paddingBottom: SAFE_AREA_BOTTOM}]}>
           <ScrollView alwaysBounceVertical={false}>
-            <ModalHeader title={'신고하기'} hideModal={hideModal} />
+            <ModalHeader title={'신고하기'} onPressClose={hideModal} />
 
             <View style={styles.titleBox}>
               <View style={styles.titleWrap}>

@@ -11,20 +11,17 @@ import {
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useEffect, useState} from 'react';
-import {
-  getDeliveryLetterContent,
-  getPublicLetterContent,
-} from '@apis/letter';
+import {getDeliveryLetterContent, getPublicLetterContent} from '@apis/letter';
 import {DeliveryLetterContent, PublicLetterContent} from '@type/types';
 import {PaperBackgroud} from '@components/Letter/PaperBackground/PaperBackgroud';
 import {BottomButton} from '@components/Button/Bottom/BottomButton';
 import {dateFormatter} from '@utils/dateFormatter';
 import {ImagePicker} from '@components/LetterEditor/ImagePicker';
-import {ImageModal} from '../../Modals/ImageModal';
-import {ModalBlur} from '../../Modals/ModalBlur';
+import {ImageModal} from '@components/Modals/Image/ImageModal';
+import {ModalBlur} from '@components/Modals/ModalBlur';
 import {Header2} from '@components/Headers/Header2';
-import useStore, {useLetterEditorStore} from '../../Store/store';
-import {ReportModal} from '../../Modals/ReportModal';
+import useStore, {useLetterEditorStore} from '@stores/store';
+import {ReportModal} from '@components/Modals/Report/ReportModal';
 import Toast from '@components/Toast/toast';
 
 const TEXT_ALIGN = {

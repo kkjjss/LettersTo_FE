@@ -9,9 +9,9 @@ import useStore from '../../../../Store/store';
 import {Header2} from '../../../../Components/Headers/Header2';
 import {StepIndicator} from '../../../../Components/StepIndicator';
 import {PUBLIC_COVER_EDIT_STEPS} from '../../../../Constants/user';
-import {usePersonality} from '../../../../Hooks/UserInfo/usePersonality';
+import {usePersonality} from '@hooks/UserInfo/usePersonality';
 import {useQuery} from 'react-query';
-import {getUserInfo} from '../../../../APIs/member';
+import {getUserInfo} from '@apis/member';
 
 type Props = NativeStackScreenProps<StackParamsList, 'CoverPersonalityEditor'>;
 
@@ -74,7 +74,7 @@ export function CoverPersonalityEditor({navigation}: Props) {
           disableNext={disableNext}
         />
         <View style={styles.cover}>
-          <LetterCoverPreview userInfo={userInfo} />
+          <LetterCoverPreview />
         </View>
         <StepIndicator
           current={PUBLIC_COVER_EDIT_STEPS.PERSONALITY}

@@ -8,13 +8,13 @@ import {
   View,
 } from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
-import useStore from '../../Store/store';
+import useStore from '@stores/store';
 import {TopicItem} from '../TopicItem';
 import {PersonalityItem} from '../PersonalityItem';
 import {GRADIENT_COLORS} from '@constants/letter';
 import {SCREEN_WIDTH} from '@constants/screen';
-import {useTopic} from '../../Hooks/UserInfo/useTopic';
-import {usePersonality} from '../../Hooks/UserInfo/usePersonality';
+import {useTopic} from '@hooks/UserInfo/useTopic';
+import {usePersonality} from '@hooks/UserInfo/usePersonality';
 
 const SelectedStampImage = () => {
   const {cover, stamps} = useStore();
@@ -45,7 +45,7 @@ const SelectedStampImage = () => {
           }}>
           <Image
             style={{height: 18, width: 18}}
-            source={require('../../Assets/photo_blue.png')}
+            source={require('@assets/photo_blue.png')}
           />
         </View>
       )}
@@ -75,7 +75,7 @@ export const LetterCoverPreview = React.memo(() => {
         <View style={styles.title}>
           <Text style={styles.titleText}>⌜{letter?.title}⌟︎︎</Text>
           <Image
-            source={require('../../Assets/From..png')}
+            source={require('@assets/From..png')}
             style={styles.From}
           />
           <Text style={styles.fromText}>{cover.nickname},</Text>
@@ -85,7 +85,7 @@ export const LetterCoverPreview = React.memo(() => {
         </View>
         <View style={{flex: 74}}>
           <ImageBackground
-            source={require('../../Assets/stamp.png')}
+            source={require('@assets/stamp.png')}
             style={styles.stampBg}>
             <SelectedStampImage />
           </ImageBackground>

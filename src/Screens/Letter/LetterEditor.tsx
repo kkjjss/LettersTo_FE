@@ -19,8 +19,8 @@ import {
 import * as imagePicker from 'expo-image-picker';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
-import useStore, {useLetterEditorStore} from '../../Store/store';
-import {useKeyboard} from '../../Hooks/Hardware/useKeyboard';
+import useStore, {useLetterEditorStore} from '@stores/store';
+import {useKeyboard} from '@hooks/Hardware/useKeyboard';
 import {BottomBar} from '@components/LetterEditor/Bottom/BottomBar';
 import {PaperSelector} from '@components/LetterEditor/Bottom/PaperSelector';
 import {TexticonSelector} from '@components/LetterEditor/Bottom/TexticonSelector';
@@ -34,8 +34,8 @@ import type {
   TexticonCategory,
 } from '@type/types';
 import {getImageUploadUrl} from '@apis/file';
-import {ImageModal} from '../../Modals/ImageModal';
-import {ModalBlur} from '../../Modals/ModalBlur';
+import {ImageModal} from '@components/Modals/Image/ImageModal';
+import {ModalBlur} from '@components/Modals/ModalBlur';
 import {PaperBackgroud} from '@components/Letter/PaperBackground/PaperBackgroud';
 import {Header2} from '@components/Headers/Header2';
 import Toast from '@components/Toast/toast';
