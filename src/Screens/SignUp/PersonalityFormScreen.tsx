@@ -7,19 +7,19 @@ import {
   ScrollView,
   Platform,
 } from 'react-native';
-import type {StackParamsList} from '../../../types/stackParamList';
 import {LinearGradient} from 'expo-linear-gradient';
-import {SCREEN_HEIGHT} from '../../../Constants/screen';
-import {NextButton} from '../../../Components/Button/Bottom/NextButton';
-import {ResetButton} from '../../../Components/ResetButton';
-import {PersonalityList} from '../../../Components/PersonalityList';
-import {usePersonality} from '../../../Hooks/UserInfo/usePersonality';
-import {MAX_PERSONALITY_LIMIT} from '../../../Constants/user';
-import {Header2} from '../../../Components/Headers/Header2';
-import {Title} from '../../../Components/UserInfo/TitleText';
-import {Counter} from '../../../Components/UserInfo/CounterText';
-import {MaximumAlert} from '../../../Components/UserInfo/MaximumAlert';
-import {useAuthAction} from '../../../Store/auth';
+import {SCREEN_HEIGHT} from '@constants/screen';
+import {NextButton} from '@components/Button/Bottom/NextButton';
+import {ResetButton} from '@components/ResetButton';
+import {PersonalityList} from '@components/PersonalityList';
+import {usePersonality} from '@hooks/UserInfo/usePersonality';
+import {MAX_PERSONALITY_LIMIT} from '@constants/user';
+import {Header2} from '@components/Headers/Header2';
+import {Title} from '@components/UserInfo/TitleText';
+import {Counter} from '@components/UserInfo/CounterText';
+import {MaximumAlert} from '@components/UserInfo/MaximumAlert';
+import {useAuthAction} from '@stores/auth';
+import type {StackParamsList} from '@type/stackParamList';
 
 type Props = NativeStackScreenProps<StackParamsList, 'PersonalityForm'>;
 

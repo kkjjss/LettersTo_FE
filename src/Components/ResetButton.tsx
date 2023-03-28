@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native';
 
-const resetButtonImage = require('../Assets/Icon/reset/reset.png');
+const resetButtonImage = require('@assets/Icon/reset/reset.png');
 
 type Params = {
   reset: () => void;

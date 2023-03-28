@@ -8,18 +8,18 @@ import {
   ScrollView,
 } from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
-import {SCREEN_HEIGHT} from '../../../Constants/screen';
-import {NextButton} from '../../../Components/Button/Bottom/NextButton';
-import {ResetButton} from '../../../Components/ResetButton';
-import {TopicList} from '../../../Components/TopicList';
-import {useTopic} from '../../../Hooks/UserInfo/useTopic';
-import {MAX_TOPIC_LIMIT} from '../../../Constants/user';
-import {Counter} from '../../../Components/UserInfo/CounterText';
-import {MaximumAlert} from '../../../Components/UserInfo/MaximumAlert';
-import {Title} from '../../../Components/UserInfo/TitleText';
-import {Header2} from '../../../Components/Headers/Header2';
-import {useAuthAction} from '../../../Store/auth';
-import type {StackParamsList} from '../../../types/stackParamList';
+import {SCREEN_HEIGHT} from '@constants/screen';
+import {NextButton} from '@components/Button/Bottom/NextButton';
+import {ResetButton} from '@components/ResetButton';
+import {TopicList} from '@components/TopicList';
+import {useTopic} from '@hooks/UserInfo/useTopic';
+import {MAX_TOPIC_LIMIT} from '@constants/user';
+import {Counter} from '@components/UserInfo/CounterText';
+import {MaximumAlert} from '@components/UserInfo/MaximumAlert';
+import {Title} from '@components/UserInfo/TitleText';
+import {Header2} from '@components/Headers/Header2';
+import {useAuthAction} from '@stores/auth';
+import type {StackParamsList} from '@type/stackParamList';
 
 type Props = NativeStackScreenProps<StackParamsList, 'TopicsForm'>;
 

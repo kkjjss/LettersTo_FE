@@ -1,9 +1,8 @@
 import * as React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {ReportButton} from '../Button/Report/ReportButton';
-
-import {BackButton} from '../Button/Header/BackButton';
-import {NextButton} from '../Button/Header/NextButton';
+import {ReportButton} from '@components/Button/Report/ReportButton';
+import {BackButton} from '@components/Button/Header/BackButton';
+import {NextButton} from '@components/Button/Header/NextButton';
 
 type Props = {
   title?: string;

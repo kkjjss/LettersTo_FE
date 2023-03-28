@@ -7,7 +7,7 @@ import {
   StyleSheet,
 } from 'react-native';
 
-const noticeBalloonImage = require('../../../../../Assets/Icon/notice/noticeBalloon.png');
+const noticeBalloonImage = require('@assets/Icon/notice/noticeBalloon.png');
 
 type Params = {
   noticeOpacity: Animated.Value;

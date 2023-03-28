@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {BottomButton} from '../../../../Components/Button/Bottom/BottomButton';
+import {BottomButton} from '@components/Button/Bottom/BottomButton';
 
 interface Props {
   disable: boolean;

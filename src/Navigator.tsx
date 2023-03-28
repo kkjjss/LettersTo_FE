@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {StackParamsList} from './types/stackParamList';
+import {StackParamsList} from '@type/stackParamList';
 
 // Splash
 import {Splash} from '@screens/SplashScreen';
@@ -14,10 +14,10 @@ import {LetterBoxDetail} from '@screens/LetterBox/LetterBoxDetail';
 
 // 인증 관련 스크린
 import {Auth} from '@screens/Auth/AuthScreen';
-import {NicknameForm} from '@screens/SignUp/NicknameForm/NicknameFormScreen';
-import {TopicsForm} from '@screens/SignUp/TopicsForm/TopicsFormScreen';
-import {PersonalityForm} from '@screens/SignUp/PersonalityForm/PersonalityFormScreen';
-import {LocationForm} from '@screens/SignUp/LocationForm/LocationFormScreen';
+import {NicknameForm} from '@screens/SignUp/NicknameFormScreen';
+import {TopicsForm} from '@screens/SignUp/TopicsFormScreen';
+import {PersonalityForm} from '@screens/SignUp/PersonalityFormScreen';
+import {LocationForm} from '@screens/SignUp/LocationFormScreen';
 import {MyPage} from '@screens/MyPage/MyPage/MyPageScreen';
 import {AccountDelete} from '@screens/MyPage/AccountDelete/AccountDeleteScreen';
 

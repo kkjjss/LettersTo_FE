@@ -40,11 +40,6 @@ export const useNickname = (curruntNickname?: string) => {
   const [tempNickname, setTempNickname] = useState('');
   const [disable, setDisable] = useState(true);
 
-  // const [nickname, setNickname] = useAuthStore(state => [
-  //   state.registerInfo.nickname,
-  //   state.action.setNicknameInRegisterInfo,
-  // ]);
-
   const [nickname, setNickname] = useState<string>('');
 
   const [nicknameValidationResult, setNicknameValidationResult] = useState<

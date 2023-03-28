@@ -8,7 +8,6 @@
     "skipLibCheck": true,                                 /* Skip type checking all .d.ts files. */
     "baseUrl": "./src",
     "paths": {
-      "~/*": ["./*"],
       "@screens/*": ["Screens/*"],
       "@components/*" : ["Components/*"],
       "@hooks/*": ["Hooks/*"],
@@ -18,6 +17,7 @@
       "@constants/*": ["Constants/*"],
       "@assets/*": ["Assets/*"],
       "@apis/*": ["APIs/*"],
+      "~/*": ["./*"],
     }
   },
   "exclude": [
