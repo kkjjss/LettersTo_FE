@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {HyperLink} from '../../../Components/HyperLink/HyperLinkText';
+import {HyperLink} from '@components/HyperLink/HyperLinkText';
 
 type Params = {
   onPressPrivacyPolicy: () => void;

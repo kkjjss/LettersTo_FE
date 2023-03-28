@@ -7,29 +7,26 @@ import {
   Platform,
   StatusBar,
 } from 'react-native';
-import type {StackParamsList} from '../../types/stackParamList';
+import type {StackParamsList} from '@type/stackParamList';
 import {useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {verifyProviderToken} from '../../APIs/token';
+import {verifyProviderToken} from '@apis/token';
 import {
   KakaoOAuthToken,
   login as loginWithKakaoOAuth,
 } from '@react-native-seoul/kakao-login';
 import appleAuth from '@invertase/react-native-apple-authentication';
-import {
-  onPressPrivacyPolicy,
-  onPressTermsOfService,
-} from '@utils/hyperlink';
+import {onPressPrivacyPolicy, onPressTermsOfService} from '@utils/hyperlink';
 
-import Toast from '../../Components/Toast/toast';
-import {ProviderToken} from '../../types/auth';
-import {useAuthAction} from '../../Store/auth';
-import {AuthButton} from './Components/AuthButton';
-import {Logo} from './Components/Logo';
-import {PolicyNotice} from './Components/PolicyNotice';
+import Toast from '@components/Toast/toast';
+import {ProviderToken} from '@type/auth';
+import {useAuthAction} from '@stores/auth';
+import {AuthButton} from '@components/Auth/AuthButton';
+import {Logo} from '@components/Logo/LogoAnimation';
+import {PolicyNotice} from '@components/Auth/PolicyNotice';
 
-const kakaoLogo = require('../../Assets/Image/social/kakao.png');
-const appleLogo = require('../../Assets/Image/social/apple.png');
+const kakaoLogo = require('@assets/Image/social/kakao.png');
+const appleLogo = require('@assets/Image/social/apple.png');
 
 type Props = NativeStackScreenProps<StackParamsList, 'Auth'>;
 
