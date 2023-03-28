@@ -10,6 +10,14 @@
     "paths": {
       "~/*": ["./*"],
       "@screens/*": ["Screens/*"],
+      "@compononts/*" : ["Compononts/*"],
+      "@hooks/*": ["Hooks/*"],
+          "@stores/*": ["Store/*"],
+          "@types/*": ["types/*"],
+          "@utils/*": ["Utils/*"],
+          "@constants/*": ["Constants/*"],
+          "@assets/*": ["Assets/*"],
+          "@apis/*": ["APIs/*"],
     }
   },
   "exclude": [
