@@ -1,5 +1,5 @@
 import {axiosInstance} from '@utils/http';
-import type {Regions, Cities} from '../types/types';
+import type {Regions, Cities} from '@type/types';
 
 export async function getRegions() {
   return await axiosInstance.get<Regions>('/geolocations/regions');

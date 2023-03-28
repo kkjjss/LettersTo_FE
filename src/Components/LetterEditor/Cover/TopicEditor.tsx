@@ -1,11 +1,11 @@
 import React from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import {MAX_TOPIC_LIMIT} from '../../../../../Constants/user';
-import {Topics} from '../../../../../types/types';
-import {ResetButton} from '../../../../../Components/ResetButton';
-import {TopicList} from '../../../../../Components/TopicList';
-import {Title} from '../../../../../Components/UserInfo/TitleText';
-import {Counter} from '../../../../../Components/UserInfo/CounterText';
+import {MAX_TOPIC_LIMIT} from '@constants/user';
+import {Topics} from '@type/types';
+import {ResetButton} from '@components/ResetButton';
+import {TopicList} from '@components/TopicList';
+import {Title} from '@components/UserInfo/TitleText';
+import {Counter} from '@components/UserInfo/CounterText';
 
 type Props = {
   topics: Topics;

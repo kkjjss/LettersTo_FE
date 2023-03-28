@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react';
 import {Image, StyleSheet, TouchableOpacity} from 'react-native';
-import {PAPER_COLORS} from '../../../Constants/letter';
+import {PAPER_COLORS} from '@constants/letter';
 import {PaperColor} from '@type/types';
 
 const checkMark = require('@assets/check.png');

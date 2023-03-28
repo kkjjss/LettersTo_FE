@@ -3,7 +3,7 @@ import type {
   RegisterInfo,
   AuthTokens,
   PatchUserInfoRequest,
-} from '../types/auth';
+} from '@type/auth';
 import {axiosInstance} from '@utils/http';
 
 export async function signUp(registerInfo: RegisterInfo) {

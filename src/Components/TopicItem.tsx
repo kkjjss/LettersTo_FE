@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
-import type {Topic} from '../types/types';
+import type {Topic} from '@type/types';
 
 type Props = {
   topic: Topic;

@@ -128,8 +128,8 @@ export function LetterBoxDetail({route, navigation}: Props) {
   };
 
   // 편지 조회
-  const goToReadLetter = (id: number) => {
-    navigation.navigate('ReadLetter', {id, to: 'DELIVERY'});
+  const goToLetterViewer = (id: number) => {
+    navigation.navigate('LetterViewer', {id, to: 'DELIVERY'});
   };
 
   return (
@@ -257,7 +257,7 @@ export function LetterBoxDetail({route, navigation}: Props) {
           data={selectedItem}
           isModalVisible={isEnvelopeModalVisible}
           setModalVisible={setEnvelopeModalVisible}
-          onOpenLetter={() => goToReadLetter(selectedItem.id)}
+          onOpenLetter={() => goToLetterViewer(selectedItem.id)}
         />
       )}
     </View>

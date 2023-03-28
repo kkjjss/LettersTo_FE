@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, TouchableHighlight} from 'react-native';
 
-import type {Personality} from '../types/types';
+import type {Personality} from '@type/types';
 import {PersonalityItem} from './PersonalityItem';
 
 type Props = {

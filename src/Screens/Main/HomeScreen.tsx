@@ -112,8 +112,8 @@ export function Home({navigation}: Props) {
   };
 
   // 편지 조회
-  const goToReadLetter = (id: number) => {
-    navigation.navigate('ReadLetter', {id, to: 'PUBLIC'});
+  const goToLetterViewer = (id: number) => {
+    navigation.navigate('LetterViewer', {id, to: 'PUBLIC'});
   };
 
   const goToMyPage = () => {
@@ -308,7 +308,7 @@ export function Home({navigation}: Props) {
           data={selectedItem}
           isModalVisible={isEnvelopeModalVisible}
           setModalVisible={setEnvelopeModalVisible}
-          onOpenLetter={() => goToReadLetter(selectedItem.id)}
+          onOpenLetter={() => goToLetterViewer(selectedItem.id)}
         />
       )}
     </LinearGradient>

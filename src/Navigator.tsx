@@ -9,7 +9,7 @@ import {Splash} from '@screens/SplashScreen';
 import {Main} from '@screens/Main/MainScreen';
 
 // 편지 관련 스크린
-import {ReadLetter} from '@screens/Letter/ReadLetter';
+import {LetterViewer} from '@screens/Letter/LetterViewerScreen';
 import {LetterBoxDetail} from '@screens/LetterBox/LetterBoxDetail';
 
 // 인증 관련 스크린
@@ -22,12 +22,12 @@ import {MyPage} from '@screens/MyPage/MyPageScreen';
 import {AccountDelete} from '@screens/MyPage/AccountDeleteScreen';
 
 // 편지 작성
-import {LetterEditor} from '@screens/Letter/LetterEditor';
-import {CoverDeliverySelector} from '@screens/Letter/CoverEditor/CoverDeliverySelector/CoverDeliverySelectorScreen';
-import {CoverTopicEditor} from '@screens/Letter/CoverEditor/CoverTopicEditor/CoverTopicEditorScreen';
-import {CoverPersonalityEditor} from '@screens/Letter/CoverEditor/CoverPersonalityEditor/CoverPersonalityEditorScreen';
-import {CoverStampSelector} from '@screens/Letter/CoverEditor/CoverStampSelector/CoverStampSelectorScreen';
-import {LetterComplete} from '@screens/Letter/LetterComplete';
+import {LetterEditor} from '@screens/Letter/LetterEditorScreen';
+import {CoverDeliverySelector} from '@screens/Letter/CoverEditor/CoverDeliverySelectorScreen';
+import {CoverTopicEditor} from '@screens/Letter/CoverEditor/CoverTopicEditorScreen';
+import {CoverPersonalityEditor} from '@screens/Letter/CoverEditor/CoverPersonalityEditorScreen';
+import {CoverStampSelector} from '@screens/Letter/CoverEditor/CoverStampSelectorScreen';
+import {LetterComplete} from '@screens/Letter/LetterCompleteScreen';
 
 // 알림
 import {Notifications} from '@screens/Notifications/Notifications';
@@ -54,7 +54,7 @@ export default function StackNavigator() {
       ) : isLoggedIn ? (
         <Stack.Group screenOptions={{headerShown: false}}>
           <Stack.Screen name="Main" component={Main} />
-          <Stack.Screen name="ReadLetter" component={ReadLetter} />
+          <Stack.Screen name="LetterViewer" component={LetterViewer} />
           <Stack.Screen name="LetterBoxDetail" component={LetterBoxDetail} />
 
           {/* 회원정보 수정 */}

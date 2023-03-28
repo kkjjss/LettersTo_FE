@@ -1,14 +1,14 @@
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import type {StackParamsList} from '../../../../types/stackParamList';
+import type {StackParamsList} from '@type/stackParamList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {StampSelector} from './Components/StampSelector';
-import {LetterCoverPreview} from '../../../../Components/LetterEditor/LetterCoverPreview';
-import useStore, {useLetterEditorStore} from '../../../../Store/store';
-import {DeliveryLetterCoverPreview} from '../../../../Components/LetterEditor/DeliveryLetterCoverPreview';
-import {Header2} from '../../../../Components/Headers/Header2';
-import {StepIndicator} from '../../../../Components/StepIndicator';
+import {StampSelector} from '@components/LetterEditor/Cover/StampSelector';
+import {LetterCoverPreview} from '@components/LetterEditor/LetterCoverPreview';
+import useStore, {useLetterEditorStore} from '@stores/store';
+import {DeliveryLetterCoverPreview} from '@components/LetterEditor/DeliveryLetterCoverPreview';
+import {Header2} from '@components/Headers/Header2';
+import {StepIndicator} from '@components/StepIndicator';
 import {useQuery} from 'react-query';
 import {getUserInfo} from '@apis/member';
 

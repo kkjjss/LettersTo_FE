@@ -1,4 +1,4 @@
-import type {Topics} from '../types/types';
+import type {Topics} from '@type/types';
 import {axiosInstance} from '@utils/http';
 
 export async function getTopics() {

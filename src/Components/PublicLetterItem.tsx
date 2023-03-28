@@ -8,7 +8,7 @@ import {
   ImageBackground,
   Platform,
 } from 'react-native';
-import {PublicLetter} from '../types/types';
+import {PublicLetter} from '@type/types';
 import {LinearGradient} from 'expo-linear-gradient';
 import {GRADIENT_COLORS} from '../Constants/letter';
 

@@ -4,7 +4,7 @@ import {Modal, Pressable, StyleSheet, Text, View} from 'react-native';
 import {deleteAccount} from '../../../APIs/member';
 import Toast from '../../Toast/toast';
 import {useMutation} from 'react-query';
-import {useAuthAction} from '../../../Store/auth';
+import {useAuthAction} from '@stores/auth';
 
 type Props = {
   hideModal: () => void;

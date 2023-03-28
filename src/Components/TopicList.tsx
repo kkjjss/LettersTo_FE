@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import type {Topics} from '../types/types';
+import type {Topics} from '@type/types';
 import {TopicButton} from './TopicButton';
 
 import {TOPIC_CATEGORY} from '../Constants/user';

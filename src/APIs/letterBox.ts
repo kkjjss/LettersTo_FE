@@ -1,4 +1,4 @@
-import type {LetterBoxes, LetterBoxInfo, DeliveryLetters} from '../types/types';
+import type {LetterBoxes, LetterBoxInfo, DeliveryLetters} from '@type/types';
 import {instanceWithAuth} from '@utils/http';
 
 export async function getLetterBoxes(): Promise<LetterBoxes> {

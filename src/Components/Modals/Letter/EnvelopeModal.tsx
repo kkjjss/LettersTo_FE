@@ -14,8 +14,8 @@ import {
 import {LinearGradient} from 'expo-linear-gradient';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useGesture} from '@hooks/Hardware/useGesture';
-import {GRADIENT_COLORS} from '../../../Constants/letter';
-import {PublicLetter, DeliveryLetter, PaperColor} from '../../../types/types';
+import {GRADIENT_COLORS} from '@constants/letter';
+import {PublicLetter, DeliveryLetter, PaperColor} from '@type/types';
 import {dateFormatter} from '@utils/dateFormatter';
 
 interface EnvelopeModalProps {

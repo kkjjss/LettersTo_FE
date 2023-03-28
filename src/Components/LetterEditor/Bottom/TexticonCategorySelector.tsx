@@ -1,6 +1,6 @@
 import React from 'react';
 import {ScrollView, StyleSheet} from 'react-native';
-import {TEXTICONS} from '../../../Constants/letter';
+import {TEXTICONS} from '@constants/letter';
 import type {TexticonCategory} from '@type/types';
 import {TexticonCategoryButton} from './TexticonCategoryButton';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import {ScrollView, StyleSheet} from 'react-native';
-import {PAPER_STYLES} from '../../../Constants/letter';
+import {PAPER_STYLES} from '@constants/letter';
 import {PaperStyle} from '@type/types';
 import {PaperStyleButton} from './PaperStyleButton';
 

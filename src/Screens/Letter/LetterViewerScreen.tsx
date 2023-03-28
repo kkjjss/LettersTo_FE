@@ -30,9 +30,9 @@ const TEXT_ALIGN = {
   CENTER: 'center',
 } as const;
 
-type Props = NativeStackScreenProps<StackParamsList, 'ReadLetter'>;
+type Props = NativeStackScreenProps<StackParamsList, 'LetterViewer'>;
 
-export function ReadLetter({route, navigation}: Props) {
+export function LetterViewer({route, navigation}: Props) {
   const [letterContent, setLetterContent] = useState<
     PublicLetterContent | DeliveryLetterContent
   >();
@@ -117,7 +117,10 @@ export function ReadLetter({route, navigation}: Props) {
 
   const goBack = useCallback(() => navigation.pop(), [navigation]);
 
-  const alertButtonOK = [{text: '확인', onPress: () => navigation.pop()}];
+  const alertButtonOK = useMemo(
+    () => [{text: '확인', onPress: () => navigation.pop()}],
+    [navigation],
+  );
 
   const onPressReply = useCallback(() => {
     if (letterContent) {
@@ -150,7 +153,15 @@ export function ReadLetter({route, navigation}: Props) {
         to: route.params.to,
       });
     }
-  }, [letterContent, navigation, route.params, setDeliverLetterTo]);
+  }, [
+    alertButtonOK,
+    letterContent,
+    navigation,
+    nickname,
+    route.params.id,
+    route.params.to,
+    setDeliverLetterTo,
+  ]);
 
   return (
     <PaperBackgroud paperColor={paperColor} paperStyle={paperStyle}>

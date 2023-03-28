@@ -8,21 +8,21 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import type {StackParamsList} from '../../../../types/stackParamList';
+import type {StackParamsList} from '@type/stackParamList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {LetterCoverPreview} from '../../../../Components/LetterEditor/LetterCoverPreview';
-import useStore, {useLetterEditorStore} from '../../../../Store/store';
-import {DeliveryLetterCoverPreview} from '../../../../Components/LetterEditor/DeliveryLetterCoverPreview';
-import {Header2} from '../../../../Components/Headers/Header2';
+import {LetterCoverPreview} from '@components/LetterEditor/LetterCoverPreview';
+import useStore, {useLetterEditorStore} from '@stores/store';
+import {DeliveryLetterCoverPreview} from '@components/LetterEditor/DeliveryLetterCoverPreview';
+import {Header2} from '@components/Headers/Header2';
 import {LinearGradient} from 'expo-linear-gradient';
-import {StepIndicator} from '../../../../Components/StepIndicator';
-import {PRIVATE_COVER_EDIT_STEPS} from '../../../../Constants/user';
+import {StepIndicator} from '@components/StepIndicator';
+import {PRIVATE_COVER_EDIT_STEPS} from '@constants/user';
 import {getDeliveryDate} from '@apis/letter';
-import {DeliveryType} from '../../../../types/types';
+import {DeliveryType} from '@type/types';
 import {getUserInfo} from '@apis/member';
 import {useQuery} from 'react-query';
 import {getCities, getRegions} from '@apis/geolocation';
-import Toast from '../../../../Components/Toast/toast';
+import Toast from '@components/Toast/toast';
 
 const stampsImg = require('@assets/Icon/stamp/stamps_blue.png');
 const stampImg = require('@assets/Icon/stamp/stamp_blue.png');

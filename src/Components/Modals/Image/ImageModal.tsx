@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../Constants/screen';
+import {SCREEN_HEIGHT, SCREEN_WIDTH} from '@constants/screen';
 import {getImageUrl} from '@utils/image';
 
 type Props = {

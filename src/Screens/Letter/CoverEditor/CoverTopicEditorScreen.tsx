@@ -1,19 +1,19 @@
-import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import type {StackParamsList} from '../../../../types/stackParamList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {TopicEditor} from './Components/TopicEditor';
-import {LetterCoverPreview} from '../../../../Components/LetterEditor/LetterCoverPreview';
-import useStore from '../../../../Store/store';
-import {StepIndicator} from '../../../../Components/StepIndicator';
-import {PUBLIC_COVER_EDIT_STEPS} from '../../../../Constants/user';
-import {Header2} from '../../../../Components/Headers/Header2';
+import {TopicEditor} from '@components/LetterEditor/Cover/TopicEditor';
+import {LetterCoverPreview} from '@components/LetterEditor/LetterCoverPreview';
+import useStore from '@stores/store';
+import {StepIndicator} from '@components/StepIndicator';
+import {PUBLIC_COVER_EDIT_STEPS} from '@constants/user';
+import {Header2} from '@components/Headers/Header2';
 import {useTopic} from '@hooks/UserInfo/useTopic';
 import {useQuery} from 'react-query';
-import Toast from '../../../../Components/Toast/toast';
+import Toast from '@components/Toast/toast';
 import {getUserInfo} from '@apis/member';
 import {getCities, getRegions} from '@apis/geolocation';
+import type {NativeStackScreenProps} from '@react-navigation/native-stack';
+import type {StackParamsList} from '@type/stackParamList';
 
 type Props = NativeStackScreenProps<StackParamsList, 'CoverTopicEditor'>;
 

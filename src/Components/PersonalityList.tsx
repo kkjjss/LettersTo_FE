@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableHighlight, View} from 'react-native';
-import type {Personalities} from '../types/types';
+import type {Personalities} from '@type/types';
 
 type Props = {
   personalities: Personalities;

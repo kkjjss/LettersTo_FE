@@ -6,7 +6,7 @@ import {
   PaperColor,
   PaperStyle,
   DeliveryLetterWriteRequest,
-} from '../types/types';
+} from '@type/types';
 import {subDate} from '@utils/dateFormatter';
 
 interface Store {

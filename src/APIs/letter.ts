@@ -3,7 +3,7 @@ import {
   PublicLetterContent,
   PublicLetters,
   PublicLetterWriteRequest,
-} from '../types/types';
+} from '@type/types';
 import {instance, instanceWithAuth} from '@utils/http';
 
 type PublicLetterData = {

@@ -1,9 +1,9 @@
 import React, {useCallback} from 'react';
 import {Text, View, StyleSheet, ScrollView, Image} from 'react-native';
-import {SCREEN_HEIGHT} from '../../../../../Constants/screen';
-import {StampsList} from '../../../../../Components/Stamp/StampsList';
-import useStore from '../../../../../Store/store';
-import {Title} from '../../../../../Components/UserInfo/TitleText';
+import {SCREEN_HEIGHT} from '@constants/screen';
+import {StampsList} from '@components/Stamp/StampsList';
+import useStore from '@stores/store';
+import {Title} from '@components/UserInfo/TitleText';
 
 const stampImg = require('@assets/Icon/stamp/stamps_blue.png');
 

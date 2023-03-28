@@ -1,6 +1,6 @@
 import React from 'react';
 import {View} from 'react-native';
-import {SCREEN_HEIGHT} from '../../../Constants/screen';
+import {SCREEN_HEIGHT} from '@constants/screen';
 import type {TexticonCategory} from '@type/types';
 import {TexticonCategorySelector} from './TexticonCategorySelector';
 import {TexticonItemSelector} from './TexticonItemSelector';
