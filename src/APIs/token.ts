@@ -1,4 +1,4 @@
-import {axiosInstance} from '../Utils/http';
+import {axiosInstance} from '@utils/http';
 import {AuthTokens, ProviderToken} from '../types/auth';
 
 export async function verifyProviderToken(

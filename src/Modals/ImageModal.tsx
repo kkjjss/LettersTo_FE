@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../Constants/screen';
-import {getImageUrl} from '../Utils/image';
+import {getImageUrl} from '@utils/image';
 
 type Props = {
   isImageModalVisible: boolean;

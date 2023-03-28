@@ -1,4 +1,4 @@
-import {axiosInstance} from '../Utils/http';
+import {axiosInstance} from '@utils/http';
 
 export async function getStampHistories() {
   return await axiosInstance.get('/stamp-histories');

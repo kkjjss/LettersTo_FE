@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {SCREEN_WIDTH} from '../../Constants/screen';
-import {getImageUrl} from '../../Utils/image';
+import {getImageUrl} from '@utils/image';
 const closeImg = require('../../Assets/Icon/close/close_blue.png');
 
 const foldButton = require('../../Assets/fold.png');

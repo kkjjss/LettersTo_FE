@@ -1,4 +1,4 @@
-import {axiosInstance} from '../Utils/http';
+import {axiosInstance} from '@utils/http';
 import type {Regions, Cities} from '../types/types';
 
 export async function getRegions() {

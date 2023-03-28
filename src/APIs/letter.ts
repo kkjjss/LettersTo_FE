@@ -4,7 +4,7 @@ import {
   PublicLetters,
   PublicLetterWriteRequest,
 } from '../types/types';
-import {instance, instanceWithAuth} from '../Utils/http';
+import {instance, instanceWithAuth} from '@utils/http';
 
 type PublicLetterData = {
   content: PublicLetters | [];

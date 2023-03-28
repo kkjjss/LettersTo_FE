@@ -21,7 +21,7 @@ import {
 } from '../../types/types';
 import {getLetterBoxInfo, getDeliveryLetters} from '../../APIs/letterBox';
 import {Header} from '../../Components/Headers/Header';
-import {dateFormatter} from '../../Utils/dateFormatter';
+import {dateFormatter} from '@utils/dateFormatter';
 import {LetterItem} from './LetterItem';
 import {EnvelopeModal} from '../../Modals/EnvelopeModal';
 import Toast from '../../Components/Toast/toast';

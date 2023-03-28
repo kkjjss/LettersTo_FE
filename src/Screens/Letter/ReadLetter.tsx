@@ -18,7 +18,7 @@ import {
 import {DeliveryLetterContent, PublicLetterContent} from '../../types/types';
 import {PaperBackgroud} from '../../Components/Letter/PaperBackground/PaperBackgroud';
 import {BottomButton} from '../../Components/Button/Bottom/BottomButton';
-import {dateFormatter} from '../../Utils/dateFormatter';
+import {dateFormatter} from '@utils/dateFormatter';
 import {ImagePicker} from '../../Components/LetterEditor/ImagePicker';
 import {ImageModal} from '../../Modals/ImageModal';
 import {ModalBlur} from '../../Modals/ModalBlur';

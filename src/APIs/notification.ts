@@ -1,4 +1,4 @@
-import {axiosInstance} from '../Utils/http';
+import {axiosInstance} from '@utils/http';
 
 interface NotificationsRequestParams {
   read: boolean | undefined;

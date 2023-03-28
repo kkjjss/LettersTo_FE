@@ -19,7 +19,7 @@ import appleAuth from '@invertase/react-native-apple-authentication';
 import {
   onPressPrivacyPolicy,
   onPressTermsOfService,
-} from '../../Utils/hyperlink';
+} from '@utils/hyperlink';
 
 import Toast from '../../Components/Toast/toast';
 import {ProviderToken} from '../../types/auth';

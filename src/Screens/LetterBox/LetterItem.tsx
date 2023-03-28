@@ -12,7 +12,7 @@ import {
 import {DeliveryLetter, PaperColor} from '../../types/types';
 import {LinearGradient} from 'expo-linear-gradient';
 import {GRADIENT_COLORS} from '../../Constants/letter';
-import {dateFormatter} from '../../Utils/dateFormatter';
+import {dateFormatter} from '@utils/dateFormatter';
 import {SCREEN_WIDTH} from '../../Constants/screen';
 
 interface LetterItemProps {

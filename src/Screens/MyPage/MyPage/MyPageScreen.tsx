@@ -19,7 +19,7 @@ import {BottomButton} from '../../../Components/Button/Bottom/BottomButton';
 import {
   onPressPrivacyPolicy,
   onPressTermsOfService,
-} from '../../../Utils/hyperlink';
+} from '@utils/hyperlink';
 import {useAuthAction} from '../../../Store/auth';
 import {useQuery} from 'react-query';
 import {LogoutModal} from '../../../Modals/Logout/LogoutModal';

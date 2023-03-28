@@ -16,7 +16,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useGesture} from '../Hooks/Hardware/useGesture';
 import {GRADIENT_COLORS} from '../Constants/letter';
 import {PublicLetter, DeliveryLetter, PaperColor} from '../types/types';
-import {dateFormatter} from '../Utils/dateFormatter';
+import {dateFormatter} from '@utils/dateFormatter';
 
 interface EnvelopeModalProps {
   type: 'PUBLIC' | 'DELIVERY';

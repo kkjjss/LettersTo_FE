@@ -7,7 +7,7 @@ import {
   PaperStyle,
   DeliveryLetterWriteRequest,
 } from '../types/types';
-import {subDate} from '../Utils/dateFormatter';
+import {subDate} from '@utils/dateFormatter';
 
 interface Store {
   // isLoggedIn: boolean;

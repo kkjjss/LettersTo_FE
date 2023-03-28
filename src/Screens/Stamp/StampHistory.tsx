@@ -14,7 +14,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Header2} from '../../Components/Headers/Header2';
 import {getStampHistories} from '../../APIs/stamp';
 import {StampHistories} from '../../types/types';
-import {dateFormatter} from '../../Utils/dateFormatter';
+import {dateFormatter} from '@utils/dateFormatter';
 import Toast from '../../Components/Toast/toast';
 import {useQuery} from 'react-query';
 import {getUserInfo} from '../../APIs/member';
