@@ -84,11 +84,17 @@ interface Store {
     topicIds: number[];
     personalityIds: number[];
     stamp: number | undefined;
+    nickname: string;
+    address: {
+      region: string;
+      city: string;
+    };
   };
   setCoverTopicIds: (topicIds: number[]) => void;
   setCoverPersonalityIds: (personalityIds: number[]) => void;
   setCoverStampId: (stampId: number | undefined) => void;
-  // setInitialCoverData: () => void;
+  setCoverNickname: (nickname: string) => void;
+  setCoverAddress: (region: string, city: string) => void;
 
   stamps: Stamps;
   setStamps: (value: Stamps) => void;
@@ -163,6 +169,11 @@ const useStore = create<Store>(set => ({
     topicIds: [],
     personalityIds: [],
     stamp: undefined,
+    nickname: '',
+    address: {
+      region: '',
+      city: '',
+    },
   },
 
   setCoverTopicIds: topicIds =>
@@ -173,6 +184,12 @@ const useStore = create<Store>(set => ({
 
   setCoverStampId: stampId =>
     set(state => ({cover: {...state.cover, stamp: stampId}})),
+
+  setCoverNickname: nickname =>
+    set(state => ({cover: {...state.cover, nickname}})),
+
+  setCoverAddress: (region, city) =>
+    set(state => ({cover: {...state.cover, address: {region, city}}})),
 
   // setInitialCoverData: () =>
   //   set(state => ({

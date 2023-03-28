@@ -1,40 +1,14 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React from 'react';
 import {Image, Text, View} from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 import useStore, {useLetterEditorStore} from '../../Store/store';
 import {GRADIENT_COLORS} from '../../Constants/letter';
 import {SCREEN_WIDTH} from '../../Constants/screen';
-import {getCities} from '../../APIs/geolocation';
-import Toast from '../Toast/toast';
 
 export const DeliveryLetterCoverBackPreview = React.memo(() => {
-  const {userInfo} = useStore();
   const {deliveryLetter, deliveryLetterTo, standardDeliveryDate} =
     useLetterEditorStore();
-
-  const [fromAddress, setFromAddress] = useState('');
-
-  const getFromAddress = useCallback(async () => {
-    try {
-      if (userInfo?.parentGeolocationId && userInfo.geolocationId) {
-        const userCity = (await getCities(userInfo.parentGeolocationId)).find(
-          city => city.id === userInfo.geolocationId,
-        );
-
-        setFromAddress([userCity?.name].join(''));
-      } else {
-        return '1';
-      }
-    } catch (error: any) {
-      console.error(error.message);
-      Toast.show('문제가 발생했습니다');
-    }
-  }, [userInfo]);
-
-  useEffect(() => {
-    getFromAddress();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const {cover} = useStore();
 
   return (
     <LinearGradient
@@ -70,7 +44,7 @@ export const DeliveryLetterCoverBackPreview = React.memo(() => {
                     fontSize: 13,
                     color: '#0000cc',
                   }}>
-                  {fromAddress}
+                  {cover.address.city}
                 </Text>
                 <Image
                   source={require('../../Assets/arrow.png')}
@@ -130,7 +104,7 @@ export const DeliveryLetterCoverBackPreview = React.memo(() => {
                     fontSize: 13,
                     color: '#0000cc',
                   }}>
-                  {fromAddress}
+                  {cover.address.city}
                 </Text>
                 <Image
                   source={require('../../Assets/arrow.png')}

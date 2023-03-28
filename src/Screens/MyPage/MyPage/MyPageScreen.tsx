@@ -119,7 +119,7 @@ export const MyPage = ({navigation}: Props) => {
     navigation.navigate('AccountDelete');
   }, [navigation]);
 
-  const {data: userInfo, isSuccess} = useQuery(['userInfo'], getUserInfo);
+  const {data: userInfo, isSuccess} = useQuery('userInfo', getUserInfo);
 
   if (!isSuccess) {
     return <></>;

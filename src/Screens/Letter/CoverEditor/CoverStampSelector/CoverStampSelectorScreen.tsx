@@ -45,7 +45,7 @@ export function CoverStampSelector({navigation, route}: Props) {
     navigation.pop();
   };
 
-  const {data: userInfo, isSuccess} = useQuery(['userInfo'], getUserInfo);
+  const {data: userInfo, isSuccess} = useQuery('userInfo', getUserInfo);
 
   const disableNext = useMemo(() => !selectedStampId, [selectedStampId]);
 
@@ -90,7 +90,7 @@ export function CoverStampSelector({navigation, route}: Props) {
         />
         <View style={styles.cover}>
           {!route.params?.reply ? (
-            <LetterCoverPreview userInfo={userInfo} />
+            <LetterCoverPreview />
           ) : (
             <DeliveryLetterCoverPreview />
           )}

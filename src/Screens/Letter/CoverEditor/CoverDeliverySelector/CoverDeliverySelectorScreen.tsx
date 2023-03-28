@@ -8,45 +8,53 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {StackParamsList} from '../../../types/stackParamList';
+import {StackParamsList} from '../../../../types/stackParamList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {LetterCoverPreview} from '../../../Components/LetterEditor/LetterCoverPreview';
-import useStore, {useLetterEditorStore} from '../../../Store/store';
-import {DeliveryLetterCoverPreview} from '../../../Components/LetterEditor/DeliveryLetterCoverPreview';
-import {Header2} from '../../../Components/Headers/Header2';
+import {LetterCoverPreview} from '../../../../Components/LetterEditor/LetterCoverPreview';
+import useStore, {useLetterEditorStore} from '../../../../Store/store';
+import {DeliveryLetterCoverPreview} from '../../../../Components/LetterEditor/DeliveryLetterCoverPreview';
+import {Header2} from '../../../../Components/Headers/Header2';
 import {LinearGradient} from 'expo-linear-gradient';
-import {StepIndicator} from '../../../Components/StepIndicator';
-import {PRIVATE_COVER_EDIT_STEPS} from '../../../Constants/user';
-import {getDeliveryDate} from '../../../APIs/letter';
-import {DeliveryType} from '../../../types/types';
-// import {subDate} from '../../../Utils/dateFormatter';
+import {StepIndicator} from '../../../../Components/StepIndicator';
+import {PRIVATE_COVER_EDIT_STEPS} from '../../../../Constants/user';
+import {getDeliveryDate} from '../../../../APIs/letter';
+import {DeliveryType} from '../../../../types/types';
+import {getUserInfo} from '../../../../APIs/member';
+import {useQuery} from 'react-query';
+import {getCities, getRegions} from '../../../../APIs/geolocation';
+import Toast from '../../../../Components/Toast/toast';
+
+const stampsImg = require('../../../../Assets/Icon/stamp/stamps_blue.png');
+const stampImg = require('../../../../Assets/Icon/stamp/stamp_blue.png');
+const expressTypeImg = require('../../../../Assets/Icon/delivery/Express.png');
 
 type Props = NativeStackScreenProps<StackParamsList, 'CoverDeliverySelector'>;
 
 export function CoverDeliverySelector({navigation, route}: Props) {
-  const [deliveryType, setDeliveryType] = useState<DeliveryType>('STANDARD');
-  // const [standardDeliveryDate, setStandardDeliveryDate] =
-  //   useState<string>();
+  const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
 
-  const {userInfo} = useStore();
+  const [deliveryType, setDeliveryType] = useState<DeliveryType>('STANDARD');
+
   const {deliveryLetter, standardDeliveryDate, setStandardDeliveryDate} =
     useLetterEditorStore();
 
-  const stampQuantity = userInfo?.stampQuantity ?? 0;
-
   const {setDeliveryLetterData} = useLetterEditorStore();
 
-  const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
+  const {setCoverAddress, setCoverNickname} = useStore();
+
+  const {data: userInfo, isSuccess} = useQuery('userInfo', getUserInfo);
 
   const disableNext = useMemo(() => {
-    if (deliveryType === 'EXPRESS' && stampQuantity < 5) {
+    if (!userInfo) {
+      return false;
+    } else if (deliveryType === 'EXPRESS' && userInfo.stampQuantity < 5) {
       return true;
-    } else if (deliveryType === 'STANDARD' && stampQuantity < 1) {
+    } else if (deliveryType === 'STANDARD' && userInfo.stampQuantity < 1) {
       return true;
     } else {
       return false;
     }
-  }, [deliveryType, stampQuantity]);
+  }, [deliveryType, userInfo]);
 
   const goBack = () => {
     navigation.pop();
@@ -71,6 +79,36 @@ export function CoverDeliverySelector({navigation, route}: Props) {
     getStandardDeliveryDate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    const getFromAddress = async (
+      parentGeolocationId: number,
+      geolocationId: number,
+    ) => {
+      const userRegion = (await getRegions()).find(
+        (region: any) => region.id === geolocationId,
+      );
+      const userCity = (await getCities(geolocationId)).find(
+        (city: any) => city.id === parentGeolocationId,
+      );
+
+      setCoverAddress(userRegion?.name || '', userCity?.name || '');
+    };
+
+    if (userInfo) {
+      setCoverNickname(userInfo.nickname);
+      try {
+        getFromAddress(userInfo.geolocationId, userInfo.parentGeolocationId);
+      } catch (error: any) {
+        console.error(error.message);
+        Toast.show('문제가 발생했습니다');
+      }
+    }
+  }, [setCoverAddress, setCoverNickname, userInfo]);
+
+  if (!isSuccess) {
+    return <></>;
+  }
 
   return (
     <View style={{flex: 1}}>
@@ -114,18 +152,15 @@ export function CoverDeliverySelector({navigation, route}: Props) {
           </View>
           <View style={styles.counterWrap}>
             <Text style={styles.counter}>보유 우표</Text>
-            <Image
-              source={require('../../../Assets/Icon/stamp/stamps_blue.png')}
-              style={{height: 24, width: 24}}
-            />
-            <Text style={styles.counter}>X {stampQuantity}</Text>
+            <Image source={stampsImg} style={{height: 24, width: 24}} />
+            <Text style={styles.counter}>X {userInfo.stampQuantity}</Text>
           </View>
         </View>
         <ScrollView>
           <View style={{flex: 1, padding: 24}}>
             <TouchableOpacity
               onPress={() => {
-                if (stampQuantity >= 1) {
+                if (userInfo.stampQuantity >= 1) {
                   setDeliveryType('STANDARD');
                 }
               }}
@@ -177,7 +212,7 @@ export function CoverDeliverySelector({navigation, route}: Props) {
                       alignItems: 'center',
                     }}>
                     <Image
-                      source={require('../../../Assets/numberStamp.png')}
+                      source={stampImg}
                       style={{
                         height: 20,
                         width: 20,
@@ -207,7 +242,7 @@ export function CoverDeliverySelector({navigation, route}: Props) {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                if (stampQuantity >= 5) {
+                if (userInfo.stampQuantity >= 5) {
                   setDeliveryType('EXPRESS');
                 }
               }}
@@ -253,7 +288,7 @@ export function CoverDeliverySelector({navigation, route}: Props) {
                     marginBottom: 8,
                   }}>
                   <Image
-                    source={require('../../../Assets/Express.png')}
+                    source={expressTypeImg}
                     style={{
                       height: 28,
                       width: 75,
@@ -266,7 +301,7 @@ export function CoverDeliverySelector({navigation, route}: Props) {
                       alignItems: 'center',
                     }}>
                     <Image
-                      source={require('../../../Assets/numberStamp.png')}
+                      source={stampImg}
                       style={{
                         height: 20,
                         width: 20,

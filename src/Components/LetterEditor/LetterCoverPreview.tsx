@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React from 'react';
 import {
   Image,
   ImageBackground,
@@ -13,11 +13,8 @@ import {TopicItem} from '../TopicItem';
 import {PersonalityItem} from '../PersonalityItem';
 import {GRADIENT_COLORS} from '../../Constants/letter';
 import {SCREEN_WIDTH} from '../../Constants/screen';
-import {getCities, getRegions} from '../../APIs/geolocation';
-import Toast from '../Toast/toast';
 import {useTopic} from '../../Hooks/UserInfo/useTopic';
 import {usePersonality} from '../../Hooks/UserInfo/usePersonality';
-import {UserInfo} from '../../types/auth';
 
 const SelectedStampImage = () => {
   const {cover, stamps} = useStore();
@@ -56,44 +53,14 @@ const SelectedStampImage = () => {
   );
 };
 
-type Props = {
-  userInfo: UserInfo;
-};
-
-export const LetterCoverPreview = React.memo(({userInfo}: Props) => {
+export const LetterCoverPreview = React.memo(() => {
   const {cover, letter} = useStore(state => ({
     cover: state.cover,
     letter: state.letter,
   }));
 
-  const [fromAddress, setFromAddress] = useState('');
-
   const {topics} = useTopic();
   const {personalities} = usePersonality();
-
-  const getFromAddress = useCallback(async () => {
-    try {
-      if (userInfo.parentGeolocationId && userInfo.geolocationId) {
-        const userRegion = (await getRegions()).find(
-          region => region.id === userInfo.parentGeolocationId,
-        );
-        const userCity = (await getCities(userInfo.parentGeolocationId)).find(
-          city => city.id === userInfo.geolocationId,
-        );
-
-        setFromAddress([userRegion?.name, ' ', userCity?.name].join(''));
-      } else {
-        return '1';
-      }
-    } catch (error: any) {
-      console.error(error.message);
-      Toast.show('문제가 발생했습니다');
-    }
-  }, [userInfo]);
-
-  useEffect(() => {
-    getFromAddress();
-  }, [getFromAddress]);
 
   return (
     <LinearGradient
@@ -111,8 +78,10 @@ export const LetterCoverPreview = React.memo(({userInfo}: Props) => {
             source={require('../../Assets/From..png')}
             style={styles.From}
           />
-          <Text style={styles.fromText}>{userInfo?.nickname},</Text>
-          <Text style={styles.fromText}>{fromAddress}</Text>
+          <Text style={styles.fromText}>{cover.nickname},</Text>
+          <Text style={styles.fromText}>
+            {[cover.address.region, ' ', cover.address.city].join('')}
+          </Text>
         </View>
         <View style={{flex: 74}}>
           <ImageBackground

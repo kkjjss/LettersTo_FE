@@ -23,7 +23,7 @@ import {AccountDelete} from '../Screens/MyPage/AccountDelete/AccountDeleteScreen
 
 // 편지 작성
 import {LetterEditor} from '../Screens/Letter/LetterEditor';
-import {CoverDeliverySelector} from '../Screens/Letter/CoverEditor/CoverDeliverySelector';
+import {CoverDeliverySelector} from '../Screens/Letter/CoverEditor/CoverDeliverySelector/CoverDeliverySelectorScreen';
 import {CoverTopicEditor} from '../Screens/Letter/CoverEditor/CoverTopicEditor/CoverTopicEditorScreen';
 import {CoverPersonalityEditor} from '../Screens/Letter/CoverEditor/CoverPersonalityEditor/CoverPersonalityEditorScreen';
 import {CoverStampSelector} from '../Screens/Letter/CoverEditor/CoverStampSelector/CoverStampSelectorScreen';

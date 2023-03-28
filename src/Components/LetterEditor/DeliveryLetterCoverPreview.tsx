@@ -1,11 +1,9 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useMemo} from 'react';
 import {Image, ImageBackground, StyleSheet, Text, View} from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 import useStore, {useLetterEditorStore} from '../../Store/store';
 import {GRADIENT_COLORS} from '../../Constants/letter';
-import {getCities, getRegions} from '../../APIs/geolocation';
 import {SCREEN_WIDTH} from '../../Constants/screen';
-import Toast from '../Toast/toast';
 
 const SelectedStampImage = ({stampId}: {stampId: number | undefined}) => {
   const {stamps} = useStore();
@@ -45,40 +43,13 @@ const SelectedStampImage = ({stampId}: {stampId: number | undefined}) => {
 };
 
 export const DeliveryLetterCoverPreview = React.memo(() => {
-  const {userInfo} = useStore();
+  const {cover} = useStore();
   const {deliveryLetter, deliveryLetterTo} = useLetterEditorStore();
-
-  const [fromAddress, setFromAddress] = useState('');
 
   const titleText = useMemo(
     () => deliveryLetter?.title || '무제',
     [deliveryLetter?.title],
   );
-
-  const getFromAddress = useCallback(async () => {
-    try {
-      if (userInfo?.parentGeolocationId && userInfo.geolocationId) {
-        const userRegion = (await getRegions()).find(
-          region => region.id === userInfo.parentGeolocationId,
-        );
-        const userCity = (await getCities(userInfo.parentGeolocationId)).find(
-          city => city.id === userInfo.geolocationId,
-        );
-
-        setFromAddress([userRegion?.name, ' ', userCity?.name].join(''));
-      } else {
-        return '1';
-      }
-    } catch (error: any) {
-      console.error(error.message);
-      Toast.show('문제가 발생했습니다');
-    }
-  }, [userInfo]);
-
-  useEffect(() => {
-    getFromAddress();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <LinearGradient
@@ -86,12 +57,6 @@ export const DeliveryLetterCoverPreview = React.memo(() => {
       style={[
         {
           width: SCREEN_WIDTH - 80,
-          // height: undefined,
-          // aspectRatio: 295 / 212,
-          // borderColor: '#0000cc',
-          // borderWidth: 1,
-          // borderRadius: 10,
-          // padding: 16,
         },
         styles.container,
       ]}>
@@ -105,8 +70,10 @@ export const DeliveryLetterCoverPreview = React.memo(() => {
             source={require('../../Assets/From..png')}
             style={styles.From}
           />
-          <Text style={styles.fromText}>{userInfo?.nickname},</Text>
-          <Text style={styles.fromText}>{fromAddress}</Text>
+          <Text style={styles.fromText}>{cover.nickname},</Text>
+          <Text style={styles.fromText}>
+            {[cover.address.region, ' ', cover.address.city].join('')}
+          </Text>
         </View>
         <View style={{flex: 74}}>
           <ImageBackground

@@ -11,14 +11,21 @@ import {PUBLIC_COVER_EDIT_STEPS} from '../../../../Constants/user';
 import {Header2} from '../../../../Components/Headers/Header2';
 import {useTopic} from '../../../../Hooks/UserInfo/useTopic';
 import {useQuery} from 'react-query';
+import Toast from '../../../../Components/Toast/toast';
 import {getUserInfo} from '../../../../APIs/member';
+import {getCities, getRegions} from '../../../../APIs/geolocation';
 
 type Props = NativeStackScreenProps<StackParamsList, 'CoverTopicEditor'>;
 
 export function CoverTopicEditor({navigation}: Props) {
   const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
 
-  const {setCoverTopicIds, setCoverPersonalityIds} = useStore();
+  const {
+    setCoverTopicIds,
+    setCoverPersonalityIds,
+    setCoverAddress,
+    setCoverNickname,
+  } = useStore();
 
   const goNext = () =>
     !disableNext && navigation.navigate('CoverPersonalityEditor');
@@ -54,6 +61,32 @@ export function CoverTopicEditor({navigation}: Props) {
     }
   }, [initUserTopicIds, setCoverPersonalityIds, userInfo]);
 
+  useEffect(() => {
+    const getFromAddress = async (
+      parentGeolocationId: number,
+      geolocationId: number,
+    ) => {
+      const userRegion = (await getRegions()).find(
+        (region: any) => region.id === geolocationId,
+      );
+      const userCity = (await getCities(geolocationId)).find(
+        (city: any) => city.id === parentGeolocationId,
+      );
+
+      setCoverAddress(userRegion?.name || '', userCity?.name || '');
+    };
+
+    if (userInfo) {
+      setCoverNickname(userInfo.nickname);
+      try {
+        getFromAddress(userInfo.geolocationId, userInfo.parentGeolocationId);
+      } catch (error: any) {
+        console.error(error.message);
+        Toast.show('문제가 발생했습니다');
+      }
+    }
+  }, [setCoverAddress, setCoverNickname, userInfo]);
+
   if (!isSuccess) {
     return <></>;
   }
@@ -75,7 +108,7 @@ export function CoverTopicEditor({navigation}: Props) {
           disableNext={disableNext}
         />
         <View style={styles.cover}>
-          <LetterCoverPreview userInfo={userInfo} />
+          <LetterCoverPreview />
         </View>
         <StepIndicator
           current={PUBLIC_COVER_EDIT_STEPS.TOPIC}

@@ -5,7 +5,7 @@ import {StampsList} from '../../../../../Components/Stamp/StampsList';
 import useStore from '../../../../../Store/store';
 import {Title} from '../../../../../Components/UserInfo/Title/Title';
 
-const blankStamp = require('../../../../../Assets/Icon/stamp/stamps_blue.png');
+const stampImg = require('../../../../../Assets/Icon/stamp/stamps_blue.png');
 
 type Props = {
   stampQuantity: number;
@@ -41,7 +41,7 @@ export function StampSelector({
         </View>
         <View style={styles.counterWrap}>
           <Text style={styles.counter}>보유 우표</Text>
-          <Image source={blankStamp} style={{height: 24, width: 24}} />
+          <Image source={stampImg} style={{height: 24, width: 24}} />
           <Text style={styles.counter}>X {stampQuantity}</Text>
         </View>
       </View>
