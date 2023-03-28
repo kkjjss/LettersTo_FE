@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react';
 import {TouchableWithoutFeedback, View, Text} from 'react-native';
-import {Notification} from '../../types/types';
+import {Notification} from '@type/types';
 import {subDate} from '@utils/dateFormatter';
 import {Avatar} from '../Avatar/Avatar';
 

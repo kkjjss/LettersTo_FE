@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   View,
   StyleSheet,
@@ -23,7 +23,7 @@ import {ProviderToken} from '@type/auth';
 import {useAuthAction} from '@stores/auth';
 import {AuthButton} from '@components/Auth/AuthButton';
 import {Logo} from '@components/Logo/LogoAnimation';
-import {PolicyNotice} from '~/Components/Auth/PolicyNoticeText';
+import {PolicyNotice} from '@components/Auth/PolicyNoticeText';
 
 const kakaoLogo = require('@assets/Image/social/kakao.png');
 const appleLogo = require('@assets/Image/social/apple.png');

@@ -1,7 +1,7 @@
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {StackParamsList} from '../../../../types/stackParamList';
+import type {StackParamsList} from '../../../../types/stackParamList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {TopicEditor} from './Components/TopicEditor';
 import {LetterCoverPreview} from '../../../../Components/LetterEditor/LetterCoverPreview';

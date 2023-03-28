@@ -1,4 +1,4 @@
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {
   MutableRefObject,
   useCallback,
@@ -21,30 +21,30 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 import useStore, {useLetterEditorStore} from '../../Store/store';
 import {useKeyboard} from '../../Hooks/Hardware/useKeyboard';
-import {BottomBar} from '../../Components/LetterEditor/Bottom/BottomBar';
-import {PaperSelector} from '../../Components/LetterEditor/Bottom/PaperSelector';
-import {TexticonSelector} from '../../Components/LetterEditor/Bottom/TexticonSelector';
-import {ImagePicker} from '../../Components/LetterEditor/ImagePicker';
+import {BottomBar} from '@components/LetterEditor/Bottom/BottomBar';
+import {PaperSelector} from '@components/LetterEditor/Bottom/PaperSelector';
+import {TexticonSelector} from '@components/LetterEditor/Bottom/TexticonSelector';
+import {ImagePicker} from '@components/LetterEditor/ImagePicker';
 
-import type {StackParamsList} from '../../types/stackParamList';
+import type {StackParamsList} from '@type/stackParamList';
 import type {
   PaperColor,
   PaperStyle as _PaperStyle,
   Selector,
   TexticonCategory,
-} from '../../types/types';
-import {getImageUploadUrl} from '../../APIs/file';
+} from '@type/types';
+import {getImageUploadUrl} from '@apis/file';
 import {ImageModal} from '../../Modals/ImageModal';
 import {ModalBlur} from '../../Modals/ModalBlur';
-import {PaperBackgroud} from '../../Components/Letter/PaperBackground/PaperBackgroud';
-import {Header2} from '../../Components/Headers/Header2';
-import Toast from '../../Components/Toast/toast';
+import {PaperBackgroud} from '@components/Letter/PaperBackground/PaperBackgroud';
+import {Header2} from '@components/Headers/Header2';
+import Toast from '@components/Toast/toast';
 import {
   MAX_TEXT_LIMIT,
   MAX_TITLE_LIMIT,
   MIN_TEXT_LIMIT,
   MIN_TITLE_LIMIT,
-} from '../../Constants/letter';
+} from '@constants/letter';
 
 type Props = NativeStackScreenProps<StackParamsList, 'LetterEditor'>;
 

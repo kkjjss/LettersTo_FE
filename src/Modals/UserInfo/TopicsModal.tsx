@@ -1,19 +1,19 @@
 import React, {useEffect, useMemo} from 'react';
 import {View, Modal, StyleSheet, ScrollView} from 'react-native';
-import {ResetButton} from '../../Components/ResetButton';
-import {ModalHeader} from '../../Components/Headers/ModalHeader';
-import {SCREEN_HEIGHT} from '../../Constants/screen';
-import {TopicList} from '../../Components/TopicList';
+import {ResetButton} from '@components/ResetButton';
+import {ModalHeader} from '@components/Headers/ModalHeader';
+import {SCREEN_HEIGHT} from '@constants/screen';
+import {TopicList} from '@components/TopicList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {patchUserInfo} from '../../APIs/member';
+import {patchUserInfo} from '@apis/member';
 import {useTopic} from '../../Hooks/UserInfo/useTopic';
-import Toast from '../../Components/Toast/toast';
+import Toast from '@components/Toast/toast';
 import {useMutation, useQueryClient} from 'react-query';
-import {Title} from '../../Components/UserInfo/TitleText';
-import {Counter} from '../../Components/UserInfo/CounterText';
-import {MAX_TOPIC_LIMIT} from '../../Constants/user';
-import {MaximumAlert} from '../../Components/UserInfo/MaximumAlert';
-import {UpdateButton} from '../../Components/Button/Bottom/UpdateButton';
+import {Title} from '@components/UserInfo/TitleText';
+import {Counter} from '@components/UserInfo/CounterText';
+import {MAX_TOPIC_LIMIT} from '@constants/user';
+import {MaximumAlert} from '@components/UserInfo/MaximumAlert';
+import {UpdateButton} from '@components/Button/Bottom/UpdateButton';
 import _ from 'lodash';
 
 type Props = {

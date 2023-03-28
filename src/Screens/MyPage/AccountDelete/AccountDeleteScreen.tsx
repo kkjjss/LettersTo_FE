@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {StackParamsList} from '../../../types/stackParamList';
+import type {NativeStackScreenProps} from '@react-navigation/native-stack';
+import type {StackParamsList} from '../../../types/stackParamList';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {ModalBlur} from '../../../Modals/ModalBlur';
 import {AccountDeleteModal} from '../../../Modals/AccountDeleteModal';

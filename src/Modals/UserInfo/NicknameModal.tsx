@@ -2,14 +2,14 @@ import React from 'react';
 import {View, Modal, StyleSheet, ScrollView} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useMutation, useQueryClient} from 'react-query';
-import {patchUserInfo} from '../../APIs/member';
-import {ModalHeader} from '../../Components/Headers/ModalHeader';
-import Toast from '../../Components/Toast/toast';
+import {patchUserInfo} from '@apis/member';
+import {ModalHeader} from '@components/Headers/ModalHeader';
+import Toast from '@components/Toast/toast';
 import {useKeyboard} from '../../Hooks/Hardware/useKeyboard';
 import {useNickname} from '../../Hooks/UserInfo/useNickname';
-import {NicknameAvailableAlert} from '../../Components/UserInfo/NicknameAvailableAlert';
-import {NicknameInput} from '../../Components/UserInfo/NicknameInput';
-import {UpdateButton} from '../../Components/Button/Bottom/UpdateButton';
+import {NicknameAvailableAlert} from '@components/UserInfo/NicknameAvailableAlert';
+import {NicknameInput} from '@components/UserInfo/NicknameInput';
+import {UpdateButton} from '@components/Button/Bottom/UpdateButton';
 
 type Props = {
   currentNickname: string;

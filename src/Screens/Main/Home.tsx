@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useMemo} from 'react';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import type {StackParamsList} from '../../types/stackParamList';
+import type {StackParamsList} from '@type/stackParamList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {
   View,
@@ -14,14 +14,14 @@ import {
   StatusBar,
 } from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
-import {getPublicLetters} from '../../APIs/letter';
-import {PublicLetter, PublicLetters} from '../../types/types';
-import {PublicLetterItem} from '../../Components/PublicLetterItem';
+import {getPublicLetters} from '@apis/letter';
+import {PublicLetter, PublicLetters} from '@type/types';
+import {PublicLetterItem} from '@components/PublicLetterItem';
 import {EnvelopeModal} from '../../Modals/EnvelopeModal';
-import {SCREEN_HEIGHT} from '../../Constants/screen';
-import Toast from '../../Components/Toast/toast';
+import {SCREEN_HEIGHT} from '@constants/screen';
+import Toast from '@components/Toast/toast';
 import {useQuery} from 'react-query';
-import {getUserInfo} from '../../APIs/member';
+import {getUserInfo} from '@apis/member';
 
 type Props = {
   navigation: NativeStackNavigationProp<StackParamsList, 'Main', undefined>;

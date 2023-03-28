@@ -3,11 +3,11 @@ import {Text, View, Modal, StyleSheet, Platform} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useMutation, useQueryClient} from 'react-query';
-import {patchUserInfo} from '../../APIs/member';
-import {BottomButton} from '../../Components/Button/Bottom/BottomButton';
-import {ModalHeader} from '../../Components/ModalHeader';
-import Toast from '../../Components/Toast/toast';
-import {SCREEN_HEIGHT} from '../../Constants/screen';
+import {patchUserInfo} from '@apis/member';
+import {BottomButton} from '@components/Button/Bottom/BottomButton';
+import {ModalHeader} from '@components/ModalHeader';
+import Toast from '@components/Toast/toast';
+import {SCREEN_HEIGHT} from '@constants/screen';
 import {useLocation} from '../../Hooks/UserInfo/useLocation';
 
 type Props = {

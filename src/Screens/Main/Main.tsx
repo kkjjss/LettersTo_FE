@@ -1,12 +1,12 @@
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {View} from 'react-native';
 import {useQueryClient} from 'react-query';
-import {getUserInfo} from '../../APIs/member';
-import {BottomTab} from '../../Components/BottomTab/BottomTab';
-import {StackParamsList} from '../../types/stackParamList';
+import {getUserInfo} from '@apis/member';
+import {BottomTab} from '@components/BottomTab/BottomTab';
 import {LetterBoxList} from '../LetterBox/LetterBoxList';
 import {Home} from './Home';
+import type {NativeStackScreenProps} from '@react-navigation/native-stack';
+import type {StackParamsList} from '@type/stackParamList';
 
 type Props = NativeStackScreenProps<StackParamsList, 'Main'>;
 
@@ -15,13 +15,13 @@ export const Main = ({navigation}: Props) => {
     'Home',
   );
 
-  const goToHome = () => {
+  const goToHome = useCallback(() => {
     setSelectedScreen('Home');
-  };
+  }, []);
 
-  const goToLetterBox = () => {
+  const goToLetterBox = useCallback(() => {
     setSelectedScreen('LetterBox');
-  };
+  }, []);
 
   const queryClient = useQueryClient();
 

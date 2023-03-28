@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import type {StackParamsList} from '../../types/stackParamList';
+import type {StackParamsList} from '@type/stackParamList';
 import {
   StyleSheet,
   View,
@@ -14,12 +14,12 @@ import {
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {LinearGradient} from 'expo-linear-gradient';
-import {SCREEN_HEIGHT} from '../../Constants/screen';
-import {LetterBoxes, PaperColor} from '../../types/types';
-import {getLetterBoxes} from '../../APIs/letterBox';
-import {GRADIENT_COLORS} from '../../Constants/letter';
-import Toast from '../../Components/Toast/toast';
-import {getUserInfo} from '../../APIs/member';
+import {SCREEN_HEIGHT} from '@constants/screen';
+import {LetterBoxes, PaperColor} from '@type/types';
+import {getLetterBoxes} from '@apis/letterBox';
+import {GRADIENT_COLORS} from '@constants/letter';
+import Toast from '@components/Toast/toast';
+import {getUserInfo} from '@apis/member';
 import {useQuery} from 'react-query';
 
 type Props = {

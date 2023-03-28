@@ -1,6 +1,6 @@
 import React, {useCallback, useMemo} from 'react';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import type {StackParamsList} from '../../types/stackParamList';
+import type {NativeStackScreenProps} from '@react-navigation/native-stack';
+import type {StackParamsList} from '@type/stackParamList';
 import {
   StyleSheet,
   Text,
@@ -14,18 +14,18 @@ import {useEffect, useState} from 'react';
 import {
   getDeliveryLetterContent,
   getPublicLetterContent,
-} from '../../APIs/letter';
-import {DeliveryLetterContent, PublicLetterContent} from '../../types/types';
-import {PaperBackgroud} from '../../Components/Letter/PaperBackground/PaperBackgroud';
-import {BottomButton} from '../../Components/Button/Bottom/BottomButton';
+} from '@apis/letter';
+import {DeliveryLetterContent, PublicLetterContent} from '@type/types';
+import {PaperBackgroud} from '@components/Letter/PaperBackground/PaperBackgroud';
+import {BottomButton} from '@components/Button/Bottom/BottomButton';
 import {dateFormatter} from '@utils/dateFormatter';
-import {ImagePicker} from '../../Components/LetterEditor/ImagePicker';
+import {ImagePicker} from '@components/LetterEditor/ImagePicker';
 import {ImageModal} from '../../Modals/ImageModal';
 import {ModalBlur} from '../../Modals/ModalBlur';
-import {Header2} from '../../Components/Headers/Header2';
+import {Header2} from '@components/Headers/Header2';
 import useStore, {useLetterEditorStore} from '../../Store/store';
 import {ReportModal} from '../../Modals/ReportModal';
-import Toast from '../../Components/Toast/toast';
+import Toast from '@components/Toast/toast';
 
 const TEXT_ALIGN = {
   LEFT: 'left',

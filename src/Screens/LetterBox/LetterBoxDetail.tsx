@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useMemo} from 'react';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import type {StackParamsList} from '../../types/stackParamList';
+import type {NativeStackScreenProps} from '@react-navigation/native-stack';
+import type {StackParamsList} from '@type/stackParamList';
 import {
   StyleSheet,
   View,
@@ -18,13 +18,13 @@ import {
   DeliveryLetter,
   DeliveryLetters,
   PaperColor,
-} from '../../types/types';
-import {getLetterBoxInfo, getDeliveryLetters} from '../../APIs/letterBox';
-import {Header} from '../../Components/Headers/Header';
+} from '@type/types';
+import {getLetterBoxInfo, getDeliveryLetters} from '@apis/letterBox';
+import {Header} from '@components/Headers/Header';
 import {dateFormatter} from '@utils/dateFormatter';
 import {LetterItem} from './LetterItem';
 import {EnvelopeModal} from '../../Modals/EnvelopeModal';
-import Toast from '../../Components/Toast/toast';
+import Toast from '@components/Toast/toast';
 
 type Props = NativeStackScreenProps<StackParamsList, 'LetterBoxDetail'>;
 

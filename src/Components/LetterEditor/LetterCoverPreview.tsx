@@ -11,8 +11,8 @@ import {LinearGradient} from 'expo-linear-gradient';
 import useStore from '../../Store/store';
 import {TopicItem} from '../TopicItem';
 import {PersonalityItem} from '../PersonalityItem';
-import {GRADIENT_COLORS} from '../../Constants/letter';
-import {SCREEN_WIDTH} from '../../Constants/screen';
+import {GRADIENT_COLORS} from '@constants/letter';
+import {SCREEN_WIDTH} from '@constants/screen';
 import {useTopic} from '../../Hooks/UserInfo/useTopic';
 import {usePersonality} from '../../Hooks/UserInfo/usePersonality';
 

@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useRef, useState} from 'react';
 import {Animated} from 'react-native';
-import {existsNickname} from '../../APIs/member';
+import {existsNickname} from '@apis/member';
 
 type NicknameValidationKey =
   | 'CURRENT_NICKNAME'

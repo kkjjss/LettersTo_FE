@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {
   View,
   StyleSheet,

@@ -2,8 +2,8 @@ import React from 'react';
 import {Image, Text, View} from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 import useStore, {useLetterEditorStore} from '../../Store/store';
-import {GRADIENT_COLORS} from '../../Constants/letter';
-import {SCREEN_WIDTH} from '../../Constants/screen';
+import {GRADIENT_COLORS} from '@constants/letter';
+import {SCREEN_WIDTH} from '@constants/screen';
 
 export const DeliveryLetterCoverBackPreview = React.memo(() => {
   const {deliveryLetter, deliveryLetterTo, standardDeliveryDate} =

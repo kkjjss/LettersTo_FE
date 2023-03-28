@@ -1,4 +1,4 @@
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useCallback} from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -6,20 +6,20 @@ import {
   postDeliveryLetter,
   postPublicLetter,
   replyPublicLetter,
-} from '../../APIs/letter';
-import {Header} from '../../Components/Headers/Header';
-import {DeliveryLetterCoverBackPreview} from '../../Components/LetterEditor/DeliveryLetterCoverBackPreview';
-import {DeliveryLetterCoverPreview} from '../../Components/LetterEditor/DeliveryLetterCoverPreview';
-import {LetterCoverPreview} from '../../Components/LetterEditor/LetterCoverPreview';
-import {SendLetterButton} from '../../Components/LetterEditor/SendLetterButton';
-import {SCREEN_WIDTH} from '../../Constants/screen';
+} from '@apis/letter';
+import {Header} from '@components/Headers/Header';
+import {DeliveryLetterCoverBackPreview} from '@components/LetterEditor/DeliveryLetterCoverBackPreview';
+import {DeliveryLetterCoverPreview} from '@components/LetterEditor/DeliveryLetterCoverPreview';
+import {LetterCoverPreview} from '@components/LetterEditor/LetterCoverPreview';
+import {SendLetterButton} from '@components/LetterEditor/SendLetterButton';
+import {SCREEN_WIDTH} from '@constants/screen';
 import useStore, {useLetterEditorStore} from '../../Store/store';
-import {StackParamsList} from '../../types/stackParamList';
+import type {StackParamsList} from '@type/stackParamList';
 import {
   DeliveryLetterWriteRequest,
   PublicLetterWriteRequest,
-} from '../../types/types';
-import Toast from '../../Components/Toast/toast';
+} from '@type/types';
+import Toast from '@components/Toast/toast';
 
 type Props = NativeStackScreenProps<StackParamsList, 'LetterComplete'>;
 

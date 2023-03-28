@@ -9,11 +9,11 @@ import {
   Easing,
   TouchableOpacity,
 } from 'react-native';
-import {DeliveryLetter, PaperColor} from '../../types/types';
+import {DeliveryLetter, PaperColor} from '@type/types';
 import {LinearGradient} from 'expo-linear-gradient';
-import {GRADIENT_COLORS} from '../../Constants/letter';
+import {GRADIENT_COLORS} from '@constants/letter';
 import {dateFormatter} from '@utils/dateFormatter';
-import {SCREEN_WIDTH} from '../../Constants/screen';
+import {SCREEN_WIDTH} from '@constants/screen';
 
 interface LetterItemProps {
   data: DeliveryLetter;

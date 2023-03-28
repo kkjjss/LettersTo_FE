@@ -1,5 +1,5 @@
 import React, {useCallback, useMemo, useReducer} from 'react';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {View, StyleSheet, StatusBar} from 'react-native';
 import type {StackParamsList} from '../../../types/stackParamList';
 import {ListItem, ListName} from './Components/MyPageList';

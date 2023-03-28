@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {StackParamsList} from '../../types/stackParamList';
+import type {NativeStackScreenProps} from '@react-navigation/native-stack';
+import type {StackParamsList} from '@type/stackParamList';
 import {
   ScrollView,
   StyleSheet,
@@ -11,13 +11,13 @@ import {
   StatusBar,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {Header2} from '../../Components/Headers/Header2';
-import {getStampHistories} from '../../APIs/stamp';
-import {StampHistories} from '../../types/types';
+import {Header2} from '@components/Headers/Header2';
+import {getStampHistories} from '@apis/stamp';
+import {StampHistories} from '@type/types';
 import {dateFormatter} from '@utils/dateFormatter';
-import Toast from '../../Components/Toast/toast';
+import Toast from '@components/Toast/toast';
 import {useQuery} from 'react-query';
-import {getUserInfo} from '../../APIs/member';
+import {getUserInfo} from '@apis/member';
 
 const nextImg = require('../../Assets/Icon/next/next_blue.png');
 

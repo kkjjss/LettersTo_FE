@@ -1,5 +1,5 @@
 import React from 'react';
-import {BottomButton} from '../../Components/Button/Bottom/BottomButton';
+import {BottomButton} from '@components/Button/Bottom/BottomButton';
 import {AlertModal} from '../AlertModal';
 
 type Props = {

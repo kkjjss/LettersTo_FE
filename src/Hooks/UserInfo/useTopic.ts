@@ -1,8 +1,8 @@
 import {useCallback, useMemo, useRef, useState} from 'react';
 import {Animated} from 'react-native';
 import {useQuery} from 'react-query';
-import {getTopics} from '../../APIs/topic';
-import {MAX_TOPIC_LIMIT} from '../../Constants/user';
+import {getTopics} from '@apis/topic';
+import {MAX_TOPIC_LIMIT} from '@constants/user';
 
 export const useTopic = (currentTopics: number[] = []) => {
   const [selectedTopicIds, setSelectedTopicIds] = useState<number[]>([]);

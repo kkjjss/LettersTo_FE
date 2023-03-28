@@ -1,6 +1,6 @@
 import React from 'react';
 import {Image, ImageBackground, TouchableOpacity} from 'react-native';
-import {SCREEN_WIDTH} from '../../Constants/screen';
+import {SCREEN_WIDTH} from '@constants/screen';
 
 export function StampButton({stamp, onPress: selectStamp}: any) {
   return (

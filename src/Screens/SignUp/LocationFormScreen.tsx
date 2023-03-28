@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {View, Text, StyleSheet, SafeAreaView, Platform} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {LinearGradient} from 'expo-linear-gradient';

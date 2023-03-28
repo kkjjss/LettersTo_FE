@@ -1,14 +1,14 @@
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useMemo, useState} from 'react';
 import {FlatList, StatusBar, StyleSheet, Text, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {getNotifications, setNotificationRead} from '../../APIs/notification';
-import {Header2} from '../../Components/Headers/Header2';
-import {NotificationItem} from '../../Components/Notification/NotificationItem';
-import {NotificationSlideSwitch} from '../../Components/Notification/NotificationSlideSwitch';
-import Toast from '../../Components/Toast/toast';
-import {StackParamsList} from '../../types/stackParamList';
-import {Notification, NotificationList} from '../../types/types';
+import {getNotifications, setNotificationRead} from '@apis/notification';
+import {Header2} from '@components/Headers/Header2';
+import {NotificationItem} from '@components/Notification/NotificationItem';
+import {NotificationSlideSwitch} from '@components/Notification/NotificationSlideSwitch';
+import Toast from '@components/Toast/toast';
+import type {StackParamsList} from '@type/stackParamList';
+import {Notification, NotificationList} from '@type/types';
 
 type Props = NativeStackScreenProps<StackParamsList, 'Notifications'>;
 

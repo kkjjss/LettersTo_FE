@@ -2,8 +2,8 @@ import React, {useMemo} from 'react';
 import {Image, ImageBackground, StyleSheet, Text, View} from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 import useStore, {useLetterEditorStore} from '../../Store/store';
-import {GRADIENT_COLORS} from '../../Constants/letter';
-import {SCREEN_WIDTH} from '../../Constants/screen';
+import {GRADIENT_COLORS} from '@constants/letter';
+import {SCREEN_WIDTH} from '@constants/screen';
 
 const SelectedStampImage = ({stampId}: {stampId: number | undefined}) => {
   const {stamps} = useStore();

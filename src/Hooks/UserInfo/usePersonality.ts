@@ -1,9 +1,9 @@
 import {useCallback, useMemo, useRef, useState} from 'react';
 import {Animated} from 'react-native';
 import {useQuery} from 'react-query';
-import {getPersonalities} from '../../APIs/personality';
-import Toast from '../../Components/Toast/toast';
-import {MAX_PERSONALITY_LIMIT} from '../../Constants/user';
+import {getPersonalities} from '@apis/personality';
+import Toast from '@components/Toast/toast';
+import {MAX_PERSONALITY_LIMIT} from '@constants/user';
 
 export const usePersonality = (currentPersonalities: number[] = []) => {
   // const [selectedPersonalityIds, setSelectedPersonalityIds] = useAuthStore(

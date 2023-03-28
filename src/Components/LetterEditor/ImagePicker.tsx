@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from 'react-native';
-import {SCREEN_WIDTH} from '../../Constants/screen';
+import {SCREEN_WIDTH} from '@constants/screen';
 import {getImageUrl} from '@utils/image';
 const closeImg = require('../../Assets/Icon/close/close_blue.png');
 

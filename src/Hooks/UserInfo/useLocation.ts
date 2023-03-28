@@ -1,7 +1,7 @@
 import {useCallback, useRef, useState} from 'react';
 import {Animated} from 'react-native';
 import {useQuery} from 'react-query';
-import {getCities, getRegions} from '../../APIs/geolocation';
+import {getCities, getRegions} from '@apis/geolocation';
 
 type Props = {
   parentGeolocationId: number | null;

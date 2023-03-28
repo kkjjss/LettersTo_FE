@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect} from 'react';
 import {useQuery} from 'react-query';
 import {ActivityIndicator, View, StyleSheet} from 'react-native';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useAuthAction} from '@stores/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getUserInfo} from '@apis/member';
