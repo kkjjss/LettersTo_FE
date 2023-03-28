@@ -1,6 +1,4 @@
 import React, {useState, useEffect, useMemo} from 'react';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import type {StackParamsList} from '@type/stackParamList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {
   View,
@@ -22,6 +20,9 @@ import {SCREEN_HEIGHT} from '@constants/screen';
 import Toast from '@components/Toast/toast';
 import {useQuery} from 'react-query';
 import {getUserInfo} from '@apis/member';
+
+import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import type {StackParamsList} from '@type/stackParamList';
 
 type Props = {
   navigation: NativeStackNavigationProp<StackParamsList, 'Main', undefined>;
@@ -140,7 +141,7 @@ export function Home({navigation}: Props) {
     () => (
       <View style={[styles.emptyArea, {height: SCREEN_HEIGHT * 0.8}]}>
         <Image
-          source={require('../../Assets/common/404.png')}
+          source={require('@assets/common/404.png')}
           style={styles.emptyImage}
         />
         <Text style={styles.emptyText}>
@@ -152,7 +153,7 @@ export function Home({navigation}: Props) {
             style={styles.emptyBtnBg}>
             <Text style={styles.emptyBtnText}>다시 시도</Text>
             <Image
-              source={require('../../Assets/refresh.png')}
+              source={require('@assets/refresh.png')}
               style={styles.emptyBtnIcon}
             />
           </LinearGradient>

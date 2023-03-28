@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import type {StackParamsList} from '@type/stackParamList';
 import {
   StyleSheet,
