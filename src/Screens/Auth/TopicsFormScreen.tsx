@@ -10,12 +10,12 @@ import {
 import {LinearGradient} from 'expo-linear-gradient';
 import {SCREEN_HEIGHT} from '@constants/screen';
 import {NextButton} from '@components/Button/Bottom/NextButton';
-import {ResetButton} from '@components/ResetButton';
-import {TopicList} from '@components/TopicList';
+import {ResetButton} from '@components/Button/Reset/ResetButton';
+import {TopicList} from '@components/UserInfo/Topic/TopicList';
 import {useTopic} from '@hooks/UserInfo/useTopic';
 import {MAX_TOPIC_LIMIT} from '@constants/user';
 import {Counter} from '@components/UserInfo/CounterText';
-import {MaximumAlert} from '@components/UserInfo/MaximumAlert';
+import {MaximumAlert} from '@components/UserInfo/Alert/MaximumAlert';
 import {Title} from '@components/UserInfo/TitleText';
 import {Header2} from '@components/Headers/Header2';
 import {useAuthAction} from '@stores/auth';

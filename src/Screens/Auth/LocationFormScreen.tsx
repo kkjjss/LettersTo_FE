@@ -12,8 +12,8 @@ import {signUp} from '@apis/member';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from '@components/Toast/toast';
 import {Header2} from '@components/Headers/Header2';
-import {NoticeBalloon} from '@components/UserInfo/NoticeBalloon';
-import {NoticeButton} from '@components/UserInfo/NoticeButton';
+import {NoticeBalloon} from '@components/UserInfo/Notice/NoticeBalloon';
+import {NoticeButton} from '@components/UserInfo/Notice/NoticeButton';
 import type {StackParamsList} from '@type/stackParamList';
 
 type Props = NativeStackScreenProps<StackParamsList, 'LocationForm'>;

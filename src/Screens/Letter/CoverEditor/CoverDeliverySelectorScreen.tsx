@@ -10,9 +10,9 @@ import {
 } from 'react-native';
 import type {StackParamsList} from '@type/stackParamList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {LetterCoverPreview} from '@components/LetterEditor/LetterCoverPreview';
+import {LetterCoverPreview} from '@components/LetterEditor/CoverPreview/LetterCoverPreview';
 import useStore, {useLetterEditorStore} from '@stores/store';
-import {DeliveryLetterCoverPreview} from '@components/LetterEditor/DeliveryLetterCoverPreview';
+import {DeliveryLetterCoverPreview} from '@components/LetterEditor/CoverPreview/DeliveryLetterCoverPreview';
 import {Header2} from '@components/Headers/Header2';
 import {LinearGradient} from 'expo-linear-gradient';
 import {StepIndicator} from '@components/StepIndicator';

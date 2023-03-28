@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useMemo} from 'react';
+import React, {useState, useEffect, useMemo, useCallback} from 'react';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import type {StackParamsList} from '@type/stackParamList';
 import {
@@ -20,11 +20,13 @@ import {
   PaperColor,
 } from '@type/types';
 import {getLetterBoxInfo, getDeliveryLetters} from '@apis/letterBox';
-import {Header} from '@components/Headers/Header';
+import {Header2} from '@components/Headers/Header2';
 import {dateFormatter} from '@utils/dateFormatter';
 import {LetterItem} from './LetterItem';
 import {EnvelopeModal} from '@components/Modals/Letter/EnvelopeModal';
 import Toast from '@components/Toast/toast';
+
+const triangleImg = require('@assets/triangle.png');
 
 type Props = NativeStackScreenProps<StackParamsList, 'LetterBoxDetail'>;
 
@@ -34,7 +36,6 @@ export function LetterBoxDetail({route, navigation}: Props) {
   // 메인 (편지탐색)
   const goHome = () => {
     navigation.push('Main');
-    // navigation.dispatch(jumpToAction);
   };
 
   // 사서함 정보
@@ -45,12 +46,12 @@ export function LetterBoxDetail({route, navigation}: Props) {
     [],
   );
   const [currentCursor, setCurrentCursor] = useState<number>();
-  const [fromMemberId, setFromMemberId] = useState<number>();
+  // const [fromMemberId, setFromMemberId] = useState<number>();
   const [avatarColor, setAvatarColor] = useState<PaperColor>();
 
-  const getPublicLettersInit = (fromMemberId: number) => {
+  const getPublicLettersInit = useCallback((id: number) => {
     try {
-      getDeliveryLetters({fromMemberId}).then(data => {
+      getDeliveryLetters({fromMemberId: id}).then(data => {
         const {content, cursor} = data;
         setDeliveryLetters(content);
         setCurrentCursor(cursor);
@@ -59,17 +60,16 @@ export function LetterBoxDetail({route, navigation}: Props) {
       console.error(error.message);
       Toast.show('문제가 발생했습니다');
     }
-  };
+  }, []);
 
   useEffect(() => {
     const {id, fromMemberId, color} = route.params;
-    setFromMemberId(fromMemberId);
     setAvatarColor(color as PaperColor);
 
     // 사서함 정보 조회
     try {
-      getLetterBoxInfo(id).then(info => {
-        setInfo(info);
+      getLetterBoxInfo(id).then(data => {
+        setInfo(data);
       });
     } catch (error: any) {
       console.error(error.message);
@@ -78,13 +78,16 @@ export function LetterBoxDetail({route, navigation}: Props) {
 
     // 주고받은 편지 목록 조회
     getPublicLettersInit(fromMemberId);
-  }, [route]);
+  }, [getPublicLettersInit, route]);
 
   // 무한 스크롤
-  const handleEndReached = () => {
-    if (currentCursor && fromMemberId) {
+  const handleEndReached = useCallback(() => {
+    if (currentCursor && route.params.fromMemberId) {
       try {
-        getDeliveryLetters({cursor: currentCursor, fromMemberId}).then(data => {
+        getDeliveryLetters({
+          cursor: currentCursor,
+          fromMemberId: route.params.fromMemberId,
+        }).then(data => {
           const {content, cursor} = data;
           const updatedArray = [...deliveryLetters].concat(content);
           setDeliveryLetters(updatedArray);
@@ -95,7 +98,7 @@ export function LetterBoxDetail({route, navigation}: Props) {
         Toast.show('문제가 발생했습니다');
       }
     }
-  };
+  }, [currentCursor, deliveryLetters, route.params.fromMemberId]);
 
   // n일째 인연
   const fromPeriod = useMemo(() => {
@@ -128,20 +131,24 @@ export function LetterBoxDetail({route, navigation}: Props) {
   };
 
   // 편지 조회
-  const goToLetterViewer = (id: number) => {
-    navigation.navigate('LetterViewer', {id, to: 'DELIVERY'});
-  };
+  const goToLetterViewer = useCallback(
+    (id: number) => {
+      navigation.navigate('LetterViewer', {id, to: 'DELIVERY'});
+    },
+    [navigation],
+  );
 
   return (
     <View style={styles.container}>
       <StatusBar barStyle={'light-content'} />
       <View style={{height: SAFE_AREA_TOP, backgroundColor: '#0000cc'}} />
-      <Header
+      {/* <Header
         navigation={navigation}
         title={`${info?.fromNickname}와의 사서함`}
         color="white"
         style={{backgroundColor: '#0000CC', paddingTop: 0}}
-      />
+      /> */}
+      <Header2 title={`${info?.fromNickname}와의 사서함`} color={'blue'} />
       <View style={styles.infoArea}>
         <View style={styles.infoHeader}>
           <Text style={styles.infoNickname}>{info?.fromNickname}</Text>
@@ -232,7 +239,7 @@ export function LetterBoxDetail({route, navigation}: Props) {
             <View style={styles.tabInactive}>
               <Text style={styles.tabInactiveText}>편지탐색</Text>
               <Image
-                source={require('@assets/triangle.png')}
+                source={triangleImg}
                 style={[styles.triangle, {right: 0}]}
               />
             </View>
@@ -240,7 +247,7 @@ export function LetterBoxDetail({route, navigation}: Props) {
           <Pressable disabled>
             <View style={styles.tabActive}>
               <Image
-                source={require('@assets/triangle.png')}
+                source={triangleImg}
                 style={[
                   styles.triangle,
                   {left: '100%', transform: [{scaleX: -1}]},

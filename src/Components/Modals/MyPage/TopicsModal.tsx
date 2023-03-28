@@ -1,9 +1,9 @@
 import React, {useEffect, useMemo} from 'react';
 import {View, Modal, StyleSheet, ScrollView} from 'react-native';
-import {ResetButton} from '@components/ResetButton';
+import {ResetButton} from '@components/Button/Reset/ResetButton';
 import {ModalHeader} from '@components/Headers/ModalHeader';
 import {SCREEN_HEIGHT} from '@constants/screen';
-import {TopicList} from '@components/TopicList';
+import {TopicList} from '@components/UserInfo/Topic/TopicList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {patchUserInfo} from '@apis/member';
 import {useTopic} from '@hooks/UserInfo/useTopic';
@@ -12,7 +12,7 @@ import {useMutation, useQueryClient} from 'react-query';
 import {Title} from '@components/UserInfo/TitleText';
 import {Counter} from '@components/UserInfo/CounterText';
 import {MAX_TOPIC_LIMIT} from '@constants/user';
-import {MaximumAlert} from '@components/UserInfo/MaximumAlert';
+import {MaximumAlert} from '@components/UserInfo/Alert/MaximumAlert';
 import {UpdateButton} from '@components/Button/Bottom/UpdateButton';
 import _ from 'lodash';
 

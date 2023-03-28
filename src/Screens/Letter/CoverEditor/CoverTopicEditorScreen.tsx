@@ -1,8 +1,8 @@
 import React, {useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {TopicEditor} from '@components/LetterEditor/Cover/TopicEditor';
-import {LetterCoverPreview} from '@components/LetterEditor/LetterCoverPreview';
+import {TopicEditor} from '@components/LetterEditor/CoverEditor/TopicEditor';
+import {LetterCoverPreview} from '@components/LetterEditor/CoverPreview/LetterCoverPreview';
 import useStore from '@stores/store';
 import {StepIndicator} from '@components/StepIndicator';
 import {PUBLIC_COVER_EDIT_STEPS} from '@constants/user';

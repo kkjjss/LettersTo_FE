@@ -10,14 +10,14 @@ import {
 import {LinearGradient} from 'expo-linear-gradient';
 import {SCREEN_HEIGHT} from '@constants/screen';
 import {NextButton} from '@components/Button/Bottom/NextButton';
-import {ResetButton} from '@components/ResetButton';
-import {PersonalityList} from '@components/PersonalityList';
+import {ResetButton} from '@components/Button/Reset/ResetButton';
+import {PersonalityList} from '@components/UserInfo/Personality/PersonalityList';
 import {usePersonality} from '@hooks/UserInfo/usePersonality';
 import {MAX_PERSONALITY_LIMIT} from '@constants/user';
 import {Header2} from '@components/Headers/Header2';
 import {Title} from '@components/UserInfo/TitleText';
 import {Counter} from '@components/UserInfo/CounterText';
-import {MaximumAlert} from '@components/UserInfo/MaximumAlert';
+import {MaximumAlert} from '@components/UserInfo/Alert/MaximumAlert';
 import {useAuthAction} from '@stores/auth';
 import type {StackParamsList} from '@type/stackParamList';
 

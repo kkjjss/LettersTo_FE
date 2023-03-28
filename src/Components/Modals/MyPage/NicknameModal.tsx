@@ -7,8 +7,8 @@ import {ModalHeader} from '@components/Headers/ModalHeader';
 import Toast from '@components/Toast/toast';
 import {useKeyboard} from '@hooks/Hardware/useKeyboard';
 import {useNickname} from '@hooks/UserInfo/useNickname';
-import {NicknameAvailableAlert} from '@components/UserInfo/NicknameAvailableAlert';
-import {NicknameInput} from '@components/UserInfo/NicknameInput';
+import {NicknameAvailableAlert} from '@components/UserInfo/Alert/NicknameAvailableAlert';
+import {NicknameInput} from '@components/UserInfo/Nickname/NicknameInput';
 import {UpdateButton} from '@components/Button/Bottom/UpdateButton';
 
 type Props = {

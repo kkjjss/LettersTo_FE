@@ -3,7 +3,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import type {Topics} from '@type/types';
 import {TopicButton} from './TopicButton';
 
-import {TOPIC_CATEGORY} from '../Constants/user';
+import {TOPIC_CATEGORY} from '@constants/user';
 
 type Props = {
   topics: Topics;

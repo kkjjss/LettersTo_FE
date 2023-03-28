@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, TouchableHighlight} from 'react-native';
 
 import type {Personality} from '@type/types';
-import {PersonalityItem} from './PersonalityItem';
+import {PersonalityItem} from '@components/UserInfo/Personality/PersonalityItem';
 
 type Props = {
   personality: Personality;

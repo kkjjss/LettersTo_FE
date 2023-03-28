@@ -7,10 +7,10 @@ import {
   postPublicLetter,
   replyPublicLetter,
 } from '@apis/letter';
-import {Header} from '@components/Headers/Header';
-import {DeliveryLetterCoverBackPreview} from '@components/LetterEditor/DeliveryLetterCoverBackPreview';
-import {DeliveryLetterCoverPreview} from '@components/LetterEditor/DeliveryLetterCoverPreview';
-import {LetterCoverPreview} from '@components/LetterEditor/LetterCoverPreview';
+import {Header2} from '@components/Headers/Header2';
+import {DeliveryLetterCoverBackPreview} from '@components/LetterEditor/CoverPreview/DeliveryLetterCoverBackPreview';
+import {DeliveryLetterCoverPreview} from '@components/LetterEditor/CoverPreview/DeliveryLetterCoverPreview';
+import {LetterCoverPreview} from '@components/LetterEditor/CoverPreview/LetterCoverPreview';
 import {SendLetterButton} from '@components/LetterEditor/SendLetterButton';
 import {SCREEN_WIDTH} from '@constants/screen';
 import useStore, {useLetterEditorStore} from '@stores/store';
@@ -79,10 +79,12 @@ export const LetterComplete = ({navigation, route}: Props) => {
     }
   }, [route.params, sendDeliveryLetter, sendPublicLetter]);
 
+  const goBack = useCallback(() => navigation.pop(), [navigation]);
+
   return (
     <View style={{backgroundColor: '#ffccee', flex: 1}}>
       <SafeAreaView style={styles.container}>
-        <Header navigation={navigation} title={'작성완료'} />
+        <Header2 onPressBack={goBack} title={'작성완료'} />
         <View style={styles.contentContainer}>
           <Text style={styles.completeText}>Complete!</Text>
           <Text style={styles.descText}>편지 작성을 완료했어요!</Text>

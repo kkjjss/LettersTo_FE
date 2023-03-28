@@ -1,46 +1,46 @@
 import React from 'react';
-import {View, StyleSheet, ScrollView} from 'react-native';
-import {ResetButton} from '@components/ResetButton';
+import {ScrollView, StyleSheet, View} from 'react-native';
+import {MAX_TOPIC_LIMIT} from '@constants/user';
+import {Topics} from '@type/types';
+import {ResetButton} from '@components/Button/Reset/ResetButton';
+import {TopicList} from '@components/UserInfo/Topic/TopicList';
 import {Title} from '@components/UserInfo/TitleText';
-import {Personalities} from '@type/types';
 import {Counter} from '@components/UserInfo/CounterText';
-import {MAX_PERSONALITY_LIMIT} from '@constants/user';
-import {PersonalityList} from '@components/PersonalityList';
 
 type Props = {
-  personalities: Personalities;
-  selectedPersonalityIds: number[];
-  selectPersonality: (personalityId: number) => void;
+  topics: Topics;
+  selectedTopicIds: number[];
+  selectTopic: (topicId: number) => void;
   counter: number;
   reset: () => void;
 };
 
-export function PersonalityEditor({
-  personalities,
-  selectedPersonalityIds,
-  selectPersonality,
+export const TopicEditor = ({
+  topics,
+  selectedTopicIds,
+  selectTopic,
   counter,
   reset,
-}: Props) {
+}: Props) => {
   return (
     <View style={styles.container}>
       <View style={styles.titleBox}>
-        <Title title={'나의 성향을\n모두 선택해주세요'} />
+        <Title title={'나의 관심사를\n모두 선택해주세요'} />
         <View style={styles.counterWrap}>
           <ResetButton reset={reset} />
-          <Counter value={counter} max={MAX_PERSONALITY_LIMIT} />
+          <Counter value={counter} max={MAX_TOPIC_LIMIT} />
         </View>
       </View>
-      <ScrollView alwaysBounceVertical={false} style={styles.personalityBox}>
-        <PersonalityList
-          personalities={personalities}
-          selectPersonality={selectPersonality}
-          selectedPersonalityIds={selectedPersonalityIds}
+      <ScrollView alwaysBounceVertical={false} style={styles.topicBox}>
+        <TopicList
+          topics={topics}
+          selectTopic={selectTopic}
+          selectedTopicIds={selectedTopicIds}
         />
       </ScrollView>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -55,6 +55,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginHorizontal: 24,
   },
+  titleWrap: {
+    // marginBottom: 30,
+    justifyContent: 'flex-end',
+  },
+  titleText: {
+    fontSize: 18,
+    fontFamily: 'Galmuri11',
+    color: '#0000cc',
+    marginTop: 8,
+  },
   counterWrap: {alignItems: 'center', flexDirection: 'row'},
   counter: {
     width: 48,
@@ -64,7 +74,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
     textAlign: 'right',
   },
-  personalityBox: {
+  topicBox: {
     marginHorizontal: 24,
   },
 });

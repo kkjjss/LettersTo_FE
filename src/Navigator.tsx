@@ -14,10 +14,10 @@ import {LetterBoxDetail} from '@screens/LetterBox/LetterBoxDetail';
 
 // 인증 관련 스크린
 import {Auth} from '@screens/Auth/AuthScreen';
-import {NicknameForm} from '@screens/SignUp/NicknameFormScreen';
-import {TopicsForm} from '@screens/SignUp/TopicsFormScreen';
-import {PersonalityForm} from '@screens/SignUp/PersonalityFormScreen';
-import {LocationForm} from '@screens/SignUp/LocationFormScreen';
+import {NicknameForm} from '@screens/Auth/NicknameFormScreen';
+import {TopicsForm} from '@screens/Auth/TopicsFormScreen';
+import {PersonalityForm} from '@screens/Auth/PersonalityFormScreen';
+import {LocationForm} from '@screens/Auth/LocationFormScreen';
 import {MyPage} from '@screens/MyPage/MyPageScreen';
 import {AccountDelete} from '@screens/MyPage/AccountDeleteScreen';
 

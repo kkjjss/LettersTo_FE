@@ -1,9 +1,9 @@
 import React, {useEffect, useMemo} from 'react';
 import {View, Modal, StyleSheet, ScrollView} from 'react-native';
-import {ResetButton} from '@components/ResetButton';
+import {ResetButton} from '@components/Button/Reset/ResetButton';
 import {ModalHeader} from '@components/Headers/ModalHeader';
 import {SCREEN_HEIGHT} from '@constants/screen';
-import {PersonalityList} from '@components/PersonalityList';
+import {PersonalityList} from '@components/UserInfo/Personality/PersonalityList';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {patchUserInfo} from '@apis/member';
 import {usePersonality} from '@hooks/UserInfo/usePersonality';
@@ -13,7 +13,7 @@ import {Title} from '@components/UserInfo/TitleText';
 import _ from 'lodash';
 import {Counter} from '@components/UserInfo/CounterText';
 import {MAX_PERSONALITY_LIMIT} from '@constants/user';
-import {MaximumAlert} from '@components/UserInfo/MaximumAlert';
+import {MaximumAlert} from '@components/UserInfo/Alert/MaximumAlert';
 import {UpdateButton} from '@components/Button/Bottom/UpdateButton';
 
 type Props = {

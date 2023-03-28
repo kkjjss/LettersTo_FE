@@ -9,8 +9,8 @@ import {
 } from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 import useStore from '@stores/store';
-import {TopicItem} from '../TopicItem';
-import {PersonalityItem} from '../PersonalityItem';
+import {TopicItem} from '@components/UserInfo/Topic/TopicItem';
+import {PersonalityItem} from '@components/UserInfo/Personality/PersonalityItem';
 import {GRADIENT_COLORS} from '@constants/letter';
 import {SCREEN_WIDTH} from '@constants/screen';
 import {useTopic} from '@hooks/UserInfo/useTopic';
@@ -74,10 +74,7 @@ export const LetterCoverPreview = React.memo(() => {
       <View style={styles.topArea}>
         <View style={styles.title}>
           <Text style={styles.titleText}>⌜{letter?.title}⌟︎︎</Text>
-          <Image
-            source={require('@assets/From..png')}
-            style={styles.From}
-          />
+          <Image source={require('@assets/From..png')} style={styles.From} />
           <Text style={styles.fromText}>{cover.nickname},</Text>
           <Text style={styles.fromText}>
             {[cover.address.region, ' ', cover.address.city].join('')}
