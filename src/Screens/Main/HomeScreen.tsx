@@ -189,7 +189,7 @@ export function Home({navigation}: Props) {
           <View style={{flexDirection: 'row'}}>
             <TouchableOpacity activeOpacity={0.7} onPress={goToNotification}>
               <Image
-                source={require('@assets/alert_off.png')}
+                source={require('@assets/Icon/Alert/alert_off.png')}
                 style={styles.icon}
               />
             </TouchableOpacity>

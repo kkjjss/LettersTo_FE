@@ -17,6 +17,10 @@ import {useGesture} from '@hooks/Hardware/useGesture';
 import {GRADIENT_COLORS} from '@constants/letter';
 import {PublicLetter, DeliveryLetter, PaperColor} from '@type/types';
 import {dateFormatter} from '@utils/dateFormatter';
+import {STAMP_IMAGES} from '@constants/stamp';
+
+const stampBgImg = require('@assets/Icon/stamp/bg_stamp.png');
+const fromImg = require('@assets/Icon/letter/from.png');
 
 interface EnvelopeModalProps {
   type: 'PUBLIC' | 'DELIVERY';
@@ -50,20 +54,6 @@ export const EnvelopeModal = ({
   } = data;
 
   const {top: SAFE_AREA_TOP} = useSafeAreaInsets();
-
-  type StampType = {
-    [key: number]: any;
-  };
-  const STAMPS: StampType = {
-    1: require('@assets/stamp/1.png'),
-    2: require('@assets/stamp/2.png'),
-    3: require('@assets/stamp/3.png'),
-    4: require('@assets/stamp/4.png'),
-    5: require('@assets/stamp/5.png'),
-    6: require('@assets/stamp/6.png'),
-    7: require('@assets/stamp/7.png'),
-    8: require('@assets/stamp/8.png'),
-  };
 
   // 애니메이션
   const moveAnim = useRef(new Animated.ValueXY()).current;
@@ -148,10 +138,11 @@ export const EnvelopeModal = ({
                 {/* 우표 */}
                 {deliveryType === 'STANDARD' ? (
                   <View style={styles.stampArea}>
-                    <ImageBackground
-                      source={require('@assets/bg_stamp.png')}
-                      style={styles.stampBg}>
-                      <Image style={styles.stampImg} source={STAMPS[stampId]} />
+                    <ImageBackground source={stampBgImg} style={styles.stampBg}>
+                      <Image
+                        style={styles.stampImg}
+                        source={STAMP_IMAGES[stampId]}
+                      />
                       <Image
                         style={styles.stampType}
                         source={require('@assets/stamp_standard.png')}
@@ -161,23 +152,24 @@ export const EnvelopeModal = ({
                 ) : deliveryType === 'EXPRESS' ? (
                   <View style={styles.stampArea}>
                     <ImageBackground
-                      source={require('@assets/bg_stamp.png')}
+                      source={stampBgImg}
                       style={[
                         styles.stampBg,
                         {position: 'absolute', transform: [{rotate: '10deg'}]},
                       ]}
                     />
                     <ImageBackground
-                      source={require('@assets/bg_stamp.png')}
+                      source={stampBgImg}
                       style={[
                         styles.stampBg,
                         {position: 'absolute', transform: [{rotate: '-5deg'}]},
                       ]}
                     />
-                    <ImageBackground
-                      source={require('@assets/bg_stamp.png')}
-                      style={styles.stampBg}>
-                      <Image style={styles.stampImg} source={STAMPS[stampId]} />
+                    <ImageBackground source={stampBgImg} style={styles.stampBg}>
+                      <Image
+                        style={styles.stampImg}
+                        source={STAMP_IMAGES[stampId]}
+                      />
                       <Image
                         style={styles.stampType}
                         source={require('@assets/stamp_express.png')}
@@ -186,10 +178,11 @@ export const EnvelopeModal = ({
                   </View>
                 ) : (
                   <View style={styles.stampArea}>
-                    <ImageBackground
-                      source={require('@assets/bg_stamp.png')}
-                      style={styles.stampBg}>
-                      <Image style={styles.stampImg} source={STAMPS[stampId]} />
+                    <ImageBackground source={stampBgImg} style={styles.stampBg}>
+                      <Image
+                        style={styles.stampImg}
+                        source={STAMP_IMAGES[stampId]}
+                      />
                     </ImageBackground>
                   </View>
                 )}
@@ -210,7 +203,7 @@ export const EnvelopeModal = ({
                     <>
                       <Image
                         style={[styles.fromImg, {width: 48}]}
-                        source={require('@assets/from.png')}
+                        source={fromImg}
                       />
                       <Text
                         style={

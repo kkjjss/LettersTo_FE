@@ -191,24 +191,15 @@ const useStore = create<Store>(set => ({
   setCoverAddress: (region, city) =>
     set(state => ({cover: {...state.cover, address: {region, city}}})),
 
-  // setInitialCoverData: () =>
-  //   set(state => ({
-  //     cover: {
-  //       topicIds: state.userInfo?.topicIds ?? [],
-  //       personalityIds: state.userInfo?.personalityIds ?? [],
-  //       stamp: undefined,
-  //     },
-  //   })),
-
   stamps: [
-    {id: 1, image: require('@assets/stamp/1.png')},
-    {id: 2, image: require('@assets/stamp/2.png')},
-    {id: 3, image: require('@assets/stamp/3.png')},
-    {id: 4, image: require('@assets/stamp/4.png')},
-    {id: 5, image: require('@assets/stamp/5.png')},
-    {id: 6, image: require('@assets/stamp/6.png')},
-    {id: 7, image: require('@assets/stamp/7.png')},
-    {id: 8, image: require('@assets/stamp/8.png')},
+    {id: 1, image: require('@assets/Image/stamp/1.png')},
+    {id: 2, image: require('@assets/Image/stamp/2.png')},
+    {id: 3, image: require('@assets/Image/stamp/3.png')},
+    {id: 4, image: require('@assets/Image/stamp/4.png')},
+    {id: 5, image: require('@assets/Image/stamp/5.png')},
+    {id: 6, image: require('@assets/Image/stamp/6.png')},
+    {id: 7, image: require('@assets/Image/stamp/7.png')},
+    {id: 8, image: require('@assets/Image/stamp/8.png')},
   ],
 
   setStamps: value => set(() => ({stamps: [...value]})),

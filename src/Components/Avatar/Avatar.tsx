@@ -16,8 +16,8 @@ export const Avatar = ({
         <Image
           source={
             notificationType === 'STAMP'
-              ? require('@assets/avatar/stamp.png')
-              : require('@assets/avatar/letter.png')
+              ? require('@assets/Icon/avatar/stamp.png')
+              : require('@assets/Icon/avatar/letter.png')
           }
           style={styles.image}
         />

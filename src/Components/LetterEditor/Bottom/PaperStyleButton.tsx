@@ -2,9 +2,9 @@ import React, {useMemo} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {PaperStyle} from '@type/types';
 
-const paperGrid = require('@assets/paper/paper_grid.png');
-const paperDotted = require('@assets/paper/paper_dotted.png');
-const paperPlain = require('@assets/paper/paper_plane.png');
+const paperGrid = require('@assets/Image/paper/paper_grid.png');
+const paperDotted = require('@assets/Image/paper/paper_dotted.png');
+const paperPlain = require('@assets/Image/paper/paper_plane.png');
 
 const checkMark = require('@assets/check.png');
 

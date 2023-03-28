@@ -113,7 +113,7 @@ export function LetterBoxList({navigation, onPressHome}: Props) {
           <View style={{position: 'absolute', left: 16, flexDirection: 'row'}}>
             <TouchableOpacity activeOpacity={0.7} onPress={goToNotification}>
               <Image
-                source={require('@assets/alert_off.png')}
+                source={require('@assets/Icon/Alert/alert_off.png')}
                 style={styles.icon}
               />
             </TouchableOpacity>
