@@ -5,11 +5,11 @@ import {
   NavigationContainer,
   createNavigationContainerRef,
 } from '@react-navigation/native';
-import StackNavigator from './src/Navigator/Navigator';
+import StackNavigator from '~/Navigator/Navigator';
 import SplashScreen from 'react-native-splash-screen';
 import {RootSiblingParent} from 'react-native-root-siblings';
 import {QueryClientProvider, QueryClient} from 'react-query';
-import Toast from './src/Components/Toast/toast';
+import Toast from '@components/Toast/toast';
 import analytics from '@react-native-firebase/analytics';
 
 const queryClient = new QueryClient({
@@ -40,11 +40,18 @@ export default function App() {
   const routeNameRef = useRef<string>();
   const navigationRef = createNavigationContainerRef();
 
-  /* const fetchRouteName = useCallback(
-    () =>
-      (routeNameRef.current = navigationRef.current.getCurrentRoute().name),
-    [navigationRef],
-  ); */
+  const analyzeScreenView = useCallback(async () => {
+    const previousRouteName = routeNameRef.current;
+    const currentRouteName = navigationRef.current?.getCurrentRoute()?.name;
+
+    if (previousRouteName !== currentRouteName) {
+      await analytics().logScreenView({
+        screen_name: currentRouteName,
+      });
+    }
+
+    routeNameRef.current = currentRouteName;
+  }, [navigationRef]);
 
   const getInitialRouteName = useCallback(() => {
     routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
@@ -56,19 +63,7 @@ export default function App() {
         <NavigationContainer
           ref={navigationRef}
           onReady={getInitialRouteName}
-          onStateChange={async () => {
-            const previousRouteName = routeNameRef.current;
-            const currentRouteName =
-              navigationRef.current?.getCurrentRoute()?.name;
-
-            if (previousRouteName !== currentRouteName) {
-              await analytics().logScreenView({
-                screen_name: currentRouteName,
-              });
-            }
-
-            routeNameRef.current = currentRouteName;
-          }}>
+          onStateChange={analyzeScreenView}>
           <StackNavigator />
         </NavigationContainer>
       </QueryClientProvider>

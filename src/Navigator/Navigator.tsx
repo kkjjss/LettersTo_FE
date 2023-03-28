@@ -3,7 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {StackParamsList} from '../types/stackParamList';
 
 // Splash
-import {Splash} from '../Screens/SplashScreen';
+import {Splash} from '@screens/SplashScreen';
 
 // 메인 서비스 스크린
 import {Main} from '../Screens/Main/Main';

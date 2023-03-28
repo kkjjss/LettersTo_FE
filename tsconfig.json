@@ -10,7 +10,7 @@
     "paths": {
       "~/*": ["./*"],
       "@screens/*": ["Screens/*"],
-      "@compononts/*" : ["Compononts/*"],
+      "@components/*" : ["Components/*"],
       "@hooks/*": ["Hooks/*"],
           "@stores/*": ["Store/*"],
           "@types/*": ["types/*"],
