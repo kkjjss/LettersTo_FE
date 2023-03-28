@@ -3,7 +3,7 @@ import {Text, View, StyleSheet, ScrollView, Image} from 'react-native';
 import {SCREEN_HEIGHT} from '../../../../../Constants/screen';
 import {StampsList} from '../../../../../Components/Stamp/StampsList';
 import useStore from '../../../../../Store/store';
-import {Title} from '../../../../../Components/UserInfo/Title/Title';
+import {Title} from '../../../../../Components/UserInfo/TitleText';
 
 const stampImg = require('../../../../../Assets/Icon/stamp/stamps_blue.png');
 

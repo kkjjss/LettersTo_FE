@@ -4,8 +4,8 @@ import {MAX_TOPIC_LIMIT} from '../../../../../Constants/user';
 import {Topics} from '../../../../../types/types';
 import {ResetButton} from '../../../../../Components/ResetButton';
 import {TopicList} from '../../../../../Components/TopicList';
-import {Title} from '../../../../../Components/UserInfo/Title/Title';
-import {Counter} from '../../../../../Components/UserInfo/Counter/Counter';
+import {Title} from '../../../../../Components/UserInfo/TitleText';
+import {Counter} from '../../../../../Components/UserInfo/CounterText';
 
 type Props = {
   topics: Topics;

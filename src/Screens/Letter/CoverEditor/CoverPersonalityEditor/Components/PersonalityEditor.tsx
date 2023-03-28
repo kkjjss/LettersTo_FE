@@ -1,9 +1,9 @@
 import React from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
 import {ResetButton} from '../../../../../Components/ResetButton';
-import {Title} from '../../../../../Components/UserInfo/Title/Title';
+import {Title} from '../../../../../Components/UserInfo/TitleText';
 import {Personalities} from '../../../../../types/types';
-import {Counter} from '../../../../../Components/UserInfo/Counter/Counter';
+import {Counter} from '../../../../../Components/UserInfo/CounterText';
 import {MAX_PERSONALITY_LIMIT} from '../../../../../Constants/user';
 import {PersonalityList} from '../../../../../Components/PersonalityList';
 

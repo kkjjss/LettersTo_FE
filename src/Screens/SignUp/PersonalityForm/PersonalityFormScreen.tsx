@@ -16,9 +16,9 @@ import {PersonalityList} from '../../../Components/PersonalityList';
 import {usePersonality} from '../../../Hooks/UserInfo/usePersonality';
 import {MAX_PERSONALITY_LIMIT} from '../../../Constants/user';
 import {Header2} from '../../../Components/Headers/Header2';
-import {Title} from '../../../Components/UserInfo/Title/Title';
-import {Counter} from '../../../Components/UserInfo/Counter/Counter';
-import {MaximumAlert} from '../../../Components/UserInfo/Alert/MaximumAlert';
+import {Title} from '../../../Components/UserInfo/TitleText';
+import {Counter} from '../../../Components/UserInfo/CounterText';
+import {MaximumAlert} from '../../../Components/UserInfo/MaximumAlert';
 import {useAuthAction} from '../../../Store/auth';
 
 type Props = NativeStackScreenProps<StackParamsList, 'PersonalityForm'>;

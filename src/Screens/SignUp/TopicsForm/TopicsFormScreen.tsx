@@ -7,7 +7,6 @@ import {
   Platform,
   ScrollView,
 } from 'react-native';
-import type {StackParamsList} from '../../../types/stackParamList';
 import {LinearGradient} from 'expo-linear-gradient';
 import {SCREEN_HEIGHT} from '../../../Constants/screen';
 import {NextButton} from '../../../Components/Button/Bottom/NextButton';
@@ -15,11 +14,12 @@ import {ResetButton} from '../../../Components/ResetButton';
 import {TopicList} from '../../../Components/TopicList';
 import {useTopic} from '../../../Hooks/UserInfo/useTopic';
 import {MAX_TOPIC_LIMIT} from '../../../Constants/user';
-import {Counter} from '../../../Components/UserInfo/Counter/Counter';
-import {MaximumAlert} from '../../../Components/UserInfo/Alert/MaximumAlert';
-import {Title} from '../../../Components/UserInfo/Title/Title';
+import {Counter} from '../../../Components/UserInfo/CounterText';
+import {MaximumAlert} from '../../../Components/UserInfo/MaximumAlert';
+import {Title} from '../../../Components/UserInfo/TitleText';
 import {Header2} from '../../../Components/Headers/Header2';
 import {useAuthAction} from '../../../Store/auth';
+import type {StackParamsList} from '../../../types/stackParamList';
 
 type Props = NativeStackScreenProps<StackParamsList, 'TopicsForm'>;
 

@@ -7,16 +7,17 @@ import {
   SafeAreaView,
   Platform,
 } from 'react-native';
-import {NextButton} from '../../../Components/Button/Bottom/NextButton';
-import {SCREEN_HEIGHT} from '../../../Constants/screen';
+import {NextButton} from '@components/Button/Bottom/NextButton';
+import {SCREEN_HEIGHT} from '@constants/screen';
 import {LinearGradient} from 'expo-linear-gradient';
-import type {StackParamsList} from '../../../types/stackParamList';
-import {useNickname} from '../../../Hooks/UserInfo/useNickname';
-import {NicknameInput} from './Components/NicknameInput';
-import {NicknameAvailableAlert} from '../../../Components/UserInfo/Alert/NicknameAvailableAlert';
-import {Header2} from '../../../Components/Headers/Header2';
-import {Title} from '../../../Components/UserInfo/Title/Title';
-import {useAuthAction} from '../../../Store/auth';
+import {useNickname} from '@hooks/UserInfo/useNickname';
+import {NicknameInput} from '@components/UserInfo/NicknameInput';
+import {NicknameAvailableAlert} from '@components/UserInfo/NicknameAvailableAlert';
+import {Header2} from '@components/Headers/Header2';
+import {Title} from '@components/UserInfo/TitleText';
+import {useAuthAction} from '@stores/auth';
+
+import type {StackParamsList} from '@type/stackParamList';
 
 type Props = NativeStackScreenProps<StackParamsList, 'NicknameForm'>;
 

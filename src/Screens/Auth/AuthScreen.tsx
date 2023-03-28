@@ -23,7 +23,7 @@ import {ProviderToken} from '@type/auth';
 import {useAuthAction} from '@stores/auth';
 import {AuthButton} from '@components/Auth/AuthButton';
 import {Logo} from '@components/Logo/LogoAnimation';
-import {PolicyNotice} from '@components/Auth/PolicyNotice';
+import {PolicyNotice} from '~/Components/Auth/PolicyNoticeText';
 
 const kakaoLogo = require('@assets/Image/social/kakao.png');
 const appleLogo = require('@assets/Image/social/apple.png');

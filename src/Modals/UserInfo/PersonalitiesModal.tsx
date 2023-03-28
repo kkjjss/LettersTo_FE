@@ -9,11 +9,11 @@ import {patchUserInfo} from '../../APIs/member';
 import {usePersonality} from '../../Hooks/UserInfo/usePersonality';
 import Toast from '../../Components/Toast/toast';
 import {useMutation, useQueryClient} from 'react-query';
-import {Title} from '../../Components/UserInfo/Title/Title';
+import {Title} from '../../Components/UserInfo/TitleText';
 import _ from 'lodash';
-import {Counter} from '../../Components/UserInfo/Counter/Counter';
+import {Counter} from '../../Components/UserInfo/CounterText';
 import {MAX_PERSONALITY_LIMIT} from '../../Constants/user';
-import {MaximumAlert} from '../../Components/UserInfo/Alert/MaximumAlert';
+import {MaximumAlert} from '../../Components/UserInfo/MaximumAlert';
 import {UpdateButton} from '../../Components/Button/Bottom/UpdateButton';
 
 type Props = {
