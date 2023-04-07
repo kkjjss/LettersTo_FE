@@ -21,6 +21,8 @@ import {GRADIENT_COLORS} from '@constants/letter';
 import Toast from '@components/Toast/toast';
 import {getUserInfo} from '@apis/member';
 import {useQuery} from 'react-query';
+import {useFeedbackStore} from '@stores/feedback';
+import {FeedbackButton} from '@components/Feedback/FeedbackButton';
 
 type Props = {
   navigation: NativeStackNavigationProp<StackParamsList, 'Main', undefined>;
@@ -34,6 +36,8 @@ export function LetterBoxList({navigation, onPressHome}: Props) {
   // 내 사서함 목록
   const [letterBoxes, setLetterBoxes] = useState<LetterBoxes>([]);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const {isFeedbackButtonShown} = useFeedbackStore();
 
   const getLetterBoxesInit = () => {
     try {
@@ -142,14 +146,16 @@ export function LetterBoxList({navigation, onPressHome}: Props) {
           <Text style={styles.pageTitle}>내 사서함</Text>
           <View style={{position: 'absolute', right: 16, flexDirection: 'row'}}>
             <TouchableOpacity activeOpacity={0.7} onPress={goToMyPage}>
-              <Image
-                source={require('@assets/menu.png')}
-                style={styles.icon}
-              />
+              <Image source={require('@assets/menu.png')} style={styles.icon} />
             </TouchableOpacity>
           </View>
         </View>
       </View>
+      {isFeedbackButtonShown.LetterBox || (
+        <View style={[styles.feedbackBtn, {top: SAFE_AREA_TOP + 50}]}>
+          <FeedbackButton screenName={'LETTERBOX'} />
+        </View>
+      )}
       <FlatList
         ListEmptyComponent={loading ? Loading : Empty}
         contentContainerStyle={{marginTop: SAFE_AREA_TOP}}
@@ -329,4 +335,10 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   emptyBtnIcon: {width: 20, height: 20, marginLeft: 2},
+  feedbackBtn: {
+    position: 'absolute',
+    width: '100%',
+    zIndex: 11,
+    paddingHorizontal: 16,
+  },
 });

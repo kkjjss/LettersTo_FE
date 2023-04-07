@@ -23,6 +23,8 @@ import {getUserInfo} from '@apis/member';
 
 import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import type {StackParamsList} from '@type/stackParamList';
+import {useFeedbackStore} from '@stores/feedback';
+import {FeedbackButton} from '@components/Feedback/FeedbackButton';
 
 type Props = {
   navigation: NativeStackNavigationProp<StackParamsList, 'Main', undefined>;
@@ -132,9 +134,9 @@ export function Home({navigation}: Props) {
     navigation.navigate('StampHistory');
   };
 
-  const {data: userInfo} = useQuery('userInfo', getUserInfo, {
-    onSuccess: () => console.log('!!!'),
-  });
+  const {data: userInfo} = useQuery('userInfo', getUserInfo);
+
+  const {isFeedbackButtonShown} = useFeedbackStore();
 
   // cold case
   const Empty = useMemo(
@@ -179,7 +181,6 @@ export function Home({navigation}: Props) {
       colors={['white', '#FFFFCC']}
       locations={[0.8, 1]}
       style={styles.container}>
-      {/* <SafeAreaView style={styles.container}> */}
       <StatusBar barStyle={'dark-content'} />
       <LinearGradient
         colors={['#FFCCEE', 'rgba(255, 255, 255, 0)']}
@@ -217,6 +218,11 @@ export function Home({navigation}: Props) {
           </TouchableOpacity>
         </View>
       </LinearGradient>
+      {isFeedbackButtonShown.Home || (
+        <View style={[styles.feedbackBtn, {top: SAFE_AREA_TOP + 50}]}>
+          <FeedbackButton screenName={'HOME'} />
+        </View>
+      )}
       <FlatList
         ref={publicLetterListRef}
         ListEmptyComponent={loading ? Loading : Empty}
@@ -406,4 +412,10 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   emptyBtnIcon: {width: 20, height: 20, marginLeft: 2},
+  feedbackBtn: {
+    position: 'absolute',
+    width: '100%',
+    zIndex: 11,
+    paddingHorizontal: 16,
+  },
 });

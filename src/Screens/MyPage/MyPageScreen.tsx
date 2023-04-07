@@ -26,6 +26,7 @@ import {ModalBlur} from '@components/Modals/ModalBlur';
 import {LogoutModal} from '@components/Modals/MyPage/LogoutModal';
 
 import type {StackParamsList} from '@type/stackParamList';
+import {FeedbackButton} from '@components/Feedback/FeedbackButton';
 
 type Props = NativeStackScreenProps<StackParamsList, 'MyPage'>;
 
@@ -160,6 +161,9 @@ export const MyPage = ({navigation}: Props) => {
             paddingBottom: SAFE_AREA_BOTTOM,
           },
         ]}>
+        <View style={styles.feedbackButton}>
+          <FeedbackButton screenName="MYPAGE" />
+        </View>
         <View style={styles.menuList}>
           <View style={styles.menu}>
             <ListName name="약관 정보" />
@@ -253,7 +257,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
-  menuList: {flex: 1, paddingTop: 24, paddingHorizontal: 24},
+  menuList: {flex: 1, paddingTop: 8, paddingHorizontal: 24},
   menu: {marginBottom: 34},
   modal: {
     margin: 0,
@@ -277,4 +281,5 @@ const styles = StyleSheet.create({
     borderRadius: 18,
   },
   avatarText: {fontFamily: 'Galmuri11-Bold', fontSize: 13, color: '#0000CC'},
+  feedbackButton: {margin: 16},
 });
