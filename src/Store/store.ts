@@ -1,7 +1,5 @@
 import create from 'zustand';
 import {
-  // Personalities,
-  // Topics,
   Stamps,
   PaperColor,
   PaperStyle,
@@ -10,56 +8,6 @@ import {
 import {subDate} from '@utils/dateFormatter';
 
 interface Store {
-  // isLoggedIn: boolean;
-  // setIsLoggedIn: (value: boolean) => void;
-
-  // isLoading: boolean;
-  // setIsLoading: (value: boolean) => void;
-
-  // registerToken: string | undefined;
-  // setRegisterToken: (value: string) => void;
-
-  // topics: Topics;
-  // setTopics: (value: Topics) => void;
-
-  // personalities: Personalities;
-  // setPersonalities: (value: Personalities) => void;
-
-  // signUpInfo: {
-  //   nickname: string | undefined;
-  //   personalityIds: number[] | undefined;
-  //   topicIds: number[] | undefined;
-  //   geolocationId: number | undefined;
-  // };
-  // setNickname: (value: string) => void;
-  // setTopicIds: (value: number[]) => void;
-  // setPersonalityIds: (value: number[]) => void;
-  // setAddress: (value: number) => void;
-  // clearSignupInfo: () => void;
-
-  // userInfo:
-  //   | {
-  //       nickname: string;
-  //       personalityIds: number[];
-  //       topicIds: number[];
-  //       geolocationId: number;
-  //       parentGeolocationId: number;
-  //       stampQuantity: number;
-  //     }
-  //   | undefined;
-  // setUserInfo: (value: {
-  //   nickname: string;
-  //   personalityIds: number[];
-  //   topicIds: number[];
-  //   geolocationId: number;
-  //   parentGeolocationId: number;
-  //   stampQuantity: number;
-  // }) => void;
-
-  // setStampQuantity: (value: number) => void;
-
-  // signOut: () => void;
-
   letter:
     | {
         title: string;
@@ -101,66 +49,6 @@ interface Store {
 }
 
 const useStore = create<Store>(set => ({
-  // isLoggedIn: false,
-  // setIsLoggedIn: value => set(() => ({isLoggedIn: value})),
-
-  // isLoading: true,
-  // setIsLoading: value => set(() => ({isLoading: value})),
-
-  // registerToken: undefined,
-  // setRegisterToken: value => set(() => ({registerToken: value})),
-
-  // topics: [],
-  // setTopics: value => set(() => ({topics: value})),
-
-  // personalities: [],
-  // setPersonalities: value => set(() => ({personalities: value})),
-
-  // signUpInfo: {
-  //   nickname: undefined,
-  //   personalityIds: undefined,
-  //   topicIds: undefined,
-  //   geolocationId: undefined,
-  // },
-
-  // setNickname: value =>
-  //   set(state => ({signUpInfo: {...state.signUpInfo, nickname: value}})),
-
-  // setTopicIds: value =>
-  //   set(state => ({signUpInfo: {...state.signUpInfo, topicIds: value}})),
-
-  // setPersonalityIds: value =>
-  //   set(state => ({signUpInfo: {...state.signUpInfo, personalityIds: value}})),
-
-  // setAddress: value =>
-  //   set(state => ({signUpInfo: {...state.signUpInfo, geolocationId: value}})),
-
-  // clearSignupInfo: () =>
-  //   set(() => ({
-  //     signUpInfo: {
-  //       nickname: undefined,
-  //       personalityIds: undefined,
-  //       topicIds: undefined,
-  //       geolocationId: undefined,
-  //     },
-  //   })),
-
-  // userInfo: undefined,
-
-  // setUserInfo: value => set(() => ({userInfo: value})),
-
-  // setStampQuantity: value =>
-  //   set(state => {
-  //     if (state.userInfo) {
-  //       return {userInfo: {...state.userInfo, stampQuantity: value}};
-  //     } else {
-  //       return {};
-  //     }
-  //   }),
-
-  // signOut: () =>
-  //   set(() => ({userInfo: undefined, isLoggedIn: false, isLoading: true})),
-
   letter: undefined,
 
   setLetter: letterData => set(() => ({letter: {...letterData}})),

@@ -26,7 +26,7 @@ import {LetterItem} from './LetterItem';
 import {EnvelopeModal} from '@components/Modals/Letter/EnvelopeModal';
 import Toast from '@components/Toast/toast';
 
-const triangleImg = require('@assets/triangle.png');
+const triangleImg = require('@assets/Icon/tool/bottomTabButtonEdge.png');
 
 type Props = NativeStackScreenProps<StackParamsList, 'LetterBoxDetail'>;
 

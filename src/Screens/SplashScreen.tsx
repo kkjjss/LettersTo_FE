@@ -27,14 +27,14 @@ export function Splash({}: Props) {
   const {isError, isLoading, isSuccess} = useQuery(
     'login',
     loginWithStoredToken,
-    {retry: false, onError: () => {}},
+    {retry: false},
   );
 
   useEffect(() => {
     if (!isLoading) {
       if (isSuccess) {
         authAction.login();
-        sendAttendance();
+        sendAttendance().catch(() => {});
       }
       authAction.endLoading();
     }
