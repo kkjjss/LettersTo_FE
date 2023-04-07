@@ -218,7 +218,7 @@ export interface Feedback {
   type: 'FEEDBACK';
 }
 
-export type NotificationList = (Notification | Feedback)[];
+export type NotificationList = Notification[];
 
 export interface StampHistory {
   id: number;

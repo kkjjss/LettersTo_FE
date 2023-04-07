@@ -1,8 +1,8 @@
 import {axiosInstance} from '@utils/http';
 
 interface NotificationsRequestParams {
-  read: boolean | undefined;
-  cursor: number | undefined;
+  read?: boolean;
+  cursor?: number;
 }
 
 interface NotificationsResponse {

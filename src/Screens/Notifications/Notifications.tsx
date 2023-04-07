@@ -1,14 +1,6 @@
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useMemo, useState} from 'react';
-import {
-  FlatList,
-  Image,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
+import {FlatList, StatusBar, StyleSheet, Text, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {getNotifications, setNotificationRead} from '@apis/notification';
 import {Header2} from '@components/Headers/Header2';
@@ -16,22 +8,21 @@ import {NotificationItem} from '@components/Notification/NotificationItem';
 import {NotificationSlideSwitch} from '@components/Notification/NotificationSlideSwitch';
 import Toast from '@components/Toast/toast';
 import type {StackParamsList} from '@type/stackParamList';
-import {Notification, NotificationList} from '@type/types';
-import {Avatar} from '@components/Avatar/Avatar';
-import {onPressFeedback} from '@utils/hyperlink';
+import {Feedback, Notification, NotificationList} from '@type/types';
+import {FeedbackItem} from '@components/Feedback/FeedbackItem';
 
 type Props = NativeStackScreenProps<StackParamsList, 'Notifications'>;
+
+const FEEDBACK_ITEM: Feedback = {
+  id: -1,
+  type: 'FEEDBACK',
+};
 
 export const Notifications = ({navigation}: Props) => {
   const [excludeReadNotifications, setExcludeReadNotifications] =
     useState<boolean>(false);
   const [currentCursor, setCurrentCursor] = useState<number>();
-  const [notifications, setNotifications] = useState<NotificationList>([
-    {
-      id: -1,
-      type: 'FEEDBACK',
-    },
-  ]);
+  const [notifications, setNotifications] = useState<NotificationList>([]);
 
   const onPressBack = () => {
     navigation.pop();
@@ -59,10 +50,7 @@ export const Notifications = ({navigation}: Props) => {
 
   const notificationList = useMemo(() => {
     if (excludeReadNotifications === true) {
-      return notifications.filter(
-        notification =>
-          notification.type !== 'FEEDBACK' && notification.read === false,
-      );
+      return notifications.filter(notification => notification.read === false);
     } else {
       return notifications;
     }
@@ -116,78 +104,20 @@ export const Notifications = ({navigation}: Props) => {
         {(excludeReadNotifications === true && notificationList.length > 0) ||
         (excludeReadNotifications === false && notificationList.length > 0) ? (
           <FlatList
-            data={notifications}
+            data={[FEEDBACK_ITEM, ...notifications]}
             contentContainerStyle={{paddingBottom: SAFE_AREA_BOTTOM}}
             onEndReached={handleEndReached}
-            renderItem={({item}) => {
-              if (item.type === 'FEEDBACK') {
-                return (
-                  <TouchableWithoutFeedback onPress={onPressFeedback}>
-                    <View
-                      style={{
-                        minHeight: 100,
-                        borderBottomColor: '#0000cc40',
-                        borderBottomWidth: 0.5,
-                        backgroundColor: '#ffffcc',
-                        paddingHorizontal: 24,
-                        paddingVertical: 16,
-                        position: 'relative',
-                        flexDirection: 'row',
-                      }}>
-                      <Image
-                        style={{
-                          position: 'absolute',
-                          top: 18,
-                          right: 24,
-                          height: 24,
-                          width: 24,
-                        }}
-                        source={require('@assets/Icon/pin/pin.png')}
-                      />
-                      <Image
-                        style={{height: 36, width: 36}}
-                        source={require('@assets/Image/logo/logo_small.png')}
-                      />
-                      <View style={{marginLeft: 12, marginRight: 24}}>
-                        <View
-                          style={{
-                            height: 36,
-                            justifyContent: 'center',
-                            marginRight: 50,
-                          }}>
-                          <Text
-                            style={{
-                              fontFamily: 'Galmuri11',
-                              fontSize: 14,
-                              color: '#0000cc',
-                            }}>
-                            {'‘Letters to’ 의 어떤 부분이 개선되면 좋을까요?'}
-                          </Text>
-                        </View>
-                        <View style={{minHeight: 30, justifyContent: 'center'}}>
-                          <Text
-                            style={{
-                              fontFamily: 'Galmuri11',
-                              fontSize: 12,
-                              color: '#0000cc',
-                            }}>
-                            {'Team Letters To'}
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-                  </TouchableWithoutFeedback>
-                );
-              } else {
-                return (
-                  <NotificationItem
-                    key={item.id}
-                    notification={item}
-                    onPress={onPressNotification}
-                  />
-                );
-              }
-            }}
+            renderItem={({item}) =>
+              item.type === 'FEEDBACK' ? (
+                <FeedbackItem />
+              ) : (
+                <NotificationItem
+                  key={item.id}
+                  notification={item}
+                  onPress={onPressNotification}
+                />
+              )
+            }
           />
         ) : (
           <View style={styles.noUnreadNotification}>
