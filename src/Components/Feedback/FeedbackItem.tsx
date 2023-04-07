@@ -8,18 +8,15 @@ import {
   StyleSheet,
 } from 'react-native';
 
+const pinImg = require('@assets/Icon/pin/pin.png');
+const smallLogoImg = require('@assets/Image/logo/logo_small.png');
+
 export const FeedbackItem = React.memo(() => {
   return (
     <TouchableWithoutFeedback onPress={onPressFeedback}>
       <View style={styles.feedbackItem}>
-        <Image
-          style={styles.pin}
-          source={require('@assets/Icon/pin/pin.png')}
-        />
-        <Image
-          style={styles.logo}
-          source={require('@assets/Image/logo/logo_small.png')}
-        />
+        <Image style={styles.pin} source={pinImg} />
+        <Image style={styles.logo} source={smallLogoImg} />
         <View style={styles.contents}>
           <View style={styles.title}>
             <Text style={styles.titleText}>
