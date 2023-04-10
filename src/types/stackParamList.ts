@@ -21,6 +21,8 @@ export interface StackParamsList {
   PersonalityForm: undefined;
   LocationForm: undefined;
 
+  Coachmark: undefined;
+
   // 회원 정보 수정 스택
   MyPage: undefined;
   AccountDelete: undefined;

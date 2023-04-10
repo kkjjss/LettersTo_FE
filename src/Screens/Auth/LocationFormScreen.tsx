@@ -33,7 +33,7 @@ export function LocationForm({navigation}: Props) {
     onStartNotice,
   } = useLocation();
 
-  const {setGeolocationIdInRegisterInfo, startLoading} = useAuthAction();
+  const {setGeolocationIdInRegisterInfo} = useAuthAction();
   const registerInfo = useAuthStore(state => state.registerInfo);
 
   const disableSignUp = useMemo(
@@ -69,8 +69,9 @@ export function LocationForm({navigation}: Props) {
         AsyncStorage.setItem('refreshToken', refreshToken),
       ]);
 
-      startLoading();
-    }, [registerInfo, startLoading]),
+      navigation.reset({routes: [{name: 'Coachmark'}]});
+    }, [navigation, registerInfo]),
+    {onSuccess: () => Toast.show('성공적으로 가입되었어요!')},
   );
 
   const onPressSignUp = useCallback(async () => {
