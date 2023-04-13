@@ -5,6 +5,6 @@ export async function getRegions() {
   return await axiosInstance.get<Regions>('/geolocations/regions');
 }
 
-export async function getCities(id: number): Promise<Cities> {
-  return await axiosInstance.get(`/geolocations/regions/${id}/cities`);
+export async function getCities(id: number) {
+  return await axiosInstance.get<Cities>(`/geolocations/regions/${id}/cities`);
 }
