@@ -139,8 +139,8 @@ android {
         applicationId "com.lettersto"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 230313
-        versionName "1.1.0"
+        versionCode 230424
+        versionName "1.1.1"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
 
         if (isNewArchitectureEnabled()) {
