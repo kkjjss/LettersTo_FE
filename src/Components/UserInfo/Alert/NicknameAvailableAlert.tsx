@@ -1,6 +1,6 @@
 import React from 'react';
 import {Animated, StyleSheet, Text} from 'react-native';
-import {NicknameValidationResult} from '../../../Hooks/UserInfo/useNickname';
+import {NicknameValidationResult} from '@hooks/UserInfo/useNickname';
 
 type Params = {
   alterOpacity: Animated.Value;

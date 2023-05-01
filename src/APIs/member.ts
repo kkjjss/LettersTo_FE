@@ -3,8 +3,8 @@ import type {
   RegisterInfo,
   AuthTokens,
   PatchUserInfoRequest,
-} from '../types/auth';
-import {axiosInstance} from '../Utils/http';
+} from '@type/auth';
+import {axiosInstance} from '@utils/http';
 
 export async function signUp(registerInfo: RegisterInfo) {
   return await axiosInstance.post<AuthTokens>('/members', {...registerInfo});

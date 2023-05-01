@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useRef, useState} from 'react';
 import {Animated} from 'react-native';
-import {existsNickname} from '../../APIs/member';
+import {existsNickname} from '@apis/member';
 
 type NicknameValidationKey =
   | 'CURRENT_NICKNAME'
@@ -39,11 +39,6 @@ const NICKNAME_VALIDATION_RESULT_MAP: NicknameValidationResultMap = {
 export const useNickname = (curruntNickname?: string) => {
   const [tempNickname, setTempNickname] = useState('');
   const [disable, setDisable] = useState(true);
-
-  // const [nickname, setNickname] = useAuthStore(state => [
-  //   state.registerInfo.nickname,
-  //   state.action.setNicknameInRegisterInfo,
-  // ]);
 
   const [nickname, setNickname] = useState<string>('');
 

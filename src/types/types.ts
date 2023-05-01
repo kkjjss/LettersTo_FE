@@ -213,6 +213,11 @@ export interface Notification {
   createdDate: Date;
 }
 
+export interface Feedback {
+  id: -1;
+  type: 'FEEDBACK';
+}
+
 export type NotificationList = Notification[];
 
 export interface StampHistory {

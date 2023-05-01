@@ -2,7 +2,7 @@ import create from 'zustand';
 import {sendAttendance} from '../APIs/attendances';
 import {getUserInfo, signUp} from '../APIs/member';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {RegisterInfo, UserInfo} from '../types/auth';
+import {RegisterInfo, UserInfo} from '@type/auth';
 
 interface AuthStore {
   isLoggedIn: boolean;

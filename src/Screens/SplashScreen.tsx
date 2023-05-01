@@ -1,13 +1,12 @@
-// Import React and Component
 import React, {useCallback, useEffect} from 'react';
 import {useQuery} from 'react-query';
 import {ActivityIndicator, View, StyleSheet} from 'react-native';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {StackParamsList} from '../types/stackParamList';
-import {useAuthAction} from '../Store/auth';
+import type {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {useAuthAction} from '@stores/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {getUserInfo} from '../APIs/member';
-import {sendAttendance} from '../APIs/attendances';
+import {getUserInfo} from '@apis/member';
+import {sendAttendance} from '@apis/attendances';
+import type {StackParamsList} from '@type/stackParamList';
 
 type Props = NativeStackScreenProps<StackParamsList, 'Splash'>;
 
@@ -26,7 +25,7 @@ export function Splash({}: Props) {
   }, []);
 
   const {isError, isLoading, isSuccess} = useQuery(
-    ['login'],
+    'login',
     loginWithStoredToken,
     {retry: false},
   );
@@ -35,7 +34,7 @@ export function Splash({}: Props) {
     if (!isLoading) {
       if (isSuccess) {
         authAction.login();
-        sendAttendance();
+        sendAttendance().catch(() => {});
       }
       authAction.endLoading();
     }

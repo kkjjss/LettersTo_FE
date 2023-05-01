@@ -1,7 +1,7 @@
 import React from 'react';
 import {TouchableOpacity, Image, StyleSheet} from 'react-native';
 
-const reportButton = require('../../../Assets/Icon/report/report.png');
+const reportButton = require('@assets/Icon/report/report.png');
 
 type Props = {
   onPress: () => void;
