@@ -11,11 +11,6 @@ import {
 const pinImg = require('@assets/Icon/pin/pin.png');
 const smallLogoImg = require('@assets/Image/logo/logo_small.png');
 
-const FEEDBACK_BUTTON_TEXT = {
-  CONTENT: '‘Letters to’ 의 어떤 부분이\n개선되면 좋을까요?',
-  DESCRIPTION: 'Team Letters To',
-};
-
 export const FeedbackItem = React.memo(() => {
   return (
     <TouchableWithoutFeedback onPress={onPressFeedback}>
@@ -24,12 +19,12 @@ export const FeedbackItem = React.memo(() => {
         <Image style={styles.logo} source={smallLogoImg} />
         <View style={styles.contents}>
           <View style={styles.title}>
-            <Text style={styles.titleText}>{FEEDBACK_BUTTON_TEXT.CONTENT}</Text>
+            <Text style={styles.titleText}>
+              ‘Letters to’ 의 어떤 부분이 개선되면 좋을까요?
+            </Text>
           </View>
           <View style={styles.team}>
-            <Text style={styles.teamText}>
-              {FEEDBACK_BUTTON_TEXT.DESCRIPTION}
-            </Text>
+            <Text style={styles.teamText}>Team Letters To</Text>
           </View>
         </View>
       </View>

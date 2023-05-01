@@ -69,10 +69,7 @@ export const FeedbackButton = React.memo(({screenName}: Props) => {
             ? FEEDBACK_BUTTON_TEXT.HOME
             : FEEDBACK_BUTTON_TEXT.SIMPLE}
         </Text>
-        <Image
-          source={nextImg}
-          style={screenName === 'HOME' ? styles.next_24 : styles.next_20}
-        />
+        <Image source={nextImg} style={styles.next} />
       </Animated.View>
     </TouchableWithoutFeedback>
   );
@@ -84,7 +81,7 @@ const styles = StyleSheet.create({
     padding: 12,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
   },
   feedbackButton_Home: {
     backgroundColor: '#0000cc',
@@ -97,7 +94,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Galmuri11',
     fontSize: 14,
     flexShrink: 1,
+    marginRight: 45,
   },
-  next_20: {height: 20, width: 20},
-  next_24: {height: 24, width: 24},
+  next: {height: 24, width: 24},
 });

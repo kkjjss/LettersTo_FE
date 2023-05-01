@@ -416,6 +416,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: '100%',
     zIndex: 11,
-    padding: 16,
+    paddingHorizontal: 16,
   },
 });
