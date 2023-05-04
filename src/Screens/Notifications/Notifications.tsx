@@ -105,7 +105,11 @@ export const Notifications = ({navigation}: Props) => {
         (excludeReadNotifications === false && notificationList.length > 0) ? (
           <FlatList
             data={[FEEDBACK_ITEM, ...notifications]}
-            contentContainerStyle={{paddingBottom: SAFE_AREA_BOTTOM}}
+            contentContainerStyle={{
+              paddingBottom: SAFE_AREA_BOTTOM,
+              borderTopColor: '#0000cc40',
+              borderTopWidth: 1,
+            }}
             onEndReached={handleEndReached}
             renderItem={({item}) =>
               item.type === 'FEEDBACK' ? (

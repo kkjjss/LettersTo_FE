@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>kr</string>
+	<string>ko</string>
 	<key>CFBundleDisplayName</key>
 	<string>Letters To...</string>
 	<key>CFBundleExecutable</key>
@@ -32,7 +32,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>230418</string>
+	<string>230501</string>
 	<key>KAKAO_APP_KEY</key>
 	<string>6d103f05f54b404a5f9e96eb2550ef77</string>
 	<key>LSApplicationQueriesSchemes</key>

@@ -85,6 +85,7 @@ export const Coachmark = ({}: Props) => {
             fontSize: 18,
             color: 'white',
             textAlign: 'center',
+            lineHeight: 30,
           }}>
           {STEPS[currentStep].TEXT}
         </Text>
