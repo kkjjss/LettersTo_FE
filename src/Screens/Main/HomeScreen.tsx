@@ -187,7 +187,7 @@ export function Home({navigation}: Props) {
         locations={[0, 1]}
         style={[styles.header, {paddingVertical: SAFE_AREA_TOP}]}>
         <View style={styles.headerInner}>
-          <View style={{flexDirection: 'row'}}>
+          <View style={styles.headerLeftContent}>
             <TouchableOpacity activeOpacity={0.7} onPress={goToNotification}>
               <Image
                 source={require('@assets/Icon/Alert/alert_off.png')}
@@ -213,9 +213,12 @@ export function Home({navigation}: Props) {
               </TouchableOpacity>
             )}
           </View>
-          <TouchableOpacity activeOpacity={0.7} onPress={goToMyPage}>
-            <Image source={require('@assets/menu.png')} style={styles.icon} />
-          </TouchableOpacity>
+          <Text style={styles.headerTitle}>편지 탐색</Text>
+          <View style={styles.headerRightContent}>
+            <TouchableOpacity activeOpacity={0.7} onPress={goToMyPage}>
+              <Image source={require('@assets/menu.png')} style={styles.icon} />
+            </TouchableOpacity>
+          </View>
         </View>
       </LinearGradient>
       {isFeedbackButtonShown.Home || (
@@ -332,12 +335,25 @@ const styles = StyleSheet.create({
     height: 160,
   },
   headerInner: {
-    position: 'relative',
     height: 52,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 16,
+  },
+  headerLeftContent: {
+    flexDirection: 'row',
+    position: 'absolute',
+    left: 16,
+    height: 52,
+    alignItems: 'center',
+  },
+  headerTitle: {fontFamily: 'Galmuri11', fontSize: 15, color: '#0000cc'},
+  headerRightContent: {
+    position: 'absolute',
+    right: 16,
+    height: 52,
+    justifyContent: 'center',
   },
   headerButton: {
     position: 'relative',
